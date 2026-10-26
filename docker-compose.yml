@@ -1,0 +1,100 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: pramaan_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-pramaan_x}
+      POSTGRES_USER: ${POSTGRES_USER:-aicte_admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-aicte_secure_password_2025}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-aicte_admin} -d ${POSTGRES_DB:-pramaan_x}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - pramaan_network
+
+  mock-issuer:
+    build:
+      context: .
+      dockerfile: mock_issuer/Dockerfile
+    container_name: pramaan_mock_issuer
+    restart: always
+    ports:
+      - "${MOCK_ISSUER_PORT:-8001}:8001"
+    environment:
+      PYTHONUNBUFFERED: "1"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 10s
+      timeout: 5s
+      start_period: 5s
+      retries: 3
+    networks:
+      - pramaan_network
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: pramaan_backend
+    restart: always
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-aicte_admin}:${POSTGRES_PASSWORD:-aicte_secure_password_2025}@db:5432/${POSTGRES_DB:-pramaan_x}
+      SECRET_KEY: ${SECRET_KEY:-pramaan-x-hackathon-super-secret-key-2025-aicte}
+      MOCK_ISSUER_URL: http://mock-issuer:8001
+      PYTHONUNBUFFERED: "1"
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    volumes:
+      - ./uploads:/app/uploads
+      - ./backend/app/rules:/app/backend/app/rules
+    depends_on:
+      db:
+        condition: service_healthy
+      mock-issuer:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
+    networks:
+      - pramaan_network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: pramaan_frontend
+    restart: always
+    ports:
+      - "${FRONTEND_PORT:-3000}:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/health"]
+      interval: 10s
+      timeout: 5s
+      start_period: 5s
+      retries: 3
+    networks:
+      - pramaan_network
+
+volumes:
+  postgres_data:
+    name: pramaan_postgres_data
+
+networks:
+  pramaan_network:
+    name: pramaan_network
+    driver: bridge
