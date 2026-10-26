@@ -1,0 +1,110 @@
+handbook_edition: AICTE Approval Process Handbook (APH) 2025-26
+version: 1.2.0
+last_updated: '2025-01-15'
+rules:
+- id: RULE_FACULTY_STUDENT_RATIO
+  clause_id: APH-2025-Cl-4.1.1
+  clause_title: Faculty to Student Ratio (FSR) in Technical Programs
+  category: Faculty & Cadre
+  severity: CRITICAL
+  description: 'Undergraduate Engineering & Technology programs require a minimum
+    Faculty-Student Ratio  of 1:20 based on sanctioned student intake. Deficiencies
+    exceeding 10% warrant regulatory review.
+
+    '
+  parameters:
+    target_fsr: 20
+    tolerance_pct: 5
+  condition: facts['calculated_fsr'] <= (params['target_fsr'] * (1 + params['tolerance_pct']/100))
+  failure_message: 'Calculated Faculty-to-Student Ratio is 1:{calculated_fsr:.1f},
+    exceeding the statutory 1:{target_fsr} limit  prescribed under Clause 4.1.1. Deficiency:
+    {deficiency_faculty} faculty members.
+
+    '
+- id: RULE_CADRE_RATIO
+  clause_id: APH-2025-Cl-4.1.3
+  clause_title: 'Faculty Cadre Proportion (Professor : Associate : Assistant)'
+  category: Faculty & Cadre
+  severity: WARNING
+  description: 'Institutions must maintain a cadre proportion of 1 Professor : 2 Associate
+    Professors : 6 Assistant Professors  per department to ensure academic leadership
+    and research supervision.
+
+    '
+  parameters:
+    min_professors_pct: 11.0
+  condition: facts['professor_percentage'] >= params['min_professors_pct']
+  failure_message: 'Professor cadre is at {professor_percentage:.1f}%, below the required
+    11.1% threshold (1:2:6 cadre ratio).  Academic leadership depth indicator flagged.
+
+    '
+- id: RULE_FIRE_NOC_VALIDITY
+  clause_id: APH-2025-Cl-6.3.2
+  clause_title: Statutory Fire Safety Certificate Validity
+  category: Safety & Compliance
+  severity: CRITICAL
+  description: 'A valid Fire Safety NOC issued by the State Fire & Emergency Services
+    Authority must be in force  covering the entire duration of the forthcoming academic
+    session (at least through June 2026).
+
+    '
+  parameters:
+    cutoff_date: '2026-06-30'
+  condition: facts['fire_noc_expiry_date'] >= params['cutoff_date']
+  failure_message: 'Fire Safety NOC expires on {fire_noc_expiry_date}, prior to the
+    academic session threshold ({cutoff_date}).  Institutional safety compliance requires
+    current, active certification.
+
+    '
+- id: RULE_BUILT_UP_AREA_CAPACITY
+  clause_id: APH-2025-Cl-5.2.4
+  clause_title: Minimum Instructional & Administrative Built-Up Carpet Area
+  category: Infrastructure
+  severity: CRITICAL
+  description: 'The total instructional, administrative, and amenities carpet area
+    must meet or exceed  the AICTE area norm of 10.5 sq. meters per sanctioned student
+    intake.
+
+    '
+  parameters:
+    min_sqm_per_student: 10.5
+  condition: facts['built_up_area_sqm'] >= (facts['sanctioned_intake'] * params['min_sqm_per_student'])
+  failure_message: 'Existing built-up carpet area ({built_up_area_sqm:.1f} sq.m) is
+    insufficient for the sanctioned student intake  ({sanctioned_intake}). Required:
+    {required_area:.1f} sq.m ({min_sqm_per_student} sq.m/student). Physical density
+    violation.
+
+    '
+- id: RULE_LAND_TITLE_CONTINUITY
+  clause_id: APH-2025-Cl-7.1.5
+  clause_title: Clear Land Title & Unbroken Leasehold Possession
+  category: Land & Title
+  severity: CRITICAL
+  description: 'Land must be freehold or contiguous registered lease for a minimum
+    of 30 years without conflicting claims,  with exact matching revenue survey/khasra
+    numbers.
+
+    '
+  parameters:
+    min_lease_years: 300
+  condition: facts['land_ownership_type'] in ['FREEHOLD', 'LEASEHOLD_PERMANENT'] or
+    facts['lease_duration_years'] >= params['min_lease_years']
+  failure_message: 'Land lease duration ({lease_duration_years} years) does not satisfy
+    the 30-year unbroken possession norm  stipulated in Clause 7.1.5.
+
+    '
+- id: RULE_UNIVERSITY_AFFILIATION_STATUS
+  clause_id: APH-2025-Cl-8.4.1
+  clause_title: Valid State/Central University Affiliation Order
+  category: Affiliation
+  severity: CRITICAL
+  description: 'Institution must furnish an unrevoked Affiliation Order from the designated
+    Examining State/Central University  for all currently approved and proposed courses.
+
+    '
+  parameters: {}
+  condition: facts['affiliation_status'] == 'ACTIVE'
+  failure_message: 'University affiliation status is reported as ''{affiliation_status}''.
+    Extension of approval cannot proceed  without active university affiliation.
+
+    '
