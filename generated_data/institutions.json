@@ -1,0 +1,59 @@
+[
+  {
+    "id": "INST_001",
+    "aicte_id": "1-109283711",
+    "name": "College of Engineering Pune (COEP Technological University)",
+    "state": "Maharashtra",
+    "district": "Pune",
+    "latitude": 18.5293,
+    "longitude": 73.8565,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 300,
+    "built_up_area_sqm": 6042.4,
+    "land_area_acres": 10.8,
+    "trust_name": "Shri Ben Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 88/1, Village Amritapura",
+    "establishment_year": 1987
+  },
+  {
+    "id": "INST_002",
+    "aicte_id": "1-209384722",
+    "name": "Veermata Jijabai Technological Institute (VJTI)",
+    "state": "Maharashtra",
+    "district": "Mumbai City",
+    "latitude": 19.0222,
+    "longitude": 72.8561,
+    "programmes": [
+      "Engineering & Technology",
+      "Computer Applications"
+    ],
+    "approved_intake": 480,
+    "built_up_area_sqm": 10699.0,
+    "land_area_acres": 7.5,
+    "trust_name": "Shri Chahal Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 33/2, Village Nikitapura",
+    "establishment_year": 1993
+  },
+  {
+    "id": "INST_003",
+    "aicte_id": "1-309485733",
+    "name": "BMS College of Engineering",
+    "state": "Karnataka",
+    "district": "Bengaluru Urban",
+    "latitude": 12.9416,
+    "longitude": 77.5655,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 420,
+    "built_up_area_sqm": 9444.8,
+    "land_area_acres": 10.3,
+    "trust_name": "Shri Lata Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 61/1, Village Hritikpura",
+    "establishment_year": 2012
+  }
+]
