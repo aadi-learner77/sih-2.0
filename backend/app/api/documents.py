@@ -11,8 +11,22 @@ from backend.app.schemas.schemas import DocumentOut
 from backend.app.services.ocr_engine import ocr_intelligence
 from backend.app.services.forensics_engine import forensics_engine
 from backend.app.services.audit_chain import AuditChainService
+from backend.app.services.ingestion_pipeline import ingestion_pipeline
 
 router = APIRouter(prefix="/documents", tags=["Documents & OCR Intelligence"])
+
+@router.post("/ingest")
+async def ingest_document_api(file: UploadFile = File(...)):
+    """
+    Ingestion Pipeline Endpoint (Prompt 5.1):
+    Accepts PDF/Image -> converts pages -> PaddleOCR / Tesseract / Vector blocks
+    -> returns doc_type, per-page OCR (lines with bounding boxes & confidence), and processing time.
+    """
+    file_bytes = await file.read()
+    if not file_bytes:
+        raise HTTPException(status_code=400, detail="Empty file uploaded.")
+    result = ingestion_pipeline.ingest_document(file_bytes, file.filename or "uploaded_document.pdf")
+    return result
 
 @router.post("/upload", response_model=DocumentOut)
 async def upload_document(

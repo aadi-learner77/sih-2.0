@@ -6,6 +6,7 @@ from backend.app.models.models import Application, Institution, Document, Verifi
 from backend.app.schemas.schemas import ApplicationOut, ApplicationDetailOut
 from backend.app.services.checklist_engine import generate_checklist_status
 from backend.app.services.audit_chain import AuditChainService
+from backend.app.services.validation_orchestrator import validation_orchestrator
 
 router = APIRouter(prefix="/applications", tags=["Applications & Scrutiny"])
 
@@ -64,7 +65,7 @@ def get_evidence_lens(app_id: int, db: Session = Depends(get_db)) -> Dict[str, A
     # 1. Fire Safety NOC Evidence Item
     fire_doc = next((d for d in app.documents if "fire" in d.document_type.lower()), None)
     fire_verif = next((v for v in app.verifications if v.issuer_type == "fire_department"), None)
-    fire_rule = next((r for r in app.rule_evaluations if "fire" in r.rule_id.lower()), None)
+    fire_rule = next((r for r in app.rule_evaluations if "fire" in (r.rule_code_ref or r.clause_id or str(r.rule_id or "")).lower()), None)
 
     lens_items.append({
         "id": "LENS_FIRE_SAFETY",
@@ -118,7 +119,7 @@ def get_evidence_lens(app_id: int, db: Session = Depends(get_db)) -> Dict[str, A
     # 2. Faculty Dual Employment & Cadre Evidence Item
     fac_doc = next((d for d in app.documents if "faculty" in d.document_type.lower()), None)
     tax_verif = next((v for v in app.verifications if v.issuer_type == "cbdt_income_tax"), None)
-    fsr_rule = next((r for r in app.rule_evaluations if "ratio" in r.rule_id.lower()), None)
+    fsr_rule = next((r for r in app.rule_evaluations if "ratio" in (r.rule_code_ref or r.clause_id or str(r.rule_id or "")).lower()), None)
 
     lens_items.append({
         "id": "LENS_FACULTY_DUAL_APPOINTMENT",
@@ -232,3 +233,25 @@ def get_evidence_lens(app_id: int, db: Session = Depends(get_db)) -> Dict[str, A
         "overall_advisory": app.ai_advisory_summary,
         "evidence_lens_items": lens_items
     }
+
+@router.post("/{app_id}/validate")
+@router.get("/{app_id}/validate")
+def validate_application_endpoint(app_id: int, db: Session = Depends(get_db)) -> Dict[str, Any]:
+    """
+    Application Validation Orchestrator Endpoint (Prompt 5.3):
+    Given an application_id:
+    1. Identifies category & loads statutory checklist
+    2. Retrieves institution DB records (previous EoA, approved intake, faculty, TER payment status)
+    3. Runs extracted facts through AICTE Regulation-as-Code rule engine
+    4. Produces structured validation report JSON with sections:
+       missing_documents, expired_documents, incomplete_fields, inconsistencies, readiness_score (0-100),
+       and rectification_allowed flag per finding.
+    """
+    try:
+        report = validation_orchestrator.validate_application(db, app_id)
+        return report
+    except ValueError as ve:
+        raise HTTPException(status_code=404, detail=str(ve))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Validation orchestration failed: {str(e)}")
+

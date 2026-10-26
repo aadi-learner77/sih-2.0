@@ -49,6 +49,7 @@ if os.path.exists(settings.UPLOAD_DIR):
 app.include_router(auth_router, prefix=settings.API_V1_STR)
 app.include_router(applications_router, prefix=settings.API_V1_STR)
 app.include_router(documents_router, prefix=settings.API_V1_STR)
+app.include_router(documents_router)  # Also expose /documents/ingest at root as requested by Prompt 5.1
 app.include_router(rules_router, prefix=settings.API_V1_STR)
 app.include_router(graph_router, prefix=settings.API_V1_STR)
 app.include_router(forensics_router, prefix=settings.API_V1_STR)

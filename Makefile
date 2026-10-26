@@ -39,12 +39,16 @@ logs:
 
 # --- Testing & Quality Assurance ---
 test:
-	@echo "Running PRAMAAN-X comprehensive automated test suite..."
-	python -m pytest backend/tests/test_rules_engine.py backend/test_api.py -v
+	@echo "Running PRAMAAN-X comprehensive automated test suite (Phase 1-5)..."
+	python -m pytest backend/tests/test_phase5.py backend/tests/test_rules_engine.py backend/test_api.py -v
 
 test-mock-issuer:
 	@echo "Running Mock Issuer statutory gateway test suite..."
 	python -m pytest mock_issuer/test_mock_issuer.py -v
+
+benchmark-extraction:
+	@echo "Running Field-Level Extraction Benchmark against Synthetic Ground Truth (Prompt 5.2)..."
+	python -m backend.app.services.evaluate_field_extraction
 
 test-all: test test-mock-issuer
 

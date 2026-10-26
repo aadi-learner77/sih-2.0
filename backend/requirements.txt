@@ -17,3 +17,6 @@ psycopg2-binary>=2.9.9
 pytest>=8.0.0
 curl_cffi>=0.6.0
 jsonschema>=4.20.0
+scikit-learn>=1.4.0
+pdf2image>=1.17.0
+pytesseract>=0.3.13
