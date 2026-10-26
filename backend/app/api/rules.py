@@ -1,4 +1,5 @@
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
+from pydantic import BaseModel
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from backend.app.core.database import get_db
@@ -133,3 +134,38 @@ def record_officer_decision(
     )
 
     return evaluation
+
+class DryRunRequest(BaseModel):
+    rules: Optional[List[Dict[str, Any]]] = None
+    applications: Optional[List[Dict[str, Any]]] = None
+
+@router.post("/reload")
+def reload_rules_endpoint():
+    """Hot-reloads all YAML rules from disk into runtime engine."""
+    return rules_engine.hot_reload()
+
+@router.post("/dry-run")
+def execute_dry_run(req: Optional[DryRunRequest] = None, db: Session = Depends(get_db)):
+    """Executes What-If dry run impact simulation."""
+    apps_facts = []
+    if req and req.applications:
+        apps_facts = req.applications
+    else:
+        # Load active applications from DB
+        db_apps = db.query(Application).limit(50).all()
+        for a in db_apps:
+            apps_facts.append({
+                "id": a.id,
+                "application_id": f"APP_{a.id}",
+                "institution_name": a.institution.name if a.institution else "College",
+                "sanctioned_intake": a.institution.approved_intake if a.institution else 300,
+                "built_up_area_sqm": a.institution.total_built_up_area_sqm if a.institution else 12000.0,
+                "total_faculty": 15,
+                "professors_count": 1,
+                "fire_noc_expiry_date": "2026-03-31",
+                "land_area_acres": a.institution.land_area_acres if a.institution else 7.5,
+                "location_category": "URBAN",
+                "documents": [{"document_type": d.document_type, "status": "ACTIVE"} for d in a.documents]
+            })
+    rules_list = req.rules if req else None
+    return rules_engine.dry_run(rules=rules_list, applications=apps_facts)

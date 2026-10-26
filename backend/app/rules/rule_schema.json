@@ -1,0 +1,101 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AICTE Regulation-as-Code Rule Schema",
+  "description": "Validation schema for declarative AICTE Approval Process Handbook regulatory rules",
+  "type": "object",
+  "required": [
+    "id",
+    "version",
+    "clause_ref",
+    "title",
+    "applies_to",
+    "type",
+    "parameters",
+    "severity",
+    "message_template",
+    "remediation_hint",
+    "effective_from"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_\\-]+$",
+      "description": "Unique identifier for the regulatory rule (e.g. RULE_FIRE_NOC_VALIDITY)"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+(\\.\\d+)?$",
+      "description": "Semantic version of the rule specification (e.g. 1.0.0)"
+    },
+    "clause_ref": {
+      "type": "string",
+      "minLength": 2,
+      "description": "Official Approval Process Handbook clause citation (e.g. APH-2025-Cl-4.1.1)"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 3,
+      "description": "Human-readable concise title of the regulatory rule"
+    },
+    "applies_to": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "description": "List of application categories to which this rule applies (e.g. Extension of Approval (EoA), Increase in Intake)"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "required_document",
+        "validity_check",
+        "numeric_threshold",
+        "cross_field_consistency",
+        "ratio_check",
+        "custom"
+      ],
+      "description": "Classification category governing the rule evaluation algorithm"
+    },
+    "parameters": {
+      "type": "object",
+      "description": "Key-value dictionary containing rule-specific regulatory threshold values and field bindings"
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "info",
+        "warning",
+        "critical",
+        "INFO",
+        "WARNING",
+        "CRITICAL"
+      ],
+      "description": "Regulatory severity level when a non-compliance condition is detected"
+    },
+    "message_template": {
+      "type": "string",
+      "minLength": 5,
+      "description": "Python string template for rendering the explainable finding explanation"
+    },
+    "remediation_hint": {
+      "type": "string",
+      "minLength": 5,
+      "description": "Actionable instructions provided to the institution/scrutiny officer for resolving the shortfall"
+    },
+    "effective_from": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "Statutory effective commencement date in YYYY-MM-DD format"
+    },
+    "category": {
+      "type": "string",
+      "description": "Optional governance classification (e.g. Faculty, Safety, Infrastructure, Land)"
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed statutory background and legal basis from the handbook"
+    }
+  },
+  "additionalProperties": true
+}

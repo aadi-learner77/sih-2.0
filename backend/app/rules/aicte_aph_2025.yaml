@@ -1,110 +1,293 @@
-handbook_edition: AICTE Approval Process Handbook (APH) 2025-26
-version: 1.2.0
-last_updated: '2025-01-15'
+# ==============================================================================
+# AICTE APPROVAL PROCESS HANDBOOK (APH) 2025-26 - REGULATION-AS-CODE RULE PACK
+# Edition: AICTE APH 2025-26 | Version: 2.0.0 | Effective: 2025-01-01
+# Note: All numeric threshold parameters below are annotated with:
+#       # PLACEHOLDER: Confirm with current Approval Process Handbook edition
+# ==============================================================================
+handbook_edition: "AICTE Approval Process Handbook (APH) 2025-26"
+version: "2.0.0"
+last_updated: "2025-01-15"
+
 rules:
-- id: RULE_FACULTY_STUDENT_RATIO
-  clause_id: APH-2025-Cl-4.1.1
-  clause_title: Faculty to Student Ratio (FSR) in Technical Programs
-  category: Faculty & Cadre
-  severity: CRITICAL
-  description: 'Undergraduate Engineering & Technology programs require a minimum
-    Faculty-Student Ratio  of 1:20 based on sanctioned student intake. Deficiencies
-    exceeding 10% warrant regulatory review.
+  # --------------------------------------------------------------------------
+  # 1. Statutory Fire Safety Certificate Validity (validity_check)
+  # --------------------------------------------------------------------------
+  - id: "RULE_FIRE_NOC_VALIDITY"
+    version: "1.0.0"
+    clause_ref: "APH-2025-Cl-6.3.2"
+    title: "Statutory Fire Safety Certificate Validity at Submission"
+    category: "Safety & Compliance"
+    applies_to:
+      - "Extension of Approval (EoA)"
+      - "Increase in Intake"
+      - "New Courses"
+    type: "validity_check"
+    parameters:
+      field: "fire_noc_expiry_date"
+      min_valid_date: "2026-06-30" # PLACEHOLDER: Confirm cutoff date with current APH 2025-26
+      allow_grace_period_days: 0     # PLACEHOLDER: Confirm grace period with current APH 2025-26
+    severity: "critical"
+    message_template: "Fire Safety NOC expired on {found_value}, prior to mandatory academic session threshold ({expected_value})."
+    remediation_hint: "Submit a valid Fire Safety NOC renewal certificate issued by the competent State Fire & Emergency Services Command."
+    effective_from: "2025-01-01"
+    description: "Mandatory statutory fire clearance certificate must remain valid across the forthcoming academic year."
 
-    '
-  parameters:
-    target_fsr: 20
-    tolerance_pct: 5
-  condition: facts['calculated_fsr'] <= (params['target_fsr'] * (1 + params['tolerance_pct']/100))
-  failure_message: 'Calculated Faculty-to-Student Ratio is 1:{calculated_fsr:.1f},
-    exceeding the statutory 1:{target_fsr} limit  prescribed under Clause 4.1.1. Deficiency:
-    {deficiency_faculty} faculty members.
+  # --------------------------------------------------------------------------
+  # 2. Faculty to Student Ratio (ratio_check)
+  # --------------------------------------------------------------------------
+  - id: "RULE_FACULTY_STUDENT_RATIO"
+    version: "1.0.0"
+    clause_ref: "APH-2025-Cl-4.1.1"
+    title: "Faculty to Student Ratio (FSR) in Technical Programs"
+    category: "Faculty & Cadre"
+    applies_to:
+      - "Extension of Approval (EoA)"
+      - "Increase in Intake"
+    type: "ratio_check"
+    parameters:
+      numerator_field: "sanctioned_intake"
+      denominator_field: "total_faculty"
+      max_ratio: 20.0       # PLACEHOLDER: 1:20 norm for Engineering - Confirm with current APH 2025-26
+      tolerance_pct: 5.0    # PLACEHOLDER: Allowable tolerance percentage - Confirm with current APH 2025-26
+    severity: "critical"
+    message_template: "Faculty-to-student ratio is 1:{found_value:.1f}, exceeding statutory limit of 1:{expected_value} (tolerance {tolerance_pct}%). Shortfall: {shortfall} faculty."
+    remediation_hint: "Appoint additional qualified regular full-time faculty to restore FSR to 1:20 or curtail sanctioned intake."
+    effective_from: "2025-01-01"
+    description: "Undergraduate Engineering & Technology programs require a minimum Faculty-Student Ratio of 1:20 based on approved student intake."
 
-    '
-- id: RULE_CADRE_RATIO
-  clause_id: APH-2025-Cl-4.1.3
-  clause_title: 'Faculty Cadre Proportion (Professor : Associate : Assistant)'
-  category: Faculty & Cadre
-  severity: WARNING
-  description: 'Institutions must maintain a cadre proportion of 1 Professor : 2 Associate
-    Professors : 6 Assistant Professors  per department to ensure academic leadership
-    and research supervision.
+  # --------------------------------------------------------------------------
+  # 3. Minimum Built-Up Carpet Area per Student (numeric_threshold)
+  # --------------------------------------------------------------------------
+  - id: "RULE_BUILT_UP_AREA_PER_STUDENT"
+    version: "1.0.0"
+    clause_ref: "APH-2025-Cl-5.2.4"
+    title: "Minimum Instructional & Administrative Built-Up Area per Student"
+    category: "Infrastructure"
+    applies_to:
+      - "Extension of Approval (EoA)"
+      - "Increase in Intake"
+      - "New Courses"
+    type: "numeric_threshold"
+    parameters:
+      field: "built_up_area_sqm"
+      threshold_multiplier_field: "sanctioned_intake"
+      min_per_unit: 10.5    # PLACEHOLDER: 10.5 sq.m per student - Confirm with current APH 2025-26
+      operator: ">="
+    severity: "critical"
+    message_template: "Built-up carpet area is {found_value:.1f} sq.m ({sqm_per_student:.1f} sq.m/student), below the statutory norm of {expected_value:.1f} sq.m ({min_per_unit} sq.m/student)."
+    remediation_hint: "Furnish approved building plan demonstrating compliance with minimum instructional and administrative carpet area requirements."
+    effective_from: "2025-01-01"
+    description: "The total instructional, administrative, and amenities carpet area must satisfy minimum square meters per sanctioned student."
 
-    '
-  parameters:
-    min_professors_pct: 11.0
-  condition: facts['professor_percentage'] >= params['min_professors_pct']
-  failure_message: 'Professor cadre is at {professor_percentage:.1f}%, below the required
-    11.1% threshold (1:2:6 cadre ratio).  Academic leadership depth indicator flagged.
+  # --------------------------------------------------------------------------
+  # 4. Legal Entity Name Match across Affidavit and NOC (cross_field_consistency)
+  # --------------------------------------------------------------------------
+  - id: "RULE_NAME_MATCH_AFFIDAVIT_NOC"
+    version: "1.0.0"
+    clause_ref: "APH-2025-Cl-2.1.3"
+    title: "Legal Entity Name Consistency across Affidavit and NOC"
+    category: "Legal & Entity"
+    applies_to:
+      - "Extension of Approval (EoA)"
+      - "Increase in Intake"
+      - "New Courses"
+    type: "cross_field_consistency"
+    parameters:
+      field_a: "affidavit_entity_name"
+      field_b: "noc_entity_name"
+      match_mode: "fuzzy_token"
+      similarity_threshold: 0.85 # PLACEHOLDER: Fuzzy matching threshold - Confirm with current APH 2025-26
+    severity: "critical"
+    message_template: "Institution name on Affidavit ('{field_a_value}') does not match State NOC ('{field_b_value}')."
+    remediation_hint: "Ensure exact institutional legal title continuity across all statutory registrations or provide gazette notification of name change."
+    effective_from: "2025-01-01"
+    description: "The registered trust/society/institution name must be identical across all legal submissions without discrepancy."
 
-    '
-- id: RULE_FIRE_NOC_VALIDITY
-  clause_id: APH-2025-Cl-6.3.2
-  clause_title: Statutory Fire Safety Certificate Validity
-  category: Safety & Compliance
-  severity: CRITICAL
-  description: 'A valid Fire Safety NOC issued by the State Fire & Emergency Services
-    Authority must be in force  covering the entire duration of the forthcoming academic
-    session (at least through June 2026).
+  # --------------------------------------------------------------------------
+  # 5. State Government NOC Issuance Recency Limit (validity_check)
+  # --------------------------------------------------------------------------
+  - id: "RULE_NOC_RECENCY_AGE"
+    version: "1.0.0"
+    clause_ref: "APH-2025-Cl-2.4.1"
+    title: "State Government NOC Issuance Recency Limit"
+    category: "State Approvals"
+    applies_to:
+      - "New Courses"
+      - "Increase in Intake"
+    type: "validity_check"
+    parameters:
+      field: "state_noc_issue_date"
+      max_age_months: 24   # PLACEHOLDER: 24 months maximum age - Confirm with current APH 2025-26
+    severity: "warning"
+    message_template: "State Government NOC was issued on {found_value} ({age_months} months ago), exceeding the allowable recency window of {expected_value} months."
+    remediation_hint: "Obtain a fresh revalidated No Objection Certificate (NOC) from the State Department of Higher & Technical Education."
+    effective_from: "2025-01-01"
+    description: "State government clearance for expansion or new programs must not be dated older than the prescribed window."
 
-    '
-  parameters:
-    cutoff_date: '2026-06-30'
-  condition: facts['fire_noc_expiry_date'] >= params['cutoff_date']
-  failure_message: 'Fire Safety NOC expires on {fire_noc_expiry_date}, prior to the
-    academic session threshold ({cutoff_date}).  Institutional safety compliance requires
-    current, active certification.
+  # --------------------------------------------------------------------------
+  # 6. Mandatory Land Title Deed Document (required_document)
+  # --------------------------------------------------------------------------
+  - id: "RULE_REQUIRED_LAND_DOCUMENT"
+    version: "1.0.0"
+    clause_ref: "APH-2025-Cl-7.1.1"
+    title: "Mandatory Submission of Registered Land Title Deed"
+    category: "Land & Title"
+    applies_to:
+      - "Extension of Approval (EoA)"
+      - "Increase in Intake"
+      - "New Courses"
+    type: "required_document"
+    parameters:
+      document_type: "Land Title Deed"
+      required_encumbrance_status: "CLEAR_TITLE" # PLACEHOLDER: Encumbrance requirement - Confirm with current APH 2025-26
+    severity: "critical"
+    message_template: "Mandatory Land Title Deed document is missing or lacks clear title verification on statutory register."
+    remediation_hint: "Upload registered conveyance deed or continuous registered 30-year lease with latest non-encumbrance certificate."
+    effective_from: "2025-01-01"
+    description: "Colleges must produce clear freehold ownership or unencumbered 30-year government/registered lease."
 
-    '
-- id: RULE_BUILT_UP_AREA_CAPACITY
-  clause_id: APH-2025-Cl-5.2.4
-  clause_title: Minimum Instructional & Administrative Built-Up Carpet Area
-  category: Infrastructure
-  severity: CRITICAL
-  description: 'The total instructional, administrative, and amenities carpet area
-    must meet or exceed  the AICTE area norm of 10.5 sq. meters per sanctioned student
-    intake.
+  # --------------------------------------------------------------------------
+  # 7. Mandatory University Affiliation Order (required_document)
+  # --------------------------------------------------------------------------
+  - id: "RULE_REQUIRED_AFFILIATION_ORDER"
+    version: "1.0.0"
+    clause_ref: "APH-2025-Cl-8.4.1"
+    title: "Mandatory University Affiliation Order for Current Session"
+    category: "Affiliation"
+    applies_to:
+      - "Extension of Approval (EoA)"
+      - "Increase in Intake"
+      - "New Courses"
+    type: "required_document"
+    parameters:
+      document_type: "University Affiliation Order"
+      required_status: "ACTIVE" # PLACEHOLDER: Active status requirement - Confirm with current APH 2025-26
+    severity: "critical"
+    message_template: "Mandatory University Affiliation Order is not submitted or is currently inactive for the academic session."
+    remediation_hint: "Obtain and submit the annual affiliation continuation notification from the affiliating university."
+    effective_from: "2025-01-01"
+    description: "All existing and proposed courses must possess valid affiliation orders from the affiliating university."
 
-    '
-  parameters:
-    min_sqm_per_student: 10.5
-  condition: facts['built_up_area_sqm'] >= (facts['sanctioned_intake'] * params['min_sqm_per_student'])
-  failure_message: 'Existing built-up carpet area ({built_up_area_sqm:.1f} sq.m) is
-    insufficient for the sanctioned student intake  ({sanctioned_intake}). Required:
-    {required_area:.1f} sq.m ({min_sqm_per_student} sq.m/student). Physical density
-    violation.
+  # --------------------------------------------------------------------------
+  # 8. Faculty Cadre Proportion (ratio_check)
+  # --------------------------------------------------------------------------
+  - id: "RULE_CADRE_RATIO_PROFESSORS"
+    version: "1.0.0"
+    clause_ref: "APH-2025-Cl-4.1.3"
+    title: "Faculty Cadre Proportion (Professor : Associate : Assistant)"
+    category: "Faculty & Cadre"
+    applies_to:
+      - "Extension of Approval (EoA)"
+      - "Increase in Intake"
+    type: "ratio_check"
+    parameters:
+      numerator_field: "professors_count"
+      denominator_field: "total_faculty"
+      min_ratio_pct: 11.1 # PLACEHOLDER: 1:2:6 ratio requires 11.1% professors - Confirm with current APH 2025-26
+    severity: "warning"
+    message_template: "Professor cadre proportion is {found_value:.1f}%, below the required statutory threshold of {expected_value:.1f}% (1:2:6 cadre ratio)."
+    remediation_hint: "Recruit regular Professors with Ph.D. qualifications to fulfill senior academic leadership norms."
+    effective_from: "2025-01-01"
+    description: "Institutions must maintain a cadre proportion of 1 Professor : 2 Associate Professors : 6 Assistant Professors."
 
-    '
-- id: RULE_LAND_TITLE_CONTINUITY
-  clause_id: APH-2025-Cl-7.1.5
-  clause_title: Clear Land Title & Unbroken Leasehold Possession
-  category: Land & Title
-  severity: CRITICAL
-  description: 'Land must be freehold or contiguous registered lease for a minimum
-    of 30 years without conflicting claims,  with exact matching revenue survey/khasra
-    numbers.
+  # --------------------------------------------------------------------------
+  # 9. Minimum Contiguous Campus Land Area (numeric_threshold)
+  # --------------------------------------------------------------------------
+  - id: "RULE_MINIMUM_LAND_AREA"
+    version: "1.0.0"
+    clause_ref: "APH-2025-Cl-7.1.3"
+    title: "Minimum Contiguous Campus Land Area Norm"
+    category: "Land & Title"
+    applies_to:
+      - "Extension of Approval (EoA)"
+      - "Increase in Intake"
+      - "New Courses"
+    type: "numeric_threshold"
+    parameters:
+      field: "land_area_acres"
+      min_value_urban: 2.5 # PLACEHOLDER: 2.5 Acres for Urban - Confirm with current APH 2025-26
+      min_value_rural: 7.5 # PLACEHOLDER: 7.5 Acres for Rural - Confirm with current APH 2025-26
+      category_field: "location_category"
+      operator: ">="
+    severity: "critical"
+    message_template: "Total contiguous campus land area ({found_value:.2f} Acres) is less than the prescribed norm of {expected_value:.2f} Acres for {location_category} category."
+    remediation_hint: "Ensure contiguous land holding complies with Table 7.1 land norms or apply for relaxation under Mega City provisions."
+    effective_from: "2025-01-01"
+    description: "Technical institutions must maintain contiguous single-plot campus land meeting regional acreage thresholds."
 
-    '
-  parameters:
-    min_lease_years: 300
-  condition: facts['land_ownership_type'] in ['FREEHOLD', 'LEASEHOLD_PERMANENT'] or
-    facts['lease_duration_years'] >= params['min_lease_years']
-  failure_message: 'Land lease duration ({lease_duration_years} years) does not satisfy
-    the 30-year unbroken possession norm  stipulated in Clause 7.1.5.
+  # --------------------------------------------------------------------------
+  # 10. Competent Authority Approved Building Plan (required_document)
+  # --------------------------------------------------------------------------
+  - id: "RULE_BUILDING_PLAN_APPROVAL"
+    version: "1.0.0"
+    clause_ref: "APH-2025-Cl-5.1.2"
+    title: "Competent Authority Approved Building Plan"
+    category: "Infrastructure"
+    applies_to:
+      - "Extension of Approval (EoA)"
+      - "Increase in Intake"
+      - "New Courses"
+    type: "required_document"
+    parameters:
+      document_type: "Building Plan Approval"
+      approving_authority_types: # PLACEHOLDER: Statutory list - Confirm with current APH 2025-26
+        - "MUNICIPAL_CORPORATION"
+        - "TOWN_PLANNING"
+        - "GRAM_PANCHAYAT_DTCP"
+        - "BMRDA"
+        - "CIDCO"
+        - "DEVELOPMENT_AUTHORITY"
+    severity: "critical"
+    message_template: "Approved building plan issued by a recognized local town planning / municipal authority is missing."
+    remediation_hint: "Upload architectural drawings stamped and sanctioned by the competent municipal or town planning authority."
+    effective_from: "2025-01-01"
+    description: "Sanctioned master building plan and floor drawings approved by the competent local authority must be submitted."
 
-    '
-- id: RULE_UNIVERSITY_AFFILIATION_STATUS
-  clause_id: APH-2025-Cl-8.4.1
-  clause_title: Valid State/Central University Affiliation Order
-  category: Affiliation
-  severity: CRITICAL
-  description: 'Institution must furnish an unrevoked Affiliation Order from the designated
-    Examining State/Central University  for all currently approved and proposed courses.
+  # --------------------------------------------------------------------------
+  # 11. Survey / Khasra Number Consistency (cross_field_consistency)
+  # --------------------------------------------------------------------------
+  - id: "RULE_SURVEY_NUMBER_CONSISTENCY"
+    version: "1.0.0"
+    clause_ref: "APH-2025-Cl-7.2.1"
+    title: "Revenue Survey / Khasra Number Consistency across Deed and Plan"
+    category: "Land & Title"
+    applies_to:
+      - "Extension of Approval (EoA)"
+      - "Increase in Intake"
+      - "New Courses"
+    type: "cross_field_consistency"
+    parameters:
+      field_a: "land_survey_numbers"
+      field_b: "building_plan_survey_numbers"
+      match_mode: "exact_or_subset"
+    severity: "critical"
+    message_template: "Survey/Khasra numbers on Title Deed ('{field_a_value}') do not match those on the Approved Building Plan ('{field_b_value}')."
+    remediation_hint: "Rectify survey discrepancy with town planning authority or submit revenue demarcation certificate."
+    effective_from: "2025-01-01"
+    description: "Survey numbers on the revenue title deed must correlate precisely with the municipal building sanction."
 
-    '
-  parameters: {}
-  condition: facts['affiliation_status'] == 'ACTIVE'
-  failure_message: 'University affiliation status is reported as ''{affiliation_status}''.
-    Extension of approval cannot proceed  without active university affiliation.
-
-    '
+  # --------------------------------------------------------------------------
+  # 12. Mandatory Statutory Committees Establishment (custom)
+  # --------------------------------------------------------------------------
+  - id: "RULE_STATUTORY_COMMITTEES_MANDATE"
+    version: "1.0.0"
+    clause_ref: "APH-2025-Cl-6.1.1"
+    title: "Establishment of Mandatory Statutory Grievance & Anti-Ragging Committees"
+    category: "Governance & Student Welfare"
+    applies_to:
+      - "Extension of Approval (EoA)"
+      - "Increase in Intake"
+      - "New Courses"
+    type: "custom"
+    parameters:
+      required_committees: # PLACEHOLDER: Mandatory committees - Confirm with current APH 2025-26
+        - "GRIEVANCE_REDRESSAL"
+        - "ANTI_RAGGING"
+        - "INTERNAL_COMPLAINTS"
+        - "SC_ST_COMMITTEE"
+      condition: "all(c in facts.get('established_committees', []) for c in params['required_committees'])"
+    severity: "warning"
+    message_template: "Mandatory statutory committees missing from institutional portal: {missing_committees}."
+    remediation_hint: "Constitute and notify the mandatory committees as mandated under Clause 6.1.1 and upload notification order."
+    effective_from: "2025-01-01"
+    description: "Every institution must formally constitute Anti-Ragging, Grievance Redressal, ICC, and SC/ST committees."

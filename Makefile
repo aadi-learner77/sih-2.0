@@ -40,7 +40,7 @@ logs:
 # --- Testing & Quality Assurance ---
 test:
 	@echo "Running PRAMAAN-X comprehensive automated test suite..."
-	python -m pytest backend/test_api.py -v
+	python -m pytest backend/tests/test_rules_engine.py backend/test_api.py -v
 
 test-mock-issuer:
 	@echo "Running Mock Issuer statutory gateway test suite..."

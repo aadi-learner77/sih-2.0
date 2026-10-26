@@ -184,12 +184,46 @@ pytest mock_issuer/test_mock_issuer.py -v
 
 ---
 
+## 📜 Phase 4: Regulation-as-Code Engine & Rule Schema
+
+The Regulation-as-Code engine enforces AICTE Approval Process Handbook (APH 2025-26) clauses as declarative, hot-reloadable rules with formal JSON Schema validation:
+
+### Rule Schema Specification:
+- **`id`**: Unique rule identifier (e.g. `RULE_FIRE_NOC_VALIDITY`, `RULE_FACULTY_STUDENT_RATIO`)
+- **`version`**: Semantic versioning (e.g. `1.0.0`)
+- **`clause_ref`**: Official handbook citation (e.g. `APH-2025-Cl-4.1.1`)
+- **`title`**: Concise human-readable title
+- **`applies_to`**: Target application categories (`Extension of Approval (EoA)`, `Increase in Intake`, `New Courses`)
+- **`type`**: Evaluation classification:
+  1. `required_document`: Mandatory certificate presence & encumbrance check
+  2. `validity_check`: Date thresholds & recency window evaluation
+  3. `numeric_threshold`: Area norms, student multipliers & regional categories
+  4. `cross_field_consistency`: Entity name & survey number corroboration
+  5. `ratio_check`: Faculty-to-Student Ratio (FSR) & Cadre proportions
+  6. `custom`: Bounded condition expressions for statutory committee mandates
+- **`parameters`**: Rule thresholds with explicit `# PLACEHOLDER: Confirm with current APH 2025-26` annotations
+- **`severity`**: `info`, `warning`, `critical`
+- **`message_template`**: Explainable string template for finding narratives
+- **`remediation_hint`**: Statutory prescriptive action for non-compliance remediation
+- **`effective_from`**: Statutory commencement date (`YYYY-MM-DD`)
+
+### Engine Capabilities:
+- **Formal JSON Schema Validation**: [`backend/app/rules/rule_schema.json`](file:///d:/sih%202.0/backend/app/rules/rule_schema.json) validates rule packs before loading.
+- **Finding Model**: Produces structured outcomes with `status: pass | fail | not_evaluable`, expected vs found, and documentary bounding-box citations.
+- **Hot-Reload**: Dynamically re-reads modified rules from disk (`POST /api/v1/rules/reload`) without application restart.
+- **What-If Dry Run Simulator**: Computes aggregate failure rates, severity distributions, and affected college IDs across application cohorts (`POST /api/v1/rules/dry-run`).
+
+---
+
 ## 🧪 Automated Testing
-Run the comprehensive test suites verifying the 6-stage Evidence Lens, Impossibility Engine, Forensics, and Mock Issuer:
+Run the comprehensive test suites verifying the 6-stage Evidence Lens, Regulation-as-Code engine, Impossibility Engine, Forensics, and Mock Issuer:
 ```powershell
-# Backend API tests
-$env:PYTHONPATH="." ; .\venv\Scripts\pytest backend/test_api.py -v
+# Regulation-as-Code Engine + Backend API tests
+$env:PYTHONPATH="." ; .\venv\Scripts\pytest backend/tests/test_rules_engine.py backend/test_api.py -v
 
 # Mock Issuer Statutory Gateway tests
 $env:PYTHONPATH="." ; .\venv\Scripts\pytest mock_issuer/test_mock_issuer.py -v
+
+# Run All (29 comprehensive automated tests)
+$env:PYTHONPATH="." ; .\venv\Scripts\pytest backend/tests/test_rules_engine.py mock_issuer/test_mock_issuer.py backend/test_api.py -v
 ```
