@@ -143,13 +143,53 @@ docker compose up --build
 
 ---
 
-## 🧪 Automated Testing
-Run the comprehensive test suite verifying the 6-stage Evidence Lens, NetworkX Impossibility Engine, Photo Reuse Radar, and Hash-Chained Audit Ledger:
+---
+
+## 🏛 Phase 3: Statutory Mock Issuer Service (Port 8001)
+
+The PRAMAAN-X mock issuer service simulates external state and central regulatory authorities:
+1. **State Fire & Emergency Services Department** (`fire`) - Fire Safety Certificate / NOC
+2. **State Technical University Affiliation Body** (`affiliation`) - Annual Affiliation Orders
+3. **National Board of Accreditation (NBA)** (`accreditation`) - Tier-1 / Tier-2 Accreditation Records
+4. **State Revenue & Land Records Registry / Bhoomi** (`land`) - Land Title Deeds & Survey Numbers
+
+### API Endpoints:
+- **Unified Verification**: `GET /verify?ref=...&name=...&authority=...`
+  - Parameters: `ref` (Reference number), `name` (Institution/Trust), `authority` (`fire`, `affiliation`, `accreditation`, `land`), `claimed_expiry`, `claimed_acres`, `latency_ms`, `simulate_failure`
+- **Dedicated Authority Endpoints**:
+  - Fire: `GET /fire/verify?ref=...&name=...`
+  - Affiliation: `GET /affiliation/verify?ref=...&name=...`
+  - Accreditation: `GET /accreditation/verify?ref=...&name=...`
+  - Land Records: `GET /land/verify?ref=...&name=...`
+- **Audit Logging**: `GET /logs?limit=50` (In-memory real-time query ledger)
+- **Service Health**: `GET /health` (Operational metrics & record counts by authority)
+- **Dynamic Hot Reload**: `POST /registry/reload`
+
+### Security & Protocol:
+- **Header Check**: `X-API-Key: pramaanx-mock-key-2025` (enforces HTTP 401 Unauthorized if missing/invalid)
+- **Standardized Statuses**: `verified`, `mismatch` (with differing fields), `expired`, `not_found`, and randomly configurable `source_unavailable` (HTTP 503 / timeout)
+- **Ground Truth Mapping**: Seeded via `python mock_issuer/seed_registry.py` against `generated_data/ground_truth.csv` with deliberate alterations and missing entries.
+
+### Running & Testing Mock Issuer:
 ```powershell
-$env:PYTHONPATH="." ; .\venv\Scripts\python backend\test_api.py
+# 1. Seed registry from synthetic data
+python mock_issuer/seed_registry.py
+
+# 2. Run mock issuer server locally
+uvicorn mock_issuer.app.main:app --host 127.0.0.1 --port 8001
+
+# 3. Execute test suite
+pytest mock_issuer/test_mock_issuer.py -v
 ```
-Expected output:
-```
-Running PRAMAAN-X API smoke tests...
-All tests passed with flying colors!
+
+---
+
+## 🧪 Automated Testing
+Run the comprehensive test suites verifying the 6-stage Evidence Lens, Impossibility Engine, Forensics, and Mock Issuer:
+```powershell
+# Backend API tests
+$env:PYTHONPATH="." ; .\venv\Scripts\pytest backend/test_api.py -v
+
+# Mock Issuer Statutory Gateway tests
+$env:PYTHONPATH="." ; .\venv\Scripts\pytest mock_issuer/test_mock_issuer.py -v
 ```

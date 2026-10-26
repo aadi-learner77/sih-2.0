@@ -1,0 +1,374 @@
+{
+  "version": "1.0.0",
+  "generated_at": "2026-10-26T16:23:19.487576+00:00",
+  "description": "PRAMAAN-X Authoritative Government Issuer Database Registry",
+  "authorities": {
+    "fire": {
+      "name": "State Fire & Emergency Services Department",
+      "code": "SFES_REGISTRY",
+      "records": {
+        "FIR/2025/98354": {
+          "reference_number": "FIR/2025/98354",
+          "document_id": "DOC_INST_001_FIRE",
+          "institution_id": "INST_001",
+          "registered_entity": "College of Engineering Pune (COEP Technological University)",
+          "occupancy_type": "Educational (Group B)",
+          "sanctioned_floors": "G+4",
+          "expiry_date": "2027-06-30",
+          "fire_safety_measure_status": "COMPLIANT",
+          "issuing_division": "Pune Fire Command",
+          "status": "VALID_ACTIVE"
+        },
+        "FIR/2025/89612": {
+          "reference_number": "FIR/2025/89612",
+          "document_id": "DOC_INST_002_FIRE",
+          "institution_id": "INST_002",
+          "registered_entity": "Phusro Shopping Mall & Commercial Complex",
+          "occupancy_type": "Commercial - Mercantile",
+          "sanctioned_floors": "G+4",
+          "expiry_date": "2027-06-30",
+          "fire_safety_measure_status": "COMPLIANT",
+          "issuing_division": "Mumbai City Fire Command",
+          "status": "VALID_ACTIVE"
+        },
+        "FIR/2025/27346": {
+          "reference_number": "FIR/2025/27346",
+          "document_id": "DOC_INST_003_FIRE",
+          "institution_id": "INST_003",
+          "registered_entity": "BMS College of Engineering",
+          "occupancy_type": "Educational (Group B)",
+          "sanctioned_floors": "G+4",
+          "expiry_date": "2026-06-30",
+          "fire_safety_measure_status": "COMPLIANT",
+          "issuing_division": "Bengaluru Urban Fire Command",
+          "status": "VALID_ACTIVE"
+        },
+        "FS/2024/991": {
+          "reference_number": "FS/2024/991",
+          "registered_entity": "Apex Commercial Shopping Mall (Not Educational)",
+          "occupancy_type": "Commercial - Mercantile",
+          "sanctioned_floors": "G+3",
+          "expiry_date": "2026-12-31",
+          "fire_safety_measure_status": "COMPLIANT",
+          "issuing_division": "Bengaluru Central Fire Division",
+          "status": "VALID_ACTIVE"
+        },
+        "FS/2023/8812": {
+          "reference_number": "FS/2023/8812",
+          "registered_entity": "Apex Institute of Technology & Science",
+          "occupancy_type": "Educational (Group B)",
+          "sanctioned_floors": "G+3",
+          "expiry_date": "2024-01-09",
+          "fire_safety_measure_status": "LAPSED",
+          "issuing_division": "Bengaluru East Fire Command",
+          "status": "EXPIRED"
+        },
+        "FS/2024/7741": {
+          "reference_number": "FS/2024/7741",
+          "registered_entity": "Apex Institute of Technology & Science",
+          "occupancy_type": "Educational (Group B)",
+          "sanctioned_floors": "G+3",
+          "expiry_date": "2027-05-14",
+          "fire_safety_measure_status": "COMPLIANT",
+          "issuing_division": "Bengaluru East Fire Command",
+          "status": "VALID_ACTIVE"
+        }
+      }
+    },
+    "affiliation": {
+      "name": "State Technical University Affiliation Gateway",
+      "code": "UNIV_AFFILIATION_REGISTRY",
+      "records": {
+        "AFF/2025/89955": {
+          "reference_number": "AFF/2025/89955",
+          "document_id": "DOC_INST_001_AFFI",
+          "institution_id": "INST_001",
+          "institution_name": "College of Engineering Pune (COEP Technological University)",
+          "aicte_id": "1-109283711",
+          "academic_year": "2025-26",
+          "affiliation_status": "ACTIVE_AFFILIATION",
+          "approved_intake": 300,
+          "approved_programmes": [
+            "Engineering & Technology",
+            "Management"
+          ],
+          "expiry_date": "2027-06-30",
+          "examining_authority": "Maharashtra Technological University"
+        },
+        "NOC/2025/62307": {
+          "reference_number": "NOC/2025/62307",
+          "document_id": "DOC_INST_001_NOC",
+          "institution_id": "INST_001",
+          "institution_name": "College of Engineering Pune (COEP Technological University)",
+          "aicte_id": "1-109283711",
+          "academic_year": "2025-26",
+          "affiliation_status": "ACTIVE_AFFILIATION",
+          "approved_intake": 300,
+          "approved_programmes": [
+            "Engineering & Technology",
+            "Management"
+          ],
+          "expiry_date": "2027-06-30",
+          "examining_authority": "Maharashtra Technological University"
+        },
+        "AFF/2025/20397": {
+          "reference_number": "AFF/2025/20397",
+          "document_id": "DOC_INST_002_AFFI",
+          "institution_id": "INST_002",
+          "institution_name": "Veermata Jijabai Technological Institute (VJTI)",
+          "aicte_id": "1-209384722",
+          "academic_year": "2025-26",
+          "affiliation_status": "ACTIVE_AFFILIATION",
+          "approved_intake": 480,
+          "approved_programmes": [
+            "Engineering & Technology",
+            "Computer Applications"
+          ],
+          "expiry_date": "2027-06-30",
+          "examining_authority": "Maharashtra Technological University"
+        },
+        "NOC/2025/60170": {
+          "reference_number": "NOC/2025/60170",
+          "document_id": "DOC_INST_002_NOC",
+          "institution_id": "INST_002",
+          "institution_name": "Veermata Jijabai Technological Institute (VJTI)",
+          "aicte_id": "1-209384722",
+          "academic_year": "2025-26",
+          "affiliation_status": "ACTIVE_AFFILIATION",
+          "approved_intake": 480,
+          "approved_programmes": [
+            "Engineering & Technology",
+            "Computer Applications"
+          ],
+          "expiry_date": "2027-06-30",
+          "examining_authority": "Maharashtra Technological University"
+        },
+        "AFF/2025/39551": {
+          "reference_number": "AFF/2025/39551",
+          "document_id": "DOC_INST_003_AFFI",
+          "institution_id": "INST_003",
+          "institution_name": "BMS College of Engineering",
+          "aicte_id": "1-309485733",
+          "academic_year": "2025-26",
+          "affiliation_status": "ACTIVE_AFFILIATION",
+          "approved_intake": 420,
+          "approved_programmes": [
+            "Engineering & Technology",
+            "Management"
+          ],
+          "expiry_date": "2027-06-30",
+          "examining_authority": "Karnataka Technological University"
+        },
+        "NOC/2025/67334": {
+          "reference_number": "NOC/2025/67334",
+          "document_id": "DOC_INST_003_NOC",
+          "institution_id": "INST_003",
+          "institution_name": "BMS College of Engineering",
+          "aicte_id": "1-309485733",
+          "academic_year": "2025-26",
+          "affiliation_status": "ACTIVE_AFFILIATION",
+          "approved_intake": 420,
+          "approved_programmes": [
+            "Engineering & Technology",
+            "Management"
+          ],
+          "expiry_date": "2027-06-30",
+          "examining_authority": "Karnataka Technological University"
+        },
+        "VTU/ACA/2024-25/A-4/1049": {
+          "reference_number": "VTU/ACA/2024-25/A-4/1049",
+          "institution_name": "Apex Institute of Technology & Science",
+          "aicte_id": "1-982173491",
+          "academic_year": "2025-26",
+          "affiliation_status": "ACTIVE_AFFILIATION",
+          "approved_intake": 480,
+          "approved_programmes": [
+            "Engineering & Technology",
+            "Computer Applications"
+          ],
+          "expiry_date": "2027-06-30",
+          "examining_authority": "Visvesvaraya Technological University"
+        },
+        "VTU/ACA/2023-24/LAPSED": {
+          "reference_number": "VTU/ACA/2023-24/LAPSED",
+          "institution_name": "Apex Institute of Technology & Science",
+          "aicte_id": "1-982173491",
+          "academic_year": "2023-24",
+          "affiliation_status": "LAPSED_AFFILIATION",
+          "approved_intake": 300,
+          "approved_programmes": [
+            "Engineering & Technology"
+          ],
+          "expiry_date": "2024-05-31",
+          "examining_authority": "Visvesvaraya Technological University"
+        }
+      }
+    },
+    "accreditation": {
+      "name": "National Board of Accreditation (NBA) Registry",
+      "code": "NBA_ACCREDITATION_REGISTRY",
+      "records": {
+        "ACC/2025/10701": {
+          "reference_number": "ACC/2025/10701",
+          "document_id": "DOC_INST_001_ACCR",
+          "institution_id": "INST_001",
+          "institution_name": "College of Engineering Pune (COEP Technological University)",
+          "tier": "Tier-1 (Washington Accord)",
+          "accreditation_score": 768,
+          "accredited_programmes": [
+            "Computer Science and Engineering",
+            "Electronics and Communication Engineering",
+            "Mechanical Engineering"
+          ],
+          "valid_till": "2024-03-31",
+          "expiry_date": "2024-03-31",
+          "nba_file_ref": "NBA/EVAL/2025/INST_001",
+          "status": "ACCREDITATION_LAPSED"
+        },
+        "ACC/2025/31104": {
+          "reference_number": "ACC/2025/31104",
+          "document_id": "DOC_INST_002_ACCR",
+          "institution_id": "INST_002",
+          "institution_name": "Veermata Jijabai Technological Institute (VJTI)",
+          "tier": "Tier-1 (Washington Accord)",
+          "accreditation_score": 768,
+          "accredited_programmes": [
+            "Computer Science and Engineering",
+            "Electronics and Communication Engineering",
+            "Mechanical Engineering"
+          ],
+          "valid_till": "2026-06-30",
+          "expiry_date": "2026-06-30",
+          "nba_file_ref": "NBA/EVAL/2025/INST_002",
+          "status": "ACCREDITED"
+        },
+        "ACC/2025/12415": {
+          "reference_number": "ACC/2025/12415",
+          "document_id": "DOC_INST_003_ACCR",
+          "institution_id": "INST_003",
+          "institution_name": "BMS College of Engineering",
+          "tier": "Tier-1 (Washington Accord)",
+          "accreditation_score": 768,
+          "accredited_programmes": [
+            "Computer Science and Engineering",
+            "Electronics and Communication Engineering",
+            "Mechanical Engineering"
+          ],
+          "valid_till": "2027-06-30",
+          "expiry_date": "2027-06-30",
+          "nba_file_ref": "NBA/EVAL/2025/INST_003",
+          "status": "ACCREDITED"
+        },
+        "NBA/2024/TIER1/9921": {
+          "reference_number": "NBA/2024/TIER1/9921",
+          "institution_name": "Apex Institute of Technology & Science",
+          "tier": "Tier-1 (Washington Accord)",
+          "accreditation_score": 745,
+          "accredited_programmes": [
+            "Computer Science and Engineering",
+            "Information Science"
+          ],
+          "valid_till": "2027-06-30",
+          "expiry_date": "2027-06-30",
+          "nba_file_ref": "NBA/EVAL/2024/BLR-01",
+          "status": "ACCREDITED"
+        },
+        "NBA/2021/EXPIRED/1102": {
+          "reference_number": "NBA/2021/EXPIRED/1102",
+          "institution_name": "Apex Institute of Technology & Science",
+          "tier": "Tier-2",
+          "accreditation_score": 620,
+          "accredited_programmes": [
+            "Civil Engineering"
+          ],
+          "valid_till": "2023-06-30",
+          "expiry_date": "2023-06-30",
+          "nba_file_ref": "NBA/EVAL/2021/BLR-02",
+          "status": "ACCREDITATION_LAPSED"
+        }
+      }
+    },
+    "land": {
+      "name": "State Revenue Department Land Registry (Bhoomi / Mahabhulekh)",
+      "code": "LAND_REVENUE_BHOOMI",
+      "records": {
+        "LAN/2025/64684": {
+          "reference_number": "LAN/2025/64684",
+          "document_id": "DOC_INST_001_LAND",
+          "institution_id": "INST_001",
+          "survey_no": "Sy. No. 88/1, Village Amritapura",
+          "village": "Vidyanagar",
+          "taluk": "Pune",
+          "extent_acres": 10.8,
+          "registered_title_holder": "Shri Ben Educational & Charitable Trust",
+          "applicant_institution": "College of Engineering Pune (COEP Technological University)",
+          "land_classification": "Non-Agricultural (Educational)",
+          "encumbrance_status": "CLEAR_TITLE_NIL_ENCUMBRANCE",
+          "lease_tenure_years": 99,
+          "expiry_date": "2024-03-31",
+          "status": "LEASE_EXPIRED"
+        },
+        "LAN/2025/28315": {
+          "reference_number": "LAN/2025/28315",
+          "document_id": "DOC_INST_002_LAND",
+          "institution_id": "INST_002",
+          "survey_no": "Sy. No. 33/2, Village Nikitapura",
+          "village": "Vidyanagar",
+          "taluk": "Mumbai City",
+          "extent_acres": 7.5,
+          "registered_title_holder": "Shri Chahal Educational & Charitable Trust",
+          "applicant_institution": "Veermata Jijabai Technological Institute (VJTI)",
+          "land_classification": "Non-Agricultural (Educational)",
+          "encumbrance_status": "CLEAR_TITLE_NIL_ENCUMBRANCE",
+          "lease_tenure_years": 99,
+          "expiry_date": "2026-06-30",
+          "status": "VALID_TITLE"
+        },
+        "LAN/2025/39224": {
+          "reference_number": "LAN/2025/39224",
+          "document_id": "DOC_INST_003_LAND",
+          "institution_id": "INST_003",
+          "survey_no": "Sy. No. 61/1, Village Hritikpura",
+          "village": "Vidyanagar",
+          "taluk": "Bengaluru Urban",
+          "extent_acres": 10.3,
+          "registered_title_holder": "Shri Lata Educational & Charitable Trust",
+          "applicant_institution": "BMS College of Engineering",
+          "land_classification": "Non-Agricultural (Educational)",
+          "encumbrance_status": "CLEAR_TITLE_NIL_ENCUMBRANCE",
+          "lease_tenure_years": 99,
+          "expiry_date": "2024-03-31",
+          "status": "LEASE_EXPIRED"
+        },
+        "LAND/DEED/2021/8821": {
+          "reference_number": "LAND/DEED/2021/8821",
+          "survey_no": "Sy. No. 42/1",
+          "village": "Devanahalli",
+          "taluk": "Bengaluru North",
+          "extent_acres": 6.2,
+          "registered_title_holder": "Apex Vidya Foundation & Joint Claimants",
+          "applicant_institution": "Apex Institute of Technology & Science",
+          "land_classification": "Non-Agricultural (Educational)",
+          "encumbrance_status": "LITIGATION_PENDING",
+          "lease_tenure_years": 30,
+          "expiry_date": "2051-12-31",
+          "status": "LITIGATION_LOGGED"
+        },
+        "LAND/DEED/2020/CLEAR": {
+          "reference_number": "LAND/DEED/2020/CLEAR",
+          "survey_no": "Sy. No. 102/2",
+          "village": "Yelahanka",
+          "taluk": "Bengaluru North",
+          "extent_acres": 12.5,
+          "registered_title_holder": "Apex Educational Trust",
+          "applicant_institution": "Apex Institute of Technology & Science",
+          "land_classification": "Non-Agricultural (Educational)",
+          "encumbrance_status": "CLEAR_TITLE_NIL_ENCUMBRANCE",
+          "lease_tenure_years": 99,
+          "expiry_date": "2119-03-31",
+          "status": "VALID_TITLE"
+        }
+      }
+    }
+  }
+}

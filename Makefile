@@ -42,10 +42,20 @@ test:
 	@echo "Running PRAMAAN-X comprehensive automated test suite..."
 	python -m pytest backend/test_api.py -v
 
+test-mock-issuer:
+	@echo "Running Mock Issuer statutory gateway test suite..."
+	python -m pytest mock_issuer/test_mock_issuer.py -v
+
+test-all: test test-mock-issuer
+
 # --- Database Seeding & Synthetic Data Generation ---
 seed-data:
 	@echo "Populating database with synthetic AICTE benchmark data..."
 	python -m backend.app.data.seed_data
+
+seed-registry:
+	@echo "Generating authoritative government registries from synthetic ground truth..."
+	python mock_issuer/seed_registry.py
 
 generate-data:
 	@echo "Generating synthetic regulatory dossiers & ground-truth defects (Prompt 2.1)..."

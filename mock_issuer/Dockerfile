@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY mock_issuer/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY mock_issuer/app /app/mock_issuer/app
+COPY mock_issuer /app/mock_issuer
 
 ENV PYTHONPATH=/app
 ENV PYTHONUNBUFFERED=1

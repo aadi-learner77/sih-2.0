@@ -33,6 +33,32 @@ class MockIssuerGateway:
             pass
         return None
 
+    def _query_remote_verify(self, authority: str, ref: str, name: str, **kwargs) -> Dict[str, Any] | None:
+        """Attempts HTTP GET query to the standalone mock-issuer service."""
+        base = self.base_url or os.getenv("MOCK_ISSUER_URL")
+        if not base:
+            return None
+        api_key = os.getenv("ISSUER_API_KEY", "pramaanx-mock-key-2025")
+        try:
+            params = {"authority": authority, "ref": ref, "name": name}
+            for k, v in kwargs.items():
+                if v is not None:
+                    params[k] = v
+            with httpx.Client(timeout=4.0) as client:
+                res = client.get(f"{base}/verify", params=params, headers={"X-API-Key": api_key})
+                if res.status_code == 200:
+                    return res.json()
+                elif res.status_code == 503:
+                    return {
+                        "issuer_name": f"{authority.title()} Statutory Gateway",
+                        "status": "source_unavailable",
+                        "advisory": "Statutory registry gateway temporarily unreachable (HTTP 503).",
+                        "discrepancies": []
+                    }
+        except Exception:
+            pass
+        return None
+
     def verify_fire_noc(self, query: Dict[str, Any]) -> Dict[str, Any]:
         """
         Queries State Fire Department Database.
@@ -41,6 +67,11 @@ class MockIssuerGateway:
         noc_no = str(query.get("noc_number", "")).strip().upper()
         inst_name = query.get("institution_name", "")
         claimed_expiry = query.get("expiry_date", "")
+
+        # 1. Attempt live query against mock_issuer service if configured/available
+        remote = self._query_remote_verify("fire", noc_no, inst_name, claimed_expiry=claimed_expiry)
+        if remote:
+            return remote
         
         # Test Case Scenarios based on NOC input
         if "EXPIRED" in noc_no or noc_no == "FS/2023/8812":
@@ -138,9 +169,15 @@ class MockIssuerGateway:
         Queries State Revenue Department (Bhoomi / Mahabhulekh / AnyRoR).
         Cross-checks Survey Number, Area, and Land Conversion status (Agricultural vs Non-Ag Educational).
         """
-        survey_no = query.get("survey_no", "")
+        survey_no = str(query.get("survey_no", "")).strip()
         claimed_acres = float(query.get("claimed_acres", 5.0))
         village = query.get("village", "Devanahalli")
+        trust_or_inst = query.get("trust_name") or query.get("institution_name", "")
+
+        # 1. Attempt live query against mock_issuer service if configured/available
+        remote = self._query_remote_verify("land", survey_no, trust_or_inst, claimed_acres=claimed_acres)
+        if remote:
+            return remote
 
         if "42/1" in survey_no:
             # Overlap scenario
@@ -193,6 +230,12 @@ class MockIssuerGateway:
         """
         aicte_id = query.get("aicte_id", "")
         inst_name = query.get("institution_name", "")
+        ref = query.get("ref", aicte_id or "VTU/ACA/2024-25/A-4/1049")
+
+        # 1. Attempt live query against mock_issuer service if configured/available
+        remote = self._query_remote_verify("affiliation", ref, inst_name)
+        if remote:
+            return remote
 
         return {
             "issuer_name": "State Examining University Affiliation Cell",
@@ -210,6 +253,32 @@ class MockIssuerGateway:
             },
             "discrepancies": [],
             "advisory": "University affiliation order authenticated for academic session 2025-26."
+        }
+
+    def verify_accreditation(self, query: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Queries National Board of Accreditation (NBA) Registry.
+        """
+        ref = query.get("ref", "NBA/2024/TIER1/9921")
+        inst_name = query.get("institution_name", "")
+
+        remote = self._query_remote_verify("accreditation", ref, inst_name)
+        if remote:
+            return remote
+
+        return {
+            "issuer_name": "National Board of Accreditation (NBA)",
+            "issuer_code": "NBA_ACCREDITATION_REGISTRY",
+            "status": "verified",
+            "latency_ms": 75,
+            "authoritative_record": {
+                "reference_number": ref,
+                "institution_name": inst_name,
+                "tier": "Tier-1 (Washington Accord)",
+                "status": "ACCREDITED"
+            },
+            "discrepancies": [],
+            "advisory": "Accreditation authenticated on national registry."
         }
 
     def verify_faculty_tax_record(self, query: Dict[str, Any]) -> Dict[str, Any]:
