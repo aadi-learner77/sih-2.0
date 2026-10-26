@@ -98,6 +98,12 @@ class Institution(Base):
 
     users = relationship("User", back_populates="institution")
     applications = relationship("Application", back_populates="institution", cascade="all, delete-orphan")
+    buildings = relationship("Building", back_populates="institution", cascade="all, delete-orphan")
+    labs = relationship("Lab", back_populates="institution", cascade="all, delete-orphan")
+    programmes = relationship("Programme", back_populates="institution", cascade="all, delete-orphan")
+    employments = relationship("FacultyEmployment", back_populates="institution", cascade="all, delete-orphan")
+    locations = relationship("Location", back_populates="institution", cascade="all, delete-orphan")
+    held_documents = relationship("Document", back_populates="institution_rel", foreign_keys="Document.institution_id")
 
 
 # ============================================================================
@@ -180,7 +186,7 @@ class Document(Base):
     application_id = Column(Integer, ForeignKey("applications.id", ondelete="CASCADE"), nullable=False, index=True)
     document_type = Column(String(100), nullable=False, index=True) # Fire Safety NOC, Land Deed, Building Plan, etc.
     filename = Column(String(255), nullable=False)
-    file_path = Column(String(500), nullable=False)
+    file_path = Column(String(500), nullable=True, default="")
     file_hash = Column(String(64), nullable=False, index=True) # SHA-256 for deduplication
     file_size_bytes = Column(Integer, default=0)
     mime_type = Column(String(100), default="application/pdf")
@@ -206,9 +212,17 @@ class Document(Base):
         Index("idx_documents_hash", "file_hash"),
     )
 
+    institution_id = Column(Integer, ForeignKey("institutions.id", ondelete="SET NULL"), nullable=True, index=True)
+    issuer_id = Column(Integer, ForeignKey("issuers.id", ondelete="SET NULL"), nullable=True, index=True)
+    reference_number = Column(String(100), nullable=True, index=True)
+    issue_date = Column(String(50), nullable=True, index=True)
+    valid_till = Column(String(50), nullable=True, index=True)
+
     application = relationship("Application", back_populates="documents")
     extracted_fields_rel = relationship("ExtractedField", back_populates="document", cascade="all, delete-orphan")
     verifications = relationship("Verification", back_populates="document")
+    institution_rel = relationship("Institution", back_populates="held_documents", foreign_keys=[institution_id])
+    issuer_rel = relationship("Issuer", back_populates="documents")
 
 
 # ============================================================================
@@ -473,3 +487,126 @@ class AuditLog(Base):
 
 # Alias for backwards compatibility
 AccessLog = AuditLog
+
+
+# ============================================================================
+# 16. INSTITUTION TWIN KNOWLEDGE GRAPH MODELS
+# ============================================================================
+class Location(Base):
+    __tablename__ = "locations"
+
+    id = Column(Integer, primary_key=True, index=True)
+    institution_id = Column(Integer, ForeignKey("institutions.id", ondelete="CASCADE"), nullable=True, index=True)
+    code = Column(String(100), unique=True, index=True, nullable=False)
+    city = Column(String(100), nullable=False)
+    state = Column(String(100), nullable=False)
+    district = Column(String(100), nullable=True)
+    address = Column(Text, nullable=True)
+    latitude = Column(Float, nullable=True)
+    longitude = Column(Float, nullable=True)
+    survey_numbers = Column(String(255), nullable=True)
+    created_at = Column(DateTime(timezone=True), default=utc_now)
+
+    institution = relationship("Institution", back_populates="locations")
+    buildings = relationship("Building", back_populates="location")
+
+
+class Building(Base):
+    __tablename__ = "buildings"
+
+    id = Column(Integer, primary_key=True, index=True)
+    institution_id = Column(Integer, ForeignKey("institutions.id", ondelete="CASCADE"), nullable=False, index=True)
+    location_id = Column(Integer, ForeignKey("locations.id", ondelete="SET NULL"), nullable=True, index=True)
+    building_code = Column(String(100), index=True, nullable=False)
+    name = Column(String(255), nullable=False)
+    building_type = Column(String(100), default="Instructional") # Instructional, Administrative, Amenities
+    built_up_area_sqm = Column(Float, default=0.0)
+    floors = Column(Integer, default=1)
+    created_at = Column(DateTime(timezone=True), default=utc_now)
+
+    institution = relationship("Institution", back_populates="buildings")
+    location = relationship("Location", back_populates="buildings")
+    labs = relationship("Lab", back_populates="building")
+
+
+class Lab(Base):
+    __tablename__ = "labs"
+
+    id = Column(Integer, primary_key=True, index=True)
+    institution_id = Column(Integer, ForeignKey("institutions.id", ondelete="CASCADE"), nullable=False, index=True)
+    building_id = Column(Integer, ForeignKey("buildings.id", ondelete="SET NULL"), nullable=True, index=True)
+    lab_code = Column(String(100), index=True, nullable=True)
+    name = Column(String(255), nullable=False)
+    department = Column(String(100), nullable=False)
+    equipment = Column(JSON_TYPE, default=list) # List of equipment names
+    capacity = Column(Integer, default=30)
+    area_sqm = Column(Float, default=75.0)
+    created_at = Column(DateTime(timezone=True), default=utc_now)
+
+    institution = relationship("Institution", back_populates="labs")
+    building = relationship("Building", back_populates="labs")
+
+
+class Programme(Base):
+    __tablename__ = "programmes"
+
+    id = Column(Integer, primary_key=True, index=True)
+    institution_id = Column(Integer, ForeignKey("institutions.id", ondelete="CASCADE"), nullable=False, index=True)
+    programme_code = Column(String(100), index=True, nullable=True)
+    name = Column(String(255), nullable=False) # e.g. Mechanical Engineering, Civil Engineering
+    degree_level = Column(String(50), default="UG") # UG, PG, Diploma
+    approved_intake = Column(Integer, default=60)
+    academic_year = Column(String(20), default="2025-26")
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime(timezone=True), default=utc_now)
+
+    institution = relationship("Institution", back_populates="programmes")
+
+
+class Issuer(Base):
+    __tablename__ = "issuers"
+
+    id = Column(Integer, primary_key=True, index=True)
+    code = Column(String(100), unique=True, index=True, nullable=False)
+    name = Column(String(255), nullable=False)
+    issuer_type = Column(String(100), nullable=False) # fire_department, land_registry, university_affiliation, accreditation_board
+    creation_date = Column(String(50), nullable=False) # ISO YYYY-MM-DD
+    state = Column(String(100), nullable=True)
+    authority_level = Column(String(50), default="STATE")
+    created_at = Column(DateTime(timezone=True), default=utc_now)
+
+    documents = relationship("Document", back_populates="issuer_rel")
+
+
+class Faculty(Base):
+    __tablename__ = "faculty"
+
+    id = Column(Integer, primary_key=True, index=True)
+    faculty_code = Column(String(100), unique=True, index=True, nullable=False)
+    name = Column(String(255), nullable=False)
+    pan_masked = Column(String(50), nullable=True, index=True)
+    aadhaar_masked = Column(String(50), nullable=True, index=True)
+    dob = Column(String(50), nullable=True, index=True) # ISO YYYY-MM-DD
+    designation = Column(String(100), nullable=True)
+    highest_degree = Column(String(100), nullable=True)
+    created_at = Column(DateTime(timezone=True), default=utc_now)
+
+    employments = relationship("FacultyEmployment", back_populates="faculty", cascade="all, delete-orphan")
+
+
+class FacultyEmployment(Base):
+    __tablename__ = "faculty_employments"
+
+    id = Column(Integer, primary_key=True, index=True)
+    faculty_id = Column(Integer, ForeignKey("faculty.id", ondelete="CASCADE"), nullable=False, index=True)
+    institution_id = Column(Integer, ForeignKey("institutions.id", ondelete="CASCADE"), nullable=False, index=True)
+    role = Column(String(100), nullable=False) # Professor, Associate Professor, Assistant Professor
+    employment_type = Column(String(50), default="Full-Time") # Full-Time, Part-Time, Adjunct
+    start_date = Column(String(50), nullable=False) # ISO YYYY-MM-DD
+    end_date = Column(String(50), nullable=True) # ISO YYYY-MM-DD, None if currently employed
+    department = Column(String(100), nullable=True)
+    created_at = Column(DateTime(timezone=True), default=utc_now)
+
+    faculty = relationship("Faculty", back_populates="employments")
+    institution = relationship("Institution", back_populates="employments")
+

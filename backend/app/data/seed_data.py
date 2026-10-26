@@ -14,7 +14,8 @@ from backend.app.models.models import (
     Role, User, Institution, ApplicationCategory, Application, Document,
     ExtractedField, Rule, RuleVersion, Finding, Verification, Receipt,
     Alert, OfficerAction, AuditLog,
-    VerificationCheck, RuleEvaluation, AuditReceipt
+    VerificationCheck, RuleEvaluation, AuditReceipt,
+    Location, Building, Lab, Programme, Issuer, Faculty, FacultyEmployment
 )
 from backend.app.services.audit_chain import AuditChainService
 from backend.app.services.rules_engine import rules_engine
@@ -25,8 +26,9 @@ def seed_database():
     Base.metadata.create_all(bind=engine)
     db: Session = SessionLocal()
 
-    # If users already exist, skip re-seeding
+    # If users already exist, check if Institution Twin tables need seeding
     if db.query(User).first():
+        seed_institution_twin_tables(db)
         db.close()
         return
 
@@ -537,8 +539,360 @@ def seed_database():
             application_id=app1.id
         )
 
+    # Seed Institution Twin knowledge graph entities
+    seed_institution_twin_tables(db)
+
     print("PRAMAAN-X Database seeding completed successfully with 7 chained audit receipts!")
     db.close()
 
+
+def seed_institution_twin_tables(db: Session):
+    """
+    Populates Institution Twin relational models:
+    - Issuers
+    - Locations
+    - Buildings
+    - Programmes
+    - Labs (with equipment)
+    - Faculty
+    - Faculty Employments (including dual-employment review indicator scenario)
+    - Regulatory Documents (including chronological and shared-reference review indicators)
+    """
+    print("Checking and seeding Institution Twin relational tables...")
+
+    # Fetch institutions
+    inst1 = db.query(Institution).filter(Institution.aicte_id == "1-109283711").first()
+    inst2 = db.query(Institution).filter(Institution.aicte_id == "1-209384722").first()
+    inst3 = db.query(Institution).filter(Institution.aicte_id == "1-309485733").first()
+
+    if not inst1 or not inst2:
+        return
+
+    # 1. Issuers
+    iss_fire = db.query(Issuer).filter(Issuer.code == "ISSUER_FIRE_KA").first()
+    if not iss_fire:
+        iss_fire = Issuer(
+            code="ISSUER_FIRE_KA",
+            name="Karnataka State Fire & Emergency Services",
+            issuer_type="fire_department",
+            creation_date="2020-01-01",
+            state="Karnataka"
+        )
+        iss_bhoomi = Issuer(
+            code="ISSUER_BHOOMI",
+            name="Karnataka Revenue Department Bhoomi",
+            issuer_type="land_registry",
+            creation_date="2000-01-01",
+            state="Karnataka"
+        )
+        iss_vtu = Issuer(
+            code="ISSUER_VTU",
+            name="Visvesvaraya Technological University",
+            issuer_type="university_affiliation",
+            creation_date="1998-04-01",
+            state="Karnataka"
+        )
+        iss_nba = Issuer(
+            code="ISSUER_NBA",
+            name="National Board of Accreditation",
+            issuer_type="accreditation_board",
+            creation_date="1994-09-12",
+            state="National"
+        )
+        db.add_all([iss_fire, iss_bhoomi, iss_vtu, iss_nba])
+        db.commit()
+    else:
+        iss_bhoomi = db.query(Issuer).filter(Issuer.code == "ISSUER_BHOOMI").first()
+        iss_vtu = db.query(Issuer).filter(Issuer.code == "ISSUER_VTU").first()
+
+    # 2. Locations
+    loc1 = db.query(Location).filter(Location.code == "LOC_001").first()
+    if not loc1:
+        loc1 = Location(
+            institution_id=inst1.id,
+            code="LOC_001",
+            city="Bengaluru",
+            state="Karnataka",
+            district="Bengaluru Rural",
+            address="Sector 9, Devanahalli Knowledge Corridor",
+            latitude=13.243,
+            longitude=77.712,
+            survey_numbers="Sy. No. 42/1 & 42/2"
+        )
+        loc2 = Location(
+            institution_id=inst2.id,
+            code="LOC_002",
+            city="Mysuru",
+            state="Karnataka",
+            district="Mysuru",
+            address="Hebbal Industrial Estate",
+            latitude=12.355,
+            longitude=76.612,
+            survey_numbers="Sy. No. 108/3"
+        )
+        loc3 = Location(
+            institution_id=inst3.id if inst3 else None,
+            code="LOC_003",
+            city="Bengaluru",
+            state="Karnataka",
+            district="Bengaluru Urban",
+            address="Whitefield IT Corridor",
+            latitude=12.981,
+            longitude=77.749,
+            survey_numbers="Sy. No. 42/1"
+        )
+        db.add_all([loc1, loc2, loc3])
+        db.commit()
+    else:
+        loc2 = db.query(Location).filter(Location.code == "LOC_002").first()
+
+    # 3. Buildings
+    if not db.query(Building).first():
+        bld1 = Building(
+            institution_id=inst1.id,
+            location_id=loc1.id if loc1 else None,
+            building_code="BLD_001",
+            name="Main Academic Block",
+            building_type="Instructional",
+            built_up_area_sqm=8500.0,
+            floors=4
+        )
+        bld2 = Building(
+            institution_id=inst2.id,
+            location_id=loc2.id if loc2 else None,
+            building_code="BLD_002",
+            name="Sir M. Visvesvaraya Engineering Complex",
+            building_type="Instructional",
+            built_up_area_sqm=18200.0,
+            floors=6
+        )
+        db.add_all([bld1, bld2])
+        db.commit()
+    else:
+        bld1 = db.query(Building).filter(Building.institution_id == inst1.id).first()
+        bld2 = db.query(Building).filter(Building.institution_id == inst2.id).first()
+
+    # 4. Programmes
+    if not db.query(Programme).first():
+        prog_mech_1 = Programme(
+            institution_id=inst1.id,
+            programme_code="PROG_MECH_001",
+            name="Mechanical Engineering",
+            degree_level="UG",
+            approved_intake=120,
+            academic_year="2025-26"
+        )
+        prog_cse_1 = Programme(
+            institution_id=inst1.id,
+            programme_code="PROG_CSE_001",
+            name="Computer Science & Engineering",
+            degree_level="UG",
+            approved_intake=180,
+            academic_year="2025-26"
+        )
+        prog_mech_2 = Programme(
+            institution_id=inst2.id,
+            programme_code="PROG_MECH_002",
+            name="Mechanical Engineering",
+            degree_level="UG",
+            approved_intake=120,
+            academic_year="2025-26"
+        )
+        prog_eee_2 = Programme(
+            institution_id=inst2.id,
+            programme_code="PROG_EEE_002",
+            name="Electrical & Electronics Engineering",
+            degree_level="UG",
+            approved_intake=120,
+            academic_year="2025-26"
+        )
+        db.add_all([prog_mech_1, prog_cse_1, prog_mech_2, prog_eee_2])
+        db.commit()
+
+    # 5. Labs
+    if not db.query(Lab).first():
+        lab1 = Lab(
+            institution_id=inst1.id,
+            building_id=bld1.id if bld1 else None,
+            lab_code="LAB_001",
+            name="Computing & Simulation Center",
+            department="Computer Science & Engineering",
+            equipment=["High-Performance Workstations", "Rack Server Cluster", "Managed Gigabit Switch"],
+            capacity=40,
+            area_sqm=120.0
+        )
+        lab2 = Lab(
+            institution_id=inst2.id,
+            building_id=bld2.id if bld2 else None,
+            lab_code="LAB_002",
+            name="Central Mechanical Workshop & Metrology Lab",
+            department="Mechanical Engineering",
+            equipment=["Lathe Machine", "Milling Machine", "Universal Testing Machine (UTM)", "CNC Trainer", "Heat Transfer Apparatus"],
+            capacity=35,
+            area_sqm=200.0
+        )
+        lab3 = Lab(
+            institution_id=inst2.id,
+            building_id=bld2.id if bld2 else None,
+            lab_code="LAB_003",
+            name="Electrical Machines & Drives Lab",
+            department="Electrical & Electronics Engineering",
+            equipment=["Digital Storage Oscilloscope", "Transformer Test Bench", "DC Motor-Generator Set", "Power Electronics Trainer"],
+            capacity=30,
+            area_sqm=150.0
+        )
+        db.add_all([lab1, lab2, lab3])
+        db.commit()
+
+    # 6. Faculty & Employments
+    if not db.query(Faculty).first():
+        fac1 = Faculty(
+            faculty_code="FAC_101",
+            name="Dr. R. K. Sharma",
+            pan_masked="AB****89C",
+            aadhaar_masked="XXXX-XXXX-9021",
+            dob="1975-08-12",
+            designation="Professor & Head",
+            highest_degree="Ph.D. IIT Bombay"
+        )
+        fac2 = Faculty(
+            faculty_code="FAC_102",
+            name="Dr. Priya Sundaram",
+            pan_masked="CD****45E",
+            aadhaar_masked="XXXX-XXXX-4412",
+            dob="1982-11-20",
+            designation="Associate Professor",
+            highest_degree="Ph.D. IISc"
+        )
+        fac3 = Faculty(
+            faculty_code="FAC_103",
+            name="Prof. Amit Varma",
+            pan_masked="EF****12G",
+            aadhaar_masked="XXXX-XXXX-7729",
+            dob="1988-04-15",
+            designation="Assistant Professor",
+            highest_degree="M.Tech NITK"
+        )
+        db.add_all([fac1, fac2, fac3])
+        db.commit()
+
+        emp1 = FacultyEmployment(
+            faculty_id=fac1.id,
+            institution_id=inst1.id,
+            role="Professor & Head (CSE)",
+            employment_type="Full-Time",
+            start_date="2021-08-01",
+            end_date=None,
+            department="Computer Science & Engineering"
+        )
+        emp2 = FacultyEmployment(
+            faculty_id=fac1.id,
+            institution_id=inst2.id,
+            role="Professor",
+            employment_type="Full-Time",
+            start_date="2022-01-15",
+            end_date=None,
+            department="Computer Science & Engineering"
+        )
+        emp3 = FacultyEmployment(
+            faculty_id=fac2.id,
+            institution_id=inst1.id,
+            role="Associate Professor",
+            employment_type="Full-Time",
+            start_date="2020-07-10",
+            end_date=None,
+            department="Computer Science & Engineering"
+        )
+        emp4 = FacultyEmployment(
+            faculty_id=fac3.id,
+            institution_id=inst2.id,
+            role="Assistant Professor",
+            employment_type="Full-Time",
+            start_date="2023-06-01",
+            end_date=None,
+            department="Mechanical Engineering"
+        )
+        db.add_all([emp1, emp2, emp3, emp4])
+        db.commit()
+
+    # 7. Regulatory Documents & Review Indicator Scenarios
+    if not db.query(Document).filter(Document.reference_number == "FIR/KA/2024/99102").first():
+        app1 = db.query(Application).filter(Application.institution_id == inst1.id).first()
+        app2 = db.query(Application).filter(Application.institution_id == inst2.id).first()
+
+        # Doc 1: Issue date (2015-06-15) predates ISSUER_FIRE_KA creation date (2020-01-01) -> Check 3A
+        # Also shares reference number FIR/KA/2024/99102 with Doc 3 -> Check 5
+        doc_fire_1 = Document(
+            application_id=app1.id if app1 else 1,
+            institution_id=inst1.id,
+            issuer_id=iss_fire.id,
+            document_type="Fire Safety Certificate",
+            reference_number="FIR/KA/2024/99102",
+            issue_date="2015-06-15",
+            valid_till="2026-06-30",
+            filename="FIRE_SAFETY_APEX.pdf",
+            file_path="uploads/FIRE_SAFETY_APEX.pdf",
+            file_hash="e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            is_flagged_for_review=True,
+            review_indicator_tag="INDICATOR_FOR_REVIEW",
+            review_reason="Issue date predates issuing authority establishment date."
+        )
+
+        # Doc 2: Inverted validity interval (validity ends 2021-12-31, before issue 2023-01-01) -> Check 3B
+        doc_land_2 = Document(
+            application_id=app2.id if app2 else 1,
+            institution_id=inst2.id,
+            issuer_id=iss_bhoomi.id,
+            document_type="Land Title Deed",
+            reference_number="LAN/KA/2024/33011",
+            issue_date="2023-01-01",
+            valid_till="2021-12-31",
+            filename="LAND_DEED_ROYAL.pdf",
+            file_path="uploads/LAND_DEED_ROYAL.pdf",
+            file_hash="11b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b111",
+            is_flagged_for_review=True,
+            review_indicator_tag="INDICATOR_FOR_REVIEW",
+            review_reason="Inverted validity interval."
+        )
+
+        # Doc 3: For inst3, sharing the exact same reference number "FIR/KA/2024/99102" as inst1 -> Check 5
+        doc_fire_3 = Document(
+            application_id=app1.id if app1 else 1,
+            institution_id=inst3.id if inst3 else inst2.id,
+            issuer_id=iss_fire.id,
+            document_type="Fire Safety Certificate",
+            reference_number="FIR/KA/2024/99102",
+            issue_date="2024-01-10",
+            valid_till="2027-01-10",
+            filename="FIRE_SAFETY_NAT.pdf",
+            file_path="uploads/FIRE_SAFETY_NAT.pdf",
+            file_hash="22b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b222",
+            is_flagged_for_review=True,
+            review_indicator_tag="INDICATOR_FOR_REVIEW",
+            review_reason="Shared document reference number collision."
+        )
+
+        # Doc 4: Clean compliant document
+        doc_aff_clean = Document(
+            application_id=app2.id if app2 else 1,
+            institution_id=inst2.id,
+            issuer_id=iss_vtu.id if iss_vtu else None,
+            document_type="University Affiliation Order",
+            reference_number="AFF/VTU/2024/8891",
+            issue_date="2024-05-01",
+            valid_till="2027-05-01",
+            filename="AFFILIATION_ROYAL.pdf",
+            file_path="uploads/AFFILIATION_ROYAL.pdf",
+            file_hash="33b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b333",
+            is_flagged_for_review=False
+        )
+
+        db.add_all([doc_fire_1, doc_land_2, doc_fire_3, doc_aff_clean])
+        db.commit()
+
+    print("Institution Twin tables seeded successfully!")
+
+
 if __name__ == "__main__":
     seed_database()
+

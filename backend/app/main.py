@@ -17,6 +17,7 @@ from backend.app.api.forensics import router as forensics_router
 from backend.app.api.verification import router as verification_router
 from backend.app.api.audit import router as audit_router
 from backend.app.api.preflight import router as preflight_router
+from backend.app.api.radar import router as radar_router
 
 # Initialize database schema
 Base.metadata.create_all(bind=engine)
@@ -56,6 +57,8 @@ app.include_router(forensics_router, prefix=settings.API_V1_STR)
 app.include_router(verification_router, prefix=settings.API_V1_STR)
 app.include_router(audit_router, prefix=settings.API_V1_STR)
 app.include_router(preflight_router, prefix=settings.API_V1_STR)
+app.include_router(radar_router, prefix=settings.API_V1_STR)
+app.include_router(radar_router)  # Expose /radar/clusters at root as requested
 
 @app.on_event("startup")
 def on_startup():
