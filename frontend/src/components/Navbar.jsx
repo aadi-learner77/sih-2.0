@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   ShieldCheck, 
   AlertTriangle, 
   UserCheck, 
   Building2, 
   Sparkles,
-  Layers
+  Layers,
+  Sun,
+  Moon
 } from 'lucide-react';
 import AlertBellDrawer from './AlertBellDrawer';
 
@@ -13,6 +15,7 @@ import AlertBellDrawer from './AlertBellDrawer';
  * Top AICTE Navigation Bar:
  * - Brand Identity & Statutory Non-Punitive Advisory Disclaimer
  * - Alert Bell with active counter & flyout drawer
+ * - Light / Dark Theme Toggle
  * - Role-Aware Switcher (Scrutiny Officer, Senior Officer, Admin, Auditor, Institution User)
  * - Active Dossier Quick Pill
  */
@@ -23,12 +26,33 @@ export default function Navbar({
   isLiveMode = false,
   onToggleLiveMode 
 }) {
+  const [theme, setTheme] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return document.documentElement.getAttribute('data-theme') || localStorage.getItem('theme') || 'light';
+    }
+    return 'light';
+  });
+
+  useEffect(() => {
+    const activeTheme = document.documentElement.getAttribute('data-theme') || localStorage.getItem('theme') || 'light';
+    setTheme(activeTheme);
+  }, []);
+
+  const toggleTheme = () => {
+    const nextTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(nextTheme);
+    document.documentElement.setAttribute('data-theme', nextTheme);
+    try {
+      localStorage.setItem('theme', nextTheme);
+    } catch (e) {}
+    window.dispatchEvent(new CustomEvent('themechange', { detail: { theme: nextTheme } }));
+  };
   return (
-    <header className="bg-white/95 backdrop-blur-md border-b border-slate-200 sticky top-0 z-40 px-6 py-2.5 shadow-xs">
-      <div className="flex items-center justify-between gap-4">
+    <header className="bg-white/95 backdrop-blur-md border-b border-slate-200 sticky top-0 z-40 px-6 py-3 shadow-xs">
+      <div className="flex flex-wrap items-center justify-between gap-3 max-w-[1440px] mx-auto w-full">
         
         {/* Brand & AICTE Identity */}
-        <div className="flex items-center space-x-4 min-w-0">
+        <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-3 shrink-0">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 via-orange-600 to-sky-600 flex items-center justify-center shadow-md shadow-orange-500/20 text-white font-black text-xl tracking-wider">
               PX
@@ -42,7 +66,7 @@ export default function Navbar({
                   AICTE EoA Scrutiny
                 </span>
               </div>
-              <p className="text-[11px] text-slate-500 truncate max-w-xs sm:max-w-md">
+              <p className="text-[11px] text-slate-500 leading-tight">
                 Regulatory Decision-Support & Multi-Modal Document Intelligence
               </p>
             </div>
@@ -81,16 +105,31 @@ export default function Navbar({
 
           {/* Active Application Selector */}
           {activeApplication && (
-            <div className="hidden 2xl:flex items-center space-x-2 px-3 py-1 rounded-lg bg-slate-50 border border-slate-200 text-xs text-slate-700">
+            <div className="hidden 2xl:flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-slate-50 border border-slate-200 text-xs text-slate-700">
               <Building2 className="w-3.5 h-3.5 text-sky-600" />
               <span className="font-semibold text-slate-900">{activeApplication.application_no}</span>
               <span className="text-slate-300">|</span>
-              <span className="text-slate-600 truncate max-w-[140px]">{activeApplication.institution_name}</span>
+              <span className="text-slate-600 font-medium">{activeApplication.institution_name}</span>
             </div>
           )}
 
           {/* Operational Alert Bell with Drawer */}
           <AlertBellDrawer currentRole={currentRole} />
+
+          {/* Light / Dark Theme Toggle Button */}
+          <button
+            type="button"
+            id="theme-toggle-btn"
+            onClick={toggleTheme}
+            aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+            className="w-10 h-10 min-w-[40px] rounded-[8px] border border-[var(--btn-secondary-border)] bg-[var(--btn-secondary-bg)] hover:bg-[var(--btn-secondary-hover)] text-[var(--text)] flex items-center justify-center cursor-pointer transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--focus)] focus:ring-offset-2 shrink-0 shadow-2xs"
+          >
+            {theme === 'dark' ? (
+              <Sun className="w-[18px] h-[18px] shrink-0 text-[var(--text)]" />
+            ) : (
+              <Moon className="w-[18px] h-[18px] shrink-0 text-[var(--text)]" />
+            )}
+          </button>
 
           {/* Role-Aware Switcher */}
           <div className="flex items-center space-x-1.5 bg-slate-50 p-1 rounded-xl border border-slate-200 shadow-2xs">

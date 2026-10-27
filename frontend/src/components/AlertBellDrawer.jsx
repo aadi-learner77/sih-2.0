@@ -133,7 +133,7 @@ export default function AlertBellDrawer({ currentRole }) {
 
       {/* Flyout Drawer / Modal */}
       {isOpen && (
-        <div className="fixed inset-0 z-50 overflow-hidden bg-slate-900/20 backdrop-blur-xs flex justify-end">
+        <div className="fixed inset-0 z-50 overflow-hidden bg-[rgba(0,0,0,0.15)] backdrop-blur-xs flex justify-end">
           <div className="w-full max-w-lg bg-white h-full shadow-2xl flex flex-col border-l border-slate-200 animate-in slide-in-from-right duration-200">
             
             {/* Header */}
@@ -190,7 +190,7 @@ export default function AlertBellDrawer({ currentRole }) {
                   onClick={() => setActiveView('alerts')}
                   className={`px-3 py-1 rounded-lg font-medium transition-colors ${
                     activeView === 'alerts'
-                      ? 'bg-slate-900 text-white shadow-xs'
+                      ? 'bg-[#E8F1FB] text-[#000000] border border-[#BBD4F0] font-semibold shadow-xs'
                       : 'text-slate-600 hover:bg-slate-100'
                   }`}
                 >
@@ -200,7 +200,7 @@ export default function AlertBellDrawer({ currentRole }) {
                   onClick={() => setActiveView('notifications')}
                   className={`px-3 py-1 rounded-lg font-medium transition-colors ${
                     activeView === 'notifications'
-                      ? 'bg-slate-900 text-white shadow-xs'
+                      ? 'bg-[#E8F1FB] text-[#000000] border border-[#BBD4F0] font-semibold shadow-xs'
                       : 'text-slate-600 hover:bg-slate-100'
                   }`}
                 >
@@ -220,7 +220,7 @@ export default function AlertBellDrawer({ currentRole }) {
                             ? 'bg-rose-600 text-white border-rose-600'
                             : s === 'WARNING'
                             ? 'bg-amber-600 text-white border-amber-600'
-                            : 'bg-slate-800 text-white border-slate-800'
+                            : 'bg-[#E8F1FB] text-[#000000] border-[#BBD4F0]'
                           : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
                       }`}
                     >
@@ -292,8 +292,8 @@ export default function AlertBellDrawer({ currentRole }) {
                         </div>
 
                         {/* Application / College Ref */}
-                        <div className="text-[10px] text-slate-500 flex items-center justify-between pt-1 border-t border-slate-200/60">
-                          <span className="font-semibold text-slate-700 truncate max-w-[240px]">
+                        <div className="text-[10px] text-slate-500 flex flex-wrap items-center justify-between gap-1 pt-1 border-t border-slate-200/60">
+                          <span className="font-semibold text-slate-700">
                             {alert.institution_name || `App #${alert.application_id}`}
                           </span>
                           <span>
@@ -360,7 +360,7 @@ export default function AlertBellDrawer({ currentRole }) {
                         <span className="font-mono text-sky-700">To: {email.to}</span>
                         <span>{email.time}</span>
                       </div>
-                      <div className="font-semibold text-slate-900 truncate">
+                      <div className="font-semibold text-slate-900 leading-snug">
                         {email.subject}
                       </div>
                       <div className="text-[10px] text-slate-500 flex items-center space-x-1.5">

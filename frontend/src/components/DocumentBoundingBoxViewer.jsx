@@ -45,59 +45,59 @@ export default function DocumentBoundingBoxViewer({ documentData, findingId }) {
   return (
     <div className="flex flex-col h-full bg-white border border-slate-200 rounded-2xl shadow-xs overflow-hidden">
       {/* Top Document Metadata Bar */}
-      <div className="bg-slate-900 text-slate-100 px-4 py-3 border-b border-slate-800 flex items-center justify-between gap-3">
-        <div className="flex items-center space-x-2.5 min-w-0">
-          <div className="w-7 h-7 rounded-lg bg-sky-500/20 text-sky-400 flex items-center justify-center shrink-0 border border-sky-400/30">
+      <div className="bg-[#F4F6F8] text-[#000000] px-4 py-3 border-b border-[#D5D9DE] flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center space-x-2.5 min-w-0 flex-1">
+          <div className="w-7 h-7 rounded-lg bg-[#E8F1FB] text-[#000000] flex items-center justify-center shrink-0 border border-[#BBD4F0]">
             <FileText className="w-4 h-4" />
           </div>
-          <div className="min-w-0">
-            <div className="text-xs font-semibold text-slate-100 truncate" title={filename}>
+          <div className="min-w-0 flex-1">
+            <div className="text-xs font-semibold text-[#000000] break-words" title={filename}>
               {filename}
             </div>
-            <div className="text-[10px] text-slate-400 flex items-center space-x-2">
-              <span className="text-sky-300 font-medium">{document_type}</span>
+            <div className="text-[10px] text-[#333333] flex flex-wrap items-center gap-2">
+              <span className="text-[#000000] font-semibold whitespace-nowrap">{document_type}</span>
               <span>•</span>
-              <span>Page {page_number} of {total_pages}</span>
+              <span className="whitespace-nowrap">Page {page_number} of {total_pages}</span>
               <span>•</span>
-              <span className="text-emerald-400 font-mono">ELA: {forensics?.ela_status || 'CLEAN'}</span>
+              <span className="text-emerald-700 font-mono font-bold whitespace-nowrap">ELA: {forensics?.ela_status || 'CLEAN'}</span>
             </div>
           </div>
         </div>
 
         {/* Zoom & View Controls */}
-        <div className="flex items-center space-x-1 shrink-0 bg-slate-800/90 rounded-lg p-1 border border-slate-700">
+        <div className="flex items-center space-x-1 shrink-0 bg-white rounded-[8px] p-1 border border-[#BFC5CC]">
           <button
             onClick={handleZoomOut}
             title="Zoom Out"
-            className="p-1 rounded text-slate-300 hover:text-white hover:bg-slate-700 transition-colors"
+            className="p-1 rounded-[8px] text-[#000000] hover:bg-[#F1F3F5] transition-colors"
           >
             <ZoomOut className="w-3.5 h-3.5" />
           </button>
-          <span className="text-[11px] font-mono px-1.5 text-slate-300">
+          <span className="text-[11px] font-mono px-1.5 text-[#000000] font-bold">
             {Math.round(zoomLevel * 100)}%
           </span>
           <button
             onClick={handleZoomIn}
             title="Zoom In"
-            className="p-1 rounded text-slate-300 hover:text-white hover:bg-slate-700 transition-colors"
+            className="p-1 rounded-[8px] text-[#000000] hover:bg-[#F1F3F5] transition-colors"
           >
             <ZoomIn className="w-3.5 h-3.5" />
           </button>
           <button
             onClick={handleResetZoom}
             title="Reset Zoom"
-            className="p-1 rounded text-slate-300 hover:text-white hover:bg-slate-700 transition-colors"
+            className="p-1 rounded-[8px] text-[#000000] hover:bg-[#F1F3F5] transition-colors"
           >
             <RotateCcw className="w-3.5 h-3.5" />
           </button>
-          <div className="h-3 w-px bg-slate-700 mx-0.5" />
+          <div className="h-3 w-px bg-[#D5D9DE] mx-0.5" />
           <button
             onClick={() => setShowHighlight(!showHighlight)}
             title="Toggle Bounding Box Highlight"
-            className={`px-2 py-0.5 rounded text-[10px] font-medium transition-colors flex items-center space-x-1 ${
+            className={`px-2 py-0.5 rounded-[8px] text-[10px] font-medium transition-colors flex items-center space-x-1 ${
               showHighlight 
-                ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' 
-                : 'text-slate-400 hover:text-white'
+                ? 'bg-[#E8F1FB] text-[#000000] border border-[#BBD4F0]' 
+                : 'text-[#333333] hover:bg-[#F1F3F5]'
             }`}
           >
             <Crosshair className="w-3 h-3" />
@@ -107,7 +107,7 @@ export default function DocumentBoundingBoxViewer({ documentData, findingId }) {
       </div>
 
       {/* Main Document Viewport with Zoom Container */}
-      <div className="flex-1 bg-slate-100/90 p-4 overflow-auto min-h-[460px] max-h-[580px] flex items-center justify-center relative select-none">
+      <div className="flex-1 bg-white p-4 overflow-auto min-h-[460px] max-h-[580px] flex items-center justify-center relative select-none">
         <div 
           className="transition-transform duration-200 origin-center relative shadow-lg rounded-sm"
           style={{ 
@@ -223,7 +223,7 @@ export default function DocumentBoundingBoxViewer({ documentData, findingId }) {
                   </div>
 
                   {/* Tooltip on Hover */}
-                  <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[9px] font-mono px-2 py-1 rounded shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-30">
+                  <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-white text-[#000000] border border-[#D5D9DE] text-[9px] font-mono px-2 py-1 rounded shadow-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-30">
                     Value: "{extracted_field.normalized_value}" • BBox: [{bbox.x}%, {bbox.y}%, {bbox.width}%, {bbox.height}%]
                   </div>
                 </div>
@@ -231,48 +231,48 @@ export default function DocumentBoundingBoxViewer({ documentData, findingId }) {
             </div>
           ) : (
             /* Master Building Plan Visual Scan (for Area finding) */
-            <div className="bg-[#0b1e33] border-2 border-sky-600/40 rounded p-6 font-mono text-cyan-100 text-[10px] leading-relaxed relative min-h-[560px] shadow-md">
+            <div className="bg-white border border-[#D5D9DE] rounded p-6 font-mono text-[#000000] text-[10px] leading-relaxed relative min-h-[560px] shadow-xs">
               {/* Technical Blueprint Grid Pattern */}
               <div 
                 className="absolute inset-0 opacity-15 pointer-events-none"
                 style={{
-                  backgroundImage: 'radial-gradient(rgba(56, 189, 248, 0.4) 1px, transparent 1px)',
+                  backgroundImage: 'radial-gradient(rgba(141, 182, 230, 0.4) 1px, transparent 1px)',
                   backgroundSize: '16px 16px'
                 }}
               />
 
               {/* Blueprint Title Block */}
-              <div className="border border-sky-400/40 p-3 bg-slate-950/60 rounded mb-4 flex justify-between items-center text-[9px]">
+              <div className="border border-[#D5D9DE] p-3 bg-[#F4F6F8] rounded mb-4 flex justify-between items-center text-[9px]">
                 <div>
-                  <div className="text-sky-300 font-bold uppercase tracking-wider">
+                  <div className="text-[#000000] font-bold uppercase tracking-wider">
                     Bruhat Bengaluru Mahanagara Palike (BBMP) - Town Planning Cell
                   </div>
-                  <div className="text-slate-300">MASTER ARCHITECTURAL SITE PLAN & BUILT-UP AREA SCHEDULE</div>
+                  <div className="text-[#333333]">MASTER ARCHITECTURAL SITE PLAN & BUILT-UP AREA SCHEDULE</div>
                 </div>
-                <div className="text-right text-[8px] text-sky-400">
+                <div className="text-right text-[8px] text-[#333333]">
                   <div>DWG NO: BBMP/TP/2023/1820</div>
                   <div>SCALE: 1:500 (METRIC)</div>
                 </div>
               </div>
 
               {/* Architectural Layout Representation */}
-              <div className="border border-dashed border-sky-400/30 rounded p-4 mb-4 bg-sky-950/30 space-y-2 text-[9px]">
-                <div className="flex justify-between border-b border-sky-800/60 pb-1 text-slate-400 font-semibold">
+              <div className="border border-dashed border-[#D5D9DE] rounded p-4 mb-4 bg-[#F4F6F8] space-y-2 text-[9px]">
+                <div className="flex justify-between border-b border-[#D5D9DE] pb-1 text-[#333333] font-semibold">
                   <span>BLOCK ID</span>
                   <span>FLOOR COUNT</span>
                   <span>PLINTH AREA</span>
                 </div>
-                <div className="flex justify-between text-cyan-200">
+                <div className="flex justify-between text-[#000000]">
                   <span>BLOCK A (Admin & Classrooms)</span>
                   <span>G + 3 Floors</span>
                   <span>6,400.00 SQ.M</span>
                 </div>
-                <div className="flex justify-between text-cyan-200">
+                <div className="flex justify-between text-[#000000]">
                   <span>BLOCK B (Advanced Labs)</span>
                   <span>G + 3 Floors</span>
                   <span>5,800.00 SQ.M</span>
                 </div>
-                <div className="flex justify-between text-cyan-200">
+                <div className="flex justify-between text-[#000000]">
                   <span>BLOCK C (Central Auditorium)</span>
                   <span>G + 2 Floors</span>
                   <span>6,000.00 SQ.M</span>
@@ -280,16 +280,16 @@ export default function DocumentBoundingBoxViewer({ documentData, findingId }) {
               </div>
 
               {/* Statutory Built-Up Area Statement */}
-              <div className="my-4 py-2.5 px-3 bg-sky-950/80 border border-sky-400/50 rounded">
-                <div className="text-sky-400 text-[9px] font-bold">TOTAL CERTIFIED INSTRUCTIONAL BUILT-UP AREA:</div>
-                <div className="text-amber-300 font-bold text-xs mt-0.5">
+              <div className="my-4 py-2.5 px-3 bg-[#FFF1CC] border border-[rgba(92,67,0,0.2)] rounded">
+                <div className="text-[#5C4300] text-[9px] font-bold">TOTAL CERTIFIED INSTRUCTIONAL BUILT-UP AREA:</div>
+                <div className="text-[#5C4300] font-bold text-xs mt-0.5">
                   TOTAL PROPOSED BUILT-UP AREA: 18,200.00 SQ.M (BLOCK A, B, C & LAB COMPLEX)
                 </div>
               </div>
 
-              <div className="text-[8px] text-slate-400 mt-6 pt-3 border-t border-sky-900/80 flex justify-between">
+              <div className="text-[8px] text-[#333333] mt-6 pt-3 border-t border-[#D5D9DE] flex justify-between">
                 <span>LICENSED ARCHITECT: REG. CA/2012/58102</span>
-                <span className="text-emerald-400 font-bold">✓ SANCTIONED UNDER KTCP ACT 1961</span>
+                <span className="text-emerald-700 font-bold">✓ SANCTIONED UNDER KTCP ACT 1961</span>
               </div>
 
               {/* INTERACTIVE BOUNDING BOX FOR AREA */}

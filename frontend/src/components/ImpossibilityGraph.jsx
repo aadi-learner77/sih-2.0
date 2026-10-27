@@ -202,58 +202,58 @@ export default function ImpossibilityGraph() {
           </div>
 
           {/* Interactive SVG Graph Rendering */}
-          <div className="relative bg-slate-50 border border-slate-200/80 rounded-xl p-4 h-96 flex items-center justify-center overflow-hidden">
+          <div className="relative bg-white border border-[var(--border)] rounded-xl p-4 h-96 flex items-center justify-center overflow-hidden">
             <svg className="w-full h-full" viewBox="0 0 600 360">
               {/* Conflict Connection Lines */}
-              <line x1="160" y1="100" x2="300" y2="180" stroke="#e11d48" strokeWidth="2.5" strokeDasharray="5,5" className="animate-pulse" />
-              <line x1="440" y1="100" x2="300" y2="180" stroke="#e11d48" strokeWidth="2.5" strokeDasharray="5,5" className="animate-pulse" />
+              <line x1="160" y1="100" x2="300" y2="180" stroke="var(--graph-risk)" strokeWidth="2.5" strokeDasharray="5,5" className="animate-pulse" />
+              <line x1="440" y1="100" x2="300" y2="180" stroke="var(--graph-risk)" strokeWidth="2.5" strokeDasharray="5,5" className="animate-pulse" />
               
-              <line x1="160" y1="100" x2="160" y2="280" stroke="#0284c7" strokeWidth="1.5" />
-              <line x1="440" y1="100" x2="440" y2="280" stroke="#059669" strokeWidth="1.5" />
+              <line x1="160" y1="100" x2="160" y2="280" stroke="var(--graph-edge)" strokeWidth="1.5" />
+              <line x1="440" y1="100" x2="440" y2="280" stroke="var(--graph-edge)" strokeWidth="1.5" />
 
               {/* Edge Labels */}
-              <rect x="200" y="130" width="85" height="18" rx="4" fill="#ffffff" stroke="#cbd5e1" />
-              <text x="242" y="143" fill="#334155" fontSize="8" textAnchor="middle" fontWeight="bold">employs (Full-Time)</text>
+              <rect x="200" y="130" width="85" height="18" rx="4" fill="var(--surface)" stroke="var(--border)" />
+              <text x="242" y="143" fill="var(--graph-label)" fontSize="8" textAnchor="middle" fontWeight="bold">employs (Full-Time)</text>
 
-              <rect x="330" y="130" width="85" height="18" rx="4" fill="#ffffff" stroke="#cbd5e1" />
-              <text x="372" y="143" fill="#334155" fontSize="8" textAnchor="middle" fontWeight="bold">employs (Full-Time)</text>
+              <rect x="330" y="130" width="85" height="18" rx="4" fill="var(--surface)" stroke="var(--border)" />
+              <text x="372" y="143" fill="var(--graph-label)" fontSize="8" textAnchor="middle" fontWeight="bold">employs (Full-Time)</text>
 
               {/* Node 1: Apex Institute */}
               <g transform="translate(160, 100)" className="cursor-pointer">
-                <circle r="36" fill="#ffffff" stroke="#0284c7" strokeWidth="2.5" />
-                <Building2 x="-12" y="-20" className="w-6 h-6 text-sky-600" />
-                <text y="8" fill="#0f172a" fontSize="9" fontWeight="bold" textAnchor="middle">Apex Tech</text>
-                <text y="20" fill="#64748b" fontSize="8" textAnchor="middle">Bengaluru</text>
+                <circle r="36" fill="var(--graph-node)" stroke="var(--graph-node-stroke)" strokeWidth="1" />
+                <Building2 x="-12" y="-20" className="w-6 h-6 text-[var(--graph-label)]" />
+                <text y="8" fill="var(--graph-label)" fontSize="9" fontWeight="bold" textAnchor="middle">Apex Tech</text>
+                <text y="20" fill="var(--text-muted)" fontSize="8" textAnchor="middle">Bengaluru</text>
               </g>
 
               {/* Node 2: Royal College */}
               <g transform="translate(440, 100)" className="cursor-pointer">
-                <circle r="36" fill="#ffffff" stroke="#0284c7" strokeWidth="2.5" />
-                <Building2 x="-12" y="-20" className="w-6 h-6 text-sky-600" />
-                <text y="8" fill="#0f172a" fontSize="9" fontWeight="bold" textAnchor="middle">Royal College</text>
-                <text y="20" fill="#64748b" fontSize="8" textAnchor="middle">Mysuru</text>
+                <circle r="36" fill="var(--graph-node)" stroke="var(--graph-node-stroke)" strokeWidth="1" />
+                <Building2 x="-12" y="-20" className="w-6 h-6 text-[var(--graph-label)]" />
+                <text y="8" fill="var(--graph-label)" fontSize="9" fontWeight="bold" textAnchor="middle">Royal College</text>
+                <text y="20" fill="var(--text-muted)" fontSize="8" textAnchor="middle">Mysuru</text>
               </g>
 
               {/* Center Conflict Node: Faculty */}
               <g transform="translate(300, 180)" className="cursor-pointer">
-                <circle r="32" fill="#ffe4e6" stroke="#e11d48" strokeWidth="3" className="animate-pulse" />
-                <Users x="-10" y="-16" className="w-5 h-5 text-rose-700" />
-                <text y="6" fill="#881337" fontSize="8" fontWeight="bold" textAnchor="middle">Dr. R. K. Sharma</text>
-                <text y="16" fill="#be123c" fontSize="7" textAnchor="middle">AB****89C</text>
+                <circle r="32" fill="var(--graph-risk)" stroke="#be123c" strokeWidth="1.5" className="animate-pulse" />
+                <Users x="-10" y="-16" className="w-5 h-5 text-[var(--graph-label)]" />
+                <text y="6" fill="var(--graph-label)" fontSize="8" fontWeight="bold" textAnchor="middle">Dr. R. K. Sharma</text>
+                <text y="16" fill="var(--text-muted)" fontSize="7" textAnchor="middle">AB****89C</text>
               </g>
 
               {/* Document Node */}
               <g transform="translate(160, 280)" className="cursor-pointer">
-                <rect x="-35" y="-18" width="70" height="36" rx="6" fill="#fffbeb" stroke="#d97706" strokeWidth="2" />
-                <text y="-2" fill="#78350f" fontSize="8" fontWeight="bold" textAnchor="middle">Fire Safety NOC</text>
-                <text y="10" fill="#b45309" fontSize="7" textAnchor="middle">FIR/KA/99102</text>
+                <rect x="-35" y="-18" width="70" height="36" rx="6" fill="var(--warning-bg)" stroke="var(--border)" strokeWidth="1" />
+                <text y="-2" fill="var(--warning-text)" fontSize="8" fontWeight="bold" textAnchor="middle">Fire Safety NOC</text>
+                <text y="10" fill="var(--warning-text)" fontSize="7" textAnchor="middle">FIR/KA/99102</text>
               </g>
 
               {/* Lab Node */}
               <g transform="translate(440, 280)" className="cursor-pointer">
-                <rect x="-35" y="-18" width="70" height="36" rx="6" fill="#ecfdf5" stroke="#059669" strokeWidth="2" />
-                <text y="-2" fill="#064e3b" fontSize="8" fontWeight="bold" textAnchor="middle">Mech Workshop</text>
-                <text y="10" fill="#047857" fontSize="7" textAnchor="middle">Lathe, Milling, UTM</text>
+                <rect x="-35" y="-18" width="70" height="36" rx="6" fill="var(--success-bg)" stroke="var(--border)" strokeWidth="1" />
+                <text y="-2" fill="var(--success-text)" fontSize="8" fontWeight="bold" textAnchor="middle">Mech Workshop</text>
+                <text y="10" fill="var(--success-text)" fontSize="7" textAnchor="middle">Lathe, Milling, UTM</text>
               </g>
             </svg>
 
@@ -347,7 +347,7 @@ export default function ImpossibilityGraph() {
                     </div>
 
                     {showJsonMap[idx] && (
-                      <pre className="mt-2 p-2 rounded bg-slate-900 text-slate-200 font-mono text-[10px] overflow-x-auto max-h-40">
+                      <pre className="mt-2 p-2 rounded bg-[#F4F6F8] text-[#000000] border border-[#D5D9DE] font-mono text-[10px] overflow-x-auto max-h-40">
                         {JSON.stringify(anomaly.conflicting_subgraph, null, 2)}
                       </pre>
                     )}

@@ -77,49 +77,51 @@ export default function App() {
         />
 
         {/* Main Content Workspace */}
-        <main className="flex-1 overflow-y-auto p-6 md:p-8 space-y-6 bg-slate-50/60">
-          {activeTab === 'dashboard' && (
-            <Dashboard 
-              applications={isLiveMode ? applications : []}
-              onSelectApplication={handleSelectApplication}
-              onNavigateTab={setActiveTab}
-              onRefresh={loadData}
-              isLiveMode={isLiveMode}
-              currentRole={currentRole}
-            />
-          )}
+        <main className="flex-1 overflow-y-auto bg-slate-50/60 p-4 sm:p-6 lg:p-8">
+          <div className="max-w-[1440px] mx-auto w-full flex flex-col gap-6">
+            {activeTab === 'dashboard' && (
+              <Dashboard 
+                applications={isLiveMode ? applications : []}
+                onSelectApplication={handleSelectApplication}
+                onNavigateTab={setActiveTab}
+                onRefresh={loadData}
+                isLiveMode={isLiveMode}
+                currentRole={currentRole}
+              />
+            )}
 
-          {activeTab === 'evidence-lens' && (
-            <EvidenceLens 
-              evidenceLensData={evidenceLensData} 
-              onRefresh={loadData}
-            />
-          )}
+            {activeTab === 'evidence-lens' && (
+              <EvidenceLens 
+                evidenceLensData={evidenceLensData} 
+                onRefresh={loadData}
+              />
+            )}
 
-          {activeTab === 'impossibility-engine' && (
-            <ImpossibilityGraph />
-          )}
+            {activeTab === 'impossibility-engine' && (
+              <ImpossibilityGraph />
+            )}
 
-          {activeTab === 'photo-radar' && (
-            <PhotoReuseRadar 
-              onNavigateTab={setActiveTab}
-              onSelectApplication={handleSelectApplication}
-            />
-          )}
+            {activeTab === 'photo-radar' && (
+              <PhotoReuseRadar 
+                onNavigateTab={setActiveTab}
+                onSelectApplication={handleSelectApplication}
+              />
+            )}
 
-          {activeTab === 'regulations' && (
-            <RuleConfigPage />
-          )}
+            {activeTab === 'regulations' && (
+              <RuleConfigPage />
+            )}
 
-          {activeTab === 'preflight' && (
-            <PreFlightScorecard 
-              onNavigateToEvidenceLens={() => setActiveTab('evidence-lens')}
-            />
-          )}
+            {activeTab === 'preflight' && (
+              <PreFlightScorecard 
+                onNavigateToEvidenceLens={() => setActiveTab('evidence-lens')}
+              />
+            )}
 
-          {activeTab === 'audit-ledger' && (
-            <AuditAndReceiptsPage activeApplicationId={activeApplication?.id || 1} />
-          )}
+            {activeTab === 'audit-ledger' && (
+              <AuditAndReceiptsPage activeApplicationId={activeApplication?.id || 1} />
+            )}
+          </div>
         </main>
       </div>
 

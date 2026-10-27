@@ -11,23 +11,53 @@ import { Network as NetworkIcon, AlertTriangle, ShieldAlert, ZoomIn, ZoomOut, Ro
 export default function ConflictingSubgraphNetwork({ subgraph }) {
   const containerRef = useRef(null);
   const networkRef = useRef(null);
+  const [, setThemeVersion] = React.useState(0);
+
+  React.useEffect(() => {
+    const handleThemeChange = () => setThemeVersion(v => v + 1);
+    window.addEventListener('themechange', handleThemeChange);
+
+    const observer = new MutationObserver((mutations) => {
+      for (const m of mutations) {
+        if (m.attributeName === 'data-theme') {
+          setThemeVersion(v => v + 1);
+        }
+      }
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+    return () => {
+      window.removeEventListener('themechange', handleThemeChange);
+      observer.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     if (!containerRef.current || !subgraph) return;
 
+    const computed = typeof window !== 'undefined' ? getComputedStyle(document.documentElement) : null;
+    const graphNode = computed?.getPropertyValue('--graph-node').trim() || '#6FA8DC';
+    const graphNodeStroke = computed?.getPropertyValue('--graph-node-stroke').trim() || '#3D6FA3';
+    const graphRisk = computed?.getPropertyValue('--graph-risk').trim() || '#E58A82';
+    const graphEdge = computed?.getPropertyValue('--graph-edge').trim() || '#8A94A0';
+    const graphLabel = computed?.getPropertyValue('--graph-label').trim() || '#000000';
+    const surface = computed?.getPropertyValue('--surface').trim() || '#FFFFFF';
+    const border = computed?.getPropertyValue('--border').trim() || '#D5D9DE';
+    const warningBg = computed?.getPropertyValue('--warning-bg').trim() || '#FFF1CC';
+
     // Convert nodes to vis.js format with vibrant, professional styles
     const nodes = new DataSet(
       (subgraph.nodes || []).map((node) => {
-        let bgColor = '#0284c7';
-        let borderColor = '#0369a1';
-        let fontColor = '#ffffff';
+        let bgColor = graphNode;
+        let borderColor = graphNodeStroke;
+        let fontColor = graphLabel;
 
         if (node.group === 'faculty') {
-          bgColor = '#e11d48';
+          bgColor = graphRisk;
           borderColor = '#be123c';
         } else if (node.group === 'document') {
-          bgColor = '#d97706';
-          borderColor = '#b45309';
+          bgColor = warningBg;
+          borderColor = border;
         }
 
         return {
@@ -36,14 +66,14 @@ export default function ConflictingSubgraphNetwork({ subgraph }) {
           color: {
             background: node.color || bgColor,
             border: borderColor,
-            highlight: { background: '#f43f5e', border: '#be123c' },
+            highlight: { background: graphRisk, border: '#be123c' },
           },
           shape: node.shape || (node.group === 'faculty' ? 'dot' : 'box'),
           size: node.size || 24,
-          font: { color: fontColor, size: 11, face: 'Inter, sans-serif', bold: true },
+          font: { color: fontColor, size: 11, face: 'Arial, sans-serif', bold: true },
           margin: 10,
-          borderWidth: 2,
-          shadow: { enabled: true, color: 'rgba(0,0,0,0.1)', size: 4, x: 2, y: 2 },
+          borderWidth: 1,
+          shadow: { enabled: true, color: 'rgba(0,0,0,0.08)', size: 4, x: 1, y: 2 },
         };
       })
     );
@@ -55,8 +85,8 @@ export default function ConflictingSubgraphNetwork({ subgraph }) {
         from: edge.from,
         to: edge.to,
         label: edge.label,
-        font: { size: 9, color: '#334155', background: '#ffffff', strokeWidth: 0 },
-        color: { color: edge.color || '#e11d48', highlight: '#f43f5e' },
+        font: { size: 9, color: graphLabel, background: surface, strokeWidth: 0 },
+        color: { color: edge.color || graphEdge, highlight: graphRisk },
         dashes: edge.dashes || false,
         width: edge.width || 2,
         arrows: { to: { enabled: true, scaleFactor: 0.8 } },
@@ -115,40 +145,40 @@ export default function ConflictingSubgraphNetwork({ subgraph }) {
   return (
     <div className="flex flex-col h-full bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
       {/* Subgraph Header */}
-      <div className="p-3.5 bg-white border-b border-slate-200 flex items-center justify-between">
+      <div className="p-3.5 bg-[#F4F6F8] border-b border-[#D5D9DE] flex items-center justify-between">
         <div className="flex items-center space-x-2">
-          <div className="w-7 h-7 rounded-lg bg-rose-100 text-rose-700 flex items-center justify-center">
+          <div className="w-7 h-7 rounded-lg bg-[#E8F1FB] text-[#000000] flex items-center justify-center border border-[#BBD4F0]">
             <NetworkIcon className="w-4 h-4" />
           </div>
           <div>
-            <h4 className="text-xs font-bold text-slate-900">
+            <h4 className="text-xs font-bold text-[#000000]">
               Conflicting Subgraph Topology
             </h4>
-            <p className="text-[10px] text-slate-500">
+            <p className="text-[10px] text-[#333333]">
               vis-network Force-Directed Multi-Institutional Map
             </p>
           </div>
         </div>
 
         {/* Zoom Controls */}
-        <div className="flex items-center space-x-1">
+        <div className="flex items-center space-x-1 bg-white rounded-[8px] p-1 border border-[#BFC5CC]">
           <button
             onClick={handleZoomIn}
-            className="p-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs"
+            className="p-1 rounded-[8px] text-[#000000] hover:bg-[#F1F3F5] transition-colors"
             title="Zoom In"
           >
             <ZoomIn className="w-3.5 h-3.5" />
           </button>
           <button
             onClick={handleZoomOut}
-            className="p-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs"
+            className="p-1 rounded-[8px] text-[#000000] hover:bg-[#F1F3F5] transition-colors"
             title="Zoom Out"
           >
             <ZoomOut className="w-3.5 h-3.5" />
           </button>
           <button
             onClick={handleFit}
-            className="p-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs"
+            className="p-1 rounded-[8px] text-[#000000] hover:bg-[#F1F3F5] transition-colors"
             title="Fit Graph"
           >
             <RotateCcw className="w-3.5 h-3.5" />
@@ -167,7 +197,7 @@ export default function ConflictingSubgraphNetwork({ subgraph }) {
       {/* Vis Network Canvas Mount */}
       <div 
         ref={containerRef} 
-        className="flex-1 w-full min-h-[420px] bg-slate-900/5 cursor-grab active:cursor-grabbing"
+        className="flex-1 w-full min-h-[420px] bg-white cursor-grab active:cursor-grabbing"
       />
 
       {/* Legend & Details Footer */}

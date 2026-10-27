@@ -14,11 +14,11 @@ import time
 import httpx
 from typing import Dict, Any, List
 
-MOCK_ISSUER_URL = os.getenv("MOCK_ISSUER_URL")
+MOCK_ISSUER_URL = os.getenv("MOCK_ISSUER_URL", "http://127.0.0.1:8001")
 
 class MockIssuerGateway:
     def __init__(self, base_url: str = MOCK_ISSUER_URL):
-        self.base_url = base_url.rstrip("/") if base_url else None
+        self.base_url = base_url.rstrip("/") if base_url else "http://127.0.0.1:8001"
 
     def _query_remote_service(self, endpoint: str, payload: Dict[str, Any]) -> Dict[str, Any] | None:
         """Attempts HTTP query to the standalone mock-issuer container if reachable."""

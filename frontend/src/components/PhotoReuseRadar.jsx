@@ -358,8 +358,8 @@ export default function PhotoReuseRadar({ onNavigateTab, onSelectApplication }) 
                     onClick={() => setSelectedPairId(pair.id)}
                     className={`px-2.5 py-1 rounded-lg text-xs font-medium border transition-all ${
                       selectedPairId === pair.id
-                        ? 'bg-slate-900 border-slate-900 text-white font-bold'
-                        : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
+                        ? 'bg-[#E8F1FB] border-[#BBD4F0] text-[#000000] font-bold'
+                        : 'bg-white border-[#D5D9DE] text-[#333333] hover:bg-[#F4F6F8]'
                     }`}
                   >
                     <span>{pair.category}</span>

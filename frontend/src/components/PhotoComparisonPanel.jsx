@@ -60,17 +60,17 @@ export default function PhotoComparisonPanel({
   return (
     <div className="flex flex-col h-full bg-white border border-slate-200 rounded-2xl shadow-xs overflow-hidden">
       {/* Side Panel Header */}
-      <div className="p-4 bg-slate-900 text-slate-100 border-b border-slate-800 flex items-center justify-between gap-3">
+      <div className="p-4 bg-[#F4F6F8] text-[#000000] border-b border-[#D5D9DE] flex items-center justify-between gap-3">
         <div className="min-w-0">
-          <div className="flex items-center space-x-2 text-[10px] text-amber-400 uppercase font-mono font-bold tracking-wider mb-0.5">
+          <div className="inline-flex items-center space-x-2 text-[10px] bg-[#E8F1FB] text-[#000000] border border-[#BBD4F0] px-2 py-0.5 rounded uppercase font-bold tracking-wider mb-1">
             <span>Photo Reuse Inspection</span>
             <span>•</span>
-            <span>{pairData.id}</span>
+            <span className="font-mono">{pairData.id}</span>
           </div>
-          <h2 className="text-sm font-bold text-white truncate" title={pairData.title}>
+          <h2 className="text-sm font-bold text-[#000000] leading-snug" title={pairData.title}>
             {pairData.title}
           </h2>
-          <div className="text-[11px] text-slate-400 truncate">
+          <div className="text-[11px] text-[#333333] leading-snug">
             {pairData.category}
           </div>
         </div>
@@ -79,12 +79,12 @@ export default function PhotoComparisonPanel({
         <div className="shrink-0 text-right">
           <span className={`text-[11px] font-black px-2.5 py-1 rounded-md border ${
             pairData.similarity_score >= 95
-              ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
-              : 'bg-amber-500/20 text-amber-300 border-amber-500/40'
+              ? 'bg-[#FBE3E1] text-[#7A1A12] border-[rgba(122,26,18,0.2)]'
+              : 'bg-[#FFF1CC] text-[#5C4300] border-[rgba(92,67,0,0.2)]'
           }`}>
             {pairData.similarity_score}% Match
           </span>
-          <div className="text-[10px] text-slate-400 mt-0.5 font-mono">
+          <div className="text-[10px] text-[#333333] mt-0.5 font-mono font-bold">
             d={pairData.hamming_distance} / 64
           </div>
         </div>
@@ -160,13 +160,13 @@ export default function PhotoComparisonPanel({
                   <span className="font-mono text-slate-500">{original_photo.academic_year}</span>
                 </div>
 
-                <div className="relative aspect-[4/3] bg-slate-900 overflow-hidden group">
+                <div className="relative aspect-[4/3] bg-[#F4F6F8] overflow-hidden group">
                   <img 
                     src={original_photo.image_url} 
                     alt={original_photo.facility_name} 
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
-                  <div className="absolute bottom-2 left-2 bg-slate-900/80 text-white text-[9px] font-mono px-2 py-0.5 rounded backdrop-blur-xs">
+                  <div className="absolute bottom-2 left-2 bg-white/95 text-[#000000] border border-[#D5D9DE] text-[9px] font-mono px-2 py-0.5 rounded shadow-xs">
                     {original_photo.file_name}
                   </div>
                 </div>
@@ -198,7 +198,7 @@ export default function PhotoComparisonPanel({
                   <span className="font-mono text-rose-700">{duplicate_photo.academic_year}</span>
                 </div>
 
-                <div className="relative aspect-[4/3] bg-slate-900 overflow-hidden group">
+                <div className="relative aspect-[4/3] bg-[#F4F6F8] overflow-hidden group">
                   <img 
                     src={duplicate_photo.image_url} 
                     alt={duplicate_photo.facility_name} 
@@ -207,7 +207,7 @@ export default function PhotoComparisonPanel({
                   <div className="absolute top-2 right-2 bg-rose-600 text-white text-[9px] font-bold px-2 py-0.5 rounded shadow-sm">
                     {pairData.similarity_score}% RE-USE
                   </div>
-                  <div className="absolute bottom-2 left-2 bg-slate-900/80 text-white text-[9px] font-mono px-2 py-0.5 rounded backdrop-blur-xs">
+                  <div className="absolute bottom-2 left-2 bg-white/95 text-[#000000] border border-[#D5D9DE] text-[9px] font-mono px-2 py-0.5 rounded shadow-xs">
                     {duplicate_photo.file_name}
                   </div>
                 </div>
@@ -236,19 +236,19 @@ export default function PhotoComparisonPanel({
         {/* 2. DIFFERENCE OVERLAY / ELA HEATMAP VIEW */}
         {viewMode === 'difference_overlay' && (
           <div className="space-y-3">
-            <div className="bg-slate-900 rounded-xl p-3 text-slate-200 text-xs">
+            <div className="bg-[#F4F6F8] border border-[#D5D9DE] rounded-xl p-3 text-[#000000] text-xs">
               <div className="flex items-center justify-between mb-2">
-                <span className="font-bold text-amber-400 flex items-center space-x-1.5">
+                <span className="font-bold text-[#000000] flex items-center space-x-1.5">
                   <Layers className="w-3.5 h-3.5" />
                   <span>Pixel Difference & Forensic ELA Divergence Heatmap</span>
                 </span>
-                <span className="text-[10px] font-mono bg-slate-800 px-2 py-0.5 rounded text-slate-300">
+                <span className="text-[10px] font-mono bg-white border border-[#D5D9DE] px-2 py-0.5 rounded text-[#333333]">
                   Opacity: {overlayOpacity}%
                 </span>
               </div>
 
               {/* Overlay Canvas Viewport */}
-              <div className="relative aspect-[4/3] rounded-lg overflow-hidden border border-slate-700 bg-black">
+              <div className="relative aspect-[4/3] rounded-lg overflow-hidden border border-[#D5D9DE] bg-white">
                 {/* Base Image (Original) */}
                 <img 
                   src={original_photo.image_url} 
@@ -283,14 +283,14 @@ export default function PhotoComparisonPanel({
                   </span>
                 </div>
 
-                <div className="absolute bottom-2 right-2 bg-black/80 text-white text-[9px] font-mono px-2 py-1 rounded backdrop-blur-xs">
+                <div className="absolute bottom-2 right-2 bg-white/95 text-[#000000] border border-[#D5D9DE] text-[9px] font-mono px-2 py-1 rounded shadow-xs">
                   Difference Blend Mode • Inverted Pixel Channel
                 </div>
               </div>
 
               {/* Opacity Slider */}
               <div className="mt-3 flex items-center space-x-3 text-[11px]">
-                <span className="text-slate-400">Blend Slider:</span>
+                <span className="text-[#333333]">Blend Slider:</span>
                 <input 
                   type="range" 
                   min="10" 
@@ -299,7 +299,7 @@ export default function PhotoComparisonPanel({
                   onChange={(e) => setOverlayOpacity(Number(e.target.value))}
                   className="flex-1 accent-amber-500 cursor-pointer"
                 />
-                <span className="font-mono text-slate-300 w-10 text-right">{overlayOpacity}%</span>
+                <span className="font-mono text-[#000000] w-10 text-right">{overlayOpacity}%</span>
               </div>
             </div>
 
@@ -312,19 +312,19 @@ export default function PhotoComparisonPanel({
         {/* 3. WIPE SLIDER COMPARISON VIEW */}
         {viewMode === 'wipe_slider' && (
           <div className="space-y-3">
-            <div className="bg-slate-900 rounded-xl p-3 text-slate-200 text-xs">
+            <div className="bg-[#F4F6F8] border border-[#D5D9DE] rounded-xl p-3 text-[#000000] text-xs">
               <div className="flex items-center justify-between mb-2">
-                <span className="font-bold text-sky-400 flex items-center space-x-1.5">
+                <span className="font-bold text-[#000000] flex items-center space-x-1.5">
                   <Sliders className="w-3.5 h-3.5" />
                   <span>Interactive Split Wipe Slider (Original ⟷ Reused)</span>
                 </span>
-                <span className="text-[10px] font-mono text-slate-400">
+                <span className="text-[10px] font-mono text-[#333333]">
                   Drag slider to wipe
                 </span>
               </div>
 
               {/* Wipe Viewport */}
-              <div className="relative aspect-[4/3] rounded-lg overflow-hidden border border-slate-700 select-none cursor-ew-resize">
+              <div className="relative aspect-[4/3] rounded-lg overflow-hidden border border-[#D5D9DE] select-none cursor-ew-resize">
                 {/* Background: Duplicate Image (Right Side) */}
                 <img 
                   src={duplicate_photo.image_url} 
@@ -343,7 +343,7 @@ export default function PhotoComparisonPanel({
                     className="absolute inset-0 w-full h-full object-cover max-w-none"
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />
-                  <div className="absolute top-2 left-2 bg-slate-900/80 text-white text-[9px] font-bold px-2 py-0.5 rounded">
+                  <div className="absolute top-2 left-2 bg-white/95 text-[#000000] border border-[#D5D9DE] text-[9px] font-bold px-2 py-0.5 rounded shadow-xs">
                     Original (Royal College)
                   </div>
                 </div>
@@ -365,7 +365,7 @@ export default function PhotoComparisonPanel({
 
               {/* Slider Control */}
               <div className="mt-3 flex items-center space-x-3 text-[11px]">
-                <span className="text-slate-400">Position:</span>
+                <span className="text-[#333333]">Position:</span>
                 <input 
                   type="range" 
                   min="5" 
@@ -374,7 +374,7 @@ export default function PhotoComparisonPanel({
                   onChange={(e) => setWipePosition(Number(e.target.value))}
                   className="flex-1 accent-sky-500 cursor-pointer"
                 />
-                <span className="font-mono text-slate-300 w-10 text-right">{wipePosition}%</span>
+                <span className="font-mono text-[#000000] w-10 text-right">{wipePosition}%</span>
               </div>
             </div>
           </div>
@@ -430,7 +430,7 @@ export default function PhotoComparisonPanel({
             >
               <div className="min-w-0 pr-1">
                 <div className="text-[10px] text-slate-500 font-mono">Origin Application</div>
-                <div className="font-bold truncate text-slate-900">{original_photo.institution_name}</div>
+                <div className="font-bold text-slate-900 leading-snug">{original_photo.institution_name}</div>
                 <div className="text-[10px] text-sky-700 font-mono">{original_photo.application_no}</div>
               </div>
               <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-sky-600 shrink-0" />
@@ -444,7 +444,7 @@ export default function PhotoComparisonPanel({
             >
               <div className="min-w-0 pr-1">
                 <div className="text-[10px] text-rose-600 font-mono font-bold">Current Flagged Dossier</div>
-                <div className="font-bold truncate text-slate-900">{duplicate_photo.institution_name}</div>
+                <div className="font-bold text-slate-900 leading-snug">{duplicate_photo.institution_name}</div>
                 <div className="text-[10px] text-rose-700 font-mono">{duplicate_photo.application_no}</div>
               </div>
               <ExternalLink className="w-3.5 h-3.5 text-rose-500 group-hover:text-rose-700 shrink-0" />
@@ -455,9 +455,9 @@ export default function PhotoComparisonPanel({
           <button
             onClick={() => onOpenEvidenceLens && onOpenEvidenceLens(pairData)}
             id="jump-to-evidence-lens-btn"
-            className="w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all shadow-xs flex items-center justify-center space-x-2 cursor-pointer"
+            className="w-full py-2.5 px-4 rounded-xl bg-[#CFE3FA] hover:bg-[#B9D6F5] text-[#000000] border border-[#8DB6E6] text-xs font-bold transition-all shadow-xs flex items-center justify-center space-x-2 cursor-pointer"
           >
-            <FileText className="w-4 h-4 text-sky-400" />
+            <FileText className="w-4 h-4 text-[#000000]" />
             <span>Open Finding in Evidence Lens Regulatory Strip</span>
             <ChevronRight className="w-3.5 h-3.5" />
           </button>
