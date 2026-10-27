@@ -62,7 +62,7 @@ PRAMAAN-X is an AI-powered regulatory decision-support system engineered for the
 ### 7. Hash-Chained, Tamper-Evident "Verification Receipts" Audit Ledger
 - Cryptographic hash-chain where every audit event (upload, OCR, verification check, rule evaluation, officer decision) creates a cryptographically linked receipt block:
   $$\text{Receipt Hash} = \text{SHA-256}(\text{Index} \parallel \text{Timestamp} \parallel \text{Event} \parallel \text{Actor} \parallel \text{Payload Hash} \parallel \text{Prev Hash})$$
-- Digitally signed with HMAC-SHA256.
+- Digitally signed with Ed25519 asymmetric cryptography (RFC 8032), with private signing keys stored securely outside the repository and public key certificate verification.
 - Interactive chain integrity verifier and tampering simulation to prove breach detection.
 
 ### 8. Evidence Lens & Pre-Flight Readiness Scorecard
@@ -75,24 +75,41 @@ PRAMAAN-X is an AI-powered regulatory decision-support system engineered for the
 ## 🏗 System Architecture
 
 ```mermaid
-graph TD
-    UI[React + Tailwind CSS Frontend] -->|REST / JSON| API[FastAPI Backend Application]
-    
-    subgraph Backend Core
-        API --> CL[Checklist Engine]
-        API --> OCR[Modular OCR Intelligence]
-        API --> RAC[Regulation-as-Code Engine]
-        API --> IMP[NetworkX Impossibility Engine]
-        API --> FOR[Forensics & Photo Radar]
-        API --> EXT[Mock Issuer Gateways]
-        API --> LEDGER[Hash-Chained Audit Ledger]
+graph TB
+    subgraph Client Layer
+        UI["React 18 + Tailwind CSS Web Dashboard<br/>• Evidence Lens & Finding Review<br/>• Regulation-as-Code What-If Simulator<br/>• Photo Reuse Radar & Campus Map<br/>• Ed25519 Audit Chain & Tamper Demo<br/>• Pre-Flight Readiness & Rectification Flow<br/>• Geospatial Multi-Campus Inspection Planner"]
     end
 
-    subgraph Data Layer
-        LEDGER --> DB[(SQLite / PostgreSQL)]
-        RAC --> YAML[YAML Handbook Rules]
-        IMP --> KG[(Knowledge Graph)]
+    subgraph API & Gateway Layer
+        API["FastAPI Regulatory Backend (Port 8000)<br/>• Role-Based Access Control (RBAC & JWT)<br/>• Non-Punitive Safeguard Enforcer<br/>• Adverse Status Impossibility Guard"]
     end
+
+    subgraph Analytical Core
+        INGEST["Ingestion & OCR Pipeline<br/>• Multi-Page Rendering & PaddleOCR<br/>• Deterministic Heuristic Boundary Normalizer"]
+        RAC["Regulation-as-Code Engine<br/>• Declarative YAML Handbook Rule Packs<br/>• JSON Schema Verification & Hot Reload<br/>• Cohort What-If Dry-Run Simulator"]
+        IMP["Impossibility Engine (NetworkX)<br/>• Cross-Institution Faculty Dual-Employment<br/>• Land Parcel Title Overlap Collision<br/>• Physical Floor-to-Student Area Norms"]
+        FORENSIC["Digital Forensics & Photo Radar<br/>• Metadata Tampering & ELA Heatmaps<br/>• Copy-Move Cloned Stamp Detection<br/>• 64-bit pHash + OpenCLIP Embeddings"]
+        CONNECTOR["Statutory Issuer Connector Framework<br/>• Multi-Channel Gateway Dispatcher<br/>• Offline & Timeout Resilient Failover<br/>• ManualReviewQueue Routing"]
+    end
+
+    subgraph External Simulation Layer
+        MOCK["Mock Statutory Issuer Service (Port 8001)<br/>• State Fire & Emergency Services<br/>• University Affiliation Directorate<br/>• National Board of Accreditation (NBA)<br/>• State Revenue & Land Records (Bhoomi)"]
+    end
+
+    subgraph Persistence & Audit Ledger
+        DB[("Application Database<br/>(PostgreSQL / SQLite)")]
+        RECEIPTS[("Append-Only Verification Receipt Ledger<br/>• SHA-256 Chained Blocks<br/>• Ed25519 Asymmetric Digital Signatures")]
+    end
+
+    UI -->|REST / JSON & JWT Bearer| API
+    API --> INGEST
+    API --> RAC
+    API --> IMP
+    API --> FORENSIC
+    API --> CONNECTOR
+    CONNECTOR -->|HTTP & API Key Auth| MOCK
+    API --> DB
+    API --> RECEIPTS
 ```
 
 ---
@@ -102,33 +119,46 @@ graph TD
 ### Prerequisites
 - Python 3.11+
 - Node.js v18+ and npm
+- Docker & Docker Compose (optional for containerized deployment)
 
-### Method 1: Local Development (Instant, Zero-Docker SQLite)
-1. **Activate Backend**:
-   ```powershell
-   # In project root
-   .\venv\Scripts\uvicorn backend.app.main:app --reload --host 127.0.0.1 --port 8000
-   # Or run:
-   .\run_backend.bat
-   ```
-   API Docs available at: `http://localhost:8000/api/v1/docs`
+### Method 1: One-Command Makefile Orchestration (Recommended)
+```bash
+# 1. Setup environment and install dependencies
+make setup
 
-2. **Activate Frontend**:
-   ```powershell
-   cd frontend
-   npm run dev
-   # Or run:
-   .\run_frontend.bat
-   ```
-   Dashboard available at: `http://localhost:5173`
+# 2. Generate 100 institutions dataset (Seeds 42 & 7), seed registries, and populate database
+make seed-data
 
-### Method 2: Docker Compose (PostgreSQL Production Mode)
+# 3. Run complete automated test suite (backend/tests, mock_issuer, test_api)
+make test
+
+# 4. Start all services in Docker (PostgreSQL, Mock Issuer, Backend, Frontend)
+make run
+```
+
+### Method 2: Docker Compose (Production Multi-Container Mode)
 ```bash
 docker compose up --build
 ```
-- Frontend: `http://localhost:3000`
-- Backend API: `http://localhost:8000/api/v1/docs`
-- PostgreSQL: `localhost:5432` (database: `pramaan_x`)
+- **Web Frontend Dashboard**: `http://localhost:3000`
+- **FastAPI Backend Documentation**: `http://localhost:8000/api/v1/docs`
+- **Mock Statutory Issuer Gateway**: `http://localhost:8001/docs`
+- **PostgreSQL Database**: `localhost:5432` (`pramaan_x`)
+
+### Method 3: Local Standalone Development (Zero-Docker Mode)
+```bash
+# Terminal 1: Run Mock Issuer Gateway (Port 8001)
+make run-issuer
+# or: uvicorn mock_issuer.app.main:app --reload --host 127.0.0.1 --port 8001
+
+# Terminal 2: Run FastAPI Backend (Port 8000)
+make run-backend
+# or: uvicorn backend.app.main:app --reload --host 127.0.0.1 --port 8000
+
+# Terminal 3: Run React Frontend (Port 5173)
+make run-frontend
+# or: cd frontend && npm run dev
+```
 
 ---
 
@@ -208,7 +238,7 @@ The Regulation-as-Code engine enforces AICTE Approval Process Handbook (APH 2025
 - **`effective_from`**: Statutory commencement date (`YYYY-MM-DD`)
 
 ### Engine Capabilities:
-- **Formal JSON Schema Validation**: [`backend/app/rules/rule_schema.json`](file:///d:/sih%202.0/backend/app/rules/rule_schema.json) validates rule packs before loading.
+- **Formal JSON Schema Validation**: [`backend/app/rules/rule_schema.json`](backend/app/rules/rule_schema.json) validates rule packs before loading.
 - **Finding Model**: Produces structured outcomes with `status: pass | fail | not_evaluable`, expected vs found, and documentary bounding-box citations.
 - **Hot-Reload**: Dynamically re-reads modified rules from disk (`POST /api/v1/rules/reload`) without application restart.
 - **What-If Dry Run Simulator**: Computes aggregate failure rates, severity distributions, and affected college IDs across application cohorts (`POST /api/v1/rules/dry-run`).
@@ -217,13 +247,10 @@ The Regulation-as-Code engine enforces AICTE Approval Process Handbook (APH 2025
 
 ## 🧪 Automated Testing
 Run the comprehensive test suites verifying the 6-stage Evidence Lens, Regulation-as-Code engine, Impossibility Engine, Forensics, and Mock Issuer:
-```powershell
-# Regulation-as-Code Engine + Backend API tests
-$env:PYTHONPATH="." ; .\venv\Scripts\pytest backend/tests/test_rules_engine.py backend/test_api.py -v
+```bash
+# Run ALL test suites across backend/tests, mock_issuer, and test_api
+make test
 
-# Mock Issuer Statutory Gateway tests
-$env:PYTHONPATH="." ; .\venv\Scripts\pytest mock_issuer/test_mock_issuer.py -v
-
-# Run All (29 comprehensive automated tests)
-$env:PYTHONPATH="." ; .\venv\Scripts\pytest backend/tests/test_rules_engine.py mock_issuer/test_mock_issuer.py backend/test_api.py -v
+# Or run directly via pytest:
+pytest backend/tests mock_issuer backend/test_api.py -v
 ```
