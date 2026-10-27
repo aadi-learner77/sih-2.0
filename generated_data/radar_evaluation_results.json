@@ -1,23 +1,23 @@
 {
-  "evaluation_timestamp": "2026-10-26T19:14:36.671666",
+  "evaluation_timestamp": "2026-10-27T20:01:51.182473",
   "metrics": {
     "total_queries_evaluated": 18,
     "true_positives": 15,
-    "false_positives": 0,
-    "true_negatives": 3,
+    "false_positives": 2,
+    "true_negatives": 1,
     "false_negatives": 0,
-    "precision": 1.0,
+    "precision": 0.8824,
     "recall": 1.0,
-    "f1_score": 1.0,
-    "accuracy": 1.0
+    "f1_score": 0.9375,
+    "accuracy": 0.8889
   },
   "detection_by_match_type": {
     "exact": 10,
     "near-duplicate": 5,
     "semantically similar": 0
   },
-  "clusters_detected_count": 5,
-  "institutions_involved_count": 4,
+  "clusters_detected_count": 4,
+  "institutions_involved_count": 6,
   "clusters_summary": [
     {
       "cluster_id": "PHOTO_CLUSTER_01",
@@ -32,7 +32,7 @@
     {
       "cluster_id": "PHOTO_CLUSTER_02",
       "category": "Computer Lab",
-      "institutions_count": 4,
+      "institutions_count": 6,
       "risk_level": "CRITICAL",
       "match_types": [
         "exact",
@@ -41,16 +41,6 @@
     },
     {
       "cluster_id": "PHOTO_CLUSTER_03",
-      "category": "Entrance Ramp",
-      "institutions_count": 4,
-      "risk_level": "CRITICAL",
-      "match_types": [
-        "exact",
-        "near-duplicate"
-      ]
-    },
-    {
-      "cluster_id": "PHOTO_CLUSTER_04",
       "category": "Materials Lab",
       "institutions_count": 4,
       "risk_level": "CRITICAL",
@@ -60,7 +50,7 @@
       ]
     },
     {
-      "cluster_id": "PHOTO_CLUSTER_05",
+      "cluster_id": "PHOTO_CLUSTER_04",
       "category": "Smart Classroom",
       "institutions_count": 4,
       "risk_level": "CRITICAL",
@@ -122,7 +112,7 @@
       "is_planted_duplicate": true,
       "detected": true,
       "top_match_type": "near-duplicate",
-      "similarity_score": 0.9133,
+      "similarity_score": 0.9696,
       "matched_institution": "Apex Institute of Technology & Science"
     },
     {
@@ -131,8 +121,8 @@
       "is_planted_duplicate": true,
       "detected": true,
       "top_match_type": "near-duplicate",
-      "similarity_score": 0.8691,
-      "matched_institution": "Zenith Institute of Engineering"
+      "similarity_score": 0.9817,
+      "matched_institution": "Apex Institute of Technology & Science"
     },
     {
       "filename": "INST_003_entrance_ramp_near_duplicate.jpg",
@@ -140,8 +130,8 @@
       "is_planted_duplicate": true,
       "detected": true,
       "top_match_type": "near-duplicate",
-      "similarity_score": 0.8814,
-      "matched_institution": "Zenith Institute of Engineering"
+      "similarity_score": 0.9922,
+      "matched_institution": "Apex Institute of Technology & Science"
     },
     {
       "filename": "INST_003_materials_lab_near_duplicate.jpg",
@@ -149,7 +139,7 @@
       "is_planted_duplicate": true,
       "detected": true,
       "top_match_type": "near-duplicate",
-      "similarity_score": 0.9011,
+      "similarity_score": 0.9739,
       "matched_institution": "Apex Institute of Technology & Science"
     },
     {
@@ -158,8 +148,8 @@
       "is_planted_duplicate": true,
       "detected": true,
       "top_match_type": "near-duplicate",
-      "similarity_score": 0.9098,
-      "matched_institution": "Zenith Institute of Engineering"
+      "similarity_score": 0.9717,
+      "matched_institution": "Apex Institute of Technology & Science"
     },
     {
       "filename": "INST_004_central_library_exif_stripped.jpg",
@@ -219,19 +209,19 @@
       "filename": "INST_006_distinct_solar_rooftop.jpg",
       "institution_id": "INST_006",
       "is_planted_duplicate": false,
-      "detected": false,
-      "top_match_type": "exact",
-      "similarity_score": 1.0,
-      "matched_institution": "INST_006"
+      "detected": true,
+      "top_match_type": "near-duplicate",
+      "similarity_score": 0.9491,
+      "matched_institution": "Zenith Institute of Engineering"
     },
     {
       "filename": "INST_007_distinct_cafeteria_hall.jpg",
       "institution_id": "INST_007",
       "is_planted_duplicate": false,
-      "detected": false,
-      "top_match_type": "exact",
-      "similarity_score": 1.0,
-      "matched_institution": "INST_007"
+      "detected": true,
+      "top_match_type": "near-duplicate",
+      "similarity_score": 0.8688,
+      "matched_institution": "INST_006"
     }
   ]
 }

@@ -252,6 +252,26 @@ def seed_registry() -> Dict[str, Any]:
 
     # 5. Add default benchmark entries for standard reference codes used in tests & Evidence Lens
     # Standard Fire NOCs
+    fire_records["FIR/2025/98354"] = {
+        "reference_number": "FIR/2025/98354",
+        "registered_entity": "College of Engineering Pune (COEP Technological University)",
+        "occupancy_type": "Educational (Group B)",
+        "sanctioned_floors": "G+3",
+        "expiry_date": "2027-06-30",
+        "fire_safety_measure_status": "COMPLIANT",
+        "issuing_division": "Pune Central Fire Division",
+        "status": "VALID_ACTIVE"
+    }
+    fire_records["FIR/2025/89612"] = {
+        "reference_number": "FIR/2025/89612",
+        "registered_entity": "Phusro Commercial Complex",
+        "occupancy_type": "Commercial - Mercantile",
+        "sanctioned_floors": "G+2",
+        "expiry_date": "2026-12-31",
+        "fire_safety_measure_status": "COMPLIANT",
+        "issuing_division": "Bokaro Regional Fire Command",
+        "status": "VALID_ACTIVE"
+    }
     fire_records["FS/2024/991"] = {
         "reference_number": "FS/2024/991",
         "registered_entity": "Apex Commercial Shopping Mall (Not Educational)",

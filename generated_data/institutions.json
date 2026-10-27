@@ -11,12 +11,12 @@
       "Engineering & Technology",
       "Management"
     ],
-    "approved_intake": 300,
-    "built_up_area_sqm": 6042.4,
-    "land_area_acres": 10.8,
-    "trust_name": "Shri Ben Educational & Charitable Trust",
-    "survey_numbers": "Sy. No. 88/1, Village Amritapura",
-    "establishment_year": 1987
+    "approved_intake": 420,
+    "built_up_area_sqm": 10744.8,
+    "land_area_acres": 8.0,
+    "trust_name": "Shri Naik Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 32/1, Village Matthewpura",
+    "establishment_year": 1991
   },
   {
     "id": "INST_002",
@@ -30,12 +30,12 @@
       "Engineering & Technology",
       "Computer Applications"
     ],
-    "approved_intake": 480,
-    "built_up_area_sqm": 10699.0,
-    "land_area_acres": 7.5,
-    "trust_name": "Shri Chahal Educational & Charitable Trust",
-    "survey_numbers": "Sy. No. 33/2, Village Nikitapura",
-    "establishment_year": 1993
+    "approved_intake": 420,
+    "built_up_area_sqm": 9518.2,
+    "land_area_acres": 11.8,
+    "trust_name": "Shri Rana Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 74/1, Village Chanakyapura",
+    "establishment_year": 1990
   },
   {
     "id": "INST_003",
@@ -49,11 +49,1847 @@
       "Engineering & Technology",
       "Management"
     ],
+    "approved_intake": 480,
+    "built_up_area_sqm": 10245.8,
+    "land_area_acres": 6.8,
+    "trust_name": "Shri Bora Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 128/1, Village Girindrapura",
+    "establishment_year": 1992
+  },
+  {
+    "id": "INST_004",
+    "aicte_id": "1-409586744",
+    "name": "PES University (Ring Road Campus)",
+    "state": "Karnataka",
+    "district": "Bengaluru Urban",
+    "latitude": 12.9344,
+    "longitude": 77.5345,
+    "programmes": [
+      "Engineering & Technology",
+      "Management",
+      "Pharmacy"
+    ],
+    "approved_intake": 360,
+    "built_up_area_sqm": 8296.2,
+    "land_area_acres": 9.4,
+    "trust_name": "Shri Pau Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 35/5, Village Dalbirpura",
+    "establishment_year": 2010
+  },
+  {
+    "id": "INST_005",
+    "aicte_id": "1-509687755",
+    "name": "National Institute of Engineering (NIE)",
+    "state": "Karnataka",
+    "district": "Mysuru",
+    "latitude": 12.2842,
+    "longitude": 76.6413,
+    "programmes": [
+      "Engineering & Technology",
+      "Computer Applications"
+    ],
+    "approved_intake": 300,
+    "built_up_area_sqm": 7743.0,
+    "land_area_acres": 5.3,
+    "trust_name": "Shri Tripathi Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 54/3, Village Tanishpura",
+    "establishment_year": 2011
+  },
+  {
+    "id": "INST_006",
+    "aicte_id": "1-609788766",
+    "name": "PSG College of Technology",
+    "state": "Tamil Nadu",
+    "district": "Coimbatore",
+    "latitude": 11.0245,
+    "longitude": 77.0028,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 360,
+    "built_up_area_sqm": 8037.2,
+    "land_area_acres": 9.3,
+    "trust_name": "Shri Barad Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 66/1, Village Gabrielpura",
+    "establishment_year": 1997
+  },
+  {
+    "id": "INST_007",
+    "aicte_id": "1-709889777",
+    "name": "Thiagarajar College of Engineering",
+    "state": "Tamil Nadu",
+    "district": "Madurai",
+    "latitude": 9.8826,
+    "longitude": 78.0818,
+    "programmes": [
+      "Engineering & Technology",
+      "Architecture"
+    ],
     "approved_intake": 420,
-    "built_up_area_sqm": 9444.8,
+    "built_up_area_sqm": 2730.0,
     "land_area_acres": 10.3,
-    "trust_name": "Shri Lata Educational & Charitable Trust",
-    "survey_numbers": "Sy. No. 61/1, Village Hritikpura",
+    "trust_name": "Shri Saraf Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 35/5, Village Omyapura",
+    "establishment_year": 1998
+  },
+  {
+    "id": "INST_008",
+    "aicte_id": "1-809980788",
+    "name": "Coimbatore Institute of Technology",
+    "state": "Tamil Nadu",
+    "district": "Coimbatore",
+    "latitude": 11.0289,
+    "longitude": 77.0278,
+    "programmes": [
+      "Engineering & Technology"
+    ],
+    "approved_intake": 480,
+    "built_up_area_sqm": 11252.7,
+    "land_area_acres": 8.2,
+    "trust_name": "Shri Boase Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 100/4, Village Wrideshpura",
+    "establishment_year": 2014
+  },
+  {
+    "id": "INST_009",
+    "aicte_id": "1-910081799",
+    "name": "Delhi Technological University (DTU)",
+    "state": "Delhi",
+    "district": "North West Delhi",
+    "latitude": 28.7501,
+    "longitude": 77.1177,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 420,
+    "built_up_area_sqm": 8567.2,
+    "land_area_acres": 11.0,
+    "trust_name": "Shri Chana Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 82/1, Village Paninipura",
+    "establishment_year": 2004
+  },
+  {
+    "id": "INST_010",
+    "aicte_id": "1-101182800",
+    "name": "Netaji Subhas University of Technology (NSUT)",
+    "state": "Delhi",
+    "district": "South West Delhi",
+    "latitude": 28.6086,
+    "longitude": 77.0354,
+    "programmes": [
+      "Engineering & Technology"
+    ],
+    "approved_intake": 600,
+    "built_up_area_sqm": 13176.6,
+    "land_area_acres": 7.6,
+    "trust_name": "Shri Bhargava Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 134/3, Village Jatinpura",
+    "establishment_year": 1989
+  },
+  {
+    "id": "INST_011",
+    "aicte_id": "1-111283811",
+    "name": "Harcourt Butler Technical University (HBTU)",
+    "state": "Uttar Pradesh",
+    "district": "Kanpur Nagar",
+    "latitude": 26.495,
+    "longitude": 80.306,
+    "programmes": [
+      "Engineering & Technology"
+    ],
+    "approved_intake": 300,
+    "built_up_area_sqm": 6628.6,
+    "land_area_acres": 6.2,
+    "trust_name": "Shri Kapoor Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 107/2, Village Davidpura",
+    "establishment_year": 2016
+  },
+  {
+    "id": "INST_012",
+    "aicte_id": "1-121384822",
+    "name": "Institute of Engineering and Technology (IET Lucknow)",
+    "state": "Uttar Pradesh",
+    "district": "Lucknow",
+    "latitude": 26.9142,
+    "longitude": 80.9425,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 480,
+    "built_up_area_sqm": 8790.6,
+    "land_area_acres": 10.0,
+    "trust_name": "Shri Ranganathan Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 100/3, Village Chandranpura",
+    "establishment_year": 2007
+  },
+  {
+    "id": "INST_013",
+    "aicte_id": "1-131485833",
+    "name": "L.D. College of Engineering",
+    "state": "Gujarat",
+    "district": "Ahmedabad",
+    "latitude": 23.0336,
+    "longitude": 72.5463,
+    "programmes": [
+      "Engineering & Technology",
+      "Computer Applications"
+    ],
+    "approved_intake": 600,
+    "built_up_area_sqm": 13184.0,
+    "land_area_acres": 11.0,
+    "trust_name": "Shri Kant Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 37/1, Village Chakradharpura",
+    "establishment_year": 2002
+  },
+  {
+    "id": "INST_014",
+    "aicte_id": "1-141586844",
+    "name": "Birla Vishvakarma Mahavidyalaya (BVM)",
+    "state": "Gujarat",
+    "district": "Anand",
+    "latitude": 22.5529,
+    "longitude": 72.9242,
+    "programmes": [
+      "Engineering & Technology"
+    ],
+    "approved_intake": 480,
+    "built_up_area_sqm": 11316.6,
+    "land_area_acres": 5.5,
+    "trust_name": "Shri Deol Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 99/5, Village Bimalapura",
+    "establishment_year": 2013
+  },
+  {
+    "id": "INST_015",
+    "aicte_id": "1-151687855",
+    "name": "JNTU College of Engineering Hyderabad",
+    "state": "Telangana",
+    "district": "Hyderabad",
+    "latitude": 17.4933,
+    "longitude": 78.3914,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 420,
+    "built_up_area_sqm": 9967.9,
+    "land_area_acres": 11.7,
+    "trust_name": "Shri Saini Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 108/1, Village Maanaspura",
+    "establishment_year": 2014
+  },
+  {
+    "id": "INST_016",
+    "aicte_id": "1-161788866",
+    "name": "Chaitanya Bharathi Institute of Technology (CBIT)",
+    "state": "Telangana",
+    "district": "Ranga Reddy",
+    "latitude": 17.3916,
+    "longitude": 78.3195,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 420,
+    "built_up_area_sqm": 8124.6,
+    "land_area_acres": 5.9,
+    "trust_name": "Shri Zachariah Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 35/2, Village Jacobpura",
+    "establishment_year": 2003
+  },
+  {
+    "id": "INST_017",
+    "aicte_id": "1-171889877",
+    "name": "College of Engineering Trivandrum (CET)",
+    "state": "Kerala",
+    "district": "Thiruvananthapuram",
+    "latitude": 8.5456,
+    "longitude": 76.9063,
+    "programmes": [
+      "Engineering & Technology",
+      "Architecture"
+    ],
+    "approved_intake": 360,
+    "built_up_area_sqm": 8606.5,
+    "land_area_acres": 8.0,
+    "trust_name": "Shri Morar Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 147/1, Village Pratyushpura",
+    "establishment_year": 1995
+  },
+  {
+    "id": "INST_018",
+    "aicte_id": "1-181980888",
+    "name": "Government Engineering College Barton Hill",
+    "state": "Kerala",
+    "district": "Thiruvananthapuram",
+    "latitude": 8.5085,
+    "longitude": 76.9427,
+    "programmes": [
+      "Engineering & Technology"
+    ],
+    "approved_intake": 480,
+    "built_up_area_sqm": 10182.3,
+    "land_area_acres": 7.1,
+    "trust_name": "Shri Chauhan Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 55/4, Village Raghavpura",
+    "establishment_year": 2002
+  },
+  {
+    "id": "INST_019",
+    "aicte_id": "1-192081899",
+    "name": "Jadavpur University Faculty of Engineering",
+    "state": "West Bengal",
+    "district": "Kolkata",
+    "latitude": 22.4989,
+    "longitude": 88.3718,
+    "programmes": [
+      "Engineering & Technology",
+      "Pharmacy"
+    ],
+    "approved_intake": 720,
+    "built_up_area_sqm": 4680.0,
+    "land_area_acres": 7.7,
+    "trust_name": "Shri Pradhan Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 117/2, Village Gunbirpura",
+    "establishment_year": 1994
+  },
+  {
+    "id": "INST_020",
+    "aicte_id": "1-202182900",
+    "name": "Heritage Institute of Technology",
+    "state": "West Bengal",
+    "district": "Kolkata",
+    "latitude": 22.5173,
+    "longitude": 88.419,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 300,
+    "built_up_area_sqm": 5822.9,
+    "land_area_acres": 6.7,
+    "trust_name": "Shri Bhatnagar Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 79/1, Village Darpanpura",
+    "establishment_year": 2016
+  },
+  {
+    "id": "INST_021",
+    "aicte_id": "1-212283911",
+    "name": "Malaviya National Institute of Technology (MNIT Jaipur)",
+    "state": "Rajasthan",
+    "district": "Jaipur",
+    "latitude": 26.864,
+    "longitude": 75.8108,
+    "programmes": [
+      "Engineering & Technology",
+      "Architecture"
+    ],
+    "approved_intake": 600,
+    "built_up_area_sqm": 11675.2,
+    "land_area_acres": 7.1,
+    "trust_name": "Shri Jha Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 57/4, Village Watikapura",
+    "establishment_year": 2008
+  },
+  {
+    "id": "INST_022",
+    "aicte_id": "1-222384922",
+    "name": "College of Technology and Engineering (CTAE Udaipur)",
+    "state": "Rajasthan",
+    "district": "Udaipur",
+    "latitude": 24.596,
+    "longitude": 73.722,
+    "programmes": [
+      "Engineering & Technology"
+    ],
+    "approved_intake": 600,
+    "built_up_area_sqm": 3900.0,
+    "land_area_acres": 12.1,
+    "trust_name": "Shri Wali Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 33/4, Village Prishapura",
+    "establishment_year": 2010
+  },
+  {
+    "id": "INST_023",
+    "aicte_id": "1-232485933",
+    "name": "Shri Govindram Seksaria Institute of Technology and Science (SGSITS)",
+    "state": "Madhya Pradesh",
+    "district": "Indore",
+    "latitude": 22.7253,
+    "longitude": 75.8714,
+    "programmes": [
+      "Engineering & Technology",
+      "Pharmacy"
+    ],
+    "approved_intake": 480,
+    "built_up_area_sqm": 10172.1,
+    "land_area_acres": 5.8,
+    "trust_name": "Shri Murthy Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 122/1, Village Udyatipura",
+    "establishment_year": 1997
+  },
+  {
+    "id": "INST_024",
+    "aicte_id": "1-242586944",
+    "name": "Madhav Institute of Technology and Science (MITS)",
+    "state": "Madhya Pradesh",
+    "district": "Gwalior",
+    "latitude": 26.2307,
+    "longitude": 78.2144,
+    "programmes": [
+      "Engineering & Technology",
+      "Architecture"
+    ],
+    "approved_intake": 300,
+    "built_up_area_sqm": 7763.2,
+    "land_area_acres": 8.3,
+    "trust_name": "Shri Setty Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 48/3, Village Janakipura",
+    "establishment_year": 1988
+  },
+  {
+    "id": "INST_025",
+    "aicte_id": "1-252687955",
+    "name": "Andhra University College of Engineering (AUCE)",
+    "state": "Andhra Pradesh",
+    "district": "Visakhapatnam",
+    "latitude": 17.7288,
+    "longitude": 83.3218,
+    "programmes": [
+      "Engineering & Technology",
+      "Pharmacy"
+    ],
+    "approved_intake": 300,
+    "built_up_area_sqm": 5400.6,
+    "land_area_acres": 6.1,
+    "trust_name": "Shri Mistry Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 45/3, Village Yuvrajpura",
+    "establishment_year": 1986
+  },
+  {
+    "id": "INST_026",
+    "aicte_id": "1-262788966",
+    "name": "VR Siddhartha Engineering College",
+    "state": "Andhra Pradesh",
+    "district": "Krishna",
+    "latitude": 16.4819,
+    "longitude": 80.6937,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 300,
+    "built_up_area_sqm": 7498.4,
+    "land_area_acres": 9.6,
+    "trust_name": "Shri Gole Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 58/3, Village Yagneshpura",
+    "establishment_year": 2007
+  },
+  {
+    "id": "INST_027",
+    "aicte_id": "1-272889977",
+    "name": "Guru Nanak Dev Engineering College (GNDEC)",
+    "state": "Punjab",
+    "district": "Ludhiana",
+    "latitude": 30.8606,
+    "longitude": 75.8597,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 600,
+    "built_up_area_sqm": 12548.0,
+    "land_area_acres": 5.9,
+    "trust_name": "Shri Bumb Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 144/4, Village Charitapura",
+    "establishment_year": 2015
+  },
+  {
+    "id": "INST_028",
+    "aicte_id": "1-282980988",
+    "name": "Thapar Institute of Engineering and Technology",
+    "state": "Punjab",
+    "district": "Patiala",
+    "latitude": 30.3564,
+    "longitude": 76.3647,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 480,
+    "built_up_area_sqm": 9837.5,
+    "land_area_acres": 6.1,
+    "trust_name": "Shri Vohra Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 107/3, Village Wardapura",
+    "establishment_year": 2015
+  },
+  {
+    "id": "INST_029",
+    "aicte_id": "1-293081999",
+    "name": "Government College of Technology (GCT Coimbatore)",
+    "state": "Tamil Nadu",
+    "district": "Coimbatore",
+    "latitude": 11.018,
+    "longitude": 76.9348,
+    "programmes": [
+      "Engineering & Technology"
+    ],
+    "approved_intake": 720,
+    "built_up_area_sqm": 4680.0,
+    "land_area_acres": 5.2,
+    "trust_name": "Shri Oza Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 112/2, Village Saumyapura",
+    "establishment_year": 1986
+  },
+  {
+    "id": "INST_030",
+    "aicte_id": "1-303182010",
+    "name": "Walchand College of Engineering",
+    "state": "Maharashtra",
+    "district": "Sangli",
+    "latitude": 16.8458,
+    "longitude": 74.6015,
+    "programmes": [
+      "Engineering & Technology"
+    ],
+    "approved_intake": 600,
+    "built_up_area_sqm": 12230.8,
+    "land_area_acres": 9.8,
+    "trust_name": "Shri Mani Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 43/3, Village Elijahpura",
+    "establishment_year": 2018
+  },
+  {
+    "id": "INST_031",
+    "aicte_id": "1-928862021",
+    "name": "B.R. Ambedkar Dehradun Institute of Technology & Engineering",
+    "state": "Maharashtra",
+    "district": "Dehradun",
+    "latitude": 16.0674,
+    "longitude": 74.6727,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 360,
+    "built_up_area_sqm": 2340.0,
+    "land_area_acres": 10.8,
+    "trust_name": "Shri Oommen Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 104/2, Village Maxpura",
+    "establishment_year": 1997
+  },
+  {
+    "id": "INST_032",
+    "aicte_id": "1-894432601",
+    "name": "Sardar Vallabhbhai Patel Thane Institute of Technology & Engineering",
+    "state": "Kerala",
+    "district": "Thane",
+    "latitude": 25.7337,
+    "longitude": 85.0933,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 360,
+    "built_up_area_sqm": 7055.8,
+    "land_area_acres": 8.7,
+    "trust_name": "Shri Brahmbhatt Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 27/1, Village Diptapura",
+    "establishment_year": 2002
+  },
+  {
+    "id": "INST_033",
+    "aicte_id": "1-749763082",
+    "name": "Acharya Hindupur Institute of Technology & Engineering",
+    "state": "Uttar Pradesh",
+    "district": "Hindupur",
+    "latitude": 18.3893,
+    "longitude": 75.0983,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 420,
+    "built_up_area_sqm": 9062.7,
+    "land_area_acres": 12.0,
+    "trust_name": "Shri Taneja Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 109/3, Village Tanmayipura",
+    "establishment_year": 1990
+  },
+  {
+    "id": "INST_034",
+    "aicte_id": "1-311211639",
+    "name": "Swami Vivekananda Gopalpur Institute of Technology & Engineering",
+    "state": "Maharashtra",
+    "district": "Gopalpur",
+    "latitude": 12.8502,
+    "longitude": 75.6295,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 420,
+    "built_up_area_sqm": 8246.7,
+    "land_area_acres": 9.7,
+    "trust_name": "Shri Som Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 20/4, Village Dhruvpura",
+    "establishment_year": 2007
+  },
+  {
+    "id": "INST_035",
+    "aicte_id": "1-809298446",
+    "name": "Rajiv Gandhi Gangtok Institute of Technology & Engineering",
+    "state": "Karnataka",
+    "district": "Gangtok",
+    "latitude": 25.5922,
+    "longitude": 73.3565,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 300,
+    "built_up_area_sqm": 7583.5,
+    "land_area_acres": 10.9,
+    "trust_name": "Shri Sehgal Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 71/4, Village Bhavanipura",
+    "establishment_year": 1996
+  },
+  {
+    "id": "INST_036",
+    "aicte_id": "1-193146944",
+    "name": "K.L.N. Lucknow Institute of Technology & Engineering",
+    "state": "Telangana",
+    "district": "Lucknow",
+    "latitude": 17.5464,
+    "longitude": 82.1735,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 720,
+    "built_up_area_sqm": 15240.0,
+    "land_area_acres": 8.0,
+    "trust_name": "Shri Shenoy Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 41/2, Village Ishapura",
+    "establishment_year": 1995
+  },
+  {
+    "id": "INST_037",
+    "aicte_id": "1-734379873",
+    "name": "Dr. A.P.J. Abdul Kalam Kumbakonam Institute of Technology & Engineering",
+    "state": "Tamil Nadu",
+    "district": "Kumbakonam",
+    "latitude": 29.8485,
+    "longitude": 72.4408,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 480,
+    "built_up_area_sqm": 11737.0,
+    "land_area_acres": 6.1,
+    "trust_name": "Shri Bhargava Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 141/3, Village Tejaspura",
+    "establishment_year": 1994
+  },
+  {
+    "id": "INST_038",
+    "aicte_id": "1-115293232",
+    "name": "Rabindranath Tagore Shahjahanpur Institute of Technology & Engineering",
+    "state": "Delhi",
+    "district": "Shahjahanpur",
+    "latitude": 20.0705,
+    "longitude": 74.0957,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 720,
+    "built_up_area_sqm": 16702.1,
+    "land_area_acres": 8.9,
+    "trust_name": "Shri Rao Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 55/4, Village Mahikapura",
+    "establishment_year": 1997
+  },
+  {
+    "id": "INST_039",
+    "aicte_id": "1-370405570",
+    "name": "Aryabhata Rourkela Institute of Technology & Engineering",
+    "state": "Kerala",
+    "district": "Rourkela",
+    "latitude": 26.1754,
+    "longitude": 75.3767,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 360,
+    "built_up_area_sqm": 7323.7,
+    "land_area_acres": 6.8,
+    "trust_name": "Shri Sen Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 103/3, Village Neelimapura",
+    "establishment_year": 2011
+  },
+  {
+    "id": "INST_040",
+    "aicte_id": "1-894485254",
+    "name": "Sir C.V. Raman Durgapur Institute of Technology & Engineering",
+    "state": "West Bengal",
+    "district": "Durgapur",
+    "latitude": 26.3523,
+    "longitude": 72.9745,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 420,
+    "built_up_area_sqm": 10576.3,
+    "land_area_acres": 10.0,
+    "trust_name": "Shri Sani Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 127/5, Village Aryapura",
+    "establishment_year": 1993
+  },
+  {
+    "id": "INST_041",
+    "aicte_id": "1-120084195",
+    "name": "Netaji Subhas Nadiad Institute of Technology & Engineering",
+    "state": "Telangana",
+    "district": "Nadiad",
+    "latitude": 19.7001,
+    "longitude": 80.3761,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 480,
+    "built_up_area_sqm": 11621.8,
+    "land_area_acres": 9.6,
+    "trust_name": "Shri Kashyap Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 58/2, Village Matthewpura",
+    "establishment_year": 1994
+  },
+  {
+    "id": "INST_042",
+    "aicte_id": "1-697511159",
+    "name": "National Saharanpur Institute of Technology & Engineering",
+    "state": "Maharashtra",
+    "district": "Saharanpur",
+    "latitude": 18.4168,
+    "longitude": 83.6031,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 300,
+    "built_up_area_sqm": 6182.4,
+    "land_area_acres": 8.9,
+    "trust_name": "Shri Kata Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 143/1, Village Virajpura",
+    "establishment_year": 1988
+  },
+  {
+    "id": "INST_043",
+    "aicte_id": "1-929209046",
+    "name": "Imperial Giridih Institute of Technology & Engineering",
+    "state": "Karnataka",
+    "district": "Giridih",
+    "latitude": 13.4669,
+    "longitude": 76.4307,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 300,
+    "built_up_area_sqm": 6618.5,
+    "land_area_acres": 9.2,
+    "trust_name": "Shri Gopal Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 36/4, Village Adyapura",
+    "establishment_year": 2005
+  },
+  {
+    "id": "INST_044",
+    "aicte_id": "1-649929199",
+    "name": "Global Ulhasnagar Institute of Technology & Engineering",
+    "state": "Delhi",
+    "district": "Ulhasnagar",
+    "latitude": 21.4756,
+    "longitude": 80.0889,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 360,
+    "built_up_area_sqm": 2340.0,
+    "land_area_acres": 8.4,
+    "trust_name": "Shri Saini Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 142/5, Village Kalapura",
+    "establishment_year": 2000
+  },
+  {
+    "id": "INST_045",
+    "aicte_id": "1-378735098",
+    "name": "Heritage Cuttack Institute of Technology & Engineering",
+    "state": "Rajasthan",
+    "district": "Cuttack",
+    "latitude": 23.3828,
+    "longitude": 86.0246,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 600,
+    "built_up_area_sqm": 15085.2,
+    "land_area_acres": 6.5,
+    "trust_name": "Shri Varma Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 134/2, Village Chaturapura",
+    "establishment_year": 2011
+  },
+  {
+    "id": "INST_046",
+    "aicte_id": "1-177895777",
+    "name": "B.R. Ambedkar Sikar College of Engineering & Technology",
+    "state": "Kerala",
+    "district": "Sikar",
+    "latitude": 10.6757,
+    "longitude": 79.0739,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 720,
+    "built_up_area_sqm": 14346.1,
+    "land_area_acres": 5.5,
+    "trust_name": "Shri Rastogi Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 97/1, Village Meerapura",
+    "establishment_year": 1994
+  },
+  {
+    "id": "INST_047",
+    "aicte_id": "1-493186312",
+    "name": "Sardar Vallabhbhai Patel Rewa College of Engineering & Technology",
+    "state": "Maharashtra",
+    "district": "Rewa",
+    "latitude": 28.6691,
+    "longitude": 82.2953,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 360,
+    "built_up_area_sqm": 7209.0,
+    "land_area_acres": 6.0,
+    "trust_name": "Shri Bhatia Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 139/2, Village Rayaanpura",
+    "establishment_year": 1991
+  },
+  {
+    "id": "INST_048",
+    "aicte_id": "1-817080188",
+    "name": "Acharya Gandhidham College of Engineering & Technology",
+    "state": "Maharashtra",
+    "district": "Gandhidham",
+    "latitude": 16.7617,
+    "longitude": 79.7962,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 360,
+    "built_up_area_sqm": 2340.0,
+    "land_area_acres": 8.2,
+    "trust_name": "Shri Gaba Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 123/3, Village Imaranpura",
+    "establishment_year": 2011
+  },
+  {
+    "id": "INST_049",
+    "aicte_id": "1-875403552",
+    "name": "Swami Vivekananda Kota College of Engineering & Technology",
+    "state": "Uttar Pradesh",
+    "district": "Kota",
+    "latitude": 12.3064,
+    "longitude": 77.0964,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 420,
+    "built_up_area_sqm": 2730.0,
+    "land_area_acres": 9.2,
+    "trust_name": "Shri Acharya Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 132/1, Village Matthewpura",
+    "establishment_year": 2009
+  },
+  {
+    "id": "INST_050",
+    "aicte_id": "1-650037437",
+    "name": "Rajiv Gandhi Bharatpur College of Engineering & Technology",
+    "state": "West Bengal",
+    "district": "Bharatpur",
+    "latitude": 15.293,
+    "longitude": 81.9828,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 300,
+    "built_up_area_sqm": 5670.8,
+    "land_area_acres": 11.9,
+    "trust_name": "Shri Bal Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 78/1, Village Ekavirpura",
+    "establishment_year": 1990
+  },
+  {
+    "id": "INST_051",
+    "aicte_id": "1-936442127",
+    "name": "K.L.N. Jalgaon College of Engineering & Technology",
+    "state": "Gujarat",
+    "district": "Jalgaon",
+    "latitude": 13.8424,
+    "longitude": 72.6334,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 360,
+    "built_up_area_sqm": 2340.0,
+    "land_area_acres": 6.0,
+    "trust_name": "Shri Krishnan Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 128/3, Village Idikapura",
+    "establishment_year": 2010
+  },
+  {
+    "id": "INST_052",
+    "aicte_id": "1-712671635",
+    "name": "Dr. A.P.J. Abdul Kalam Bhalswa Jahangir Pur College of Engineering & Technology",
+    "state": "Rajasthan",
+    "district": "Bhalswa Jahangir Pur",
+    "latitude": 11.2861,
+    "longitude": 86.7067,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 480,
+    "built_up_area_sqm": 11329.6,
+    "land_area_acres": 5.7,
+    "trust_name": "Shri Das Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 34/2, Village Jackpura",
     "establishment_year": 2012
+  },
+  {
+    "id": "INST_053",
+    "aicte_id": "1-118072925",
+    "name": "Rabindranath Tagore Nangloi Jat College of Engineering & Technology",
+    "state": "Kerala",
+    "district": "Nangloi Jat",
+    "latitude": 27.6963,
+    "longitude": 76.3028,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 720,
+    "built_up_area_sqm": 13470.1,
+    "land_area_acres": 7.0,
+    "trust_name": "Shri Sule Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 76/1, Village Devikapura",
+    "establishment_year": 2001
+  },
+  {
+    "id": "INST_054",
+    "aicte_id": "1-464161443",
+    "name": "Aryabhata Kota College of Engineering & Technology",
+    "state": "Maharashtra",
+    "district": "Kota",
+    "latitude": 26.981,
+    "longitude": 79.2604,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 600,
+    "built_up_area_sqm": 12805.2,
+    "land_area_acres": 11.9,
+    "trust_name": "Shri Oommen Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 53/1, Village Alkapura",
+    "establishment_year": 2018
+  },
+  {
+    "id": "INST_055",
+    "aicte_id": "1-273354647",
+    "name": "Sir C.V. Raman Hazaribagh College of Engineering & Technology",
+    "state": "Kerala",
+    "district": "Hazaribagh",
+    "latitude": 23.6098,
+    "longitude": 87.01,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 420,
+    "built_up_area_sqm": 7729.3,
+    "land_area_acres": 6.5,
+    "trust_name": "Shri Bajaj Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 99/3, Village Sameshpura",
+    "establishment_year": 2018
+  },
+  {
+    "id": "INST_056",
+    "aicte_id": "1-636966045",
+    "name": "Netaji Subhas Siliguri College of Engineering & Technology",
+    "state": "West Bengal",
+    "district": "Siliguri",
+    "latitude": 24.709,
+    "longitude": 76.6394,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 720,
+    "built_up_area_sqm": 4680.0,
+    "land_area_acres": 7.6,
+    "trust_name": "Shri Bala Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 24/3, Village Chanchalpura",
+    "establishment_year": 1987
+  },
+  {
+    "id": "INST_057",
+    "aicte_id": "1-691684493",
+    "name": "National Kadapa College of Engineering & Technology",
+    "state": "Maharashtra",
+    "district": "Kadapa",
+    "latitude": 8.3376,
+    "longitude": 83.7293,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 360,
+    "built_up_area_sqm": 7961.0,
+    "land_area_acres": 6.8,
+    "trust_name": "Shri Peri Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 134/1, Village Oliverpura",
+    "establishment_year": 2012
+  },
+  {
+    "id": "INST_058",
+    "aicte_id": "1-522072957",
+    "name": "Imperial Katihar College of Engineering & Technology",
+    "state": "Uttar Pradesh",
+    "district": "Katihar",
+    "latitude": 22.4432,
+    "longitude": 80.7345,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 600,
+    "built_up_area_sqm": 12277.4,
+    "land_area_acres": 6.6,
+    "trust_name": "Shri Thakkar Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 78/3, Village Forumpura",
+    "establishment_year": 1997
+  },
+  {
+    "id": "INST_059",
+    "aicte_id": "1-782875054",
+    "name": "Global Mathura College of Engineering & Technology",
+    "state": "Gujarat",
+    "district": "Mathura",
+    "latitude": 26.3103,
+    "longitude": 83.3076,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 360,
+    "built_up_area_sqm": 7645.5,
+    "land_area_acres": 7.6,
+    "trust_name": "Shri Rattan Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 33/2, Village Utkarshpura",
+    "establishment_year": 1985
+  },
+  {
+    "id": "INST_060",
+    "aicte_id": "1-374441836",
+    "name": "Heritage Raurkela Industrial Township College of Engineering & Technology",
+    "state": "Gujarat",
+    "district": "Raurkela Industrial Township",
+    "latitude": 9.5559,
+    "longitude": 83.8542,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 480,
+    "built_up_area_sqm": 9266.9,
+    "land_area_acres": 5.6,
+    "trust_name": "Shri Balakrishnan Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 117/5, Village Ayaanpura",
+    "establishment_year": 2003
+  },
+  {
+    "id": "INST_061",
+    "aicte_id": "1-148573390",
+    "name": "B.R. Ambedkar Rampur Institute of Technical Studies",
+    "state": "Delhi",
+    "district": "Rampur",
+    "latitude": 21.1731,
+    "longitude": 83.083,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 480,
+    "built_up_area_sqm": 9351.8,
+    "land_area_acres": 7.0,
+    "trust_name": "Shri Hari Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 20/3, Village Hemanginipura",
+    "establishment_year": 2008
+  },
+  {
+    "id": "INST_062",
+    "aicte_id": "1-687415564",
+    "name": "Sardar Vallabhbhai Patel Bharatpur Institute of Technical Studies",
+    "state": "Kerala",
+    "district": "Bharatpur",
+    "latitude": 29.1593,
+    "longitude": 87.562,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 420,
+    "built_up_area_sqm": 8381.3,
+    "land_area_acres": 12.2,
+    "trust_name": "Shri Buch Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 99/2, Village Thomaspura",
+    "establishment_year": 2007
+  },
+  {
+    "id": "INST_063",
+    "aicte_id": "1-190076802",
+    "name": "Acharya Nandyal Institute of Technical Studies",
+    "state": "Maharashtra",
+    "district": "Nandyal",
+    "latitude": 12.0251,
+    "longitude": 77.3653,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 480,
+    "built_up_area_sqm": 9711.1,
+    "land_area_acres": 9.9,
+    "trust_name": "Shri Hegde Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 83/5, Village Geetikapura",
+    "establishment_year": 1985
+  },
+  {
+    "id": "INST_064",
+    "aicte_id": "1-254474023",
+    "name": "Swami Vivekananda Phagwara Institute of Technical Studies",
+    "state": "Gujarat",
+    "district": "Phagwara",
+    "latitude": 9.9987,
+    "longitude": 85.0727,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 480,
+    "built_up_area_sqm": 10893.3,
+    "land_area_acres": 8.0,
+    "trust_name": "Shri Agarwal Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 96/3, Village Varenyapura",
+    "establishment_year": 1999
+  },
+  {
+    "id": "INST_065",
+    "aicte_id": "1-905886866",
+    "name": "Rajiv Gandhi Jamshedpur Institute of Technical Studies",
+    "state": "Uttar Pradesh",
+    "district": "Jamshedpur",
+    "latitude": 9.8586,
+    "longitude": 87.3222,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 360,
+    "built_up_area_sqm": 8373.7,
+    "land_area_acres": 10.4,
+    "trust_name": "Shri Rama Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 119/3, Village Ryanpura",
+    "establishment_year": 2016
+  },
+  {
+    "id": "INST_066",
+    "aicte_id": "1-790651629",
+    "name": "K.L.N. Raebareli Institute of Technical Studies",
+    "state": "Kerala",
+    "district": "Raebareli",
+    "latitude": 11.2882,
+    "longitude": 83.5865,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 360,
+    "built_up_area_sqm": 6606.1,
+    "land_area_acres": 11.3,
+    "trust_name": "Shri Natarajan Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 129/5, Village Gabrielpura",
+    "establishment_year": 1993
+  },
+  {
+    "id": "INST_067",
+    "aicte_id": "1-710400208",
+    "name": "Dr. A.P.J. Abdul Kalam Rewa Institute of Technical Studies",
+    "state": "Telangana",
+    "district": "Rewa",
+    "latitude": 28.0175,
+    "longitude": 84.0459,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 300,
+    "built_up_area_sqm": 7383.4,
+    "land_area_acres": 9.4,
+    "trust_name": "Shri Chad Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 78/1, Village Nathanpura",
+    "establishment_year": 1986
+  },
+  {
+    "id": "INST_068",
+    "aicte_id": "1-212653207",
+    "name": "Rabindranath Tagore Bhopal Institute of Technical Studies",
+    "state": "Tamil Nadu",
+    "district": "Bhopal",
+    "latitude": 8.921,
+    "longitude": 82.1939,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 480,
+    "built_up_area_sqm": 11849.6,
+    "land_area_acres": 9.2,
+    "trust_name": "Shri Dora Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 24/5, Village Udyatipura",
+    "establishment_year": 2000
+  },
+  {
+    "id": "INST_069",
+    "aicte_id": "1-956521229",
+    "name": "Aryabhata Etawah Institute of Technical Studies",
+    "state": "Tamil Nadu",
+    "district": "Etawah",
+    "latitude": 18.7645,
+    "longitude": 72.053,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 300,
+    "built_up_area_sqm": 7195.8,
+    "land_area_acres": 8.8,
+    "trust_name": "Shri Dugal Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 43/5, Village Karanpura",
+    "establishment_year": 1989
+  },
+  {
+    "id": "INST_070",
+    "aicte_id": "1-968892055",
+    "name": "Sir C.V. Raman Kota Institute of Technical Studies",
+    "state": "Karnataka",
+    "district": "Kota",
+    "latitude": 24.406,
+    "longitude": 79.5817,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 300,
+    "built_up_area_sqm": 7430.7,
+    "land_area_acres": 6.8,
+    "trust_name": "Shri Vyas Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 72/2, Village Liampura",
+    "establishment_year": 2014
+  },
+  {
+    "id": "INST_071",
+    "aicte_id": "1-614333244",
+    "name": "Netaji Subhas Rajpur Sonarpur Institute of Technical Studies",
+    "state": "Telangana",
+    "district": "Rajpur Sonarpur",
+    "latitude": 18.8669,
+    "longitude": 78.121,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 720,
+    "built_up_area_sqm": 14615.0,
+    "land_area_acres": 5.4,
+    "trust_name": "Shri Bala Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 70/1, Village Zayanpura",
+    "establishment_year": 1994
+  },
+  {
+    "id": "INST_072",
+    "aicte_id": "1-843981564",
+    "name": "National Orai Institute of Technical Studies",
+    "state": "Gujarat",
+    "district": "Orai",
+    "latitude": 15.299,
+    "longitude": 82.4245,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 420,
+    "built_up_area_sqm": 9647.1,
+    "land_area_acres": 6.0,
+    "trust_name": "Shri Khosla Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 143/1, Village Eshanapura",
+    "establishment_year": 2016
+  },
+  {
+    "id": "INST_073",
+    "aicte_id": "1-843228175",
+    "name": "Imperial Mira-Bhayandar Institute of Technical Studies",
+    "state": "Delhi",
+    "district": "Mira-Bhayandar",
+    "latitude": 13.913,
+    "longitude": 82.752,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 360,
+    "built_up_area_sqm": 2340.0,
+    "land_area_acres": 7.2,
+    "trust_name": "Shri Bhat Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 93/4, Village Iryapura",
+    "establishment_year": 2014
+  },
+  {
+    "id": "INST_074",
+    "aicte_id": "1-689566415",
+    "name": "Global Orai Institute of Technical Studies",
+    "state": "Kerala",
+    "district": "Orai",
+    "latitude": 18.2595,
+    "longitude": 73.896,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 360,
+    "built_up_area_sqm": 7377.6,
+    "land_area_acres": 5.6,
+    "trust_name": "Shri De Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 141/1, Village Maxpura",
+    "establishment_year": 2003
+  },
+  {
+    "id": "INST_075",
+    "aicte_id": "1-582594300",
+    "name": "Heritage Gandhidham Institute of Technical Studies",
+    "state": "West Bengal",
+    "district": "Gandhidham",
+    "latitude": 18.0974,
+    "longitude": 85.1184,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 420,
+    "built_up_area_sqm": 8859.8,
+    "land_area_acres": 11.9,
+    "trust_name": "Shri Goswami Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 73/1, Village Aayushpura",
+    "establishment_year": 1990
+  },
+  {
+    "id": "INST_076",
+    "aicte_id": "1-486067715",
+    "name": "B.R. Ambedkar Ajmer Technological Institute",
+    "state": "Tamil Nadu",
+    "district": "Ajmer",
+    "latitude": 11.1183,
+    "longitude": 80.3851,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 360,
+    "built_up_area_sqm": 8217.7,
+    "land_area_acres": 9.7,
+    "trust_name": "Shri Solanki Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 91/1, Village Jaipura",
+    "establishment_year": 2008
+  },
+  {
+    "id": "INST_077",
+    "aicte_id": "1-621989554",
+    "name": "Sardar Vallabhbhai Patel Anantapur Technological Institute",
+    "state": "West Bengal",
+    "district": "Anantapur",
+    "latitude": 13.0904,
+    "longitude": 86.3633,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 480,
+    "built_up_area_sqm": 8735.4,
+    "land_area_acres": 5.0,
+    "trust_name": "Shri Vasa Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 145/4, Village Vasudhapura",
+    "establishment_year": 2010
+  },
+  {
+    "id": "INST_078",
+    "aicte_id": "1-469324394",
+    "name": "Acharya Kulti Technological Institute",
+    "state": "Maharashtra",
+    "district": "Kulti",
+    "latitude": 14.6429,
+    "longitude": 74.2513,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 480,
+    "built_up_area_sqm": 9853.7,
+    "land_area_acres": 11.3,
+    "trust_name": "Shri Halder Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 20/3, Village Aradhanapura",
+    "establishment_year": 2006
+  },
+  {
+    "id": "INST_079",
+    "aicte_id": "1-310175441",
+    "name": "Swami Vivekananda Guna Technological Institute",
+    "state": "Karnataka",
+    "district": "Guna",
+    "latitude": 26.4604,
+    "longitude": 73.9207,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 720,
+    "built_up_area_sqm": 13027.5,
+    "land_area_acres": 10.5,
+    "trust_name": "Shri Sethi Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 84/3, Village Ayaanpura",
+    "establishment_year": 1989
+  },
+  {
+    "id": "INST_080",
+    "aicte_id": "1-732623619",
+    "name": "Rajiv Gandhi Anantapur Technological Institute",
+    "state": "Maharashtra",
+    "district": "Anantapur",
+    "latitude": 16.6438,
+    "longitude": 87.9807,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 300,
+    "built_up_area_sqm": 6265.7,
+    "land_area_acres": 8.2,
+    "trust_name": "Shri Tiwari Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 90/1, Village Yauvanipura",
+    "establishment_year": 2002
+  },
+  {
+    "id": "INST_081",
+    "aicte_id": "1-406685565",
+    "name": "K.L.N. Bidhannagar Technological Institute",
+    "state": "Gujarat",
+    "district": "Bidhannagar",
+    "latitude": 10.2376,
+    "longitude": 85.3548,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 720,
+    "built_up_area_sqm": 18349.0,
+    "land_area_acres": 6.9,
+    "trust_name": "Shri Trivedi Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 88/4, Village Vanyapura",
+    "establishment_year": 2017
+  },
+  {
+    "id": "INST_082",
+    "aicte_id": "1-943040526",
+    "name": "Dr. A.P.J. Abdul Kalam Nagaon Technological Institute",
+    "state": "West Bengal",
+    "district": "Nagaon",
+    "latitude": 14.9432,
+    "longitude": 84.3709,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 480,
+    "built_up_area_sqm": 3120.0,
+    "land_area_acres": 11.1,
+    "trust_name": "Shri Lad Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 122/5, Village Samakshpura",
+    "establishment_year": 1998
+  },
+  {
+    "id": "INST_083",
+    "aicte_id": "1-886357475",
+    "name": "Rabindranath Tagore Erode Technological Institute",
+    "state": "Kerala",
+    "district": "Erode",
+    "latitude": 23.8306,
+    "longitude": 72.7916,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 480,
+    "built_up_area_sqm": 10371.3,
+    "land_area_acres": 10.6,
+    "trust_name": "Shri Dara Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 93/4, Village Manyapura",
+    "establishment_year": 1988
+  },
+  {
+    "id": "INST_084",
+    "aicte_id": "1-283355162",
+    "name": "Aryabhata Srinagar Technological Institute",
+    "state": "Kerala",
+    "district": "Srinagar",
+    "latitude": 28.0619,
+    "longitude": 80.8017,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 480,
+    "built_up_area_sqm": 10233.1,
+    "land_area_acres": 7.1,
+    "trust_name": "Shri Khosla Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 85/3, Village Priyapura",
+    "establishment_year": 2010
+  },
+  {
+    "id": "INST_085",
+    "aicte_id": "1-698419618",
+    "name": "Sir C.V. Raman Avadi Technological Institute",
+    "state": "Maharashtra",
+    "district": "Avadi",
+    "latitude": 22.4319,
+    "longitude": 76.8134,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 720,
+    "built_up_area_sqm": 15231.6,
+    "land_area_acres": 6.3,
+    "trust_name": "Shri Das Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 61/1, Village Mohammedpura",
+    "establishment_year": 1998
+  },
+  {
+    "id": "INST_086",
+    "aicte_id": "1-690973051",
+    "name": "Netaji Subhas Nizamabad Technological Institute",
+    "state": "Uttar Pradesh",
+    "district": "Nizamabad",
+    "latitude": 19.0133,
+    "longitude": 84.9892,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 360,
+    "built_up_area_sqm": 7784.6,
+    "land_area_acres": 7.5,
+    "trust_name": "Shri Devan Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 135/4, Village Unnipura",
+    "establishment_year": 1993
+  },
+  {
+    "id": "INST_087",
+    "aicte_id": "1-287577427",
+    "name": "National Sikar Technological Institute",
+    "state": "Gujarat",
+    "district": "Sikar",
+    "latitude": 20.0513,
+    "longitude": 75.9054,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 420,
+    "built_up_area_sqm": 9427.7,
+    "land_area_acres": 7.4,
+    "trust_name": "Shri Sur Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 114/3, Village Nicholaspura",
+    "establishment_year": 1997
+  },
+  {
+    "id": "INST_088",
+    "aicte_id": "1-543220928",
+    "name": "Imperial Chinsurah Technological Institute",
+    "state": "Gujarat",
+    "district": "Chinsurah",
+    "latitude": 27.5195,
+    "longitude": 83.9945,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 480,
+    "built_up_area_sqm": 10229.3,
+    "land_area_acres": 8.9,
+    "trust_name": "Shri Varma Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 116/3, Village Netrapura",
+    "establishment_year": 2006
+  },
+  {
+    "id": "INST_089",
+    "aicte_id": "1-716629275",
+    "name": "Global Thiruvananthapuram Technological Institute",
+    "state": "Uttar Pradesh",
+    "district": "Thiruvananthapuram",
+    "latitude": 24.5464,
+    "longitude": 79.9703,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 420,
+    "built_up_area_sqm": 7982.9,
+    "land_area_acres": 8.8,
+    "trust_name": "Shri Parikh Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 75/1, Village Eiravatipura",
+    "establishment_year": 2002
+  },
+  {
+    "id": "INST_090",
+    "aicte_id": "1-793413569",
+    "name": "Heritage Surat Technological Institute",
+    "state": "Maharashtra",
+    "district": "Surat",
+    "latitude": 27.7294,
+    "longitude": 78.153,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 480,
+    "built_up_area_sqm": 10298.3,
+    "land_area_acres": 7.3,
+    "trust_name": "Shri Nigam Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 25/2, Village Tarapura",
+    "establishment_year": 1987
+  },
+  {
+    "id": "INST_091",
+    "aicte_id": "1-963556074",
+    "name": "B.R. Ambedkar Yamunanagar Engineering College",
+    "state": "Kerala",
+    "district": "Yamunanagar",
+    "latitude": 17.3544,
+    "longitude": 84.2191,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 480,
+    "built_up_area_sqm": 3120.0,
+    "land_area_acres": 8.7,
+    "trust_name": "Shri Narula Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 38/4, Village Zansipura",
+    "establishment_year": 2018
+  },
+  {
+    "id": "INST_092",
+    "aicte_id": "1-366787564",
+    "name": "Sardar Vallabhbhai Patel Anand Engineering College",
+    "state": "Rajasthan",
+    "district": "Anand",
+    "latitude": 26.8202,
+    "longitude": 87.5559,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 300,
+    "built_up_area_sqm": 5937.1,
+    "land_area_acres": 6.1,
+    "trust_name": "Shri Bhatt Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 47/4, Village Isaiahpura",
+    "establishment_year": 1990
+  },
+  {
+    "id": "INST_093",
+    "aicte_id": "1-939986751",
+    "name": "Acharya Guwahati Engineering College",
+    "state": "Gujarat",
+    "district": "Guwahati",
+    "latitude": 20.133,
+    "longitude": 72.6327,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 360,
+    "built_up_area_sqm": 7149.8,
+    "land_area_acres": 11.9,
+    "trust_name": "Shri Lanka Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 97/2, Village Anitapura",
+    "establishment_year": 2001
+  },
+  {
+    "id": "INST_094",
+    "aicte_id": "1-920171304",
+    "name": "Swami Vivekananda Gopalpur Engineering College",
+    "state": "Karnataka",
+    "district": "Gopalpur",
+    "latitude": 19.6216,
+    "longitude": 78.9989,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 300,
+    "built_up_area_sqm": 5638.7,
+    "land_area_acres": 7.3,
+    "trust_name": "Shri Dayal Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 69/4, Village Pahalpura",
+    "establishment_year": 2001
+  },
+  {
+    "id": "INST_095",
+    "aicte_id": "1-111233098",
+    "name": "Rajiv Gandhi Jalgaon Engineering College",
+    "state": "Delhi",
+    "district": "Jalgaon",
+    "latitude": 12.9188,
+    "longitude": 81.617,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 600,
+    "built_up_area_sqm": 3900.0,
+    "land_area_acres": 8.5,
+    "trust_name": "Shri Yadav Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 100/2, Village Yutikapura",
+    "establishment_year": 2015
+  },
+  {
+    "id": "INST_096",
+    "aicte_id": "1-131440074",
+    "name": "K.L.N. Khammam Engineering College",
+    "state": "Rajasthan",
+    "district": "Khammam",
+    "latitude": 19.5781,
+    "longitude": 80.752,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 480,
+    "built_up_area_sqm": 11345.9,
+    "land_area_acres": 7.3,
+    "trust_name": "Shri Chakraborty Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 25/2, Village Aryapura",
+    "establishment_year": 2016
+  },
+  {
+    "id": "INST_097",
+    "aicte_id": "1-187071946",
+    "name": "Dr. A.P.J. Abdul Kalam Khandwa Engineering College",
+    "state": "Karnataka",
+    "district": "Khandwa",
+    "latitude": 27.4667,
+    "longitude": 82.3547,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 420,
+    "built_up_area_sqm": 8325.5,
+    "land_area_acres": 8.2,
+    "trust_name": "Shri Bora Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 114/2, Village Amrutapura",
+    "establishment_year": 2016
+  },
+  {
+    "id": "INST_098",
+    "aicte_id": "1-551569472",
+    "name": "Rabindranath Tagore Bhilwara Engineering College",
+    "state": "Karnataka",
+    "district": "Bhilwara",
+    "latitude": 8.7501,
+    "longitude": 77.4088,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 420,
+    "built_up_area_sqm": 9853.4,
+    "land_area_acres": 6.5,
+    "trust_name": "Shri Chacko Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 94/5, Village Tristanpura",
+    "establishment_year": 1989
+  },
+  {
+    "id": "INST_099",
+    "aicte_id": "1-434702231",
+    "name": "Aryabhata Bhilai Engineering College",
+    "state": "Maharashtra",
+    "district": "Bhilai",
+    "latitude": 12.5148,
+    "longitude": 87.5177,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 360,
+    "built_up_area_sqm": 7144.7,
+    "land_area_acres": 6.7,
+    "trust_name": "Shri Setty Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 95/1, Village Advaypura",
+    "establishment_year": 2016
+  },
+  {
+    "id": "INST_100",
+    "aicte_id": "1-620821409",
+    "name": "Sir C.V. Raman Agartala Engineering College",
+    "state": "Uttar Pradesh",
+    "district": "Agartala",
+    "latitude": 21.4222,
+    "longitude": 86.3436,
+    "programmes": [
+      "Engineering & Technology",
+      "Management"
+    ],
+    "approved_intake": 480,
+    "built_up_area_sqm": 12135.9,
+    "land_area_acres": 5.4,
+    "trust_name": "Shri Dayal Educational & Charitable Trust",
+    "survey_numbers": "Sy. No. 57/4, Village Calebpura",
+    "establishment_year": 1988
   }
 ]

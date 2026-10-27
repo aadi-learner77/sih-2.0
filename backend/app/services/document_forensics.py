@@ -557,7 +557,7 @@ class DocumentForensicsEngine:
         image_np_or_path: Any,
         doc_id: str = "doc",
         page_num: int = 1,
-        min_cluster_pairs: int = 18,
+        min_cluster_pairs: int = 22,
         min_spatial_distance: float = 40.0
     ) -> List[ForensicIndicator]:
         """

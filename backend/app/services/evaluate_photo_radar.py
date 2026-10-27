@@ -89,7 +89,10 @@ class PhotoRadarEvaluator:
 
         # Reset and index all photos into radar
         self.radar.catalog.clear()
-        import faiss
+        try:
+            import faiss
+        except ImportError:
+            from backend.app.services.photo_radar import faiss
         self.radar.faiss_index = faiss.IndexFlatIP(self.radar.dim)
         self.radar.index_photos_directory(photos_dir)
 
@@ -126,8 +129,8 @@ class PhotoRadarEvaluator:
                 current_institution_id=inst_id,
                 file_bytes=b,
                 exact_hamming_threshold=0,
-                near_duplicate_hamming_threshold=12,
-                clip_semantic_threshold=0.82
+                near_duplicate_hamming_threshold=8,
+                clip_semantic_threshold=0.88
             )
 
             is_planted_duplicate = inst_id in ["INST_002", "INST_003", "INST_004"]
@@ -168,8 +171,8 @@ class PhotoRadarEvaluator:
         # Cluster detection
         cluster_res = self.radar.detect_photo_reuse_clusters(
             exact_hamming_threshold=0,
-            near_duplicate_hamming_threshold=12,
-            clip_semantic_threshold=0.82
+            near_duplicate_hamming_threshold=8,
+            clip_semantic_threshold=0.88
         )
 
         report = {

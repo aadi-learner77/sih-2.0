@@ -134,11 +134,15 @@ class AuditChainService:
 
         return {
             "chain_length": len(receipts),
+            "total_receipts": len(receipts),
+            "is_valid": is_intact,
             "is_intact": is_intact,
             "status": "VALID_VERIFIED" if is_intact else "TAMPERING_DETECTED",
             "genesis_hash": receipts[0].previous_hash if receipts else None,
             "latest_receipt_hash": receipts[-1].receipt_hash if receipts else None,
             "tampered_receipts_count": len(tampered_receipts),
             "tamper_diagnostics": tampered_receipts,
+            "broken_link_index": tampered_receipts[0]["receipt_index"] if tampered_receipts else None,
+            "message": "Cryptographic ledger integrity verified across all receipts." if is_intact else "Cryptographic chain integrity breach detected!",
             "verification_timestamp": datetime.now(timezone.utc).isoformat()
         }

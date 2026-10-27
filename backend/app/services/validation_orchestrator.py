@@ -226,9 +226,13 @@ class ApplicationValidationOrchestrator:
         # Step 8: Execute Rule Engine
         rule_findings = self.rules_engine.evaluate(extracted_facts, category)
         
-        # Save rule evaluations to DB
-        db.query(RuleEvaluation).filter(RuleEvaluation.application_id == app.id).delete()
+        # Save rule evaluations to DB (Preserve superseded findings to maintain audit chain history)
+        db.query(RuleEvaluation).filter(
+            RuleEvaluation.application_id == app.id,
+            RuleEvaluation.is_superseded == False
+        ).delete()
         for f in rule_findings:
+            rect_allowed = not ("forged" in f.human_readable_explanation.lower() or "litigation" in f.human_readable_explanation.lower())
             eval_record = RuleEvaluation(
                 application_id=app.id,
                 rule_code_ref=f.rule_id,
@@ -237,6 +241,8 @@ class ApplicationValidationOrchestrator:
                 handbook_edition="AICTE APH 2025-26",
                 severity=f.severity.upper(),
                 passed=f.status == "pass",
+                is_rectification_allowed=rect_allowed,
+                is_superseded=False,
                 claim_summary=f"Evaluated facts: FSR, Area ({built_up_area} sqm), Intake ({approved_intake})",
                 evidence_details={
                     "clause_reference": f.clause_ref,

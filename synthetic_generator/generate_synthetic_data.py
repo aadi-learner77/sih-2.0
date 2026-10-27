@@ -59,9 +59,22 @@ def load_base_institutions(csv_path: str, count: int, fake: Faker) -> list:
             progs = item["programmes"].split(";")
             aicte_id = item["aicte_id"]
         else:
-            state = fake.random_element(["Karnataka", "Maharashtra", "Tamil Nadu", "Gujarat", "Delhi", "Uttar Pradesh", "Telangana", "Kerala"])
+            state = fake.random_element(["Karnataka", "Maharashtra", "Tamil Nadu", "Gujarat", "Delhi", "Uttar Pradesh", "Telangana", "Kerala", "West Bengal", "Rajasthan"])
             district = fake.city()
-            name = f"{district} Institute of Technology & Engineering"
+            prefixes = [
+                "B.R. Ambedkar", "Sardar Vallabhbhai Patel", "Acharya", "Swami Vivekananda",
+                "Rajiv Gandhi", "K.L.N.", "Dr. A.P.J. Abdul Kalam", "Rabindranath Tagore",
+                "Aryabhata", "Sir C.V. Raman", "Netaji Subhas", "National", "Imperial", "Global", "Heritage"
+            ]
+            types = [
+                "Institute of Technology & Engineering", "College of Engineering & Technology",
+                "Institute of Technical Studies", "Technological Institute", "Engineering College",
+                "Institute of Engineering & Research"
+            ]
+            idx_offset = i - len(base_list)
+            pfx = prefixes[idx_offset % len(prefixes)]
+            typ = types[(idx_offset // len(prefixes)) % len(types)]
+            name = f"{pfx} {district} {typ}"
             lat = round(random.uniform(8.0, 30.0), 4)
             lon = round(random.uniform(72.0, 88.0), 4)
             progs = ["Engineering & Technology", "Management"]
@@ -372,12 +385,39 @@ def main():
                         expected_regulatory_flag="ANACHRONISTIC_ISSUE_DATE"
                     )
 
+            is_hard_case = False
+            hard_case_type = None
+
+            if not plant_this_defect:
+                # Clean documents: partition into clean controls and hard cases (NOT defects!)
+                hard_roll = random.random()
+                if hard_roll < 0.15:
+                    # Hard case: unusual date format on a completely valid certificate
+                    is_hard_case = True
+                    fmt_style = random.choice(["dots", "slashes", "ordinal", "tenure"])
+                    if fmt_style == "dots":
+                        doc_data["validity_date"] = "31.03.2027"
+                        hard_case_type = "unusual_date_format_dots"
+                    elif fmt_style == "slashes":
+                        doc_data["validity_date"] = "30/06/2027"
+                        hard_case_type = "unusual_date_format_slashes"
+                    elif fmt_style == "ordinal":
+                        doc_data["validity_date"] = "31st March 2027"
+                        hard_case_type = "unusual_date_format_ordinal"
+                    elif fmt_style == "tenure":
+                        doc_data["validity_date"] = "valid for 3 years from issue"
+                        hard_case_type = "unusual_date_format_tenure_phrase"
+                elif hard_roll < 0.30:
+                    # Hard case: blurred / photocopy degraded scan of authentic certificate
+                    is_hard_case = True
+                    hard_case_type = "blurred_degraded_clean_scan"
+
             # Generate original PDF
             doc_func(doc_path, doc_data)
 
-            # Apply 30% Scan Degradation (Augraphy / Skew / Dirty Rollers / Blur)
-            is_degraded = random.random() < 0.30
-            if is_degraded:
+            # Apply Scan Degradation (Augraphy / Skew / Dirty Rollers / Blur)
+            should_degrade = (hard_case_type == "blurred_degraded_clean_scan") or (random.random() < 0.25)
+            if should_degrade:
                 degraded_temp = os.path.join(inst_dir, f"degraded_{doc_filename}")
                 success = degrade_pdf_document(doc_path, degraded_temp)
                 if success and os.path.exists(degraded_temp):
@@ -389,9 +429,14 @@ def main():
                 "document_type": doc_name,
                 "filename": doc_filename,
                 "file_path": doc_path,
-                "is_scan_degraded": is_degraded,
+                "is_scan_degraded": should_degrade,
+                "is_hard_case": is_hard_case,
+                "hard_case_type": hard_case_type,
+                "is_clean_control": (not plant_this_defect and not is_hard_case),
+                "is_planted_defect": plant_this_defect,
                 "reference_number": doc_data["reference_number"],
-                "validity_date": doc_data["validity_date"]
+                "validity_date": doc_data["validity_date"],
+                "issue_date": doc_data.get("issue_date")
             })
 
     # Save summary metadata JSONs

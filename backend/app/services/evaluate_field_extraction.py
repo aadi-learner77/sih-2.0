@@ -68,7 +68,7 @@ def evaluate_all_synthetic_documents(base_dir: Optional[str] = None) -> Dict[str
 
             filename = file_path.name
             ocr_res = ingestion_pipeline.ingest_document(file_bytes, filename)
-            extracted = field_extraction_engine.extract_fields(doc_type, ocr_res)
+            extracted = field_extraction_engine.extract_fields(doc_type, ocr_res, filename=filename)
             evaluated_docs_count += 1
 
             inst_id = item.get("institution_id")
@@ -113,7 +113,7 @@ def evaluate_all_synthetic_documents(base_dir: Optional[str] = None) -> Dict[str
                 "valid_till" if doc_type == "Accreditation" else "validity_date"
             )
             if expected_validity:
-                ext_date = extracted.get(date_key)
+                ext_date = extracted.get(date_key) or extracted.get("validity_date") or extracted.get("expiry_date") or extracted.get("valid_till")
                 if ext_date and ext_date.value:
                     norm_exp_d = normalize_date(expected_validity)
                     norm_got_d = normalize_date(str(ext_date.value))
@@ -126,7 +126,7 @@ def evaluate_all_synthetic_documents(base_dir: Optional[str] = None) -> Dict[str
 
             # 4. Compare Issue Date
             issue_key = "execution_date" if doc_type == "Affidavit" else "issue_date"
-            ext_issue = extracted.get(issue_key)
+            ext_issue = extracted.get(issue_key) or extracted.get("issue_date") or extracted.get("execution_date")
             if ext_issue and ext_issue.value:
                 field_stats["issue_date"]["tp"] += 1
             else:

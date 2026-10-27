@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     SECRET_KEY: str = os.getenv("SECRET_KEY", "pramaan-x-hackathon-super-secret-key-2025-aicte")
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24  # 24 hours
+    CORS_ORIGINS: str = os.getenv("CORS_ORIGINS", "*")
     
     UPLOAD_DIR: str = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "uploads")
     RULES_DIR: str = os.path.join(os.path.dirname(os.path.dirname(__file__)), "rules")

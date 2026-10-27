@@ -199,7 +199,7 @@ class BuiltUpAreaEvaluator:
         evaluation_report = {
             "evaluation_title": "PRAMAAN-X Geospatial Built-Up Area Plausibility Benchmark",
             "evaluated_at": datetime.now(timezone.utc).isoformat(),
-            "dataset_file": str(DEFAULT_OPEN_BUILDINGS_FILE),
+            "dataset_file": "generated_data/open_buildings_osm.geojson",
             "total_cases": len(BENCHMARK_CASES),
             "passed_cases": passed_evaluations,
             "accuracy_pct": accuracy,

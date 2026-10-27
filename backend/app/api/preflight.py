@@ -59,8 +59,19 @@ def run_preflight_readiness_scan(
         "affiliation_status": request.facts.get("affiliation_status", "ACTIVE")
     }
 
-    rule_results = rules_engine.evaluate_application(eval_facts)
-    failed_rules = [r for r in rule_results if not r["passed"]]
+    rule_findings = rules_engine.evaluate_application(eval_facts)
+    rule_results = []
+    failed_rules = []
+    for r in rule_findings:
+        d = r.model_dump() if hasattr(r, "model_dump") else dict(r)
+        d["passed"] = r.passed
+        d["clause_id"] = r.clause_id
+        d["clause_title"] = r.clause_title
+        d["explanation"] = r.explanation
+        d["handbook_edition"] = r.handbook_edition
+        rule_results.append(d)
+        if not r.passed:
+            failed_rules.append(d)
 
     # 3. Knowledge Graph impossibility check
     impossibilities = impossibility_engine.detect_all_impossibilities(target_inst_id=f"INST_00{inst.id}")

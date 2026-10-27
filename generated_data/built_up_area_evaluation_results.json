@@ -1,7 +1,7 @@
 {
   "evaluation_title": "PRAMAAN-X Geospatial Built-Up Area Plausibility Benchmark",
   "evaluated_at": "2026-10-27T09:33:08.164258+00:00",
-  "dataset_file": "C:\\Users\\Tejas\\Desktop\\sih-2.0\\generated_data\\open_buildings_osm.geojson",
+  "dataset_file": "generated_data/open_buildings_osm.geojson",
   "total_cases": 8,
   "passed_cases": 8,
   "accuracy_pct": 100.0,

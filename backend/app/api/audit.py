@@ -61,19 +61,15 @@ def verify_audit_ledger_integrity(
 ) -> Dict[str, Any]:
     """
     Mathematical Chain Integrity Verification:
-    Iterates through all hash-chained blocks, verifying SHA-256 parent links and Ed25519 digital signatures.
-    Returns status: 'CHAIN_INTACT' or 'TAMPERING_DETECTED' with first broken link diagnostics.
+    Iterates through all hash-chained blocks, verifying SHA-256 parent links and digital signatures.
+    Returns status: 'VALID_VERIFIED' or 'TAMPERING_DETECTED' with first broken link diagnostics.
     """
     if application_id:
         app = db.query(Application).filter(Application.id == application_id).first()
         if app:
             enforce_institution_isolation(current_user, app.institution_id)
 
-    # First check verification_receipts chain
-    result = verify_chain(db, application_id=application_id)
-    if result.get("total_receipts", 0) == 0:
-        # Fall back to legacy audit receipts
-        result = AuditChainService.verify_ledger_integrity(db, application_id=application_id)
+    result = AuditChainService.verify_ledger_integrity(db, application_id=application_id)
 
     log_sensitive_access(
         db=db,
@@ -122,6 +118,43 @@ def simulate_tampering_for_evaluation(
         "original_payload_hash": original_hash,
         "tampered_payload_hash": target.payload_hash,
         "instruction": "Now run GET /api/v1/audit/verify-chain to observe automated cryptographic breach detection!"
+    }
+
+
+@router.post("/restore-tamper-demo")
+def restore_tampering_for_evaluation(
+    req: Request = None,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Demo Utility:
+    Restores the cryptographic audit receipts to their authentic untampered state
+    by recomputing canonical payload hashes.
+    """
+    receipts = db.query(AuditReceipt).all()
+    restored_count = 0
+    for r in receipts:
+        if r.payload is not None:
+            canonical_hash = AuditChainService._compute_payload_hash(r.payload)
+            if r.payload_hash != canonical_hash:
+                r.payload_hash = canonical_hash
+                restored_count += 1
+    db.commit()
+
+    log_sensitive_access(
+        db=db,
+        user=current_user,
+        action="RESTORE_TAMPER_DEMO",
+        resource="/api/v1/audit/restore-tamper-demo",
+        details={"restored_count": restored_count},
+        request=req
+    )
+
+    return {
+        "status": "CHAIN_RESTORED",
+        "restored_receipts_count": restored_count,
+        "message": "Audit chain hashes successfully restored to authentic state."
     }
 
 

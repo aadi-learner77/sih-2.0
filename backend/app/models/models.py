@@ -22,9 +22,9 @@ from datetime import datetime, timezone
 from typing import Optional, List, Dict, Any
 from sqlalchemy import (
     Column, Integer, String, Float, Boolean, Text, DateTime,
-    ForeignKey, Index, UniqueConstraint, Enum, JSON
+    ForeignKey, Index, UniqueConstraint, Enum, JSON, event
 )
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, Session
 from sqlalchemy.dialects.postgresql import JSONB
 from backend.app.core.database import Base
 
@@ -330,16 +330,25 @@ class Finding(Base):
     officer_comment = Column(Text, nullable=True)
     evaluated_at = Column(DateTime(timezone=True), default=utc_now)
 
+    # Rectification & Superseding Lifecycle
+    is_rectification_allowed = Column(Boolean, default=True, index=True)
+    is_superseded = Column(Boolean, default=False, index=True)
+    replacement_document_id = Column(Integer, ForeignKey("documents.id", ondelete="SET NULL"), nullable=True)
+    superseded_by_finding_id = Column(Integer, ForeignKey("findings.id", ondelete="SET NULL"), nullable=True)
+    superseded_at = Column(DateTime(timezone=True), nullable=True)
+
     __table_args__ = (
         Index("idx_findings_app_severity", "application_id", "severity"),
         Index("idx_findings_status", "status"),
         Index("idx_findings_clause", "clause_id"),
+        Index("idx_findings_rectification", "is_rectification_allowed", "is_superseded"),
     )
 
     application = relationship("Application", back_populates="findings")
     rule = relationship("Rule", back_populates="findings")
     rule_version = relationship("RuleVersion", back_populates="findings")
     officer_actions = relationship("OfficerAction", back_populates="finding")
+    replacement_document = relationship("Document", foreign_keys=[replacement_document_id])
 
 
 # Alias for backwards compatibility
@@ -649,4 +658,43 @@ class FacultyEmployment(Base):
 
     faculty = relationship("Faculty", back_populates="employments")
     institution = relationship("Institution", back_populates="employments")
+
+
+# ============================================================================
+# STATUTORY GOVERNANCE ENFORCEMENT: ADVERSE STATUS CONSTRAINTS
+# ============================================================================
+
+@event.listens_for(Session, "before_flush")
+def validate_adverse_status_requires_officer_action(session, flush_context, instances):
+    """
+    Statutory Governance Constraint:
+    Adverse statuses ('REJECTED') are strictly impossible without an authoritative,
+    human-in-the-loop OfficerAction determination.
+    Automated scanners, preflight checks, and background batch jobs can NEVER mutate
+    an application to 'REJECTED'.
+    """
+    for obj in session.dirty.union(session.new):
+        if isinstance(obj, Application) and getattr(obj, "status", None) == "REJECTED":
+            # Check if an OfficerAction with REJECT or REJECTED is being recorded in the current session
+            actions_in_session = [
+                a for a in session.new.union(session.dirty)
+                if isinstance(a, OfficerAction) and getattr(a, "application_id", None) == obj.id
+                and getattr(a, "action_type", "").upper() in ["REJECT", "REJECTED"]
+            ]
+            if actions_in_session:
+                continue
+
+            # Or check if a committed OfficerAction already exists for this application
+            if obj.id:
+                has_committed_action = session.query(OfficerAction).filter(
+                    OfficerAction.application_id == obj.id,
+                    OfficerAction.action_type.in_(["REJECT", "REJECTED"])
+                ).first()
+                if has_committed_action:
+                    continue
+
+            raise ValueError(
+                "Adverse status 'REJECTED' is impossible without an authoritative officer action. "
+                "AI scanners and automated pipelines may only produce advisory indicators, never automated adverse verdicts."
+            )
 

@@ -38,8 +38,8 @@ def ensure_rbac_users(db: Session):
             db.add(Role(code=code, name=name))
     db.commit()
 
-    inst1 = db.query(Institution).first()
-    inst2 = db.query(Institution).offset(1).first()
+    inst1 = db.query(Institution).filter(Institution.aicte_id == "1-109283711").first() or db.query(Institution).first()
+    inst2 = db.query(Institution).filter(Institution.aicte_id == "1-209384722").first() or db.query(Institution).offset(1).first()
 
     user_specs = [
         ("scrutiny.officer@aicte-india.org", "AicteOfficer@2025", "Dr. Sunita Deshmukh", "scrutiny_officer", None),
@@ -63,8 +63,43 @@ def ensure_rbac_users(db: Session):
                 is_active=True
             ))
         else:
-            if inst_id and not u.institution_id:
+            if inst_id:
                 u.institution_id = inst_id
+    db.commit()
+
+
+def seed_rules_from_engine(db: Session):
+    """Loads all Regulation-as-Code rules from YAML rules_engine into database."""
+    engine_rules = rules_engine.get_all_rules()
+    for r in engine_rules:
+        code = r.get("rule_code") or r.get("id")
+        existing_rule = db.query(Rule).filter(Rule.rule_code == code).first()
+        if not existing_rule:
+            rule_obj = Rule(
+                rule_code=code,
+                clause_id=r.get("clause_id") or r.get("clause_ref") or "APH-2025-RULE",
+                title=r.get("title") or code,
+                category=r.get("category") or "General",
+                severity=(r.get("severity") or "CRITICAL").upper(),
+                description=r.get("description") or "",
+                is_active=True
+            )
+            db.add(rule_obj)
+            db.flush()
+
+            curr_ver = r.get("current_version") or {}
+            params = curr_ver.get("parameters") or r.get("parameters") or {}
+            version_obj = RuleVersion(
+                rule_id=rule_obj.id,
+                version_number=curr_ver.get("version_number") or r.get("version") or "1.0.0",
+                handbook_edition=curr_ver.get("handbook_edition") or "AICTE Approval Process Handbook (APH) 2025-26",
+                effective_from=datetime.now(timezone.utc),
+                parameters=params,
+                condition_expression=curr_ver.get("condition_expression") or "",
+                failure_message_template=curr_ver.get("failure_message_template") or r.get("message_template") or "",
+                is_current=True
+            )
+            db.add(version_obj)
     db.commit()
 
 
@@ -74,6 +109,7 @@ def seed_database():
 
     # If users already exist, check if Institution Twin tables need seeding & ensure RBAC accounts exist
     if db.query(User).first():
+        seed_rules_from_engine(db)
         seed_institution_twin_tables(db)
         ensure_rbac_users(db)
         db.close()
@@ -588,6 +624,7 @@ def seed_database():
 
     # Seed Institution Twin knowledge graph entities
     seed_institution_twin_tables(db)
+    seed_rules_from_engine(db)
 
     print("PRAMAAN-X Database seeding completed successfully with 7 chained audit receipts!")
     db.close()
@@ -941,5 +978,10 @@ def seed_institution_twin_tables(db: Session):
 
 
 if __name__ == "__main__":
+    import sys
+    if "--reset" in sys.argv or "--force" in sys.argv:
+        print("Resetting PRAMAAN-X database schema to clean baseline...")
+        Base.metadata.drop_all(bind=engine)
+        Base.metadata.create_all(bind=engine)
     seed_database()
 
