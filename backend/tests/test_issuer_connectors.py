@@ -19,6 +19,7 @@ Tests:
 
 import pytest
 import qrcode
+from typing import Dict, Any, List, Optional
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 

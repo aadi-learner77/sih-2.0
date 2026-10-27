@@ -29,7 +29,8 @@ from backend.app.services.photo_radar import (
     photo_radar_service,
     PhotoMatch,
     PhotoCluster,
-    ClusterGraphData
+    ClusterGraphData,
+    faiss
 )
 from backend.app.services.evaluate_photo_radar import PhotoRadarEvaluator
 
@@ -90,7 +91,6 @@ def test_feature_extraction_clip_embeddings(base_test_image):
 
 def test_faiss_vector_indexing_and_search(base_test_image):
     """Tests FAISS IndexFlatIP inner-product search with identical and orthogonal vectors."""
-    import faiss
     extractor = photo_radar_service.clip_extractor
     dim = 512
     index = faiss.IndexFlatIP(dim)
@@ -148,7 +148,6 @@ def test_match_type_classification(base_test_image):
     """
     # Create fresh radar service instance in isolated memory
     service = NationalPhotoRadarService()
-    import faiss
     service.catalog.clear()
     service.faiss_index = faiss.IndexFlatIP(512)
 
@@ -204,7 +203,6 @@ def test_cluster_detection_and_graph_json(base_test_image):
     and returns cluster graph JSON with nodes and edges.
     """
     service = NationalPhotoRadarService()
-    import faiss
     service.catalog.clear()
     service.faiss_index = faiss.IndexFlatIP(512)
 
@@ -277,7 +275,6 @@ def test_strict_regulatory_wording_compliance(base_test_image):
     2. Must contain ZERO occurrences of forbidden words ('fraud', 'verdict').
     """
     service = NationalPhotoRadarService()
-    import faiss
     service.catalog.clear()
     service.faiss_index = faiss.IndexFlatIP(512)
 

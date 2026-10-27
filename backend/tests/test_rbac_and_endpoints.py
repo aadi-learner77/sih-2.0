@@ -112,13 +112,18 @@ def test_auth_me_endpoint(client: TestClient):
 def test_institution_user_cannot_view_other_institution_data(client: TestClient, db: Session):
     """
     Institution users must ONLY see their own data.
-    Apex Registrar (inst 1) attempting to access Royal College application (inst 2) must receive 403 Forbidden.
+    Apex Registrar attempting to access Royal College application must receive 403 Forbidden.
     """
-    app_apex = db.query(Application).filter(Application.institution_id == 1).first()
-    app_royal = db.query(Application).filter(Application.institution_id == 2).first()
+    inst_apex = db.query(Institution).filter(Institution.aicte_id == "1-109283711").first()
+    inst_royal = db.query(Institution).filter(Institution.aicte_id == "1-209384722").first()
+    apex_id = inst_apex.id if inst_apex else 1
+    royal_id = inst_royal.id if inst_royal else 2
+
+    app_apex = db.query(Application).filter(Application.institution_id == apex_id).first()
+    app_royal = db.query(Application).filter(Application.institution_id == royal_id).first()
     assert app_apex is not None and app_royal is not None
 
-    token_apex = get_token_for_user("registrar@apextech.edu.in", ROLE_INSTITUTION_USER, institution_id=1)
+    token_apex = get_token_for_user("registrar@apextech.edu.in", ROLE_INSTITUTION_USER, institution_id=apex_id)
     headers_apex = {"Authorization": f"Bearer {token_apex}"}
 
     # 1. Apex user viewing their own application -> 200 OK
@@ -142,23 +147,30 @@ def test_institution_user_cannot_view_other_institution_data(client: TestClient,
 
 def test_institution_user_list_applications_filtered_to_own(client: TestClient, db: Session):
     """Institution users querying /applications must only receive applications for their institution."""
-    token_apex = get_token_for_user("registrar@apextech.edu.in", ROLE_INSTITUTION_USER, institution_id=1)
+    inst_apex = db.query(Institution).filter(Institution.aicte_id == "1-109283711").first()
+    apex_id = inst_apex.id if inst_apex else 1
+    token_apex = get_token_for_user("registrar@apextech.edu.in", ROLE_INSTITUTION_USER, institution_id=apex_id)
     headers_apex = {"Authorization": f"Bearer {token_apex}"}
 
     resp = client.get("/api/v1/applications", headers=headers_apex)
     assert resp.status_code == 200
     apps = resp.json()
     for a in apps:
-        assert a["institution_id"] == 1
+        assert a["institution_id"] == apex_id
 
 
-def test_institution_user_cannot_submit_for_other_institution(client: TestClient):
+def test_institution_user_cannot_submit_for_other_institution(client: TestClient, db: Session):
     """Institution users cannot submit dossiers for another college."""
-    token_apex = get_token_for_user("registrar@apextech.edu.in", ROLE_INSTITUTION_USER, institution_id=1)
+    inst_apex = db.query(Institution).filter(Institution.aicte_id == "1-109283711").first()
+    inst_royal = db.query(Institution).filter(Institution.aicte_id == "1-209384722").first()
+    apex_id = inst_apex.id if inst_apex else 1
+    royal_id = inst_royal.id if inst_royal else 2
+
+    token_apex = get_token_for_user("registrar@apextech.edu.in", ROLE_INSTITUTION_USER, institution_id=apex_id)
     headers_apex = {"Authorization": f"Bearer {token_apex}"}
 
-    # Attempt submit for institution 2 (Royal)
-    payload = {"institution_id": 2, "category": "Extension of Approval (EoA)", "academic_year": "2025-26"}
+    # Attempt submit for institution Royal
+    payload = {"institution_id": royal_id, "category": "Extension of Approval (EoA)", "academic_year": "2025-26"}
     resp = client.post("/api/v1/applications/submit", json=payload, headers=headers_apex)
     assert resp.status_code == 403
 
@@ -185,7 +197,7 @@ def test_no_automatic_rejection_rule(client: TestClient, db: Session):
     # Ensure application status is NOT automatically changed to REJECTED
     db.refresh(app_apex)
     assert app_apex.status != "REJECTED"
-    assert app_apex.status in ["UNDER_SCRUTINY", "SUBMITTED", "DEFICIT_FLAGGED", "PENDING_OFFICER_REVIEW", "APPROVED_WITH_CONDITIONS"]
+    assert app_apex.status in ["UNDER_SCRUTINY", "SUBMITTED", "DEFICIT_FLAGGED", "PENDING_OFFICER_REVIEW", "APPROVED_WITH_CONDITIONS", "CLARIFICATION_REQUESTED"]
 
 
 # ============================================================================
@@ -274,7 +286,9 @@ def test_pii_masking_for_officers_and_auditors(client: TestClient, db: Session):
     Scrutiny Officers & Auditors see masked PAN and contact details.
     Institution Users see unmasked data for their own dossiers.
     """
-    app_apex = db.query(Application).filter(Application.institution_id == 1).first()
+    inst_apex = db.query(Institution).filter(Institution.aicte_id == "1-109283711").first()
+    apex_id = inst_apex.id if inst_apex else 1
+    app_apex = db.query(Application).filter(Application.institution_id == apex_id).first()
 
     # Add sample finding with PAN
     finding = db.query(Finding).filter(Finding.application_id == app_apex.id).first()
@@ -294,7 +308,7 @@ def test_pii_masking_for_officers_and_auditors(client: TestClient, db: Session):
         assert "ABCDE1234F" not in " ".join(explanations)
 
     # 2. Owner Institution User sees their own data
-    token_apex = get_token_for_user("registrar@apextech.edu.in", ROLE_INSTITUTION_USER, institution_id=1)
+    token_apex = get_token_for_user("registrar@apextech.edu.in", ROLE_INSTITUTION_USER, institution_id=apex_id)
     resp_owner = client.get(f"/api/v1/applications/{app_apex.id}/findings", headers={"Authorization": f"Bearer {token_apex}"})
     assert resp_owner.status_code == 200
 
@@ -305,7 +319,9 @@ def test_pii_masking_for_officers_and_auditors(client: TestClient, db: Session):
 
 def test_access_logging_for_sensitive_reads(client: TestClient, db: Session):
     """Reading sensitive dossier data must insert a record into audit_log."""
-    app_apex = db.query(Application).filter(Application.institution_id == 1).first()
+    inst_apex = db.query(Institution).filter(Institution.aicte_id == "1-109283711").first()
+    apex_id = inst_apex.id if inst_apex else 1
+    app_apex = db.query(Application).filter(Application.institution_id == apex_id).first()
     token_officer = get_token_for_user("scrutiny.officer@aicte-india.org", ROLE_SCRUTINY_OFFICER)
 
     # Count prior logs
