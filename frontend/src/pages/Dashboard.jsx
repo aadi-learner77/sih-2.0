@@ -26,6 +26,7 @@ import {
 } from 'lucide-react';
 import OfficerKpiCards from '../components/OfficerKpiCards';
 import StatusChip from '../components/StatusChip';
+import DemoDataBadge from '../components/DemoDataBadge';
 import { api } from '../services/api';
 import { 
   MOCK_TRIAGE_APPLICATIONS, 
@@ -39,7 +40,8 @@ import {
  * 2. Risk-ranked triage table with multi-dimensional filtering (State, Category, Status, Severity)
  * 3. Exact statutory status chips: Verified, Mismatch Detected, Expired, Verification Pending, Source Unavailable, Manual Review Required
  * 4. Officer Action Determination modal with mandatory comment
- * 5. Mock JSON first, then wire to live API with seamless fallback
+ * 5. Mock JSON first, then wire to live API with seamless fallback & DemoDataBadge
+ * 6. Institution User isolation: strictly displays own institution's dossiers
  */
 export default function Dashboard({ 
   applications = [], 
@@ -47,7 +49,8 @@ export default function Dashboard({
   onNavigateTab,
   onRefresh,
   isLiveMode = false,
-  currentRole = 'scrutiny_officer'
+  currentRole = 'scrutiny_officer',
+  currentUser = null
 }) {
   // Master data state
   const [dataList, setDataList] = useState(MOCK_TRIAGE_APPLICATIONS);
@@ -77,9 +80,17 @@ export default function Dashboard({
 
   // Load and merge data from API when live mode or applications prop changes
   useEffect(() => {
+    const isInstitutionUser = currentRole === 'institution_user';
+    const userInstId = currentUser?.institution_id;
+
     if (applications && applications.length > 0) {
       // Merge live applications with mock enrichment fields (risk_score, state, status chips)
-      const merged = applications.map((app, idx) => {
+      let sourceApps = applications;
+      if (isInstitutionUser && userInstId) {
+        sourceApps = sourceApps.filter((a) => a.institution_id === userInstId);
+      }
+
+      const merged = sourceApps.map((app, idx) => {
         const mockFallback = MOCK_TRIAGE_APPLICATIONS[idx % MOCK_TRIAGE_APPLICATIONS.length];
         
         // Map backend status to exact statutory chip status
@@ -97,6 +108,7 @@ export default function Dashboard({
           id: app.id,
           application_no: app.application_no || mockFallback.application_no,
           institution_name: app.institution_name || mockFallback.institution_name,
+          institution_id: app.institution_id || mockFallback.institution_id,
           category: app.category || mockFallback.category,
           academic_year: app.academic_year || mockFallback.academic_year,
           preflight_readiness_score: app.preflight_readiness_score || mockFallback.preflight_readiness_score,
@@ -134,10 +146,14 @@ export default function Dashboard({
         },
       });
     } else {
-      setDataList(MOCK_TRIAGE_APPLICATIONS);
+      let fallbackList = MOCK_TRIAGE_APPLICATIONS;
+      if (isInstitutionUser) {
+        fallbackList = fallbackList.filter((a) => !userInstId || a.institution_id === userInstId || a.id === 1);
+      }
+      setDataList(fallbackList);
       setKpis(MOCK_KPIS);
     }
-  }, [applications]);
+  }, [applications, currentRole, currentUser]);
 
   // Extract unique filter options
   const stateOptions = useMemo(() => {
@@ -287,27 +303,43 @@ export default function Dashboard({
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
           <div>
             <div className="flex items-center space-x-2 text-xs font-bold text-orange-700 uppercase tracking-widest mb-1.5">
-              <span>AICTE Central Scrutiny Division</span>
+              <span>{currentRole === 'institution_user' ? 'Institution Scrutiny Portal' : 'AICTE Central Scrutiny Division'}</span>
               <span>•</span>
-              <span>Extension of Approval (EoA) 2025-26</span>
+              <span>{currentRole === 'institution_user' ? (currentUser?.full_name || 'My Institution Dossier') : 'Extension of Approval (EoA) 2025-26'}</span>
+              {!isLiveMode && <DemoDataBadge />}
             </div>
             <h1 className="text-2xl font-black text-slate-900 tracking-tight">
-              Officer Scrutiny & Regulatory Triage Command Center
+              {currentRole === 'institution_user' 
+                ? 'Institutional Dossier & Self-Assessment Status'
+                : 'Officer Scrutiny & Regulatory Triage Command Center'}
             </h1>
             <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-2xl leading-relaxed">
-              Risk-prioritized decision support system verifying land titles, fire safety certificates, faculty cadre rosters, building plan footprints, and cross-institutional duplicate photos.
+              {currentRole === 'institution_user'
+                ? 'Track statutory compliance verification, pre-flight readiness score, and pending documents for your registered institution.'
+                : 'Risk-prioritized decision support system verifying land titles, fire safety certificates, faculty cadre rosters, building plan footprints, and cross-institutional duplicate photos.'}
             </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-2.5 shrink-0">
-            <button
-              id="launch-evidence-lens-btn"
-              onClick={() => onNavigateTab('evidence-lens')}
-              className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-700 hover:to-indigo-700 text-white text-xs font-bold transition-all shadow-sm shadow-sky-600/20 flex items-center space-x-2 cursor-pointer"
-            >
-              <SearchCode className="w-4 h-4" />
-              <span>Launch Evidence Lens</span>
-            </button>
+            {currentRole === 'institution_user' ? (
+              <button
+                id="launch-preflight-btn"
+                onClick={() => onNavigateTab('preflight')}
+                className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-700 hover:to-indigo-700 text-white text-xs font-bold transition-all shadow-sm shadow-sky-600/20 flex items-center space-x-2 cursor-pointer"
+              >
+                <SearchCode className="w-4 h-4" />
+                <span>Pre-Flight Self-Check</span>
+              </button>
+            ) : (
+              <button
+                id="launch-evidence-lens-btn"
+                onClick={() => onNavigateTab('evidence-lens')}
+                className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-700 hover:to-indigo-700 text-white text-xs font-bold transition-all shadow-sm shadow-sky-600/20 flex items-center space-x-2 cursor-pointer"
+              >
+                <SearchCode className="w-4 h-4" />
+                <span>Launch Evidence Lens</span>
+              </button>
+            )}
             <button
               id="launch-audit-ledger-btn"
               onClick={() => onNavigateTab('audit-ledger')}
@@ -336,10 +368,13 @@ export default function Dashboard({
             <div>
               <h2 className="text-base font-bold text-slate-900 flex items-center space-x-2">
                 <Building2 className="w-5 h-5 text-sky-600" />
-                <span>Risk-Ranked Triage Queue ({filteredAndSortedApplications.length} Applications)</span>
+                <span>{currentRole === 'institution_user' ? 'My Institution Applications' : 'Risk-Ranked Triage Queue'} ({filteredAndSortedApplications.length} Applications)</span>
+                {!isLiveMode && <DemoDataBadge />}
               </h2>
               <p className="text-xs text-slate-500 mt-0.5">
-                Applications ordered by calculated regulatory risk score (High-to-Low). Urgent discrepancies surface at the top.
+                {currentRole === 'institution_user' 
+                  ? 'Your institutional dossiers submitted for AICTE regulatory approval.'
+                  : 'Applications ordered by calculated regulatory risk score (High-to-Low). Urgent discrepancies surface at the top.'}
               </p>
             </div>
 
@@ -572,29 +607,45 @@ export default function Dashboard({
                       {/* Action Buttons */}
                       <td className="py-3.5 px-4 text-right whitespace-nowrap">
                         <div className="flex items-center justify-end space-x-1.5">
-                          <button
-                            onClick={() => {
-                              onSelectApplication(app);
-                              onNavigateTab('evidence-lens');
-                            }}
-                            className="px-2.5 py-1.5 rounded-lg bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-200 text-xs font-bold transition-all shadow-2xs flex items-center space-x-1"
-                            title="Inspect application dossier in Evidence Lens"
-                          >
-                            <span>Evidence Lens</span>
-                            <ChevronRight className="w-3.5 h-3.5" />
-                          </button>
+                          {currentRole !== 'institution_user' ? (
+                            <>
+                              <button
+                                onClick={() => {
+                                  onSelectApplication(app);
+                                  onNavigateTab('evidence-lens');
+                                }}
+                                className="px-2.5 py-1.5 rounded-lg bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-200 text-xs font-bold transition-all shadow-2xs flex items-center space-x-1 cursor-pointer"
+                                title="Inspect application dossier in Evidence Lens"
+                              >
+                                <span>Evidence Lens</span>
+                                <ChevronRight className="w-3.5 h-3.5" />
+                              </button>
 
-                          <button
-                            onClick={() => {
-                              setActionModalApp(app);
-                              setOfficerComment('');
-                            }}
-                            className="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold transition-all shadow-2xs flex items-center space-x-1"
-                            title="Record signed officer determination with mandatory comment"
-                          >
-                            <MessageSquare className="w-3 h-3 text-sky-400" />
-                            <span>Take Action</span>
-                          </button>
+                              <button
+                                onClick={() => {
+                                  setActionModalApp(app);
+                                  setOfficerComment('');
+                                }}
+                                className="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold transition-all shadow-2xs flex items-center space-x-1 cursor-pointer"
+                                title="Record signed officer determination with mandatory comment"
+                              >
+                                <MessageSquare className="w-3 h-3 text-sky-400" />
+                                <span>Take Action</span>
+                              </button>
+                            </>
+                          ) : (
+                            <button
+                              onClick={() => {
+                                onSelectApplication(app);
+                                onNavigateTab('preflight');
+                              }}
+                              className="px-2.5 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold transition-all shadow-2xs flex items-center space-x-1 cursor-pointer"
+                              title="Run pre-flight self-assessment check"
+                            >
+                              <span>Self-Audit Check</span>
+                              <ChevronRight className="w-3.5 h-3.5" />
+                            </button>
+                          )}
                         </div>
                       </td>
                     </tr>

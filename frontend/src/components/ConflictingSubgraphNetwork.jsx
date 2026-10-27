@@ -111,6 +111,14 @@ export default function ConflictingSubgraphNetwork({ subgraph }) {
     if (!networkRef.current) return;
     networkRef.current.fit({ animation: { duration: 400, easingFunction: 'easeInOutQuad' } });
   };
+  if (!subgraph) {
+    return (
+      <div className="bg-white border border-slate-200 rounded-2xl p-8 text-center text-slate-500">
+        <NetworkIcon className="w-10 h-10 mx-auto text-slate-400 mb-2" />
+        <p className="text-sm font-medium">No conflicting subgraph topology available for this finding.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col h-full bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden shadow-xs">

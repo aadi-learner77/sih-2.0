@@ -24,9 +24,9 @@ import {
   GraduationCap
 } from 'lucide-react';
 import { 
-  SIMULATION_RULES, 
-  runWhatIfSimulation 
+  SIMULATION_RULES 
 } from '../data/mockWhatIfData';
+import DemoDataBadge from '../components/DemoDataBadge';
 import { api } from '../services/api';
 
 /**
@@ -46,6 +46,7 @@ export default function RuleConfigPage() {
   const [simulationResult, setSimulationResult] = useState(null);
   const [isRunningDryRun, setIsRunningDryRun] = useState(false);
   const [chartView, setChartView] = useState('state'); // 'state' | 'courseType'
+  const [isDemoData, setIsDemoData] = useState(false);
   
   // Publish Version Modal State
   const [showPublishModal, setShowPublishModal] = useState(false);
@@ -54,50 +55,86 @@ export default function RuleConfigPage() {
   const [publishedReceipt, setPublishedReceipt] = useState(null);
   const [activeRuleVersion, setActiveRuleVersion] = useState('v1.0.4');
 
+  // Dry-Run API execution calling POST /rules/dry-run
+  const executeDryRun = async (rule, val) => {
+    setIsRunningDryRun(true);
+    try {
+      const res = await api.executeWhatIfDryRun({
+        rules: [{
+          id: rule.rule_code,
+          clause_ref: rule.clause_id,
+          parameters: { [rule.parameter_name]: val }
+        }]
+      });
+
+      if (res) {
+        setSimulationResult({
+          rule,
+          baselineValue: rule.baseline_value,
+          simulatedValue: val,
+          totalCohort: res.total_cohort || res.total_applications || 150,
+          changedCount: res.changed_count ?? (res.affected_applications_count || 12),
+          clearedCount: res.cleared_count ?? Math.round((res.affected_applications_count || 12) * 0.8),
+          newlyFlaggedCount: res.newly_flagged_count ?? Math.round((res.affected_applications_count || 12) * 0.2),
+          isRelaxation: res.is_relaxation ?? (val > rule.baseline_value),
+          sampleResults: res.sample_results || [],
+          stateBreakdown: res.state_breakdown || [],
+          courseTypeBreakdown: res.course_type_breakdown || [],
+        });
+        setIsDemoData(false);
+      }
+    } catch (err) {
+      console.warn('Backend /rules/dry-run API call failed, using offline fallback:', err.message);
+      setIsDemoData(true);
+      const isRelax = (rule.metric_field === 'fsr' || rule.metric_field === 'area_deficit') ? val > rule.baseline_value : val < rule.baseline_value;
+      const changed = Math.round(150 * 0.25);
+      const cleared = isRelax ? Math.round(changed * 0.85) : Math.round(changed * 0.15);
+      const newly = changed - cleared;
+      setSimulationResult({
+        rule,
+        baselineValue: rule.baseline_value,
+        simulatedValue: val,
+        totalCohort: 150,
+        changedCount: changed,
+        clearedCount: cleared,
+        newlyFlaggedCount: newly,
+        isRelaxation: isRelax,
+        sampleResults: [],
+        stateBreakdown: [
+          { state: 'Karnataka', baseline: 18, simulated: isRelax ? 12 : 24 },
+          { state: 'Maharashtra', baseline: 16, simulated: isRelax ? 10 : 20 },
+          { state: 'Tamil Nadu', baseline: 14, simulated: isRelax ? 9 : 18 },
+          { state: 'Uttar Pradesh', baseline: 15, simulated: isRelax ? 11 : 19 }
+        ],
+        courseTypeBreakdown: [
+          { courseType: 'Engineering (UG/PG)', baseline: 36, simulated: isRelax ? 24 : 48 },
+          { courseType: 'Management (MBA)', baseline: 19, simulated: isRelax ? 12 : 26 },
+          { courseType: 'MCA', baseline: 12, simulated: isRelax ? 8 : 16 }
+        ]
+      });
+    } finally {
+      setIsRunningDryRun(false);
+    }
+  };
+
   // Load selected rule
   useEffect(() => {
     const rule = SIMULATION_RULES.find((r) => r.id === selectedRuleId) || SIMULATION_RULES[0];
     setCurrentRule(rule);
     setSliderValue(rule.default_simulated_value);
-    
-    // Automatically compute initial dry-run result
-    const initialSim = runWhatIfSimulation(rule.id, rule.default_simulated_value);
-    setSimulationResult(initialSim);
+    executeDryRun(rule, rule.default_simulated_value);
   }, [selectedRuleId]);
 
   // Handle Slider Change
   const handleSliderChange = (e) => {
     const newVal = Number(e.target.value);
     setSliderValue(newVal);
-    // Instant live dry-run recalculation
-    const updatedSim = runWhatIfSimulation(selectedRuleId, newVal);
-    setSimulationResult(updatedSim);
+    executeDryRun(currentRule, newVal);
   };
 
   // Explicit Dry-Run API execution button
   const handleExecuteDryRun = async () => {
-    setIsRunningDryRun(true);
-    try {
-      // Attempt backend /rules/dry-run call
-      try {
-        await api.executeWhatIfDryRun({
-          rules: [{
-            id: currentRule.rule_code,
-            parameters: { [currentRule.parameter_name]: sliderValue }
-          }]
-        });
-      } catch (apiErr) {
-        // Fallback simulation
-      }
-
-      await new Promise((r) => setTimeout(r, 600));
-      const res = runWhatIfSimulation(selectedRuleId, sliderValue);
-      setSimulationResult(res);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsRunningDryRun(false);
-    }
+    await executeDryRun(currentRule, sliderValue);
   };
 
   // Handle Publish New Rule Version Confirmation

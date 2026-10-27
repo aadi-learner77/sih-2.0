@@ -17,8 +17,9 @@ import AlertBellDrawer from './AlertBellDrawer';
  * - Active Dossier Quick Pill
  */
 export default function Navbar({ 
+  currentUser,
   currentRole, 
-  onRoleChange, 
+  onLogout, 
   activeApplication, 
   isLiveMode = false,
   onToggleLiveMode 
@@ -92,20 +93,30 @@ export default function Navbar({
           {/* Operational Alert Bell with Drawer */}
           <AlertBellDrawer currentRole={currentRole} />
 
-          {/* Role-Aware Switcher */}
-          <div className="flex items-center space-x-1.5 bg-slate-50 p-1 rounded-xl border border-slate-200 shadow-2xs">
-            <UserCheck className="w-4 h-4 ml-2 text-sky-600 shrink-0" />
-            <select
-              value={currentRole}
-              onChange={(e) => onRoleChange(e.target.value)}
-              className="bg-transparent text-xs text-slate-800 font-semibold px-2 py-1 outline-none cursor-pointer"
-            >
-              <option value="scrutiny_officer">Scrutiny Officer (Primary Triage)</option>
-              <option value="senior_officer">Senior Officer (Escalation & Approvals)</option>
-              <option value="admin">Central Admin (System Controls)</option>
-              <option value="auditor">Auditor (Read-Only Ledger)</option>
-              <option value="institution_user">Institution User (Apex Tech)</option>
-            </select>
+          {/* Authenticated User Profile & Role Badge */}
+          <div className="flex items-center space-x-2.5 bg-slate-50 pl-3 pr-2 py-1.5 rounded-xl border border-slate-200 shadow-2xs">
+            <div className="flex items-center space-x-2">
+              <UserCheck className="w-4 h-4 text-sky-600 shrink-0" />
+              <div className="text-left hidden sm:block">
+                <div className="text-xs font-bold text-slate-800 leading-tight">
+                  {currentUser?.full_name || currentUser?.email || 'Logged In User'}
+                </div>
+                <div className="text-[10px] font-semibold text-sky-700 uppercase tracking-wider">
+                  {currentRole?.replace('_', ' ')}
+                </div>
+              </div>
+            </div>
+
+            {/* Logout Action */}
+            {onLogout && (
+              <button
+                onClick={onLogout}
+                className="p-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition cursor-pointer text-xs flex items-center space-x-1"
+                title="Sign out of PRAMAAN-X session"
+              >
+                <span className="text-[11px] font-medium hidden md:inline">Sign Out</span>
+              </button>
+            )}
           </div>
 
         </div>

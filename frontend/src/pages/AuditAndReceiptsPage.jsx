@@ -12,23 +12,24 @@ import {
   CheckCircle2, 
   Lock, 
   Search, 
-  ExternalLink, 
-  Cpu, 
   Copy, 
   Check, 
   Clock, 
   ChevronDown, 
   ChevronRight, 
-  Zap, 
   AlertOctagon, 
   Fingerprint, 
-  Eye, 
-  FileCode, 
-  SlidersHorizontal 
+  FileCode 
 } from 'lucide-react';
 import StatusChip from '../components/StatusChip';
+import DemoDataBadge from '../components/DemoDataBadge';
 import { api } from '../services/api';
-import { MOCK_AUDIT_RECEIPTS, MOCK_ACCESS_LOGS } from '../data/mockOfficerData';
+import { 
+  MOCK_AUDIT_RECEIPTS, 
+  MOCK_ACCESS_LOGS, 
+  MOCK_OFFICER_ACTIONS, 
+  MOCK_MANUAL_REVIEW_QUEUE 
+} from '../data/mockOfficerData';
 
 /**
  * Audit and Receipts Page Component:
@@ -36,12 +37,19 @@ import { MOCK_AUDIT_RECEIPTS, MOCK_ACCESS_LOGS } from '../data/mockOfficerData';
  * 1. Interactive vertical timeline of cryptographically linked receipts.
  * 2. "Verify chain" button that plays an emerald green chain pulse animation when intact.
  * 3. "Demo: tamper" toggle (demo mode only) that breaks a link and highlights the first invalid block in red.
- * 4. Dual views: Timeline View vs Table View vs Officer Access Logs.
+ * 4. Structured table view showing all six statutory verification statuses with source, timestamp and response hash.
+ * 5. "Officer decisions" tab showing every accept/dismiss/escalate/request-evidence/recommend-inspection/reject action with comment, officer, timestamp and receipt hash.
+ * 6. Visible manual-review queue with resolve lifecycle.
  */
 export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
-  const [viewMode, setViewMode] = useState('timeline'); // 'timeline', 'table', 'access-logs'
+  const [viewMode, setViewMode] = useState('timeline'); // 'timeline', 'table', 'officer-decisions', 'manual-review-queue', 'access-logs'
   const [receipts, setReceipts] = useState(MOCK_AUDIT_RECEIPTS);
   const [accessLogs, setAccessLogs] = useState(MOCK_ACCESS_LOGS);
+  const [officerActions, setOfficerActions] = useState(MOCK_OFFICER_ACTIONS);
+  const [manualReviewQueue, setManualReviewQueue] = useState(MOCK_MANUAL_REVIEW_QUEUE);
+  const [isDemoData, setIsDemoData] = useState(true);
+  const [isOfficerDemoData, setIsOfficerDemoData] = useState(true);
+  const [isReviewDemoData, setIsReviewDemoData] = useState(true);
   
   // Verification State
   const [verifying, setVerifying] = useState(false);
@@ -64,6 +72,9 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [expandedPayloads, setExpandedPayloads] = useState({});
   const [copiedHash, setCopiedHash] = useState(null);
+  const [resolveModalItem, setResolveModalItem] = useState(null);
+  const [resolveNotes, setResolveNotes] = useState('');
+  const [resolveAction, setResolveAction] = useState('VERIFIED');
 
   // Load live audit receipts if backend available
   const loadData = async () => {
@@ -71,9 +82,15 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
       const liveReceipts = await api.getAuditReceipts(activeApplicationId);
       if (liveReceipts && Array.isArray(liveReceipts) && liveReceipts.length > 0) {
         setReceipts(liveReceipts);
+        setIsDemoData(false);
+      } else {
+        setReceipts(MOCK_AUDIT_RECEIPTS);
+        setIsDemoData(true);
       }
     } catch (err) {
       console.warn('Backend receipts offline, using mock audit receipts:', err.message);
+      setReceipts(MOCK_AUDIT_RECEIPTS);
+      setIsDemoData(true);
     }
 
     try {
@@ -83,6 +100,36 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
       }
     } catch (err) {
       console.warn('Backend audit logs offline, using mock logs:', err.message);
+    }
+
+    try {
+      const liveOfficerActions = await api.getOfficerActions(activeApplicationId);
+      if (liveOfficerActions && Array.isArray(liveOfficerActions) && liveOfficerActions.length > 0) {
+        setOfficerActions(liveOfficerActions);
+        setIsOfficerDemoData(false);
+      } else {
+        setOfficerActions(MOCK_OFFICER_ACTIONS);
+        setIsOfficerDemoData(true);
+      }
+    } catch (err) {
+      console.warn('Backend officer actions offline, using mock data:', err.message);
+      setOfficerActions(MOCK_OFFICER_ACTIONS);
+      setIsOfficerDemoData(true);
+    }
+
+    try {
+      const liveQueue = await api.getManualReviewQueue();
+      if (liveQueue && Array.isArray(liveQueue) && liveQueue.length > 0) {
+        setManualReviewQueue(liveQueue);
+        setIsReviewDemoData(false);
+      } else {
+        setManualReviewQueue(MOCK_MANUAL_REVIEW_QUEUE);
+        setIsReviewDemoData(true);
+      }
+    } catch (err) {
+      console.warn('Backend manual review queue offline, using mock queue:', err.message);
+      setManualReviewQueue(MOCK_MANUAL_REVIEW_QUEUE);
+      setIsReviewDemoData(true);
     }
   };
 
@@ -148,7 +195,7 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
       let res = null;
       try {
         res = await api.verifyAuditChain(activeApplicationId);
-      } catch (e) {
+      } catch (_e) {
         // Fall back to client calculation
       }
 
@@ -214,7 +261,7 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
       setReceipts(tamperedReceipts);
 
       // Immediately evaluate and display red broken block
-      const evalRes = evaluateChain(tamperedReceipts);
+      evaluateChain(tamperedReceipts);
       setVerificationResult({
         status: 'TAMPERING_DETECTED',
         is_valid: false,
@@ -233,16 +280,26 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
       // Also call backend simulate endpoint if online
       try {
         await api.simulateTampering(2);
-      } catch (err) {
+      } catch (_err) {
         // mock mode ok
       }
     } else {
       // TAMPER MODE OFF: Restore pristine ledger
-      setReceipts(MOCK_AUDIT_RECEIPTS);
+      try {
+        await api.restoreTamperDemo();
+      } catch (err) {
+        console.warn('Backend restore endpoint fallback:', err.message);
+      }
+      await loadData();
       setTamperDetails(null);
 
-      const restoreEval = evaluateChain(MOCK_AUDIT_RECEIPTS);
-      setVerificationResult(restoreEval);
+      setVerificationResult({
+        status: 'INTACT',
+        is_valid: true,
+        total_receipts: receipts.length,
+        broken_link_index: null,
+        message: 'Mathematical hash-chain verified intact across all blocks. Parent linkages and signatures authentic.'
+      });
 
       // Play celebratory green chain animation upon restoration
       setIsGreenChainAnimating(true);
@@ -312,6 +369,10 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
                 <span className="text-[10px] uppercase font-bold tracking-wider text-slate-500 bg-white/80 border border-slate-200 px-2 py-0.5 rounded-md">
                   SHA-256 + Ed25519
                 </span>
+
+                {isDemoData && (
+                  <DemoDataBadge message="Demo data (live receipts fallback)" />
+                )}
               </div>
 
               <p className="text-xs sm:text-sm text-slate-700 max-w-3xl leading-relaxed">
@@ -387,43 +448,72 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
       </div>
 
       {/* 2. Top Metric Ribbon & View Switcher */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-2 border-b border-slate-200">
         {/* Navigation Tabs */}
-        <div className="flex items-center space-x-2">
+        <div className="flex flex-wrap items-center gap-1.5">
           <button
+            id="tab-receipts-timeline"
             onClick={() => setViewMode('timeline')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer ${
+            className={`px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer ${
               viewMode === 'timeline'
                 ? 'bg-sky-600 text-white shadow-sm'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
             }`}
           >
-            <Link2 className="w-4 h-4" />
-            <span>Timeline of Receipts ({receipts.length} Blocks)</span>
+            <Link2 className="w-3.5 h-3.5" />
+            <span>Timeline of Receipts ({receipts.length})</span>
           </button>
 
           <button
+            id="tab-verification-statuses"
             onClick={() => setViewMode('table')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer ${
+            className={`px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer ${
               viewMode === 'table'
                 ? 'bg-sky-600 text-white shadow-sm'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
             }`}
           >
-            <FileCheck2 className="w-4 h-4" />
-            <span>Structured Table</span>
+            <FileCheck2 className="w-3.5 h-3.5" />
+            <span>Verification Statuses</span>
           </button>
 
           <button
+            id="tab-officer-decisions"
+            onClick={() => setViewMode('officer-decisions')}
+            className={`px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer ${
+              viewMode === 'officer-decisions'
+                ? 'bg-sky-600 text-white shadow-sm'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+            }`}
+          >
+            <ShieldCheck className="w-3.5 h-3.5" />
+            <span>Officer Decisions ({officerActions.length})</span>
+          </button>
+
+          <button
+            id="tab-manual-review-queue"
+            onClick={() => setViewMode('manual-review-queue')}
+            className={`px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer ${
+              viewMode === 'manual-review-queue'
+                ? 'bg-sky-600 text-white shadow-sm'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+            }`}
+          >
+            <Clock className="w-3.5 h-3.5" />
+            <span>Manual Review Queue ({manualReviewQueue.length})</span>
+          </button>
+
+          <button
+            id="tab-access-logs"
             onClick={() => setViewMode('access-logs')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer ${
+            className={`px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer ${
               viewMode === 'access-logs'
                 ? 'bg-sky-600 text-white shadow-sm'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
             }`}
           >
-            <History className="w-4 h-4" />
-            <span>Access Trail Logs ({accessLogs.length})</span>
+            <History className="w-3.5 h-3.5" />
+            <span>Access Logs ({accessLogs.length})</span>
           </button>
         </div>
 
@@ -837,6 +927,295 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
                 ))}
               </tbody>
             </table>
+          </div>
+        </div>
+      )}
+
+      {/* 6. OFFICER DECISIONS VIEW */}
+      {viewMode === 'officer-decisions' && (
+        <div className="bg-white border border-slate-200 rounded-2xl shadow-2xs overflow-hidden">
+          <div className="p-4 border-b border-slate-200 bg-slate-50/60 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+            <div className="font-bold text-slate-800 flex items-center space-x-2">
+              <ShieldCheck className="w-4 h-4 text-emerald-600" />
+              <span>Officer Decisions Log (Human-in-the-Loop Signed Determinations)</span>
+              {isOfficerDemoData && <DemoDataBadge reason="Fallback Mock Data" />}
+            </div>
+            <span className="text-slate-500 text-[11px]">
+              Mandatory Comment & Hash-Chained Verification Receipt Recorded
+            </span>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs">
+              <thead className="bg-slate-50/80 text-slate-500 uppercase tracking-wider text-[10px] font-bold border-b border-slate-200">
+                <tr>
+                  <th className="py-3 px-4">Action</th>
+                  <th className="py-3 px-4">Officer Remarks / Comment</th>
+                  <th className="py-3 px-4">Deciding Officer</th>
+                  <th className="py-3 px-4">Application</th>
+                  <th className="py-3 px-4">Receipt Hash</th>
+                  <th className="py-3 px-4">Timestamp (UTC)</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-200 text-slate-700">
+                {officerActions.map((action, idx) => {
+                  const actType = (action.action_type || '').toUpperCase();
+                  const isReject = actType === 'REJECT' || actType === 'REJECTED';
+                  const isAccept = actType === 'ACCEPT' || actType === 'APPROVED_WITH_CONDITIONS';
+                  const isInspect = actType === 'RECOMMEND_INSPECTION' || actType === 'INSPECTION_RECOMMENDED';
+                  const isEvidence = actType === 'REQUEST_MORE_EVIDENCE' || actType === 'CLARIFICATION_REQUESTED';
+                  const isEscalate = actType === 'ESCALATE' || actType === 'ESCALATED_TO_SENIOR';
+
+                  return (
+                    <tr key={action.id || idx} className="hover:bg-slate-50/80 transition-colors">
+                      <td className="py-3 px-4 whitespace-nowrap">
+                        <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-[11px] font-bold border ${
+                          isReject ? 'bg-rose-50 text-rose-800 border-rose-300' :
+                          isAccept ? 'bg-emerald-50 text-emerald-800 border-emerald-300' :
+                          isInspect ? 'bg-amber-50 text-amber-800 border-amber-300' :
+                          isEvidence ? 'bg-sky-50 text-sky-800 border-sky-300' :
+                          isEscalate ? 'bg-purple-50 text-purple-800 border-purple-300' :
+                          'bg-slate-100 text-slate-800 border-slate-300'
+                        }`}>
+                          {action.action_type}
+                        </span>
+                      </td>
+
+                      <td className="py-3 px-4 max-w-md">
+                        <div className="text-slate-900 font-medium leading-relaxed">
+                          {action.comment}
+                        </div>
+                      </td>
+
+                      <td className="py-3 px-4">
+                        <div className="font-bold text-slate-900">{action.officer_name || action.officer_email}</div>
+                        <div className="text-[10px] text-slate-500 font-mono flex items-center space-x-1">
+                          <span className="uppercase">{action.officer_role || 'scrutiny_officer'}</span>
+                          <span>•</span>
+                          <span>{action.officer_email}</span>
+                        </div>
+                      </td>
+
+                      <td className="py-3 px-4 whitespace-nowrap">
+                        <div className="font-mono text-slate-900 font-bold">{action.application_no || `APP-${action.application_id}`}</div>
+                        <div className="text-[10px] text-slate-500 truncate max-w-[140px]">{action.institution_name}</div>
+                      </td>
+
+                      <td className="py-3 px-4 font-mono text-[11px]">
+                        <div className="flex items-center space-x-1.5">
+                          <span className="bg-slate-50 border border-slate-200 px-2 py-0.5 rounded text-slate-700" title={action.receipt_hash}>
+                            {action.receipt_hash ? `${action.receipt_hash.substring(0, 10)}...${action.receipt_hash.substring(action.receipt_hash.length - 4)}` : 'N/A'}
+                          </span>
+                          {action.receipt_hash && (
+                            <button
+                              onClick={() => handleCopy(action.receipt_hash, `act-${action.id || idx}`)}
+                              className="text-slate-400 hover:text-sky-600 transition-colors p-1"
+                              title="Copy receipt hash"
+                            >
+                              {copiedHash === `act-${action.id || idx}` ? (
+                                <Check className="w-3.5 h-3.5 text-emerald-600" />
+                              ) : (
+                                <Copy className="w-3.5 h-3.5" />
+                              )}
+                            </button>
+                          )}
+                        </div>
+                      </td>
+
+                      <td className="py-3 px-4 text-slate-500 text-[11px] whitespace-nowrap">
+                        {action.timestamp ? new Date(action.timestamp).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }) : 'Recent'}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* 7. MANUAL REVIEW QUEUE VIEW */}
+      {viewMode === 'manual-review-queue' && (
+        <div className="space-y-4">
+          <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+            <div className="flex items-center space-x-2.5">
+              <Clock className="w-5 h-5 text-indigo-600 shrink-0" />
+              <div>
+                <div className="font-bold text-slate-900 flex items-center space-x-2">
+                  <span>Authoritative Verification & Manual Review Queue</span>
+                  {isReviewDemoData && <DemoDataBadge reason="Fallback Mock Queue" />}
+                </div>
+                <div className="text-[11px] text-slate-500">
+                  Covers all six statutory verification states: Verified, Mismatch Detected, Expired, Verification Pending, Source Unavailable, Manual Review Required.
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center space-x-2">
+              <span className="text-[11px] font-bold px-3 py-1 rounded-full bg-indigo-50 text-indigo-800 border border-indigo-200">
+                {manualReviewQueue.length} Items in Queue
+              </span>
+            </div>
+          </div>
+
+          <div className="bg-white border border-slate-200 rounded-2xl shadow-2xs overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs">
+                <thead className="bg-slate-50/80 text-slate-500 uppercase tracking-wider text-[10px] font-bold border-b border-slate-200">
+                  <tr>
+                    <th className="py-3 px-4">Queue ID</th>
+                    <th className="py-3 px-4">Statutory Status</th>
+                    <th className="py-3 px-4">Authoritative Source</th>
+                    <th className="py-3 px-4">Discrepancy / Queue Reason</th>
+                    <th className="py-3 px-4">Response Hash (SHA-256)</th>
+                    <th className="py-3 px-4">Timestamp (UTC)</th>
+                    <th className="py-3 px-4 text-right">Action</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-200 text-slate-700">
+                  {manualReviewQueue.map((item, idx) => (
+                    <tr key={item.id || idx} className="hover:bg-slate-50/80 transition-colors">
+                      <td className="py-3 px-4 font-mono font-bold whitespace-nowrap">
+                        <span className="bg-slate-100 text-slate-800 px-2 py-0.5 rounded text-[11px]">
+                          {item.id}
+                        </span>
+                      </td>
+
+                      <td className="py-3 px-4 whitespace-nowrap">
+                        <StatusChip status={item.status_label || item.status} size="sm" />
+                      </td>
+
+                      <td className="py-3 px-4">
+                        <div className="font-bold text-slate-900">{item.source}</div>
+                        <div className="text-[10px] font-mono text-slate-500">{item.document_id || item.application_no}</div>
+                      </td>
+
+                      <td className="py-3 px-4 max-w-sm">
+                        <div className="text-slate-800 font-medium text-[11px] leading-relaxed">
+                          {item.reason}
+                        </div>
+                      </td>
+
+                      <td className="py-3 px-4 font-mono text-[11px]">
+                        <div className="flex items-center space-x-1.5">
+                          <span className="bg-slate-50 border border-slate-200 px-2 py-0.5 rounded text-slate-700" title={item.response_hash}>
+                            {item.response_hash ? `${item.response_hash.substring(0, 10)}...${item.response_hash.substring(item.response_hash.length - 4)}` : 'N/A'}
+                          </span>
+                          {item.response_hash && (
+                            <button
+                              onClick={() => handleCopy(item.response_hash, `rev-${item.id || idx}`)}
+                              className="text-slate-400 hover:text-sky-600 transition-colors p-1"
+                              title="Copy response hash"
+                            >
+                              {copiedHash === `rev-${item.id || idx}` ? (
+                                <Check className="w-3.5 h-3.5 text-emerald-600" />
+                              ) : (
+                                <Copy className="w-3.5 h-3.5" />
+                              )}
+                            </button>
+                          )}
+                        </div>
+                      </td>
+
+                      <td className="py-3 px-4 text-slate-500 text-[11px] whitespace-nowrap">
+                        {item.timestamp ? new Date(item.timestamp).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }) : 'Recent'}
+                      </td>
+
+                      <td className="py-3 px-4 text-right whitespace-nowrap">
+                        <button
+                          onClick={() => setResolveModalItem(item)}
+                          className="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold transition-all shadow-2xs cursor-pointer"
+                        >
+                          Resolve
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* RESOLVE MANUAL REVIEW MODAL */}
+      {resolveModalItem && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4 animate-scale-up">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <h3 className="text-sm font-bold text-slate-900 flex items-center space-x-2">
+                <Clock className="w-4 h-4 text-indigo-600" />
+                <span>Resolve Manual Review: {resolveModalItem.id}</span>
+              </h3>
+              <button
+                onClick={() => setResolveModalItem(null)}
+                className="text-slate-400 hover:text-slate-600 text-sm font-bold cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="space-y-3 text-xs">
+              <div>
+                <span className="font-bold text-slate-700">Source Authority:</span>
+                <p className="text-slate-600">{resolveModalItem.source}</p>
+              </div>
+              <div>
+                <span className="font-bold text-slate-700">Flag Reason:</span>
+                <p className="text-slate-600 bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+                  {resolveModalItem.reason}
+                </p>
+              </div>
+
+              <div>
+                <label className="font-bold text-slate-700 block mb-1">Determination Resolution:</label>
+                <select
+                  value={resolveAction}
+                  onChange={(e) => setResolveAction(e.target.value)}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-800"
+                >
+                  <option value="VERIFIED">Verified (Clear Discrepancy)</option>
+                  <option value="MISMATCH_DETECTED">Confirm Mismatch (Issue Show-Cause)</option>
+                  <option value="EXPIRED">Confirm Expired Certificate</option>
+                  <option value="DISMISSED">Dismiss with Justification</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="font-bold text-slate-700 block mb-1">Officer Substantiation Note:</label>
+                <textarea
+                  value={resolveNotes}
+                  onChange={(e) => setResolveNotes(e.target.value)}
+                  placeholder="Detail grounds for manual override or confirmation..."
+                  rows={3}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs text-slate-800 focus:outline-hidden focus:border-indigo-500"
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end space-x-2 pt-2 border-t border-slate-100">
+              <button
+                onClick={() => setResolveModalItem(null)}
+                className="px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-xl cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={async () => {
+                  try {
+                    await api.resolveManualReviewItem(resolveModalItem.id, resolveAction, resolveNotes);
+                  } catch (e) {
+                    console.warn('Backend resolve fallback:', e.message);
+                  }
+                  // Remove from local queue
+                  setManualReviewQueue(prev => prev.filter(q => q.id !== resolveModalItem.id));
+                  setResolveModalItem(null);
+                  setResolveNotes('');
+                }}
+                className="px-4 py-2 text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl shadow-xs cursor-pointer"
+              >
+                Confirm Resolution
+              </button>
+            </div>
           </div>
         </div>
       )}

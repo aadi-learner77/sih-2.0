@@ -10,7 +10,8 @@ import {
   Lock,
   History,
   ShieldCheck,
-  UserCheck
+  UserCheck,
+  Compass
 } from 'lucide-react';
 
 /**
@@ -73,6 +74,15 @@ export default function Sidebar({
       badgeColor: 'bg-purple-50 text-purple-700 border-purple-200',
       desc: 'Handbook rule catalog & versions',
       roles: ['senior_officer', 'admin'],
+    },
+    {
+      id: 'inspection-planner',
+      label: 'Inspection Planner',
+      icon: Compass,
+      badge: 'GIS Cluster',
+      badgeColor: 'bg-teal-50 text-teal-700 border-teal-200',
+      desc: 'District clusters & visit order',
+      roles: ['scrutiny_officer', 'senior_officer', 'admin'],
     },
     {
       id: 'preflight',

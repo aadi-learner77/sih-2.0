@@ -9,6 +9,34 @@ const apiClient = axios.create({
   },
 });
 
+// Attach JWT token to every outgoing request
+apiClient.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('pramaan_token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// Intercept 401 Unauthorized responses to redirect to login
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      const isLoginRequest = error.config?.url?.includes('/auth/login');
+      if (!isLoginRequest) {
+        localStorage.removeItem('pramaan_token');
+        localStorage.removeItem('pramaan_user');
+        window.dispatchEvent(new CustomEvent('pramaan_unauthorized', { detail: error.response.data }));
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
 export const api = {
   // Auth
   login: async (email, password) => {
@@ -45,6 +73,14 @@ export const api = {
     formData.append('file', file);
     if (docType) formData.append('document_type', docType);
     const res = await apiClient.post('/documents/upload', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return res.data;
+  },
+  ingestDocument: async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const res = await apiClient.post('/documents/ingest', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
     return res.data;
@@ -129,6 +165,10 @@ export const api = {
     });
     return res.data;
   },
+  restoreTamperDemo: async () => {
+    const res = await apiClient.post('/audit/restore-tamper-demo');
+    return res.data;
+  },
   getAuditLogs: async (limit = 50, action = null) => {
     const res = await apiClient.get('/audit/logs', { params: { limit, action } });
     return res.data;
@@ -156,9 +196,43 @@ export const api = {
     return res.data;
   },
 
-  // Officer Actions
+  // Officer Actions & Decisions Log
   performOfficerAction: async (appId, actionData) => {
     const res = await apiClient.post(`/applications/${appId}/officer-action`, actionData);
+    return res.data;
+  },
+  getOfficerActions: async (appId = null) => {
+    const url = appId ? `/applications/${appId}/officer-actions` : '/applications/officer-actions/all';
+    const res = await apiClient.get(url);
+    return res.data;
+  },
+
+  // Rectification Flow
+  rectifyFinding: async (appId, findingId, file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const res = await apiClient.post(`/applications/${appId}/findings/${findingId}/rectify`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return res.data;
+  },
+
+  // Manual Review Queue
+  getManualReviewQueue: async () => {
+    const res = await apiClient.get('/verification/connector/manual-review-queue');
+    return res.data;
+  },
+  resolveManualReviewItem: async (itemId, resolution, notes) => {
+    const res = await apiClient.post(`/verification/connector/manual-review-queue/${itemId}/resolve`, {
+      resolution,
+      notes,
+    });
+    return res.data;
+  },
+
+  // Inspection Planner
+  getInspectionPlanner: async (params = {}) => {
+    const res = await apiClient.get('/inspections/planner', { params });
     return res.data;
   },
 

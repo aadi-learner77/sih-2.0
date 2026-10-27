@@ -13,6 +13,7 @@ import {
   Play,
   Filter
 } from 'lucide-react';
+import DemoDataBadge from './DemoDataBadge';
 import { api } from '../services/api';
 import { MOCK_ALERTS } from '../data/mockOfficerData';
 
@@ -35,16 +36,23 @@ export default function AlertBellDrawer({ currentRole }) {
   const [activeView, setActiveView] = useState('alerts'); // 'alerts' or 'notifications'
   const [notifications, setNotifications] = useState([]);
   const [notificationMsg, setNotificationMsg] = useState(null);
+  const [isDemoData, setIsDemoData] = useState(true);
 
   const fetchAlerts = async () => {
     setLoading(true);
     try {
       const liveAlerts = await api.getAlerts();
-      if (liveAlerts && Array.isArray(liveAlerts) && liveAlerts.length > 0) {
+      if (liveAlerts && Array.isArray(liveAlerts)) {
         setAlerts(liveAlerts);
+        setIsDemoData(false);
+      } else {
+        setAlerts(MOCK_ALERTS);
+        setIsDemoData(true);
       }
     } catch (err) {
       console.warn('Backend alerts endpoint offline, using local mock alerts:', err.message);
+      setAlerts(MOCK_ALERTS);
+      setIsDemoData(true);
     } finally {
       setLoading(false);
     }
@@ -143,9 +151,12 @@ export default function AlertBellDrawer({ currentRole }) {
                   <ShieldAlert className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-slate-900">
-                    Statutory Operational Alerts
-                  </h3>
+                  <div className="flex items-center space-x-2">
+                    <h3 className="text-sm font-bold text-slate-900">
+                      Statutory Operational Alerts
+                    </h3>
+                    {isDemoData && <DemoDataBadge message="Demo data" />}
+                  </div>
                   <p className="text-[11px] text-slate-500">
                     {unreadAlerts.length} Active • {criticalCount} Critical Flags
                   </p>
