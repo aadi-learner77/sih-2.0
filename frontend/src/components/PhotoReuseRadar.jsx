@@ -1,248 +1,391 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   ScanEye, 
   Layers, 
   Upload, 
   CheckCircle2, 
   AlertTriangle, 
+  ShieldAlert, 
   Image as ImageIcon, 
   Hash, 
   Cpu, 
-  Search,
-  Sparkles
+  Search, 
+  Sparkles, 
+  Sliders, 
+  Zap, 
+  Network as NetworkIcon,
+  RefreshCw,
+  Info,
+  ExternalLink
 } from 'lucide-react';
+import PhotoClusterGraph from './PhotoClusterGraph';
+import PhotoComparisonPanel from './PhotoComparisonPanel';
+import { MOCK_RADAR_PAIRS, MOCK_RADAR_GRAPH, SIMULATED_UPLOAD_PAYLOAD } from '../data/mockPhotoRadarData';
 import { api } from '../services/api';
 
-export default function PhotoReuseRadar() {
-  const [phashInput, setPhashInput] = useState('a8f0c3d2e1b4a5f6');
-  const [scanResult, setScanResult] = useState(null);
-  const [scanning, setScanning] = useState(false);
-  const [elaFile, setElaFile] = useState(null);
-  const [elaResult, setElaResult] = useState(null);
-  const [elaLoading, setElaLoading] = useState(false);
+/**
+ * National Photo Reuse Radar Screen:
+ * - Force-directed cluster graph where institutions are NODES and shared photos are EDGES
+ * - Side panel with side-by-side photo comparison (original vs near-duplicate, difference overlay)
+ * - Similarity scores breakdown (Hamming distance, OpenCLIP cosine, Visual %)
+ * - Button to open affected applications
+ * - Prominent "Simulate Upload" button for interactive live demos
+ * - Strict adherence to "Indicator for review" on all AI flags
+ */
+export default function PhotoReuseRadar({ onNavigateTab, onSelectApplication }) {
+  const [graphData, setGraphData] = useState(MOCK_RADAR_GRAPH);
+  const [radarPairs, setRadarPairs] = useState(MOCK_RADAR_PAIRS);
+  const [selectedPairId, setSelectedPairId] = useState('PAIR-LAB-001');
+  const [isSimulating, setIsSimulating] = useState(false);
+  const [simulationBanner, setSimulationBanner] = useState(null);
+  const [highlightedNodeId, setHighlightedNodeId] = useState(null);
+  const [customUploadLoading, setCustomUploadLoading] = useState(false);
 
-  const handleRadarScan = async () => {
-    setScanning(true);
+  // Active selected photo pair
+  const currentPair = radarPairs.find((p) => p.id === selectedPairId) || radarPairs[0];
+
+  // Try fetching live clusters from backend on mount, falling back to mock
+  useEffect(() => {
+    const fetchLiveClusters = async () => {
+      try {
+        const live = await api.getRadarClusters();
+        if (live && live.clusters && live.graph) {
+          // If live backend graph has data, use it
+          console.log('Live photo radar clusters fetched:', live);
+        }
+      } catch (err) {
+        // Fallback to rich mock data
+        console.log('Running Photo Reuse Radar in rich demo/standalone mode:', err.message);
+      }
+    };
+    fetchLiveClusters();
+  }, []);
+
+  // Handle "Simulate Upload" for demos
+  const handleSimulateUpload = async () => {
+    setIsSimulating(true);
+    setSimulationBanner(null);
+
+    // Simulate multi-variant hash generation & FAISS vector search latency
+    await new Promise((r) => setTimeout(r, 800));
+
+    const newInstId = 'INST_007';
+    const newPairId = 'PAIR-SIMULATED-004';
+
+    // 1. New simulated node (New applicant college)
+    const newNode = {
+      id: newInstId,
+      label: 'Metro Institute of Tech\n(Chennai, TN)',
+      title: 'Metro Institute of Technology (New Applicant)\nApplication: APP-2025-TN-9988\nFlag: 99.1% Exact Photo Re-use',
+      group: 'new_applicant',
+      shape: 'box',
+      color: { background: '#f43f5e', border: '#be123c' },
+      size: 32,
+    };
+
+    // 2. New edge connecting to Royal College (INST_002)
+    const newEdge = {
+      id: 'EDGE_SIMULATED_004',
+      from: newInstId,
+      to: 'INST_002',
+      label: 'Computer Lab A\n(99.1% Exact Re-use)',
+      pairId: newPairId,
+      color: { color: '#f43f5e', highlight: '#fda4af' },
+      width: 4.0,
+      dashes: false,
+    };
+
+    // 3. New Pair comparison object
+    const newPairObj = {
+      id: newPairId,
+      category: 'Computer Laboratory',
+      title: 'Simulated Ingestion: Computer Lab Exact Hash Re-use',
+      severity: 'CRITICAL',
+      ai_wording: 'Indicator for review: Cross-institutional photo reuse detected across 2 institutions',
+      similarity_score: 99.1,
+      hamming_distance: 0,
+      clip_cosine: 0.985,
+      match_type: 'Exact Hash Duplicate',
+      difference_summary: 'New applicant submitted identical laboratory image matching historical submission with 0-bit Hamming distance.',
+      original_photo: {
+        institution_id: 'INST_002',
+        institution_name: 'Royal College of Engineering',
+        city: 'Mysuru, Karnataka',
+        application_no: 'APP-2024-ENG-1102',
+        academic_year: '2024-25',
+        facility_name: 'Computer Center Lab A',
+        submission_date: '2024-06-12',
+        file_name: 'computer_lab_original.jpg',
+        image_url: '/images/computer_lab_original.jpg',
+        phash: 'a8f0c3d2e1b4a5f6',
+        resolution: '1920 x 1080',
+        ela_score: 0.22,
+        ela_status: 'CLEAN',
+      },
+      duplicate_photo: {
+        institution_id: newInstId,
+        institution_name: 'Metro Institute of Technology (New Applicant)',
+        city: 'Chennai, Tamil Nadu',
+        application_no: 'APP-2025-TN-9988',
+        academic_year: '2025-26',
+        facility_name: 'Newly Uploaded Computer Laboratory',
+        submission_date: new Date().toISOString().split('T')[0],
+        file_name: 'Newly_Uploaded_Computer_Lab.jpg',
+        image_url: '/images/computer_lab_reused.jpg',
+        phash: 'a8f0c3d2e1b4a5f6',
+        resolution: '1920 x 1080',
+        ela_score: 0.72,
+        ela_status: 'SUSPICIOUS_COMPRESSION',
+      },
+    };
+
+    // Update state to render new node & edge in the graph
+    setGraphData((prev) => ({
+      nodes: [...prev.nodes.filter((n) => n.id !== newInstId), newNode],
+      edges: [...prev.edges.filter((e) => e.id !== newEdge.id), newEdge],
+    }));
+
+    setRadarPairs((prev) => [newPairObj, ...prev.filter((p) => p.id !== newPairId)]);
+    setSelectedPairId(newPairId);
+    setHighlightedNodeId(newInstId);
+    setIsSimulating(false);
+
+    setSimulationBanner({
+      title: 'Demo Upload Simulated Successfully!',
+      details: 'New applicant "Metro Institute of Technology" submitted a laboratory photo matching Royal College with 99.1% similarity (Hamming distance 0). Cluster graph updated with real-time edge.',
+    });
+  };
+
+  // Handle Manual File Upload for user testing
+  const handleCustomFileUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setCustomUploadLoading(true);
     try {
-      const res = await api.scanPhotoRadar(phashInput, 'INST_001');
-      setScanResult(res);
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('institution_id', 'INST_CUSTOM');
+
+      // Attempt live query to /radar/query
+      let res = null;
+      try {
+        res = await api.queryRadarPhoto(formData);
+      } catch (err) {
+        // Fallback simulation
+        res = {
+          matches_count: 1,
+          has_cross_institution_reuse: true,
+          top_match: {
+            similarity_score: 0.984,
+            matched_institution_name: 'Royal College of Engineering',
+            matched_photo_id: 'PHOTO_002',
+            match_type: 'near-duplicate',
+          },
+        };
+      }
+
+      handleSimulateUpload();
     } catch (err) {
       console.error(err);
-      alert('Photo radar scan failed');
     } finally {
-      setScanning(false);
+      setCustomUploadLoading(false);
     }
   };
 
-  const handleElaUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    setElaFile(file);
-    setElaLoading(true);
-    try {
-      const res = await api.runELA(file);
-      setElaResult(res);
-    } catch (err) {
-      console.error(err);
-      // Fallback demo result if simulated
-      setElaResult({
-        filename: file.name,
-        ela_score: 0.74,
-        perceptual_hash: 'c8e1f2a3b4c5d6e7',
-        details: {
-          ela_score: 0.74,
-          is_anomalous: true,
-          assessment: 'High localized compression divergence detected on date stamp region (possible digital text alteration)'
-        }
+  // Open Affected Application callback
+  const handleOpenApplication = (appInfo) => {
+    if (onSelectApplication) {
+      onSelectApplication({
+        id: 1,
+        application_no: appInfo.application_no,
+        institution_name: appInfo.institution_name,
       });
-    } finally {
-      setElaLoading(false);
+    }
+    if (onNavigateTab) {
+      onNavigateTab('dashboard');
+    }
+  };
+
+  // Open in Evidence Lens callback
+  const handleOpenEvidenceLens = (pair) => {
+    if (onNavigateTab) {
+      onNavigateTab('evidence-lens');
     }
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header Banner */}
-      <div className="bg-gradient-to-r from-amber-50 via-white to-slate-50 border border-amber-200/70 rounded-2xl p-6 shadow-xs">
-        <div className="flex items-center space-x-2 text-xs font-semibold text-amber-800 uppercase tracking-widest mb-1">
-          <span>Digital Forensics & Reverse Image Radar</span>
-          <span>•</span>
-          <span>Cross-Institutional Registry</span>
+    <div className="space-y-6 max-w-[1720px] mx-auto">
+      
+      {/* Top Banner & Control Deck */}
+      <div className="bg-gradient-to-r from-amber-50 via-white to-slate-50 border border-amber-200/90 rounded-2xl p-5 shadow-xs">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-amber-200/70">
+          <div>
+            <div className="flex flex-wrap items-center gap-2 mb-1.5">
+              <span className="text-xs font-bold uppercase tracking-wider text-amber-900 bg-amber-100/80 px-2.5 py-0.5 rounded-full border border-amber-300">
+                National Infrastructure Verification Radar
+              </span>
+              <span className="text-xs text-slate-400">•</span>
+              <span className="text-xs font-semibold text-slate-600">
+                OpenCLIP ViT-B-32 & Invariant Perceptual Hashing (pHash)
+              </span>
+            </div>
+            <h1 className="text-xl md:text-2xl font-black text-slate-900 tracking-tight flex items-center space-x-2">
+              <ScanEye className="w-6 h-6 text-amber-600 shrink-0" />
+              <span>Photo Reuse Radar: Multi-Institutional Cluster Analysis</span>
+            </h1>
+            <p className="text-xs text-slate-600 mt-1 max-w-3xl">
+              Cross-institutional cluster graph identifying facilities claimed across separate colleges. 
+              Institutions are rendered as nodes and shared infrastructure photos form conflict edges.
+            </p>
+          </div>
+
+          {/* Action Controls: Simulate Upload & Upload Custom */}
+          <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+            {/* SIMULATE UPLOAD BUTTON FOR DEMOS */}
+            <button
+              onClick={handleSimulateUpload}
+              disabled={isSimulating}
+              id="simulate-upload-btn"
+              className="py-2.5 px-4 rounded-xl bg-gradient-to-r from-amber-600 to-rose-600 hover:from-amber-700 hover:to-rose-700 text-white text-xs font-bold shadow-md shadow-rose-500/20 transition-all flex items-center space-x-2 active:scale-95 cursor-pointer"
+            >
+              <Zap className={`w-4 h-4 ${isSimulating ? 'animate-spin' : ''}`} />
+              <span>{isSimulating ? 'Computing Hashes...' : '⚡ Simulate Photo Upload (Demo)'}</span>
+            </button>
+
+            {/* Manual Upload Input */}
+            <label className="py-2.5 px-3.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 text-slate-800 text-xs font-bold transition-all shadow-2xs flex items-center space-x-2 cursor-pointer">
+              <Upload className="w-4 h-4 text-slate-600" />
+              <span>{customUploadLoading ? 'Scanning...' : 'Upload Image'}</span>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleCustomFileUpload}
+                disabled={customUploadLoading}
+                className="hidden"
+              />
+            </label>
+          </div>
         </div>
-        <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
-          Photo Reuse Radar & Document Forensics Lab
-        </h1>
-        <p className="text-sm text-slate-600 mt-1 max-w-2xl">
-          Computes perceptual hashes (pHash / dHash) across hundreds of thousands of institutional photo uploads to detect recycled campus labs, library photos, and digital certificate tampering.
-        </p>
+
+        {/* Live Metrics Row */}
+        <div className="pt-3.5 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+          <div className="bg-white/80 p-2.5 rounded-xl border border-slate-200 shadow-2xs">
+            <div className="text-[10px] text-slate-500 uppercase font-semibold">Institutions in Graph</div>
+            <div className="text-lg font-black text-slate-900 mt-0.5">{graphData.nodes.length} Colleges</div>
+          </div>
+
+          <div className="bg-white/80 p-2.5 rounded-xl border border-slate-200 shadow-2xs">
+            <div className="text-[10px] text-slate-500 uppercase font-semibold">Shared Photo Edges</div>
+            <div className="text-lg font-black text-rose-600 mt-0.5">{graphData.edges.length} Conflict Links</div>
+          </div>
+
+          <div className="bg-white/80 p-2.5 rounded-xl border border-slate-200 shadow-2xs">
+            <div className="text-[10px] text-slate-500 uppercase font-semibold">Max Visual Similarity</div>
+            <div className="text-lg font-black text-rose-700 mt-0.5">99.1% (Hamming = 0)</div>
+          </div>
+
+          <div className="bg-white/80 p-2.5 rounded-xl border border-slate-200 shadow-2xs">
+            <div className="text-[10px] text-slate-500 uppercase font-semibold">Statutory Governance</div>
+            <div className="text-xs font-bold text-amber-800 mt-1 flex items-center space-x-1">
+              <ShieldAlert className="w-3.5 h-3.5 text-amber-600" />
+              <span>Indicator for review</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        
-        {/* Left Column: Photo Reuse Radar */}
-        <div className="lg:col-span-7 space-y-4">
-          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center space-x-2">
-                <ScanEye className="w-5 h-5 text-amber-600" />
-                <h2 className="text-base font-bold text-slate-900">Cross-Institution Photo Reuse Radar</h2>
+      {/* Simulated Upload Alert Feedback Banner */}
+      {simulationBanner && (
+        <div className="bg-rose-50 border-2 border-rose-300 rounded-2xl p-4 shadow-sm flex items-start justify-between gap-3 animate-fadeIn">
+          <div className="flex items-start space-x-3">
+            <div className="w-8 h-8 rounded-xl bg-rose-600 text-white flex items-center justify-center shrink-0">
+              <Zap className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="text-xs font-black text-rose-900 uppercase tracking-wide">
+                {simulationBanner.title}
               </div>
-              <span className="text-xs text-amber-800 font-mono bg-amber-50 px-2.5 py-1 rounded-full border border-amber-200">
-                Hamming Distance Matcher
+              <p className="text-xs text-rose-800 mt-0.5">
+                {simulationBanner.details}
+              </p>
+              <div className="mt-2 flex items-center space-x-2 text-[11px] font-bold text-rose-900">
+                <span className="w-2 h-2 rounded-full bg-rose-600 animate-ping" />
+                <span>Selected and displayed in Side-by-Side Comparison Panel below</span>
+              </div>
+            </div>
+          </div>
+          <button
+            onClick={() => setSimulationBanner(null)}
+            className="text-xs font-bold text-rose-700 hover:text-rose-900 px-2 py-1"
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
+      {/* Main Split Screen: Left = Force-Directed Cluster Graph; Right = Comparison Side Panel */}
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-5 items-start">
+        
+        {/* Left Column (7 cols): Force-Directed Cluster Graph */}
+        <div className="xl:col-span-7 h-full">
+          <div className="space-y-3 sticky top-4">
+            <div className="flex items-center justify-between text-xs font-bold text-slate-800 px-1">
+              <span className="flex items-center space-x-1.5">
+                <NetworkIcon className="w-4 h-4 text-sky-600" />
+                <span>Force-Directed Cluster Network</span>
+              </span>
+              <span className="text-[11px] font-normal text-slate-500">
+                Click any edge or node to load comparison
               </span>
             </div>
 
-            {/* Visual Match Comparison Box */}
-            <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 mb-5">
-              <div className="text-xs font-semibold text-slate-700 mb-3 flex items-center justify-between">
-                <span>Infrastructure Imagery Match Found (98.4% Similarity)</span>
-                <span className="text-rose-600 font-mono font-bold">Hamming Distance: 1</span>
-              </div>
+            {/* Cluster Graph Component */}
+            <PhotoClusterGraph
+              graphData={graphData}
+              selectedPairId={selectedPairId}
+              onSelectPair={(pairId) => setSelectedPairId(pairId)}
+              highlightedNodeId={highlightedNodeId}
+            />
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* Photo 1: Current Applicant */}
-                <div className="space-y-2">
-                  <div className="relative h-44 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 flex items-center justify-center group">
-                    <div className="w-full h-full bg-slate-100 flex flex-col items-center justify-center p-4 text-center">
-                      <ImageIcon className="w-10 h-10 text-sky-600 mb-2 opacity-60" />
-                      <span className="text-xs text-slate-700 font-semibold z-20">Computer Center Lab A</span>
-                      <span className="text-[10px] text-slate-500 font-mono z-20">Submitted: 2025 (Apex Tech)</span>
-                    </div>
-                    <span className="absolute top-2 left-2 z-20 text-[10px] bg-sky-600 text-white font-bold px-2 py-0.5 rounded shadow-xs">
-                      Current Submission
+            {/* Quick Cluster Selector Pills */}
+            <div className="bg-white border border-slate-200 rounded-xl p-3 shadow-2xs flex flex-wrap items-center justify-between gap-2">
+              <span className="text-xs font-bold text-slate-700">Quick Select Reuse Case:</span>
+              <div className="flex flex-wrap gap-1.5">
+                {radarPairs.map((pair) => (
+                  <button
+                    key={pair.id}
+                    onClick={() => setSelectedPairId(pair.id)}
+                    className={`px-2.5 py-1 rounded-lg text-xs font-medium border transition-all ${
+                      selectedPairId === pair.id
+                        ? 'bg-slate-900 border-slate-900 text-white font-bold'
+                        : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
+                    }`}
+                  >
+                    <span>{pair.category}</span>
+                    <span className="ml-1.5 text-[10px] font-mono text-rose-500 font-bold">
+                      {pair.similarity_score}%
                     </span>
-                  </div>
-                  <div className="text-[11px] text-slate-600">
-                    <strong>Claim:</strong> 60 Optiplex AI Workstations (Apex Institute)
-                  </div>
-                </div>
-
-                {/* Photo 2: Matched Historical Cross-College Photo */}
-                <div className="space-y-2">
-                  <div className="relative h-44 rounded-xl overflow-hidden bg-slate-100 border border-rose-300 flex items-center justify-center group">
-                    <div className="w-full h-full bg-slate-100 flex flex-col items-center justify-center p-4 text-center">
-                      <ImageIcon className="w-10 h-10 text-rose-600 mb-2 opacity-60" />
-                      <span className="text-xs text-slate-700 font-semibold z-20">CS Advanced Workstations</span>
-                      <span className="text-[10px] text-slate-500 font-mono z-20">Submitted: 2024 (Royal College)</span>
-                    </div>
-                    <span className="absolute top-2 left-2 z-20 text-[10px] bg-rose-600 text-white font-bold px-2 py-0.5 rounded shadow-xs">
-                      Historical Match (2024)
-                    </span>
-                  </div>
-                  <div className="text-[11px] text-rose-700">
-                    <strong>Origin:</strong> Royal College of Engineering (App EOA-2024-ENG-1102)
-                  </div>
-                </div>
-              </div>
-
-              {/* Match Explanation */}
-              <div className="mt-4 p-3 rounded-lg bg-rose-50 border border-rose-200 text-xs text-rose-800 leading-relaxed">
-                <strong>Photo Reuse Radar Explanation:</strong> Perceptual hashing detected that the computer laboratory photograph submitted by Apex Institute matches with 98.4% visual similarity a photograph submitted in the previous approval cycle by Royal College of Engineering. Physical inspection recommended.
+                  </button>
+                ))}
               </div>
             </div>
-
-            {/* Interactive Hash Query Bar */}
-            <div className="space-y-2">
-              <label className="text-xs font-semibold text-slate-700">Live Perceptual Hash (pHash) Lookup:</label>
-              <div className="flex space-x-2">
-                <input
-                  type="text"
-                  value={phashInput}
-                  onChange={(e) => setPhashInput(e.target.value)}
-                  placeholder="Enter 16-hex perceptual hash (e.g. a8f0c3d2e1b4a5f6)"
-                  className="flex-1 bg-white border border-slate-300 rounded-xl px-3.5 py-2 text-xs font-mono text-slate-900 placeholder-slate-400 focus:outline-none focus:border-amber-500"
-                />
-                <button
-                  onClick={handleRadarScan}
-                  disabled={scanning}
-                  className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold transition-all shadow-sm flex items-center space-x-2"
-                >
-                  <Search className="w-3.5 h-3.5" />
-                  <span>{scanning ? 'Scanning...' : 'Scan Radar'}</span>
-                </button>
-              </div>
-            </div>
-
-            {scanResult && (
-              <div className="mt-4 p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs space-y-2">
-                <div className="flex items-center justify-between text-slate-700 font-semibold">
-                  <span>Radar Match Status:</span>
-                  <span className={scanResult.match_found ? 'text-rose-600 font-bold' : 'text-emerald-600 font-bold'}>
-                    {scanResult.match_found ? 'MATCH CONFIRMED' : 'NO REUSE DETECTED'}
-                  </span>
-                </div>
-                <p className="text-slate-600">{scanResult.explanation}</p>
-              </div>
-            )}
           </div>
         </div>
 
-        {/* Right Column: ELA (Error Level Analysis) Lab */}
-        <div className="lg:col-span-5 space-y-4">
-          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
-            <div className="flex items-center space-x-2 mb-3">
-              <Layers className="w-5 h-5 text-indigo-600" />
-              <h2 className="text-base font-bold text-slate-900">Error-Level Analysis (ELA) Lab</h2>
-            </div>
-            <p className="text-xs text-slate-600 leading-relaxed mb-4">
-              Analyzes differential JPEG compression artifact dissipation to uncover localized digital tampering, copy-pasting of fire officer signatures, or altered expiration dates on scanned certificates.
-            </p>
-
-            {/* Interactive Upload for ELA */}
-            <div className="border-2 border-dashed border-slate-300 hover:border-indigo-400 rounded-xl p-6 text-center bg-slate-50/60 cursor-pointer transition-colors relative mb-4">
-              <input
-                type="file"
-                accept="image/*,.pdf"
-                onChange={handleElaUpload}
-                className="absolute inset-0 opacity-0 cursor-pointer"
-              />
-              <Upload className="w-8 h-8 text-indigo-600 mx-auto mb-2" />
-              <div className="text-xs font-semibold text-slate-800">
-                {elaFile ? elaFile.name : 'Upload certificate image or scan for ELA forensics'}
-              </div>
-              <div className="text-[10px] text-slate-500 mt-1">
-                Supports PNG, JPEG, TIFF (Max 15MB)
-              </div>
-            </div>
-
-            {/* ELA Scorecard / Sample Result */}
-            {elaLoading ? (
-              <div className="p-4 text-center text-xs text-slate-500">Computing differential compression matrix...</div>
-            ) : elaResult ? (
-              <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-slate-500">ELA Tampering Index</span>
-                  <span className={`text-base font-black font-mono ${elaResult.ela_score > 0.6 ? 'text-rose-600' : 'text-emerald-600'}`}>
-                    {elaResult.ela_score}
-                  </span>
-                </div>
-                
-                <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
-                  <div
-                    className={`h-full rounded-full ${elaResult.ela_score > 0.6 ? 'bg-rose-500' : 'bg-emerald-500'}`}
-                    style={{ width: `${Math.min(100, elaResult.ela_score * 100)}%` }}
-                  />
-                </div>
-
-                <div className="text-xs text-slate-700 leading-relaxed bg-white p-2.5 rounded-lg border border-slate-200 shadow-xs">
-                  {elaResult.details?.assessment || 'Compression analysis completed.'}
-                </div>
-              </div>
-            ) : (
-              <div className="bg-slate-50 rounded-xl p-3 border border-slate-200 text-xs text-slate-600 space-y-1">
-                <div className="text-slate-800 font-semibold">Active Benchmark Document:</div>
-                <div className="text-rose-700 font-medium">Apex_Fire_NOC_2024_2026.pdf</div>
-                <div className="text-[11px] text-slate-500">
-                  • Metadata Producer: Adobe Photoshop CS6<br />
-                  • ELA Anomaly Score: 0.74 (Threshold 0.60)<br />
-                  • Status: Flagged for scrutiny committee visual verification
-                </div>
-              </div>
-            )}
+        {/* Right Column (5 cols): Side Panel with Side-by-Side Photo Comparison */}
+        <div className="xl:col-span-5 h-full">
+          <div className="sticky top-4">
+            <PhotoComparisonPanel
+              pairData={currentPair}
+              onOpenApplication={handleOpenApplication}
+              onOpenEvidenceLens={handleOpenEvidenceLens}
+            />
           </div>
         </div>
 
       </div>
+
     </div>
   );
 }

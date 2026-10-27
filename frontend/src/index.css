@@ -24,3 +24,57 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }
+
+/* Cryptographic Chain Animations */
+@keyframes chainPulseGreen {
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    border-color: #10b981;
+  }
+  50% {
+    box-shadow: 0 0 25px 8px rgba(16, 185, 129, 0.4);
+    border-color: #34d399;
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+    border-color: #10b981;
+  }
+}
+
+@keyframes chainPulseRed {
+  0% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.8);
+    border-color: #ef4444;
+  }
+  50% {
+    box-shadow: 0 0 28px 10px rgba(239, 68, 68, 0.5);
+    border-color: #f87171;
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+    border-color: #ef4444;
+  }
+}
+
+@keyframes chainDashFlow {
+  from {
+    stroke-dashoffset: 24;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-chain-green {
+  animation: chainPulseGreen 1.8s infinite ease-in-out;
+}
+
+.animate-chain-red {
+  animation: chainPulseRed 1.2s infinite ease-in-out;
+}
+
+.animate-dash-flow {
+  stroke-dasharray: 6 4;
+  animation: chainDashFlow 1s linear infinite;
+}
+

@@ -1,0 +1,264 @@
+{
+  "harness_metadata": {
+    "evaluation_timestamp": "2026-10-27T12:42:33.774806+00:00",
+    "system_name": "PRAMAAN-X Regulatory Decision-Support System",
+    "evaluation_runtime_seconds": 7.39,
+    "manual_baseline_minutes": 180.0,
+    "statutory_safety_policy": "All automated alerts formulate findings strictly as 'Indicator for review'. No automatic adverse determinations."
+  },
+  "field_level_extraction": {
+    "total_documents_evaluated": 24,
+    "macro_precision": 0.8679,
+    "macro_recall": 0.8863,
+    "macro_f1_score": 0.877,
+    "micro_precision": 0.8276,
+    "micro_recall": 0.8421,
+    "micro_f1_score": 0.8348,
+    "per_field_metrics": {
+      "reference_number": {
+        "true_positives": 12,
+        "false_positives": 2,
+        "false_negatives": 1,
+        "precision": 0.8571,
+        "recall": 0.9231,
+        "f1_score": 0.8889
+      },
+      "institution_name": {
+        "true_positives": 10,
+        "false_positives": 5,
+        "false_negatives": 0,
+        "precision": 0.6667,
+        "recall": 1.0,
+        "f1_score": 0.8
+      },
+      "validity_date": {
+        "true_positives": 6,
+        "false_positives": 2,
+        "false_negatives": 7,
+        "precision": 0.75,
+        "recall": 0.4615,
+        "f1_score": 0.5714
+      },
+      "issue_date": {
+        "true_positives": 14,
+        "false_positives": 1,
+        "false_negatives": 1,
+        "precision": 0.9333,
+        "recall": 0.9333,
+        "f1_score": 0.9333
+      },
+      "survey_numbers": {
+        "true_positives": 3,
+        "false_positives": 0,
+        "false_negatives": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0
+      },
+      "extent_acres": {
+        "true_positives": 3,
+        "false_positives": 0,
+        "false_negatives": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0
+      }
+    }
+  },
+  "validation_accuracy_per_defect_type": {
+    "expired_document": {
+      "planted_cases": 6,
+      "detected_cases": 6,
+      "missed_cases": 0,
+      "accuracy_percent": 100.0,
+      "regulatory_action": "INDICATOR_FOR_REVIEW"
+    },
+    "missing_signature_field": {
+      "planted_cases": 3,
+      "detected_cases": 3,
+      "missed_cases": 0,
+      "accuracy_percent": 100.0,
+      "regulatory_action": "INDICATOR_FOR_REVIEW"
+    },
+    "wrong_institution_name": {
+      "planted_cases": 3,
+      "detected_cases": 3,
+      "missed_cases": 0,
+      "accuracy_percent": 100.0,
+      "regulatory_action": "INDICATOR_FOR_REVIEW"
+    },
+    "shared_document_reference_number": {
+      "planted_cases": 3,
+      "detected_cases": 3,
+      "missed_cases": 0,
+      "accuracy_percent": 100.0,
+      "regulatory_action": "INDICATOR_FOR_REVIEW"
+    },
+    "faculty_duplicate_across_institutions": {
+      "planted_cases": 4,
+      "detected_cases": 4,
+      "missed_cases": 0,
+      "accuracy_percent": 100.0,
+      "regulatory_action": "INDICATOR_FOR_REVIEW"
+    },
+    "area_too_small_for_intake": {
+      "planted_cases": 3,
+      "detected_cases": 3,
+      "missed_cases": 0,
+      "accuracy_percent": 100.0,
+      "regulatory_action": "INDICATOR_FOR_REVIEW"
+    },
+    "date_before_issuer_existed": {
+      "planted_cases": 3,
+      "detected_cases": 3,
+      "missed_cases": 0,
+      "accuracy_percent": 100.0,
+      "regulatory_action": "INDICATOR_FOR_REVIEW"
+    },
+    "inverted_validity_interval": {
+      "planted_cases": 3,
+      "detected_cases": 3,
+      "missed_cases": 0,
+      "accuracy_percent": 100.0,
+      "regulatory_action": "INDICATOR_FOR_REVIEW"
+    },
+    "reused_photo": {
+      "planted_cases": 32,
+      "detected_cases": 32,
+      "missed_cases": 0,
+      "accuracy_percent": 100.0,
+      "regulatory_action": "INDICATOR_FOR_REVIEW"
+    },
+    "missing_exif_metadata": {
+      "planted_cases": 16,
+      "detected_cases": 16,
+      "missed_cases": 0,
+      "accuracy_percent": 100.0,
+      "regulatory_action": "INDICATOR_FOR_REVIEW"
+    },
+    "pdf_metadata_producer_anomaly": {
+      "planted_cases": 3,
+      "detected_cases": 3,
+      "missed_cases": 0,
+      "accuracy_percent": 100.0,
+      "regulatory_action": "INDICATOR_FOR_REVIEW"
+    },
+    "font_inconsistency_in_region": {
+      "planted_cases": 3,
+      "detected_cases": 3,
+      "missed_cases": 0,
+      "accuracy_percent": 100.0,
+      "regulatory_action": "INDICATOR_FOR_REVIEW"
+    },
+    "error_level_analysis_spliced_patch": {
+      "planted_cases": 3,
+      "detected_cases": 3,
+      "missed_cases": 0,
+      "accuracy_percent": 100.0,
+      "regulatory_action": "INDICATOR_FOR_REVIEW"
+    },
+    "copymove_cloned_seal": {
+      "planted_cases": 3,
+      "detected_cases": 3,
+      "missed_cases": 0,
+      "accuracy_percent": 100.0,
+      "regulatory_action": "INDICATOR_FOR_REVIEW"
+    },
+    "qr_ocr_reference_mismatch": {
+      "planted_cases": 3,
+      "detected_cases": 3,
+      "missed_cases": 0,
+      "accuracy_percent": 100.0,
+      "regulatory_action": "INDICATOR_FOR_REVIEW"
+    },
+    "sun_shadow_angle_discrepancy": {
+      "planted_cases": 3,
+      "detected_cases": 3,
+      "missed_cases": 0,
+      "accuracy_percent": 100.0,
+      "regulatory_action": "INDICATOR_FOR_REVIEW"
+    },
+    "built_up_area_footprint_discrepancy": {
+      "planted_cases": 3,
+      "detected_cases": 3,
+      "missed_cases": 0,
+      "accuracy_percent": 100.0,
+      "regulatory_action": "INDICATOR_FOR_REVIEW"
+    },
+    "lab_equipment_inconsistent": {
+      "planted_cases": 2,
+      "detected_cases": 2,
+      "missed_cases": 0,
+      "accuracy_percent": 100.0,
+      "regulatory_action": "INDICATOR_FOR_REVIEW"
+    }
+  },
+  "anomaly_flag_detection": {
+    "true_positives": 99,
+    "false_positives": 2,
+    "true_negatives": 55,
+    "false_negatives": 0,
+    "precision": 0.9802,
+    "recall": 1.0,
+    "f1_score": 0.99,
+    "false_positive_rate": 0.0351,
+    "false_positive_rate_percent": 3.51,
+    "total_evaluations": 156,
+    "statutory_safety_policy": "All automated alerts formulate findings strictly as 'Indicator for review'. No automatic adverse determinations."
+  },
+  "photo_reuse_radar": {
+    "precision": 0.9412,
+    "recall": 1.0,
+    "f1_score": 0.9697,
+    "true_positives": 16,
+    "false_positives": 1,
+    "false_negatives": 0,
+    "true_negatives": 3,
+    "false_positive_rate": 0.0455,
+    "total_queries_evaluated": 20,
+    "clusters_detected_count": 5,
+    "match_types": [
+      "exact_sha256",
+      "perceptual_hash_crop_rotate",
+      "clip_semantic_hypersphere"
+    ]
+  },
+  "source_verification": {
+    "total_verification_calls": 7,
+    "successful_determinations": 7,
+    "success_rate_percent": 100.0,
+    "mean_connector_latency_ms": 1.64,
+    "channels_tested": [
+      "REST_API_LOOKUP",
+      "QR_CODE_PAYLOAD_DECODE",
+      "ED25519_DIGITAL_SIGNATURE"
+    ],
+    "fallback_routing": "Inconclusive and timeout cases automatically enqueued to Scrutiny Officer ManualReviewQueue."
+  },
+  "processing_time_comparison": {
+    "automated_seconds_per_application": 2.1,
+    "automated_minutes_per_application": 0.035,
+    "manual_baseline_minutes": 180.0,
+    "minutes_saved_per_application": 179.97,
+    "speedup_factor": 5145.6,
+    "efficiency_gain_percent": 99.98,
+    "dossier_stages_timed": [
+      "Multi-Page OCR Text Extraction",
+      "Strict Regex & Boundary Field Normalization",
+      "ELA & Font Splicing Forensic Scan",
+      "pHash & CLIP Hypersphere Radar Lookup",
+      "Impossibility Engine Cross-Twin Validation",
+      "Append-Only Ed25519 Chained Receipt Minting"
+    ]
+  },
+  "alert_latency": {
+    "mean_latency_ms": 3.21,
+    "median_latency_ms": 3.21,
+    "p95_latency_ms": 3.22,
+    "alert_deduplication_efficiency_percent": 100.0,
+    "notification_channels": [
+      "IN_APP_STATUS_BELL",
+      "MOCK_EXECUTIVE_EMAIL"
+    ]
+  }
+}

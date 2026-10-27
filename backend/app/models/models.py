@@ -163,6 +163,7 @@ class Application(Base):
     verifications = relationship("Verification", back_populates="application", cascade="all, delete-orphan")
     findings = relationship("Finding", back_populates="application", cascade="all, delete-orphan")
     receipts = relationship("Receipt", back_populates="application", cascade="all, delete-orphan")
+    verification_receipts = relationship("VerificationReceipt", back_populates="application", cascade="all, delete-orphan")
     alerts = relationship("Alert", back_populates="application", cascade="all, delete-orphan")
     officer_actions = relationship("OfficerAction", back_populates="application", cascade="all, delete-orphan")
 
@@ -412,7 +413,42 @@ AuditReceipt = Receipt
 
 
 # ============================================================================
+# 12B. VERIFICATION RECEIPTS (Append-Only Hash-Chained Log with Ed25519)
+# ============================================================================
+class VerificationReceipt(Base):
+    """
+    Append-only, hash-chained log for verification events in PostgreSQL.
+    Contains: id, application_id, document_id, source, status, timestamp,
+    response_hash, rule_version_set, previous_hash, and its own hash (SHA-256 over canonical JSON).
+    Cryptographically signed with Ed25519 key.
+    """
+    __tablename__ = "verification_receipts"
+
+    id = Column(Integer, primary_key=True, index=True)
+    application_id = Column(Integer, ForeignKey("applications.id", ondelete="CASCADE"), nullable=False, index=True)
+    document_id = Column(Integer, ForeignKey("documents.id", ondelete="SET NULL"), nullable=True, index=True)
+    source = Column(String(255), nullable=False, index=True)
+    status = Column(String(50), nullable=False, index=True)
+    timestamp = Column(DateTime(timezone=True), default=utc_now, nullable=False, index=True)
+    response_hash = Column(String(64), nullable=False, index=True)
+    rule_version_set = Column(JSON_TYPE, default=dict, nullable=False)
+    previous_hash = Column(String(64), nullable=False, index=True)
+    receipt_hash = Column(String(64), unique=True, nullable=False, index=True)
+    signature = Column(Text, nullable=False)
+    public_key = Column(String(128), nullable=False)
+
+    __table_args__ = (
+        Index("idx_verif_receipts_chain", "id", "previous_hash", "receipt_hash"),
+        Index("idx_verif_receipts_app", "application_id", "timestamp"),
+    )
+
+    application = relationship("Application", back_populates="verification_receipts")
+    document = relationship("Document")
+
+
+# ============================================================================
 # 13. ALERTS (High-Priority Operational Warnings)
+
 # ============================================================================
 class Alert(Base):
     __tablename__ = "alerts"
@@ -426,10 +462,14 @@ class Alert(Base):
     entity_refs = Column(JSON_TYPE, default=dict) # {"faculty_pan": "AB****89C", "survey_no": "42/1"}
     is_read = Column(Boolean, default=False, index=True)
     resolved_at = Column(DateTime(timezone=True), nullable=True)
+    assigned_role = Column(String(100), default="scrutiny_officer", index=True)
+    dedupe_key = Column(String(255), nullable=True, index=True)
     created_at = Column(DateTime(timezone=True), default=utc_now)
 
     __table_args__ = (
         Index("idx_alerts_app_severity", "application_id", "severity"),
+        Index("idx_alerts_dedupe", "dedupe_key"),
+        Index("idx_alerts_role", "assigned_role"),
     )
 
     application = relationship("Application", back_populates="alerts")

@@ -22,6 +22,19 @@ from backend.app.services.photo_radar import (
 from backend.app.services.evaluate_photo_radar import PhotoRadarEvaluator
 
 
+from fastapi import APIRouter, UploadFile, File, Form, HTTPException, Query, Depends, Request
+from sqlalchemy.orm import Session
+from backend.app.core.database import get_db
+from backend.app.core.security import (
+    require_roles,
+    ROLE_SCRUTINY_OFFICER,
+    ROLE_SENIOR_OFFICER,
+    ROLE_ADMIN,
+    ROLE_AUDITOR
+)
+from backend.app.core.logging_service import log_sensitive_access
+from backend.app.models.models import User
+
 router = APIRouter(prefix="/radar", tags=["National Photo Reuse Radar"])
 
 
@@ -29,10 +42,14 @@ router = APIRouter(prefix="/radar", tags=["National Photo Reuse Radar"])
 def get_photo_reuse_clusters(
     exact_hamming_threshold: int = Query(0, ge=0, le=10, description="Max Hamming distance for exact match"),
     near_duplicate_hamming_threshold: int = Query(12, ge=1, le=25, description="Max Hamming distance for near-duplicate match"),
-    clip_semantic_threshold: float = Query(0.82, ge=0.5, le=1.0, description="Min CLIP cosine similarity for semantic match")
+    clip_semantic_threshold: float = Query(0.82, ge=0.5, le=1.0, description="Min CLIP cosine similarity for semantic match"),
+    req: Request = None,
+    current_user: User = Depends(require_roles(ROLE_SCRUTINY_OFFICER, ROLE_SENIOR_OFFICER, ROLE_ADMIN, ROLE_AUDITOR)),
+    db: Session = Depends(get_db)
 ):
     """
     Groups institutions sharing the same infrastructure photo across India.
+    Restricted to Scrutiny Officers, Senior Officers, Admins, and Auditors.
     Returns cluster detection graph JSON with nodes (Institutions, Photos) and edges (claims, reuses).
     """
     try:
@@ -40,6 +57,14 @@ def get_photo_reuse_clusters(
             exact_hamming_threshold=exact_hamming_threshold,
             near_duplicate_hamming_threshold=near_duplicate_hamming_threshold,
             clip_semantic_threshold=clip_semantic_threshold
+        )
+        log_sensitive_access(
+            db=db,
+            user=current_user,
+            action="VIEW_RADAR_CLUSTERS",
+            resource="/api/v1/radar/clusters",
+            details={"clusters_count": len(cluster_response.clusters)},
+            request=req
         )
         return cluster_response
     except Exception as e:

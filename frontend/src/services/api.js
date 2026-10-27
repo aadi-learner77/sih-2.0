@@ -67,6 +67,10 @@ export const api = {
     const res = await apiClient.patch(`/rules/evaluations/${evalId}/decision`, { decision, comment });
     return res.data;
   },
+  executeWhatIfDryRun: async (payload) => {
+    const res = await apiClient.post('/rules/dry-run', payload);
+    return res.data;
+  },
 
   // Knowledge Graph & Impossibility Engine
   getKnowledgeGraph: async () => {
@@ -110,7 +114,7 @@ export const api = {
     return res.data;
   },
 
-  // Audit Ledger
+  // Audit Ledger & Logs
   getAuditReceipts: async (appId) => {
     const res = await apiClient.get('/audit/receipts', { params: { application_id: appId } });
     return res.data;
@@ -125,6 +129,38 @@ export const api = {
     });
     return res.data;
   },
+  getAuditLogs: async (limit = 50, action = null) => {
+    const res = await apiClient.get('/audit/logs', { params: { limit, action } });
+    return res.data;
+  },
+
+  // Operational Alerts & Periodic Scanner
+  getAlerts: async (params = {}) => {
+    const res = await apiClient.get('/alerts', { params });
+    return res.data;
+  },
+  resolveAlert: async (alertId) => {
+    const res = await apiClient.patch(`/alerts/${alertId}/resolve`);
+    return res.data;
+  },
+  runAlertScan: async (params = {}) => {
+    const res = await apiClient.post('/alerts/run-scan', null, { params });
+    return res.data;
+  },
+  getNotifications: async (params = {}) => {
+    const res = await apiClient.get('/alerts/notifications', { params });
+    return res.data;
+  },
+  getSchedulerStatus: async () => {
+    const res = await apiClient.get('/alerts/scheduler/status');
+    return res.data;
+  },
+
+  // Officer Actions
+  performOfficerAction: async (appId, actionData) => {
+    const res = await apiClient.post(`/applications/${appId}/officer-action`, actionData);
+    return res.data;
+  },
 
   // Pre-Flight Readiness
   runPreflight: async (instId, category, facts) => {
@@ -135,4 +171,18 @@ export const api = {
     });
     return res.data;
   },
+
+  // National Photo Reuse Radar
+  getRadarClusters: async () => {
+    const res = await apiClient.get('/radar/clusters');
+    return res.data;
+  },
+  queryRadarPhoto: async (formData) => {
+    const res = await apiClient.post('/radar/query', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return res.data;
+  },
 };
+
+

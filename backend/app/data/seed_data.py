@@ -22,13 +22,60 @@ from backend.app.services.rules_engine import rules_engine
 from backend.app.services.impossibility_engine import impossibility_engine
 from backend.app.services.forensics_engine import forensics_engine
 
+def ensure_rbac_users(db: Session):
+    """Ensures all 5 required RBAC roles and demo accounts exist."""
+    role_specs = [
+        ("scrutiny_officer", "Scrutiny Committee Officer"),
+        ("senior_officer", "Senior Regulatory Officer"),
+        ("regional_officer", "Regional Bureau Officer"),
+        ("admin", "Central AICTE Administrator"),
+        ("auditor", "Statutory Compliance Auditor"),
+        ("institution_user", "Institution Representative")
+    ]
+    for code, name in role_specs:
+        existing_role = db.query(Role).filter(Role.code == code).first()
+        if not existing_role:
+            db.add(Role(code=code, name=name))
+    db.commit()
+
+    inst1 = db.query(Institution).first()
+    inst2 = db.query(Institution).offset(1).first()
+
+    user_specs = [
+        ("scrutiny.officer@aicte-india.org", "AicteOfficer@2025", "Dr. Sunita Deshmukh", "scrutiny_officer", None),
+        ("senior.officer@aicte-india.org", "AicteSenior@2025", "Shri Arvind Kulkarni", "senior_officer", None),
+        ("regional.officer@aicte-india.org", "AicteRegional@2025", "Shri Arvind Kulkarni (Regional)", "senior_officer", None),
+        ("admin@aicte-india.org", "AicteAdmin@2025", "Chief Technology Cell Admin", "admin", None),
+        ("auditor@aicte-india.org", "AicteAuditor@2025", "Independent Statutory Auditor", "auditor", None),
+        ("registrar@apextech.edu.in", "ApexPass@2025", "Prof. C. V. Ramanathan (Apex Registrar)", "institution_user", inst1.id if inst1 else 1),
+        ("principal@royal.edu.in", "RoyalPass@2025", "Dr. H. S. Rao (Royal Principal)", "institution_user", inst2.id if inst2 else 2),
+    ]
+
+    for email, pwd, name, role, inst_id in user_specs:
+        u = db.query(User).filter(User.email == email).first()
+        if not u:
+            db.add(User(
+                email=email,
+                hashed_password=hash_password(pwd),
+                full_name=name,
+                role=role,
+                institution_id=inst_id,
+                is_active=True
+            ))
+        else:
+            if inst_id and not u.institution_id:
+                u.institution_id = inst_id
+    db.commit()
+
+
 def seed_database():
     Base.metadata.create_all(bind=engine)
     db: Session = SessionLocal()
 
-    # If users already exist, check if Institution Twin tables need seeding
+    # If users already exist, check if Institution Twin tables need seeding & ensure RBAC accounts exist
     if db.query(User).first():
         seed_institution_twin_tables(db)
+        ensure_rbac_users(db)
         db.close()
         return
 

@@ -33,9 +33,71 @@ import cv2
 import numpy as np
 from PIL import Image, ImageOps, ImageEnhance
 import imagehash
-import faiss
-import torch
-import open_clip
+try:
+    import faiss
+except ImportError:
+    class _NumpyIndexFlatIP:
+        def __init__(self, d: int):
+            self.d = d
+            self.vectors = np.empty((0, d), dtype=np.float32)
+
+        def add(self, x: np.ndarray):
+            if len(self.vectors) == 0:
+                self.vectors = np.ascontiguousarray(x, dtype=np.float32)
+            else:
+                self.vectors = np.vstack([self.vectors, np.ascontiguousarray(x, dtype=np.float32)])
+
+        def search(self, x: np.ndarray, k: int):
+            if len(self.vectors) == 0:
+                return np.empty((len(x), 0), dtype=np.float32), np.empty((len(x), 0), dtype=np.int64)
+            sims = np.dot(x, self.vectors.T)
+            k = min(k, len(self.vectors))
+            idx = np.argsort(-sims, axis=1)[:, :k]
+            scores = np.take_along_axis(sims, idx, axis=1)
+            return scores.astype(np.float32), idx.astype(np.int64)
+
+        @property
+        def ntotal(self) -> int:
+            return len(self.vectors)
+
+    class _DummyFaiss:
+        IndexFlatIP = _NumpyIndexFlatIP
+        def read_index(self, path: str):
+            idx = _NumpyIndexFlatIP(512)
+            if os.path.exists(path):
+                try:
+                    idx.vectors = np.load(path)
+                except Exception:
+                    pass
+            return idx
+        def write_index(self, index, path: str):
+            try:
+                np.save(path, index.vectors)
+            except Exception:
+                pass
+
+    faiss = _DummyFaiss()
+
+try:
+    import torch
+except ImportError:
+    class _DummyTorchCuda:
+        @staticmethod
+        def is_available():
+            return False
+    class _DummyTorch:
+        cuda = _DummyTorchCuda()
+    torch = _DummyTorch()
+
+try:
+    import open_clip
+except ImportError:
+    class _DummyOpenClip:
+        @staticmethod
+        def create_model_and_transforms(*args, **kwargs):
+            raise ImportError("open_clip not installed")
+    open_clip = _DummyOpenClip()
+
 import networkx as nx
 from pydantic import BaseModel, Field
 
