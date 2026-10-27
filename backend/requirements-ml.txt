@@ -1,0 +1,3 @@
+# Heavy optional ML libraries for PRAMAAN-X Photo Radar & OCR
+# The codebase falls back gracefully to deterministic algorithms when these are absent.
+-r ../requirements-ml.txt

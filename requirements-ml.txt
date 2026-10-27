@@ -1,0 +1,6 @@
+# Heavy optional ML libraries for PRAMAAN-X Photo Radar & OCR
+# The codebase falls back gracefully to deterministic algorithms when these are absent.
+torch==2.5.1
+open-clip-torch==2.30.0
+paddleocr==2.9.1
+faiss-cpu==1.9.0.post1
