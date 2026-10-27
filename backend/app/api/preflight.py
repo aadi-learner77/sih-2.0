@@ -1,8 +1,17 @@
 from typing import Dict, Any, List
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
+
 from backend.app.core.database import get_db
-from backend.app.models.models import Institution
+from backend.app.core.security import (
+    get_current_user,
+    enforce_institution_isolation,
+    normalize_role,
+    ROLE_INSTITUTION_USER
+)
+from backend.app.core.logging_service import log_sensitive_access
+from backend.app.core.masking import mask_pii_by_role
+from backend.app.models.models import Institution, User
 from backend.app.schemas.schemas import PreflightScanRequest, PreflightScanResponse
 from backend.app.services.checklist_engine import generate_checklist_status
 from backend.app.services.rules_engine import rules_engine
@@ -10,9 +19,12 @@ from backend.app.services.impossibility_engine import impossibility_engine
 
 router = APIRouter(prefix="/preflight", tags=["Institution Pre-Flight Readiness"])
 
+
 @router.post("/scan", response_model=PreflightScanResponse)
 def run_preflight_readiness_scan(
     request: PreflightScanRequest,
+    req: Request = None,
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """
@@ -22,13 +34,17 @@ def run_preflight_readiness_scan(
     - Regulation-as-Code clause compliance check
     - Cross-institutional conflict early warnings
     - Actionable recommendations to improve readiness score prior to official submission
+    Enforces tenant isolation for institution users.
+    Does NOT automatically reject any application.
     """
+    # Enforce Tenant Isolation
+    enforce_institution_isolation(current_user, request.institution_id)
+
     inst = db.query(Institution).filter(Institution.id == request.institution_id).first()
     if not inst:
         raise HTTPException(status_code=404, detail="Institution not found")
 
     # 1. Checklist completeness
-    # Mock / user supplied docs
     checklist_status = generate_checklist_status(request.application_category, [])
     
     # 2. Rule evaluation on submitted facts
@@ -73,7 +89,19 @@ def run_preflight_readiness_scan(
 
     final_score = round(max(15.0, min(100.0, score)), 1)
 
-    return {
+    log_sensitive_access(
+        db=db,
+        user=current_user,
+        action="PREFLIGHT_READINESS_SCAN",
+        resource="/api/v1/preflight/scan",
+        details={"institution_id": inst.id, "readiness_score": final_score},
+        request=req
+    )
+
+    user_role = normalize_role(current_user.role)
+    is_owner = (user_role == ROLE_INSTITUTION_USER and current_user.institution_id == inst.id)
+
+    resp_dict = {
         "readiness_score": final_score,
         "category": request.application_category,
         "checklist_summary": checklist_status,
@@ -81,3 +109,6 @@ def run_preflight_readiness_scan(
         "impossibility_indicators": impossibilities,
         "recommendations": recommendations or ["Institution dossier is 100% compliant with AICTE APH 2025-26 guidelines."]
     }
+
+    masked_resp = mask_pii_by_role(resp_dict, user_role, is_owner=is_owner)
+    return PreflightScanResponse(**masked_resp)

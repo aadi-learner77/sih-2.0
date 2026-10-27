@@ -7,7 +7,8 @@ import ImpossibilityGraph from './components/ImpossibilityGraph';
 import PhotoReuseRadar from './components/PhotoReuseRadar';
 import RuleConfigPage from './pages/RuleConfigPage';
 import PreFlightScorecard from './components/PreFlightScorecard';
-import AuditLedgerView from './components/AuditLedgerView';
+import AuditAndReceiptsPage from './pages/AuditAndReceiptsPage';
+import AuditHistoryTab from './components/AuditHistoryTab';
 import { api } from './services/api';
 
 export default function App() {
@@ -17,19 +18,22 @@ export default function App() {
   const [activeApplication, setActiveApplication] = useState(null);
   const [evidenceLensData, setEvidenceLensData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isLiveMode, setIsLiveMode] = useState(false);
 
   const loadData = async () => {
     try {
       const apps = await api.getApplications();
-      setApplications(apps);
       if (apps && apps.length > 0) {
+        setApplications(apps);
+        setIsLiveMode(true);
         const primary = apps[0];
         setActiveApplication(primary);
         const lens = await api.getEvidenceLens(primary.id);
         setEvidenceLensData(lens);
       }
     } catch (err) {
-      console.error('Failed to load application data:', err);
+      console.warn('Backend offline or empty, running in Demo / Mock Data mode:', err.message);
+      setIsLiveMode(false);
     } finally {
       setLoading(false);
     }
@@ -56,13 +60,16 @@ export default function App() {
         currentRole={currentRole}
         onRoleChange={setCurrentRole}
         activeApplication={activeApplication}
+        isLiveMode={isLiveMode}
+        onToggleLiveMode={() => setIsLiveMode(!isLiveMode)}
       />
 
       <div className="flex-1 flex overflow-hidden">
-        {/* Left Navigation Sidebar */}
+        {/* Left Navigation Sidebar (Role-Aware) */}
         <Sidebar 
           activeTab={activeTab} 
           setActiveTab={setActiveTab}
+          currentRole={currentRole}
           counts={{
             impossibilities: 2,
             advisoryFlags: activeApplication?.advisory_flags_count || 4
@@ -73,10 +80,12 @@ export default function App() {
         <main className="flex-1 overflow-y-auto p-6 md:p-8 space-y-6 bg-slate-50/60">
           {activeTab === 'dashboard' && (
             <Dashboard 
-              applications={applications}
+              applications={isLiveMode ? applications : []}
               onSelectApplication={handleSelectApplication}
               onNavigateTab={setActiveTab}
               onRefresh={loadData}
+              isLiveMode={isLiveMode}
+              currentRole={currentRole}
             />
           )}
 
@@ -92,7 +101,10 @@ export default function App() {
           )}
 
           {activeTab === 'photo-radar' && (
-            <PhotoReuseRadar />
+            <PhotoReuseRadar 
+              onNavigateTab={setActiveTab}
+              onSelectApplication={handleSelectApplication}
+            />
           )}
 
           {activeTab === 'regulations' && (
@@ -106,10 +118,11 @@ export default function App() {
           )}
 
           {activeTab === 'audit-ledger' && (
-            <AuditLedgerView />
+            <AuditAndReceiptsPage activeApplicationId={activeApplication?.id || 1} />
           )}
         </main>
       </div>
+
 
       {/* Statutory Footer */}
       <footer className="bg-white border-t border-slate-200 py-3.5 px-6 text-center text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-2 shadow-sm">

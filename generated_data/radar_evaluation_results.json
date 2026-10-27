@@ -1,0 +1,237 @@
+{
+  "evaluation_timestamp": "2026-10-26T19:14:36.671666",
+  "metrics": {
+    "total_queries_evaluated": 18,
+    "true_positives": 15,
+    "false_positives": 0,
+    "true_negatives": 3,
+    "false_negatives": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1_score": 1.0,
+    "accuracy": 1.0
+  },
+  "detection_by_match_type": {
+    "exact": 10,
+    "near-duplicate": 5,
+    "semantically similar": 0
+  },
+  "clusters_detected_count": 5,
+  "institutions_involved_count": 4,
+  "clusters_summary": [
+    {
+      "cluster_id": "PHOTO_CLUSTER_01",
+      "category": "Central Library",
+      "institutions_count": 4,
+      "risk_level": "CRITICAL",
+      "match_types": [
+        "exact",
+        "near-duplicate"
+      ]
+    },
+    {
+      "cluster_id": "PHOTO_CLUSTER_02",
+      "category": "Computer Lab",
+      "institutions_count": 4,
+      "risk_level": "CRITICAL",
+      "match_types": [
+        "exact",
+        "near-duplicate"
+      ]
+    },
+    {
+      "cluster_id": "PHOTO_CLUSTER_03",
+      "category": "Entrance Ramp",
+      "institutions_count": 4,
+      "risk_level": "CRITICAL",
+      "match_types": [
+        "exact",
+        "near-duplicate"
+      ]
+    },
+    {
+      "cluster_id": "PHOTO_CLUSTER_04",
+      "category": "Materials Lab",
+      "institutions_count": 4,
+      "risk_level": "CRITICAL",
+      "match_types": [
+        "exact",
+        "near-duplicate"
+      ]
+    },
+    {
+      "cluster_id": "PHOTO_CLUSTER_05",
+      "category": "Smart Classroom",
+      "institutions_count": 4,
+      "risk_level": "CRITICAL",
+      "match_types": [
+        "exact",
+        "near-duplicate"
+      ]
+    }
+  ],
+  "query_details": [
+    {
+      "filename": "INST_002_central_library_exact_duplicate.jpg",
+      "institution_id": "INST_002",
+      "is_planted_duplicate": true,
+      "detected": true,
+      "top_match_type": "exact",
+      "similarity_score": 1.0,
+      "matched_institution": "Apex Institute of Technology & Science"
+    },
+    {
+      "filename": "INST_002_computer_lab_exact_duplicate.jpg",
+      "institution_id": "INST_002",
+      "is_planted_duplicate": true,
+      "detected": true,
+      "top_match_type": "exact",
+      "similarity_score": 1.0,
+      "matched_institution": "Apex Institute of Technology & Science"
+    },
+    {
+      "filename": "INST_002_entrance_ramp_exact_duplicate.jpg",
+      "institution_id": "INST_002",
+      "is_planted_duplicate": true,
+      "detected": true,
+      "top_match_type": "exact",
+      "similarity_score": 1.0,
+      "matched_institution": "Apex Institute of Technology & Science"
+    },
+    {
+      "filename": "INST_002_materials_lab_exact_duplicate.jpg",
+      "institution_id": "INST_002",
+      "is_planted_duplicate": true,
+      "detected": true,
+      "top_match_type": "exact",
+      "similarity_score": 1.0,
+      "matched_institution": "Apex Institute of Technology & Science"
+    },
+    {
+      "filename": "INST_002_smart_classroom_exact_duplicate.jpg",
+      "institution_id": "INST_002",
+      "is_planted_duplicate": true,
+      "detected": true,
+      "top_match_type": "exact",
+      "similarity_score": 1.0,
+      "matched_institution": "Apex Institute of Technology & Science"
+    },
+    {
+      "filename": "INST_003_central_library_near_duplicate.jpg",
+      "institution_id": "INST_003",
+      "is_planted_duplicate": true,
+      "detected": true,
+      "top_match_type": "near-duplicate",
+      "similarity_score": 0.9133,
+      "matched_institution": "Apex Institute of Technology & Science"
+    },
+    {
+      "filename": "INST_003_computer_lab_near_duplicate.jpg",
+      "institution_id": "INST_003",
+      "is_planted_duplicate": true,
+      "detected": true,
+      "top_match_type": "near-duplicate",
+      "similarity_score": 0.8691,
+      "matched_institution": "Zenith Institute of Engineering"
+    },
+    {
+      "filename": "INST_003_entrance_ramp_near_duplicate.jpg",
+      "institution_id": "INST_003",
+      "is_planted_duplicate": true,
+      "detected": true,
+      "top_match_type": "near-duplicate",
+      "similarity_score": 0.8814,
+      "matched_institution": "Zenith Institute of Engineering"
+    },
+    {
+      "filename": "INST_003_materials_lab_near_duplicate.jpg",
+      "institution_id": "INST_003",
+      "is_planted_duplicate": true,
+      "detected": true,
+      "top_match_type": "near-duplicate",
+      "similarity_score": 0.9011,
+      "matched_institution": "Apex Institute of Technology & Science"
+    },
+    {
+      "filename": "INST_003_smart_classroom_near_duplicate.jpg",
+      "institution_id": "INST_003",
+      "is_planted_duplicate": true,
+      "detected": true,
+      "top_match_type": "near-duplicate",
+      "similarity_score": 0.9098,
+      "matched_institution": "Zenith Institute of Engineering"
+    },
+    {
+      "filename": "INST_004_central_library_exif_stripped.jpg",
+      "institution_id": "INST_004",
+      "is_planted_duplicate": true,
+      "detected": true,
+      "top_match_type": "exact",
+      "similarity_score": 1.0,
+      "matched_institution": "Apex Institute of Technology & Science"
+    },
+    {
+      "filename": "INST_004_computer_lab_exif_stripped.jpg",
+      "institution_id": "INST_004",
+      "is_planted_duplicate": true,
+      "detected": true,
+      "top_match_type": "exact",
+      "similarity_score": 1.0,
+      "matched_institution": "Apex Institute of Technology & Science"
+    },
+    {
+      "filename": "INST_004_entrance_ramp_exif_stripped.jpg",
+      "institution_id": "INST_004",
+      "is_planted_duplicate": true,
+      "detected": true,
+      "top_match_type": "exact",
+      "similarity_score": 1.0,
+      "matched_institution": "Apex Institute of Technology & Science"
+    },
+    {
+      "filename": "INST_004_materials_lab_exif_stripped.jpg",
+      "institution_id": "INST_004",
+      "is_planted_duplicate": true,
+      "detected": true,
+      "top_match_type": "exact",
+      "similarity_score": 1.0,
+      "matched_institution": "Apex Institute of Technology & Science"
+    },
+    {
+      "filename": "INST_004_smart_classroom_exif_stripped.jpg",
+      "institution_id": "INST_004",
+      "is_planted_duplicate": true,
+      "detected": true,
+      "top_match_type": "exact",
+      "similarity_score": 1.0,
+      "matched_institution": "Apex Institute of Technology & Science"
+    },
+    {
+      "filename": "INST_005_distinct_botany_garden.jpg",
+      "institution_id": "INST_005",
+      "is_planted_duplicate": false,
+      "detected": false,
+      "top_match_type": "exact",
+      "similarity_score": 1.0,
+      "matched_institution": "INST_005"
+    },
+    {
+      "filename": "INST_006_distinct_solar_rooftop.jpg",
+      "institution_id": "INST_006",
+      "is_planted_duplicate": false,
+      "detected": false,
+      "top_match_type": "exact",
+      "similarity_score": 1.0,
+      "matched_institution": "INST_006"
+    },
+    {
+      "filename": "INST_007_distinct_cafeteria_hall.jpg",
+      "institution_id": "INST_007",
+      "is_planted_duplicate": false,
+      "detected": false,
+      "top_match_type": "exact",
+      "similarity_score": 1.0,
+      "matched_institution": "INST_007"
+    }
+  ]
+}

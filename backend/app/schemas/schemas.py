@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Union
 from pydantic import BaseModel, EmailStr
 
 # Auth & User
@@ -83,16 +83,16 @@ class VerificationCheckOut(BaseModel):
 class RuleEvaluationOut(BaseModel):
     id: int
     application_id: int
-    rule_id: str
+    rule_id: Optional[Union[str, int]] = None
     clause_id: str
-    clause_title: str
-    handbook_edition: str
+    clause_title: Optional[str] = None
+    handbook_edition: Optional[str] = "AICTE APH 2025-26"
     severity: str
     passed: bool
     claim_summary: Optional[str] = None
     evidence_details: Dict[str, Any] = {}
     explanation: str
-    officer_decision: str
+    officer_decision: Optional[str] = "PENDING_REVIEW"
     officer_comment: Optional[str] = None
     evaluated_at: datetime
 
@@ -161,3 +161,67 @@ class PreflightScanResponse(BaseModel):
     rule_indicators: List[Dict[str, Any]]
     impossibility_indicators: List[Dict[str, Any]]
     recommendations: List[str]
+
+# Application Submission
+class ApplicationSubmitRequest(BaseModel):
+    institution_id: int
+    category: Optional[str] = "Extension of Approval (EoA)"
+    academic_year: Optional[str] = "2025-26"
+    facts: Optional[Dict[str, Any]] = None
+
+# Officer Action (Human in the loop - mandatory comment)
+class OfficerActionRequest(BaseModel):
+    action: str  # accept, dismiss, escalate, request_more_evidence, recommend_inspection, reject
+    comment: str  # Mandatory comment!
+    finding_id: Optional[int] = None
+    target_status: Optional[str] = None
+
+# Operational Alerts
+class AlertOut(BaseModel):
+    id: int
+    application_id: int
+    alert_type: str
+    severity: str
+    title: str
+    message: str
+    entity_refs: Dict[str, Any] = {}
+    is_read: bool = False
+    resolved_at: Optional[datetime] = None
+    assigned_role: Optional[str] = "scrutiny_officer"
+    dedupe_key: Optional[str] = None
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+# Rules CRUD & Versioning
+class RuleCreateRequest(BaseModel):
+    rule_code: str
+    clause_id: str
+    title: str
+    category: str
+    severity: str = "WARNING"
+    description: str
+    condition_expression: str
+    failure_message_template: str
+    parameters: Dict[str, Any] = {}
+    handbook_edition: str = "AICTE APH 2025-26"
+    version_number: str = "1.0.0"
+
+class RuleUpdateRequest(BaseModel):
+    title: Optional[str] = None
+    category: Optional[str] = None
+    severity: Optional[str] = None
+    description: Optional[str] = None
+    condition_expression: Optional[str] = None
+    failure_message_template: Optional[str] = None
+    parameters: Optional[Dict[str, Any]] = None
+    handbook_edition: Optional[str] = None
+    version_number: Optional[str] = None
+    is_active: Optional[bool] = None
+
+class WhatIfDryRunRequest(BaseModel):
+    rules: Optional[List[Dict[str, Any]]] = None
+    applications: Optional[List[Dict[str, Any]]] = None
+    parameters_override: Optional[Dict[str, Any]] = None
+

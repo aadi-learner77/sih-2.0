@@ -1,0 +1,93 @@
+{
+  "ground_truth_cases": [
+    {
+      "case_id": "GT_CHECK1_DUAL_EMPLOYMENT",
+      "check_id": "DUAL_EMPLOYMENT_FACULTY",
+      "defect_type": "faculty_duplicate_across_institutions",
+      "target_institution_id": "INST_001",
+      "conflicting_faculty_id": "FAC_101",
+      "conflicting_institutions": ["INST_001", "INST_002"],
+      "expected_conflict_type": "DUAL_EMPLOYMENT_GHOST_FACULTY",
+      "expected_indicator_type": "INDICATOR_FOR_REVIEW",
+      "severity": "CRITICAL",
+      "negative_controls": [
+        {"faculty_id": "FAC_102", "institution_id": "INST_001"},
+        {"faculty_id": "FAC_103", "institution_id": "INST_002"}
+      ]
+    },
+    {
+      "case_id": "GT_CHECK2_AREA_DENSITY",
+      "check_id": "BUILT_UP_AREA_DENSITY_DEFICIT",
+      "defect_type": "area_too_small_for_intake",
+      "target_institution_id": "INST_001",
+      "claimed_intake": 480,
+      "total_built_up_area_sqm": 8500.0,
+      "norm_sqm_per_student": 10.5,
+      "expected_conflict_type": "BUILT_UP_AREA_DENSITY_DEFICIT",
+      "expected_indicator_type": "INDICATOR_FOR_REVIEW",
+      "severity": "CRITICAL",
+      "negative_controls": [
+        {"institution_id": "INST_002", "claimed_intake": 360, "total_built_up_area_sqm": 18200.0}
+      ]
+    },
+    {
+      "case_id": "GT_CHECK3A_PREDATES_ISSUER",
+      "check_id": "DOCUMENT_ISSUER_CHRONOLOGY",
+      "defect_type": "date_before_issuer_existed",
+      "target_institution_id": "INST_001",
+      "document_id": "DOC_FIRE_001",
+      "issuer_id": "ISSUER_FIRE_KA",
+      "issue_date": "2015-06-15",
+      "issuer_creation_date": "2020-01-01",
+      "expected_conflict_type": "DOCUMENT_PREDATES_ISSUER_CREATION",
+      "expected_indicator_type": "INDICATOR_FOR_REVIEW",
+      "severity": "CRITICAL",
+      "negative_controls": [
+        {"document_id": "DOC_AFF_CLEAN", "issue_date": "2024-05-01", "issuer_creation_date": "1998-04-01"}
+      ]
+    },
+    {
+      "case_id": "GT_CHECK3B_INVERTED_VALIDITY",
+      "check_id": "DOCUMENT_ISSUER_CHRONOLOGY",
+      "defect_type": "inverted_validity_interval",
+      "target_institution_id": "INST_002",
+      "document_id": "DOC_LAND_002",
+      "issue_date": "2023-01-01",
+      "valid_till": "2021-12-31",
+      "expected_conflict_type": "DOCUMENT_INVERTED_VALIDITY_INTERVAL",
+      "expected_indicator_type": "INDICATOR_FOR_REVIEW",
+      "severity": "CRITICAL",
+      "negative_controls": [
+        {"document_id": "DOC_AFF_CLEAN", "issue_date": "2024-05-01", "valid_till": "2027-05-01"}
+      ]
+    },
+    {
+      "case_id": "GT_CHECK4_LAB_INCONSISTENCY",
+      "check_id": "LAB_EQUIPMENT_PROGRAMME_INCONSISTENCY",
+      "defect_type": "lab_equipment_inconsistent",
+      "target_institution_id": "INST_001",
+      "programme_name": "Mechanical Engineering",
+      "declared_labs": ["LAB_001"],
+      "missing_domain_equipment": ["Lathe Machine", "Milling Machine", "Universal Testing Machine (UTM)"],
+      "expected_conflict_type": "LAB_EQUIPMENT_PROGRAMME_INCONSISTENCY",
+      "expected_indicator_type": "INDICATOR_FOR_REVIEW",
+      "severity": "CRITICAL",
+      "negative_controls": [
+        {"institution_id": "INST_002", "programme_name": "Mechanical Engineering", "lab_id": "LAB_002"}
+      ]
+    },
+    {
+      "case_id": "GT_CHECK5_SHARED_DOC_REF",
+      "check_id": "SHARED_DOCUMENT_REFERENCE_COLLISION",
+      "defect_type": "shared_document_reference_number",
+      "reference_number": "FIR/KA/2024/99102",
+      "claimant_institutions": ["INST_001", "INST_003"],
+      "expected_conflict_type": "SHARED_DOCUMENT_REFERENCE_COLLISION",
+      "expected_indicator_type": "INDICATOR_FOR_REVIEW",
+      "severity": "CRITICAL",
+      "negative_controls": [
+        {"reference_number": "LAN/KA/2024/33011", "institution_id": "INST_002"}
+      ]
+    }
+  ]
+}

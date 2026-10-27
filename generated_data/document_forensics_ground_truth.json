@@ -1,0 +1,89 @@
+{
+  "catalog_version": "1.0",
+  "updated_at": "2026-10-27T10:31:08.790221",
+  "total_benchmark_samples": 8,
+  "positive_defect_cases": 5,
+  "negative_controls": 3,
+  "samples": [
+    {
+      "sample_id": "GT_FORENSIC_01_METADATA",
+      "file_path": "generated_data\\forensic_samples\\gt_metadata_anomaly.pdf",
+      "filename": "gt_metadata_anomaly.pdf",
+      "is_tampered": true,
+      "expected_check": "PDF_METADATA_ANALYSIS",
+      "expected_indicator_id": "PDF_METADATA_PRODUCER_ANOMALY",
+      "defect_description": "PDF metadata contains Canva editing signature and post-creation incremental update trailers",
+      "category": "positive_case"
+    },
+    {
+      "sample_id": "GT_FORENSIC_02_FONT",
+      "file_path": "generated_data\\forensic_samples\\gt_font_inconsistency.pdf",
+      "filename": "gt_font_inconsistency.pdf",
+      "is_tampered": true,
+      "expected_check": "FONT_INCONSISTENCY_IN_REGION",
+      "expected_indicator_id": "FONT_INCONSISTENCY_IN_REGION",
+      "defect_description": "Approved intake number '750' injected in Times-Bold 14pt inside Helvetica 10pt paragraph",
+      "category": "positive_case"
+    },
+    {
+      "sample_id": "GT_FORENSIC_03_ELA",
+      "file_path": "generated_data\\forensic_samples\\gt_ela_tampered.jpg",
+      "filename": "gt_ela_tampered.jpg",
+      "is_tampered": true,
+      "expected_check": "ERROR_LEVEL_ANALYSIS",
+      "expected_indicator_id": "ERROR_LEVEL_ANALYSIS_DISCREPANCY",
+      "defect_description": "Digitally spliced validity date patch with high localized ELA compression discrepancy",
+      "category": "positive_case"
+    },
+    {
+      "sample_id": "GT_FORENSIC_04_COPYMOVE",
+      "file_path": "generated_data\\forensic_samples\\gt_copymove_tampered.jpg",
+      "filename": "gt_copymove_tampered.jpg",
+      "is_tampered": true,
+      "expected_check": "COPY_MOVE_ORB_KEYPOINTS",
+      "expected_indicator_id": "COPY_MOVE_CLONE_DETECTED",
+      "defect_description": "Official revenue seal cloned across two positions on the document",
+      "category": "positive_case"
+    },
+    {
+      "sample_id": "GT_FORENSIC_05_QR_MISMATCH",
+      "file_path": "generated_data\\forensic_samples\\gt_qr_reference_mismatch.pdf",
+      "filename": "gt_qr_reference_mismatch.pdf",
+      "is_tampered": true,
+      "expected_check": "QR_OCR_REFERENCE_MATCH",
+      "expected_indicator_id": "QR_OCR_REFERENCE_MISMATCH",
+      "defect_description": "QR code payload points to FIR/2021/11094, conflicting with printed FIR/2025/98354",
+      "category": "positive_case"
+    },
+    {
+      "sample_id": "GT_CONTROL_01_CLEAN_PDF",
+      "file_path": "generated_data\\forensic_samples\\gt_clean_authentic_affidavit.pdf",
+      "filename": "gt_clean_authentic_affidavit.pdf",
+      "is_tampered": false,
+      "expected_check": null,
+      "expected_indicator_id": null,
+      "defect_description": "Clean authentic affidavit with consistent font, matching QR, and clean metadata",
+      "category": "negative_control"
+    },
+    {
+      "sample_id": "GT_CONTROL_02_CLEAN_IMG",
+      "file_path": "generated_data\\forensic_samples\\gt_clean_authentic_scan.jpg",
+      "filename": "gt_clean_authentic_scan.jpg",
+      "is_tampered": false,
+      "expected_check": null,
+      "expected_indicator_id": null,
+      "defect_description": "Clean authentic municipal scan image with homogeneous compression and no cloned elements",
+      "category": "negative_control"
+    },
+    {
+      "sample_id": "GT_CONTROL_03_CLEAN_NBA",
+      "file_path": "generated_data\\forensic_samples\\gt_clean_nba_certificate.pdf",
+      "filename": "gt_clean_nba_certificate.pdf",
+      "is_tampered": false,
+      "expected_check": null,
+      "expected_indicator_id": null,
+      "defect_description": "Clean authentic NBA certificate with matching QR code and standard metadata",
+      "category": "negative_control"
+    }
+  ]
+}

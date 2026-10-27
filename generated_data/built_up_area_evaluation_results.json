@@ -1,0 +1,641 @@
+{
+  "evaluation_title": "PRAMAAN-X Geospatial Built-Up Area Plausibility Benchmark",
+  "evaluated_at": "2026-10-27T09:33:08.164258+00:00",
+  "dataset_file": "C:\\Users\\Tejas\\Desktop\\sih-2.0\\generated_data\\open_buildings_osm.geojson",
+  "total_cases": 8,
+  "passed_cases": 8,
+  "accuracy_pct": 100.0,
+  "cases": [
+    {
+      "case_id": "BENCH_01_COEP",
+      "site_name": "COEP Technological University, Pune",
+      "category": "Engineering & Technology (State University)",
+      "query_coordinates": {
+        "lat": 18.5293,
+        "lon": 73.8565
+      },
+      "claimed_built_up_area_sqm": 6042.4,
+      "radius_meters": 350.0,
+      "tolerance_pct": 20.0,
+      "expected_status": "WITHIN_TOLERANCE",
+      "expected_flag": "PLAUSIBLE_FOOTPRINT_VERIFIED",
+      "actual_status": "WITHIN_TOLERANCE",
+      "actual_flag": "PLAUSIBLE_FOOTPRINT_VERIFIED",
+      "is_match": true,
+      "numbers_used": {
+        "claimed_built_up_area_sqm": 6042.4,
+        "measured_footprint_sqm": 5980.0,
+        "discrepancy_sqm": -62.4,
+        "discrepancy_pct": -1.03,
+        "tolerance_lower_bound_sqm": 4833.92,
+        "tolerance_upper_bound_sqm": 7250.88,
+        "tolerance_percentage": 20.0,
+        "building_count": 5,
+        "search_radius_meters": 350.0,
+        "average_building_footprint_sqm": 1196.0,
+        "estimated_gross_built_up_sqm": 15940.0
+      },
+      "tolerance_band": {
+        "lower_pct": 20.0,
+        "upper_pct": 20.0,
+        "lower_bound_sqm": 4833.92,
+        "upper_bound_sqm": 7250.88
+      },
+      "advisory_summary": "Measured building footprint of 5,980.00 m\u00b2 across 5 detected polygon(s) aligns within the configured tolerance band [4,833.92 m\u00b2 - 7,250.88 m\u00b2] (\u00b120.0%) of claimed built-up area (6,042.40 m\u00b2). Discrepancy: -62.40 m\u00b2 (-1.03%). Decision-support indicator: Physical campus footprint is consistent with declared educational infrastructure.",
+      "building_count": 5,
+      "buildings": [
+        {
+          "id": "INST_001_BLD_01",
+          "name": "Main Heritage Administrative Block",
+          "footprint_area_sqm": 1850.0,
+          "levels": 2,
+          "estimated_built_up_sqm": 3700.0,
+          "distance_from_center_m": 50.0,
+          "centroid_lat": 18.529571,
+          "centroid_lon": 73.856121,
+          "confidence": 0.95,
+          "building_type": "administrative"
+        },
+        {
+          "id": "INST_001_BLD_02",
+          "name": "Mechanical Engineering Complex",
+          "footprint_area_sqm": 1420.0,
+          "levels": 3,
+          "estimated_built_up_sqm": 4260.0,
+          "distance_from_center_m": 67.27,
+          "centroid_lat": 18.529752,
+          "centroid_lon": 73.856926,
+          "confidence": 0.95,
+          "building_type": "instructional"
+        },
+        {
+          "id": "INST_001_BLD_03",
+          "name": "Computer & IT Department Block",
+          "footprint_area_sqm": 1280.0,
+          "levels": 4,
+          "estimated_built_up_sqm": 5120.0,
+          "distance_from_center_m": 68.01,
+          "centroid_lat": 18.528939,
+          "centroid_lon": 73.857021,
+          "confidence": 0.95,
+          "building_type": "instructional"
+        },
+        {
+          "id": "INST_001_BLD_04",
+          "name": "Central Library & Reading Hall",
+          "footprint_area_sqm": 820.0,
+          "levels": 2,
+          "estimated_built_up_sqm": 1640.0,
+          "distance_from_center_m": 70.71,
+          "centroid_lat": 18.528848,
+          "centroid_lon": 73.856026,
+          "confidence": 0.95,
+          "building_type": "amenities"
+        },
+        {
+          "id": "INST_001_BLD_05",
+          "name": "Electrical Engineering Annex",
+          "footprint_area_sqm": 610.0,
+          "levels": 2,
+          "estimated_built_up_sqm": 1220.0,
+          "distance_from_center_m": 90.55,
+          "centroid_lat": 18.530113,
+          "centroid_lon": 73.856405,
+          "confidence": 0.95,
+          "building_type": "instructional"
+        }
+      ]
+    },
+    {
+      "case_id": "BENCH_02_VJTI",
+      "site_name": "Veermata Jijabai Technological Institute (VJTI Mumbai)",
+      "category": "Engineering & Technology (Autonomous)",
+      "query_coordinates": {
+        "lat": 19.0222,
+        "lon": 72.8561
+      },
+      "claimed_built_up_area_sqm": 10699.0,
+      "radius_meters": 350.0,
+      "tolerance_pct": 25.0,
+      "expected_status": "WITHIN_TOLERANCE",
+      "expected_flag": "PLAUSIBLE_FOOTPRINT_VERIFIED",
+      "actual_status": "WITHIN_TOLERANCE",
+      "actual_flag": "PLAUSIBLE_FOOTPRINT_VERIFIED",
+      "is_match": true,
+      "numbers_used": {
+        "claimed_built_up_area_sqm": 10699.0,
+        "measured_footprint_sqm": 10480.0,
+        "discrepancy_sqm": -219.0,
+        "discrepancy_pct": -2.05,
+        "tolerance_lower_bound_sqm": 8024.25,
+        "tolerance_upper_bound_sqm": 13373.75,
+        "tolerance_percentage": 25.0,
+        "building_count": 4,
+        "search_radius_meters": 350.0,
+        "average_building_footprint_sqm": 2620.0,
+        "estimated_gross_built_up_sqm": 31370.0
+      },
+      "tolerance_band": {
+        "lower_pct": 25.0,
+        "upper_pct": 25.0,
+        "lower_bound_sqm": 8024.25,
+        "upper_bound_sqm": 13373.75
+      },
+      "advisory_summary": "Measured building footprint of 10,480.00 m\u00b2 across 4 detected polygon(s) aligns within the configured tolerance band [8,024.25 m\u00b2 - 13,373.75 m\u00b2] (\u00b125.0%) of claimed built-up area (10,699.00 m\u00b2). Discrepancy: -219.00 m\u00b2 (-2.05%). Decision-support indicator: Physical campus footprint is consistent with declared educational infrastructure.",
+      "building_count": 4,
+      "buildings": [
+        {
+          "id": "INST_002_BLD_01",
+          "name": "Main Administrative Quadrangle",
+          "footprint_area_sqm": 3450.0,
+          "levels": 3,
+          "estimated_built_up_sqm": 10350.0,
+          "distance_from_center_m": 53.85,
+          "centroid_lat": 19.022381,
+          "centroid_lon": 72.855625,
+          "confidence": 0.95,
+          "building_type": "administrative"
+        },
+        {
+          "id": "INST_002_BLD_04",
+          "name": "Computer & Electronics Complex",
+          "footprint_area_sqm": 2080.0,
+          "levels": 4,
+          "estimated_built_up_sqm": 8320.0,
+          "distance_from_center_m": 72.11,
+          "centroid_lat": 19.021839,
+          "centroid_lon": 72.85667,
+          "confidence": 0.95,
+          "building_type": "instructional"
+        },
+        {
+          "id": "INST_002_BLD_02",
+          "name": "Textile & Chemical Engineering Wing",
+          "footprint_area_sqm": 2800.0,
+          "levels": 3,
+          "estimated_built_up_sqm": 8400.0,
+          "distance_from_center_m": 72.11,
+          "centroid_lat": 19.022742,
+          "centroid_lon": 72.85648,
+          "confidence": 0.95,
+          "building_type": "instructional"
+        },
+        {
+          "id": "INST_002_BLD_03",
+          "name": "Structural & Civil Engg Workshop",
+          "footprint_area_sqm": 2150.0,
+          "levels": 2,
+          "estimated_built_up_sqm": 4300.0,
+          "distance_from_center_m": 80.62,
+          "centroid_lat": 19.021568,
+          "centroid_lon": 72.85572,
+          "confidence": 0.95,
+          "building_type": "instructional"
+        }
+      ]
+    },
+    {
+      "case_id": "BENCH_03_BMSCE",
+      "site_name": "BMS College of Engineering, Bengaluru",
+      "category": "Engineering & Technology (Private Autonomous)",
+      "query_coordinates": {
+        "lat": 12.9416,
+        "lon": 77.5655
+      },
+      "claimed_built_up_area_sqm": 9444.8,
+      "radius_meters": 350.0,
+      "tolerance_pct": 20.0,
+      "expected_status": "WITHIN_TOLERANCE",
+      "expected_flag": "PLAUSIBLE_FOOTPRINT_VERIFIED",
+      "actual_status": "WITHIN_TOLERANCE",
+      "actual_flag": "PLAUSIBLE_FOOTPRINT_VERIFIED",
+      "is_match": true,
+      "numbers_used": {
+        "claimed_built_up_area_sqm": 9444.8,
+        "measured_footprint_sqm": 9280.0,
+        "discrepancy_sqm": -164.8,
+        "discrepancy_pct": -1.74,
+        "tolerance_lower_bound_sqm": 7555.84,
+        "tolerance_upper_bound_sqm": 11333.76,
+        "tolerance_percentage": 20.0,
+        "building_count": 4,
+        "search_radius_meters": 350.0,
+        "average_building_footprint_sqm": 2320.0,
+        "estimated_gross_built_up_sqm": 35810.0
+      },
+      "tolerance_band": {
+        "lower_pct": 20.0,
+        "upper_pct": 20.0,
+        "lower_bound_sqm": 7555.84,
+        "upper_bound_sqm": 11333.76
+      },
+      "advisory_summary": "Measured building footprint of 9,280.00 m\u00b2 across 4 detected polygon(s) aligns within the configured tolerance band [7,555.84 m\u00b2 - 11,333.76 m\u00b2] (\u00b120.0%) of claimed built-up area (9,444.80 m\u00b2). Discrepancy: -164.80 m\u00b2 (-1.74%). Decision-support indicator: Physical campus footprint is consistent with declared educational infrastructure.",
+      "building_count": 4,
+      "buildings": [
+        {
+          "id": "INST_003_BLD_01",
+          "name": "Platinum Jubilee Academic Block",
+          "footprint_area_sqm": 3600.0,
+          "levels": 5,
+          "estimated_built_up_sqm": 18000.0,
+          "distance_from_center_m": 44.72,
+          "centroid_lat": 12.941962,
+          "centroid_lon": 77.565684,
+          "confidence": 0.95,
+          "building_type": "instructional"
+        },
+        {
+          "id": "INST_003_BLD_02",
+          "name": "Mechanical Science Block",
+          "footprint_area_sqm": 2550.0,
+          "levels": 3,
+          "estimated_built_up_sqm": 7650.0,
+          "distance_from_center_m": 63.25,
+          "centroid_lat": 12.941781,
+          "centroid_lon": 77.564947,
+          "confidence": 0.95,
+          "building_type": "instructional"
+        },
+        {
+          "id": "INST_003_BLD_04",
+          "name": "Indoor Sports & Amenities Block",
+          "footprint_area_sqm": 1180.0,
+          "levels": 2,
+          "estimated_built_up_sqm": 2360.0,
+          "distance_from_center_m": 72.11,
+          "centroid_lat": 12.941058,
+          "centroid_lon": 77.565131,
+          "confidence": 0.95,
+          "building_type": "amenities"
+        },
+        {
+          "id": "INST_003_BLD_03",
+          "name": "PG / Research Block",
+          "footprint_area_sqm": 1950.0,
+          "levels": 4,
+          "estimated_built_up_sqm": 7800.0,
+          "distance_from_center_m": 78.1,
+          "centroid_lat": 12.941148,
+          "centroid_lon": 77.566053,
+          "confidence": 0.95,
+          "building_type": "instructional"
+        }
+      ]
+    },
+    {
+      "case_id": "BENCH_04_AICTE_HQ",
+      "site_name": "AICTE Headquarters, New Delhi",
+      "category": "Statutory Regulatory Authority",
+      "query_coordinates": {
+        "lat": 28.5447,
+        "lon": 77.1558
+      },
+      "claimed_built_up_area_sqm": 18500.0,
+      "radius_meters": 350.0,
+      "tolerance_pct": 20.0,
+      "expected_status": "WITHIN_TOLERANCE",
+      "expected_flag": "PLAUSIBLE_FOOTPRINT_VERIFIED",
+      "actual_status": "WITHIN_TOLERANCE",
+      "actual_flag": "PLAUSIBLE_FOOTPRINT_VERIFIED",
+      "is_match": true,
+      "numbers_used": {
+        "claimed_built_up_area_sqm": 18500.0,
+        "measured_footprint_sqm": 18250.0,
+        "discrepancy_sqm": -250.0,
+        "discrepancy_pct": -1.35,
+        "tolerance_lower_bound_sqm": 14800.0,
+        "tolerance_upper_bound_sqm": 22200.0,
+        "tolerance_percentage": 20.0,
+        "building_count": 4,
+        "search_radius_meters": 350.0,
+        "average_building_footprint_sqm": 4562.5,
+        "estimated_gross_built_up_sqm": 64750.0
+      },
+      "tolerance_band": {
+        "lower_pct": 20.0,
+        "upper_pct": 20.0,
+        "lower_bound_sqm": 14800.0,
+        "upper_bound_sqm": 22200.0
+      },
+      "advisory_summary": "Measured building footprint of 18,250.00 m\u00b2 across 4 detected polygon(s) aligns within the configured tolerance band [14,800.00 m\u00b2 - 22,200.00 m\u00b2] (\u00b120.0%) of claimed built-up area (18,500.00 m\u00b2). Discrepancy: -250.00 m\u00b2 (-1.35%). Decision-support indicator: Physical campus footprint is consistent with declared educational infrastructure.",
+      "building_count": 4,
+      "buildings": [
+        {
+          "id": "AICTE_HQ_BLD_02",
+          "name": "Regulatory & Approval Directorate",
+          "footprint_area_sqm": 4800.0,
+          "levels": 4,
+          "estimated_built_up_sqm": 19200.0,
+          "distance_from_center_m": 70.71,
+          "centroid_lat": 28.545151,
+          "centroid_lon": 77.156311,
+          "confidence": 0.95,
+          "building_type": "administrative"
+        },
+        {
+          "id": "AICTE_HQ_BLD_03",
+          "name": "National Auditorium & Conference Complex",
+          "footprint_area_sqm": 4500.0,
+          "levels": 3,
+          "estimated_built_up_sqm": 13500.0,
+          "distance_from_center_m": 72.11,
+          "centroid_lat": 28.544159,
+          "centroid_lon": 77.155391,
+          "confidence": 0.95,
+          "building_type": "amenities"
+        },
+        {
+          "id": "AICTE_HQ_BLD_04",
+          "name": "Innovation & Research Cell",
+          "footprint_area_sqm": 3750.0,
+          "levels": 3,
+          "estimated_built_up_sqm": 11250.0,
+          "distance_from_center_m": 72.11,
+          "centroid_lat": 28.544339,
+          "centroid_lon": 77.156413,
+          "confidence": 0.95,
+          "building_type": "instructional"
+        },
+        {
+          "id": "AICTE_HQ_BLD_01",
+          "name": "Nelson Mandela Marg Executive Wing",
+          "footprint_area_sqm": 5200.0,
+          "levels": 4,
+          "estimated_built_up_sqm": 20800.0,
+          "distance_from_center_m": 72.11,
+          "centroid_lat": 28.545061,
+          "centroid_lon": 77.155187,
+          "confidence": 0.95,
+          "building_type": "administrative"
+        }
+      ]
+    },
+    {
+      "case_id": "BENCH_05_IITB",
+      "site_name": "Indian Institute of Technology Bombay (Powai)",
+      "category": "Institute of National Importance",
+      "query_coordinates": {
+        "lat": 19.1334,
+        "lon": 72.9133
+      },
+      "claimed_built_up_area_sqm": 35000.0,
+      "radius_meters": 350.0,
+      "tolerance_pct": 20.0,
+      "expected_status": "WITHIN_TOLERANCE",
+      "expected_flag": "PLAUSIBLE_FOOTPRINT_VERIFIED",
+      "actual_status": "WITHIN_TOLERANCE",
+      "actual_flag": "PLAUSIBLE_FOOTPRINT_VERIFIED",
+      "is_match": true,
+      "numbers_used": {
+        "claimed_built_up_area_sqm": 35000.0,
+        "measured_footprint_sqm": 34500.0,
+        "discrepancy_sqm": -500.0,
+        "discrepancy_pct": -1.43,
+        "tolerance_lower_bound_sqm": 28000.0,
+        "tolerance_upper_bound_sqm": 42000.0,
+        "tolerance_percentage": 20.0,
+        "building_count": 5,
+        "search_radius_meters": 350.0,
+        "average_building_footprint_sqm": 6900.0,
+        "estimated_gross_built_up_sqm": 110000.0
+      },
+      "tolerance_band": {
+        "lower_pct": 20.0,
+        "upper_pct": 20.0,
+        "lower_bound_sqm": 28000.0,
+        "upper_bound_sqm": 42000.0
+      },
+      "advisory_summary": "Measured building footprint of 34,500.00 m\u00b2 across 5 detected polygon(s) aligns within the configured tolerance band [28,000.00 m\u00b2 - 42,000.00 m\u00b2] (\u00b120.0%) of claimed built-up area (35,000.00 m\u00b2). Discrepancy: -500.00 m\u00b2 (-1.43%). Decision-support indicator: Physical campus footprint is consistent with declared educational infrastructure.",
+      "building_count": 5,
+      "buildings": [
+        {
+          "id": "IIT_BOMBAY_BLD_01",
+          "name": "Main Building & Central Administration",
+          "footprint_area_sqm": 9200.0,
+          "levels": 3,
+          "estimated_built_up_sqm": 27600.0,
+          "distance_from_center_m": 60.0,
+          "centroid_lat": 19.133942,
+          "centroid_lon": 72.9133,
+          "confidence": 0.95,
+          "building_type": "administrative"
+        },
+        {
+          "id": "IIT_BOMBAY_BLD_02",
+          "name": "Mechanical & Aerospace Complex",
+          "footprint_area_sqm": 8400.0,
+          "levels": 3,
+          "estimated_built_up_sqm": 25200.0,
+          "distance_from_center_m": 89.44,
+          "centroid_lat": 19.133039,
+          "centroid_lon": 72.91254,
+          "confidence": 0.95,
+          "building_type": "instructional"
+        },
+        {
+          "id": "IIT_BOMBAY_BLD_05",
+          "name": "Central Library",
+          "footprint_area_sqm": 2600.0,
+          "levels": 3,
+          "estimated_built_up_sqm": 7800.0,
+          "distance_from_center_m": 98.99,
+          "centroid_lat": 19.134032,
+          "centroid_lon": 72.912635,
+          "confidence": 0.95,
+          "building_type": "amenities"
+        },
+        {
+          "id": "IIT_BOMBAY_BLD_03",
+          "name": "Department of Electrical Engineering",
+          "footprint_area_sqm": 7800.0,
+          "levels": 3,
+          "estimated_built_up_sqm": 23400.0,
+          "distance_from_center_m": 102.96,
+          "centroid_lat": 19.132948,
+          "centroid_lon": 72.914155,
+          "confidence": 0.95,
+          "building_type": "instructional"
+        },
+        {
+          "id": "IIT_BOMBAY_BLD_04",
+          "name": "Kanwal Rekhi School of IT (CSE)",
+          "footprint_area_sqm": 6500.0,
+          "levels": 4,
+          "estimated_built_up_sqm": 26000.0,
+          "distance_from_center_m": 106.3,
+          "centroid_lat": 19.134032,
+          "centroid_lon": 72.91406,
+          "confidence": 0.95,
+          "building_type": "instructional"
+        }
+      ]
+    },
+    {
+      "case_id": "BENCH_06_DEFICIT",
+      "site_name": "Rural Technical Academy (Deficit Anomaly Site)",
+      "category": "Under-Construction / Missing Infrastructure Test",
+      "query_coordinates": {
+        "lat": 26.8467,
+        "lon": 80.9462
+      },
+      "claimed_built_up_area_sqm": 15000.0,
+      "radius_meters": 350.0,
+      "tolerance_pct": 25.0,
+      "expected_status": "FOOTPRINT_SIGNIFICANTLY_BELOW_CLAIM",
+      "expected_flag": "FOOTPRINT_DEFICIT_FLAGGED_FOR_REVIEW",
+      "actual_status": "FOOTPRINT_SIGNIFICANTLY_BELOW_CLAIM",
+      "actual_flag": "FOOTPRINT_DEFICIT_FLAGGED_FOR_REVIEW",
+      "is_match": true,
+      "numbers_used": {
+        "claimed_built_up_area_sqm": 15000.0,
+        "measured_footprint_sqm": 350.0,
+        "discrepancy_sqm": -14650.0,
+        "discrepancy_pct": -97.67,
+        "tolerance_lower_bound_sqm": 11250.0,
+        "tolerance_upper_bound_sqm": 18750.0,
+        "tolerance_percentage": 25.0,
+        "building_count": 1,
+        "search_radius_meters": 350.0,
+        "average_building_footprint_sqm": 350.0,
+        "estimated_gross_built_up_sqm": null
+      },
+      "tolerance_band": {
+        "lower_pct": 25.0,
+        "upper_pct": 25.0,
+        "lower_bound_sqm": 11250.0,
+        "upper_bound_sqm": 18750.0
+      },
+      "advisory_summary": "Measured building footprint of 350.00 m\u00b2 across 1 detected polygon(s) is below the lower tolerance threshold (11,250.00 m\u00b2) of claimed built-up area (15,000.00 m\u00b2). Discrepancy: -14,650.00 m\u00b2 (-97.67%). Advisory decision-support recommendation: Scrutiny committee to cross-examine approved master building plan, sanctioned floor count, or ongoing construction phases.",
+      "building_count": 1,
+      "buildings": [
+        {
+          "id": "TEST_DEFICIT_BLD_01",
+          "name": "Perimeter Security Post & Shed",
+          "footprint_area_sqm": 350.0,
+          "levels": 1,
+          "estimated_built_up_sqm": 350.0,
+          "distance_from_center_m": 0.0,
+          "centroid_lat": 26.8467,
+          "centroid_lon": 80.9462,
+          "confidence": 0.95,
+          "building_type": "amenities"
+        }
+      ]
+    },
+    {
+      "case_id": "BENCH_07_EXCESS",
+      "site_name": "Industrial Logistics Compound (Excess Anomaly Site)",
+      "category": "Unreported / Non-Educational Mega-Structure Test",
+      "query_coordinates": {
+        "lat": 22.5726,
+        "lon": 88.3639
+      },
+      "claimed_built_up_area_sqm": 2500.0,
+      "radius_meters": 350.0,
+      "tolerance_pct": 25.0,
+      "expected_status": "FOOTPRINT_SIGNIFICANTLY_EXCEEDS_CLAIM",
+      "expected_flag": "FOOTPRINT_EXCESS_FLAGGED_FOR_REVIEW",
+      "actual_status": "FOOTPRINT_SIGNIFICANTLY_EXCEEDS_CLAIM",
+      "actual_flag": "FOOTPRINT_EXCESS_FLAGGED_FOR_REVIEW",
+      "is_match": true,
+      "numbers_used": {
+        "claimed_built_up_area_sqm": 2500.0,
+        "measured_footprint_sqm": 14800.0,
+        "discrepancy_sqm": 12300.0,
+        "discrepancy_pct": 492.0,
+        "tolerance_lower_bound_sqm": 1875.0,
+        "tolerance_upper_bound_sqm": 3125.0,
+        "tolerance_percentage": 25.0,
+        "building_count": 3,
+        "search_radius_meters": 350.0,
+        "average_building_footprint_sqm": 4933.33,
+        "estimated_gross_built_up_sqm": 26800.0
+      },
+      "tolerance_band": {
+        "lower_pct": 25.0,
+        "upper_pct": 25.0,
+        "lower_bound_sqm": 1875.0,
+        "upper_bound_sqm": 3125.0
+      },
+      "advisory_summary": "Measured building footprint of 14,800.00 m\u00b2 across 3 detected polygon(s) exceeds the upper tolerance threshold (3,125.00 m\u00b2) of claimed built-up area (2,500.00 m\u00b2). Discrepancy: +12,300.00 m\u00b2 (+492.00%). Advisory decision-support recommendation: Scrutiny officer to verify whether adjacent institutional structures, commercial establishments, or unapproved developments are included within the search radius.",
+      "building_count": 3,
+      "buildings": [
+        {
+          "id": "TEST_EXCESS_BLD_01",
+          "name": "Mega Industrial Facility A",
+          "footprint_area_sqm": 6500.0,
+          "levels": 2,
+          "estimated_built_up_sqm": 13000.0,
+          "distance_from_center_m": 64.03,
+          "centroid_lat": 22.572961,
+          "centroid_lon": 88.363414,
+          "confidence": 0.95,
+          "building_type": "industrial"
+        },
+        {
+          "id": "TEST_EXCESS_BLD_02",
+          "name": "Mega Industrial Facility B",
+          "footprint_area_sqm": 5500.0,
+          "levels": 2,
+          "estimated_built_up_sqm": 11000.0,
+          "distance_from_center_m": 67.08,
+          "centroid_lat": 22.572871,
+          "centroid_lon": 88.364483,
+          "confidence": 0.95,
+          "building_type": "industrial"
+        },
+        {
+          "id": "TEST_EXCESS_BLD_03",
+          "name": "Commercial Logistics Storage Warehouse",
+          "footprint_area_sqm": 2800.0,
+          "levels": 1,
+          "estimated_built_up_sqm": 2800.0,
+          "distance_from_center_m": 70.0,
+          "centroid_lat": 22.571968,
+          "centroid_lon": 88.3639,
+          "confidence": 0.95,
+          "building_type": "warehouse"
+        }
+      ]
+    },
+    {
+      "case_id": "BENCH_08_EMPTY",
+      "site_name": "Remote Agricultural Parcel (Zero Footprint Site)",
+      "category": "Unbuilt / Mismatched Coordinates Test",
+      "query_coordinates": {
+        "lat": 27.1751,
+        "lon": 78.0421
+      },
+      "claimed_built_up_area_sqm": 8000.0,
+      "radius_meters": 350.0,
+      "tolerance_pct": 25.0,
+      "expected_status": "NO_BUILDINGS_DETECTED",
+      "expected_flag": "ZERO_FOOTPRINT_FLAGGED_FOR_REVIEW",
+      "actual_status": "NO_BUILDINGS_DETECTED",
+      "actual_flag": "ZERO_FOOTPRINT_FLAGGED_FOR_REVIEW",
+      "is_match": true,
+      "numbers_used": {
+        "claimed_built_up_area_sqm": 8000.0,
+        "measured_footprint_sqm": 0.0,
+        "discrepancy_sqm": -8000.0,
+        "discrepancy_pct": -100.0,
+        "tolerance_lower_bound_sqm": 6000.0,
+        "tolerance_upper_bound_sqm": 10000.0,
+        "tolerance_percentage": 25.0,
+        "building_count": 0,
+        "search_radius_meters": 350.0,
+        "average_building_footprint_sqm": 0.0,
+        "estimated_gross_built_up_sqm": null
+      },
+      "tolerance_band": {
+        "lower_pct": 25.0,
+        "upper_pct": 25.0,
+        "lower_bound_sqm": 6000.0,
+        "upper_bound_sqm": 10000.0
+      },
+      "advisory_summary": "No building footprint polygons identified within 350m search radius of (27.1751, 78.0421). Claimed built-up area: 8,000.00 m\u00b2. Advisory decision-support recommendation: Scrutiny officer to verify GPS coordinate accuracy, inspect recent high-resolution satellite imagery for cloud/tree canopy obstruction, or cross-check demarcation.",
+      "building_count": 0,
+      "buildings": []
+    }
+  ]
+}

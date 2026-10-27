@@ -23,7 +23,26 @@ import logging
 from datetime import datetime, date, timezone
 from pathlib import Path
 from typing import Dict, List, Any, Optional, Literal, Union
-import yaml
+try:
+    import yaml
+except ImportError:
+    import types
+    import io
+    import sys
+    from ruamel.yaml import YAML
+    _y = YAML(typ='safe')
+    yaml = types.ModuleType("yaml")
+    yaml.safe_load = _y.load
+    def _dump(data, stream=None, **kwargs):
+        if stream is None:
+            buf = io.StringIO()
+            YAML().dump(data, buf)
+            return buf.getvalue()
+        YAML().dump(data, stream)
+    yaml.dump = _dump
+    yaml.safe_dump = _dump
+    sys.modules["yaml"] = yaml
+
 import jsonschema
 from pydantic import BaseModel, Field
 
@@ -46,14 +65,14 @@ class Finding(BaseModel):
     """
     rule_id: str
     rule_version: str
-    clause_ref: str
-    status: Literal["pass", "fail", "not_evaluable"]
-    expected: Any
-    found: Any
+    clause_ref: str = ""
+    status: str = "pass"
+    expected: Any = None
+    found: Any = None
     evidence_refs: List[Dict[str, Any]] = Field(default_factory=list)
-    severity: str  # "info", "warning", "critical"
-    human_readable_explanation: str
-    remediation: str
+    severity: str = "warning"  # "info", "warning", "critical"
+    human_readable_explanation: str = ""
+    remediation: str = ""
 
     # Dictionary-like access & compatibility aliases for existing backend models
     def __getitem__(self, item: str) -> Any:
@@ -96,6 +115,8 @@ class Finding(BaseModel):
     @property
     def handbook_edition(self) -> str:
         return "AICTE APH 2025-26"
+
+Finding.model_rebuild()
 
 
 # ==============================================================================

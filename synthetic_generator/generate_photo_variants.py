@@ -68,32 +68,120 @@ def build_genuine_exif(lat: float, lon: float, timestamp_str: str = "2024:08:15 
     return piexif.dump(exif_dict)
 
 def create_synthetic_campus_photo(category_name: str, width: int = 1200, height: int = 800) -> Image.Image:
-    """Creates a high-contrast representative campus photo if no input folder is provided."""
-    colors = {
-        "Computer Center & AI Lab": ((20, 30, 50), (14, 165, 233)),
-        "Central Digital Library": ((50, 35, 20), (245, 158, 11)),
-        "Advanced Material Testing Lab": ((30, 45, 35), (16, 185, 129)),
-        "Smart Classroom & Lecture Hall": ((40, 30, 45), (168, 85, 247)),
-        "Barrier-Free Entrance & Ramps": ((35, 40, 45), (100, 116, 139))
-    }
-    bg_color, accent_color = colors.get(category_name, ((30, 30, 40), (200, 200, 200)))
-    
-    img = Image.new("RGB", (width, height), color=bg_color)
-    draw = ImageDraw.Draw(img)
+    """Creates a high-contrast representative campus photo tailored with distinct infrastructure geometry."""
+    if "Computer" in category_name:
+        # Computer Center: Rows of dual monitors with desk surfaces
+        img = Image.new("RGB", (width, height), color=(18, 25, 45))
+        draw = ImageDraw.Draw(img)
+        # Carpet floor
+        draw.rectangle([0, int(height * 0.65), width, height], fill=(12, 18, 32))
+        # Tables
+        for row in range(2):
+            y_base = int(height * (0.50 + row * 0.22))
+            draw.rectangle([60, y_base, width - 60, y_base + 35], fill=(45, 55, 75))
+            for col in range(6):
+                x = 90 + col * 175
+                # Dual monitors
+                draw.rectangle([x, y_base - 70, x + 65, y_base - 5], fill=(8, 14, 25), outline=(14, 165, 233), width=2)
+                draw.rectangle([x + 72, y_base - 70, x + 137, y_base - 5], fill=(8, 14, 25), outline=(14, 165, 233), width=2)
+                draw.rectangle([x + 20, y_base - 5, x + 45, y_base], fill=(70, 80, 100))
+                draw.rectangle([x + 92, y_base - 5, x + 117, y_base], fill=(70, 80, 100))
+        draw.rectangle([0, 0, width, 70], fill=(10, 16, 28))
+        draw.text((40, 24), f"CENTRAL CAMPUS INFRASTRUCTURE: {category_name.upper()}", fill=(220, 240, 255))
+        return img
 
-    # Floor perspective
-    draw.polygon([(0, int(height * 0.7)), (width, int(height * 0.7)), (width, height), (0, height)], fill=(bg_color[0]+15, bg_color[1]+15, bg_color[2]+15))
-    
-    # Grid lines / workstations representation
-    for i in range(5):
-        x = int(width * (0.15 + i * 0.18))
-        draw.rectangle([x, int(height * 0.45), x + 120, int(height * 0.65)], outline=accent_color, width=3)
-        draw.rectangle([x + 20, int(height * 0.48), x + 100, int(height * 0.60)], fill=(accent_color[0]//3, accent_color[1]//3, accent_color[2]//3))
+    elif "Library" in category_name:
+        # Digital Library: Multiple tall vertical bookshelves filled with multicolored books
+        img = Image.new("RGB", (width, height), color=(40, 28, 18))
+        draw = ImageDraw.Draw(img)
+        # Parquet floor
+        draw.rectangle([0, int(height * 0.72), width, height], fill=(30, 20, 12))
+        # Tall bookshelves
+        book_colors = [(220, 60, 50), (40, 120, 200), (40, 160, 90), (220, 170, 40), (160, 80, 200), (230, 230, 230)]
+        for bay in range(4):
+            x_bay = 80 + bay * 265
+            draw.rectangle([x_bay, 100, x_bay + 230, int(height * 0.72)], fill=(65, 45, 30), outline=(20, 15, 10), width=4)
+            for shelf in range(5):
+                y_shelf = 130 + shelf * 85
+                draw.line([(x_bay, y_shelf), (x_bay + 230, y_shelf)], fill=(20, 12, 8), width=5)
+                # Books on shelf
+                x_book = x_bay + 8
+                while x_book < x_bay + 215:
+                    bw = 14 + (x_book % 12)
+                    bh = 55 + (x_book % 20)
+                    bc = book_colors[(x_book // 17) % len(book_colors)]
+                    draw.rectangle([x_book, y_shelf - bh, min(x_book + bw, x_bay + 222), y_shelf], fill=bc, outline=(15, 10, 8))
+                    x_book += bw + 3
+        draw.rectangle([0, 0, width, 70], fill=(25, 18, 12))
+        draw.text((40, 24), f"CENTRAL CAMPUS INFRASTRUCTURE: {category_name.upper()}", fill=(255, 235, 210))
+        return img
 
-    # Header title banner
-    draw.rectangle([0, 0, width, 80], fill=(15, 23, 42))
-    draw.text((40, 28), f"AICTE TECHNICAL CAMPUS INFRASTRUCTURE: {category_name.upper()}", fill=(240, 240, 240))
-    return img
+    elif "Material" in category_name:
+        # Materials Testing Lab: Heavy testing column (UTM), safety hazard stripes, pressure gauges
+        img = Image.new("RGB", (width, height), color=(30, 35, 38))
+        draw = ImageDraw.Draw(img)
+        # Polished concrete floor
+        draw.rectangle([0, int(height * 0.60), width, height], fill=(22, 26, 28))
+        # Hazard stripe border
+        for s in range(0, width, 40):
+            draw.polygon([(s, int(height * 0.60)), (s + 20, int(height * 0.60)), (s + 40, int(height * 0.64)), (s + 20, int(height * 0.64))], fill=(245, 158, 11))
+        # Universal Testing Machine in center
+        cx = width // 2
+        draw.rectangle([cx - 260, 120, cx + 260, int(height * 0.60)], fill=(45, 55, 60), outline=(15, 20, 22), width=5)
+        # Heavy steel twin columns
+        draw.rectangle([cx - 210, 140, cx - 150, int(height * 0.55)], fill=(120, 130, 135), outline=(40, 45, 50), width=3)
+        draw.rectangle([cx + 150, 140, cx + 210, int(height * 0.55)], fill=(120, 130, 135), outline=(40, 45, 50), width=3)
+        # Crosshead
+        draw.rectangle([cx - 150, 260, cx + 150, 330], fill=(16, 185, 129), outline=(10, 100, 70), width=3)
+        # Hydraulic circular dial
+        draw.ellipse([cx - 60, 150, cx + 60, 270], fill=(240, 245, 250), outline=(20, 25, 30), width=4)
+        draw.line([(cx, 210), (cx + 35, 180)], fill=(220, 38, 38), width=3)
+        draw.rectangle([0, 0, width, 70], fill=(18, 22, 24))
+        draw.text((40, 24), f"CENTRAL CAMPUS INFRASTRUCTURE: {category_name.upper()}", fill=(210, 245, 225))
+        return img
+
+    elif "Smart" in category_name:
+        # Smart Classroom: Tiered amphitheater curved seating rows + huge interactive smartboard
+        img = Image.new("RGB", (width, height), color=(35, 25, 40))
+        draw = ImageDraw.Draw(img)
+        # Tiered wooden benches
+        for tier in range(4):
+            y_t = int(height * (0.50 + tier * 0.12))
+            draw.arc([100 - tier * 40, y_t, width - 100 + tier * 40, y_t + 350], start=190, end=350, fill=(168, 85, 247), width=18)
+            draw.arc([100 - tier * 40, y_t + 15, width - 100 + tier * 40, y_t + 365], start=190, end=350, fill=(100, 60, 130), width=10)
+        # Huge central interactive smartboard display screen
+        draw.rectangle([width // 2 - 280, 110, width // 2 + 280, 340], fill=(15, 10, 22), outline=(192, 132, 252), width=6)
+        draw.rectangle([width // 2 - 250, 130, width // 2 + 250, 320], fill=(24, 18, 35))
+        # Presentation chart on smartboard
+        draw.line([(width // 2 - 220, 290), (width // 2 - 140, 220), (width // 2 - 60, 250), (width // 2 + 40, 170), (width // 2 + 200, 150)], fill=(52, 211, 153), width=4)
+        draw.rectangle([0, 0, width, 70], fill=(22, 14, 28))
+        draw.text((40, 24), f"CENTRAL CAMPUS INFRASTRUCTURE: {category_name.upper()}", fill=(240, 220, 255))
+        return img
+
+    else:
+        # Entrance Ramp: Diagonal barrier-free access ramp with stainless handrails and wheelchair icon
+        img = Image.new("RGB", (width, height), color=(30, 35, 42))
+        draw = ImageDraw.Draw(img)
+        # Sky/facade upper half
+        draw.rectangle([0, 70, width, 280], fill=(45, 55, 65))
+        # Zig-zag ramp concrete surface
+        draw.polygon([(0, height), (0, 480), (width * 0.65, 360), (width, 360), (width, height)], fill=(148, 163, 184))
+        # Stainless steel handrail bars
+        draw.line([(0, 410), (width * 0.65, 290)], fill=(226, 232, 240), width=6)
+        draw.line([(0, 440), (width * 0.65, 320)], fill=(203, 213, 225), width=4)
+        for post_x in range(40, int(width * 0.65), 75):
+            post_y = int(480 - (post_x / (width * 0.65)) * 120)
+            draw.line([(post_x, post_y), (post_x, post_y - 70)], fill=(226, 232, 240), width=4)
+        # Yellow tactile warning pavers
+        for px in range(0, 180, 25):
+            draw.rectangle([px, height - 60, px + 18, height - 10], fill=(234, 179, 8))
+        # Wheelchair disability symbol
+        cx, cy = int(width * 0.80), int(height * 0.55)
+        draw.ellipse([cx - 15, cy - 45, cx + 15, cy - 15], outline=(59, 130, 246), width=4)
+        draw.arc([cx - 30, cy - 10, cx + 30, cy + 50], start=40, end=240, fill=(59, 130, 246), width=5)
+        draw.rectangle([0, 0, width, 70], fill=(18, 22, 28))
+        draw.text((40, 24), f"CENTRAL CAMPUS INFRASTRUCTURE: {category_name.upper()}", fill=(230, 235, 245))
+        return img
 
 def main():
     parser = argparse.ArgumentParser(description="PRAMAAN-X Infrastructure Photo Variants Generator (Prompt 2.2)")

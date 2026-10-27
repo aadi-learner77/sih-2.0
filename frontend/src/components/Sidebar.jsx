@@ -8,17 +8,35 @@ import {
   PlaneTakeoff, 
   FileCheck2,
   Lock,
-  Layers
+  History,
+  ShieldCheck,
+  UserCheck
 } from 'lucide-react';
 
-export default function Sidebar({ activeTab, setActiveTab, counts = {} }) {
-  const navItems = [
+/**
+ * Role-Aware Sidebar Navigation:
+ * Dynamically adjusts available modules, badges, and permissions based on active officer role:
+ * - Scrutiny Officer: Operational Triage & Evidence Lens
+ * - Senior Officer: Escalations, Approvals & Impossibility Graph
+ * - Central Admin: Full access + Regulation-as-Code YAML catalog
+ * - Auditor: Read-only compliance trail & Audit Receipts
+ * - Institution User: Application submission & self-assessment
+ */
+export default function Sidebar({ 
+  activeTab, 
+  setActiveTab, 
+  counts = {},
+  currentRole = 'scrutiny_officer' 
+}) {
+  const allNavItems = [
     {
       id: 'dashboard',
       label: 'Scrutiny Dashboard',
       icon: LayoutDashboard,
-      badge: null,
-      desc: 'Applications overview'
+      badge: 'Live',
+      badgeColor: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+      desc: 'Risk-ranked triage queue',
+      roles: ['scrutiny_officer', 'senior_officer', 'admin', 'auditor', 'institution_user'],
     },
     {
       id: 'evidence-lens',
@@ -26,7 +44,8 @@ export default function Sidebar({ activeTab, setActiveTab, counts = {} }) {
       icon: SearchCode,
       badge: 'Flagship',
       badgeColor: 'bg-sky-50 text-sky-700 border-sky-200',
-      desc: 'Claim-to-Evidence pipeline'
+      desc: 'Claim-to-evidence pipeline',
+      roles: ['scrutiny_officer', 'senior_officer', 'admin', 'auditor'],
     },
     {
       id: 'impossibility-engine',
@@ -34,15 +53,17 @@ export default function Sidebar({ activeTab, setActiveTab, counts = {} }) {
       icon: Network,
       badge: counts.impossibilities ? `${counts.impossibilities} Flags` : '2 Flags',
       badgeColor: 'bg-rose-50 text-rose-700 border-rose-200',
-      desc: 'Multi-college graph conflicts'
+      desc: 'Multi-college graph conflicts',
+      roles: ['scrutiny_officer', 'senior_officer', 'admin', 'auditor'],
     },
     {
       id: 'photo-radar',
       label: 'Photo Radar & Forensics',
       icon: ScanEye,
-      badge: '98.4% Match',
+      badge: 'pHash + ELA',
       badgeColor: 'bg-amber-50 text-amber-800 border-amber-200',
-      desc: 'Perceptual hash & ELA lab'
+      desc: 'Cross-college image reuse',
+      roles: ['scrutiny_officer', 'senior_officer', 'admin'],
     },
     {
       id: 'regulations',
@@ -50,47 +71,71 @@ export default function Sidebar({ activeTab, setActiveTab, counts = {} }) {
       icon: BookOpenCheck,
       badge: 'APH 2025',
       badgeColor: 'bg-purple-50 text-purple-700 border-purple-200',
-      desc: 'Configurable YAML clauses'
+      desc: 'Handbook rule catalog & versions',
+      roles: ['senior_officer', 'admin'],
     },
     {
       id: 'preflight',
       label: 'Pre-Flight Readiness',
       icon: PlaneTakeoff,
-      badge: '72.4/100',
+      badge: 'Simulator',
       badgeColor: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-      desc: 'Self-assessment simulator'
+      desc: 'Self-assessment readiness',
+      roles: ['scrutiny_officer', 'senior_officer', 'admin', 'institution_user'],
     },
     {
       id: 'audit-ledger',
-      label: 'Audit Ledger & Receipts',
+      label: 'Audit and Receipts',
       icon: FileCheck2,
       badge: 'SHA-256',
-      badgeColor: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-      desc: 'Tamper-evident hash chain'
-    }
+      badgeColor: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+      desc: 'Timeline of receipts & tamper verification',
+      roles: ['scrutiny_officer', 'senior_officer', 'admin', 'auditor', 'institution_user'],
+    },
   ];
+
+  // Filter items visible to current role
+  const visibleNavItems = allNavItems.filter((item) => item.roles.includes(currentRole));
 
   return (
     <aside className="w-64 bg-white border-r border-slate-200 flex flex-col shrink-0 min-h-[calc(100vh-61px)]">
       <div className="p-4 space-y-1">
-        <div className="text-[11px] font-semibold tracking-wider text-slate-400 uppercase px-3 py-2">
-          Regulatory Scrutiny
+        
+        {/* Role Identity Header */}
+        <div className="px-3 py-2 bg-slate-50 rounded-xl border border-slate-200/80 mb-2 flex items-center justify-between">
+          <div className="truncate">
+            <div className="text-[10px] uppercase font-bold tracking-wider text-slate-400">
+              Active Role
+            </div>
+            <div className="text-xs font-bold text-slate-800 capitalize truncate">
+              {currentRole?.replace('_', ' ')}
+            </div>
+          </div>
+          <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
         </div>
-        {navItems.map((item) => {
+
+        <div className="text-[11px] font-semibold tracking-wider text-slate-400 uppercase px-3 py-1.5">
+          Regulatory Modules
+        </div>
+
+        {visibleNavItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
           return (
             <button
               key={item.id}
+              id={`sidebar-tab-${item.id}`}
               onClick={() => setActiveTab(item.id)}
-              className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left transition-all group ${
+              className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left transition-all group cursor-pointer ${
                 isActive
-                  ? 'bg-sky-50 text-sky-700 font-semibold border border-sky-200 shadow-xs'
+                  ? 'bg-sky-50 text-sky-800 font-semibold border border-sky-200/90 shadow-xs'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
               }`}
             >
               <div className="flex items-center space-x-3 min-w-0">
-                <Icon className={`w-4 h-4 shrink-0 transition-colors ${isActive ? 'text-sky-600' : 'text-slate-400 group-hover:text-slate-600'}`} />
+                <Icon className={`w-4 h-4 shrink-0 transition-colors ${
+                  isActive ? 'text-sky-600' : 'text-slate-400 group-hover:text-slate-600'
+                }`} />
                 <div className="truncate">
                   <div className="text-xs truncate">{item.label}</div>
                   <div className="text-[10px] text-slate-500 font-normal truncate">{item.desc}</div>
@@ -106,14 +151,15 @@ export default function Sidebar({ activeTab, setActiveTab, counts = {} }) {
         })}
       </div>
 
+      {/* Statutory Legal Safe-Harbor Box */}
       <div className="mt-auto p-4 border-t border-slate-200">
         <div className="bg-amber-50/70 rounded-xl p-3 border border-amber-200/70 text-xs space-y-1.5">
-          <div className="flex items-center space-x-2 text-amber-900 font-medium">
-            <Lock className="w-3.5 h-3.5 text-amber-600" />
+          <div className="flex items-center space-x-2 text-amber-900 font-bold">
+            <Lock className="w-3.5 h-3.5 text-amber-600 shrink-0" />
             <span>Statutory Safeguard</span>
           </div>
           <p className="text-[11px] text-amber-800/90 leading-relaxed">
-            All AI decision indicators require explicit scrutiny officer sign-off before formal order generation.
+            All AI outputs represent advisory indicators for review. Autonomous determinations are prohibited; committee inquiry required.
           </p>
         </div>
       </div>
