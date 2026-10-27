@@ -1,4 +1,5 @@
 # Python
+.venv/
 venv/
 __pycache__/
 *.py[cod]
@@ -29,11 +30,20 @@ wheels/
 pramaan_x.db
 augraphy_cache/
 
-# Environment
+# Environment & Secrets
 .env
 .env.local
+*.key
+*.pem
+generated_data/keys/
+keys/
+
+# Uploads & User Files
+uploads/
+backend/uploads/
 
 # Node / Frontend
+node_modules/
 frontend/node_modules/
 frontend/dist/
 frontend/.vite/

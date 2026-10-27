@@ -50,12 +50,14 @@ services:
       DATABASE_URL: postgresql://${POSTGRES_USER:-aicte_admin}:${POSTGRES_PASSWORD:-aicte_secure_password_2025}@db:5432/${POSTGRES_DB:-pramaan_x}
       SECRET_KEY: ${SECRET_KEY:-pramaan-x-hackathon-super-secret-key-2025-aicte}
       MOCK_ISSUER_URL: http://mock-issuer:8001
+      CORS_ORIGINS: ${CORS_ORIGINS:-*}
       PYTHONUNBUFFERED: "1"
     ports:
       - "${BACKEND_PORT:-8000}:8000"
     volumes:
       - ./uploads:/app/uploads
       - ./backend/app/rules:/app/backend/app/rules
+      - ./generated_data:/app/generated_data
     depends_on:
       db:
         condition: service_healthy
