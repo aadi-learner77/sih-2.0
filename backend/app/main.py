@@ -19,6 +19,7 @@ from backend.app.api.audit import router as audit_router
 from backend.app.api.preflight import router as preflight_router
 from backend.app.api.radar import router as radar_router
 from backend.app.api.alerts import router as alerts_router
+from backend.app.api.inspections import router as inspections_router
 
 # Initialize database schema
 Base.metadata.create_all(bind=engine)
@@ -73,9 +74,13 @@ app = FastAPI(
 )
 
 # CORS Middleware
+cors_origins = [o.strip() for o in settings.CORS_ORIGINS.split(",") if o.strip()]
+if not cors_origins or "*" in cors_origins:
+    cors_origins = ["*"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -94,11 +99,14 @@ app.include_router(rules_router, prefix=settings.API_V1_STR)
 app.include_router(graph_router, prefix=settings.API_V1_STR)
 app.include_router(forensics_router, prefix=settings.API_V1_STR)
 app.include_router(verification_router, prefix=settings.API_V1_STR)
+app.include_router(verification_router)
 app.include_router(audit_router, prefix=settings.API_V1_STR)
 app.include_router(preflight_router, prefix=settings.API_V1_STR)
 app.include_router(radar_router, prefix=settings.API_V1_STR)
 app.include_router(radar_router)  # Expose /radar/clusters at root as requested
 app.include_router(alerts_router, prefix=settings.API_V1_STR)
+app.include_router(inspections_router, prefix=settings.API_V1_STR)
+app.include_router(inspections_router)
 
 @app.on_event("startup")
 def on_startup():
