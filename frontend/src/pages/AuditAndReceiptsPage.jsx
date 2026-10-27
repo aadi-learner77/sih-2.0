@@ -770,12 +770,12 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
 
                     {/* Expanded Raw Canonical JSON Details */}
                     {expandedPayloads[receipt.id || index] && (
-                      <div className="mt-4 p-4 bg-slate-900 text-slate-100 rounded-xl text-[11px] font-mono overflow-x-auto space-y-2">
-                        <div className="flex items-center justify-between text-slate-400 border-b border-slate-800 pb-2">
-                          <span className="font-bold text-slate-300">Canonical JSON Serialized Payload:</span>
+                      <div className="mt-4 p-4 bg-[#F4F6F8] text-[#000000] border border-[#D5D9DE] rounded-xl text-[11px] font-mono overflow-x-auto space-y-2">
+                        <div className="flex items-center justify-between text-[#333333] border-b border-[#D5D9DE] pb-2">
+                          <span className="font-bold text-[#000000]">Canonical JSON Serialized Payload:</span>
                           <span className="text-[10px]">Deterministic byte order (RFC 8785)</span>
                         </div>
-                        <pre className="text-emerald-400">
+                        <pre className="text-[#000000]">
                           {JSON.stringify({
                             block_index: receipt.receipt_index,
                             application_id: receipt.application_id || activeApplicationId,

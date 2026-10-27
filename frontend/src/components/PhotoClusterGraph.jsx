@@ -27,9 +27,38 @@ export default function PhotoClusterGraph({
 }) {
   const containerRef = useRef(null);
   const networkRef = useRef(null);
+  const [, setThemeVersion] = React.useState(0);
+
+  React.useEffect(() => {
+    const handleThemeChange = () => setThemeVersion(v => v + 1);
+    window.addEventListener('themechange', handleThemeChange);
+
+    const observer = new MutationObserver((mutations) => {
+      for (const m of mutations) {
+        if (m.attributeName === 'data-theme') {
+          setThemeVersion(v => v + 1);
+        }
+      }
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+    return () => {
+      window.removeEventListener('themechange', handleThemeChange);
+      observer.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     if (!containerRef.current || !graphData) return;
+
+    const computed = typeof window !== 'undefined' ? getComputedStyle(document.documentElement) : null;
+    const graphNode = computed?.getPropertyValue('--graph-node').trim() || '#6FA8DC';
+    const graphNodeStroke = computed?.getPropertyValue('--graph-node-stroke').trim() || '#3D6FA3';
+    const graphRisk = computed?.getPropertyValue('--graph-risk').trim() || '#E58A82';
+    const graphEdge = computed?.getPropertyValue('--graph-edge').trim() || '#8A94A0';
+    const graphLabel = computed?.getPropertyValue('--graph-label').trim() || '#000000';
+    const surface = computed?.getPropertyValue('--surface').trim() || '#FFFFFF';
+    const warningBg = computed?.getPropertyValue('--warning-bg').trim() || '#FFF1CC';
 
     // Convert nodes to vis.js format
     const nodes = new DataSet(
@@ -40,29 +69,29 @@ export default function PhotoClusterGraph({
           label: node.label,
           title: node.title,
           color: {
-            background: isHighlighted ? '#f43f5e' : (node.color?.background || '#0284c7'),
-            border: isHighlighted ? '#be123c' : (node.color?.border || '#0369a1'),
+            background: isHighlighted ? graphRisk : graphNode,
+            border: isHighlighted ? '#be123c' : graphNodeStroke,
             highlight: {
-              background: '#0ea5e9',
-              border: '#0284c7',
+              background: graphRisk,
+              border: '#be123c',
             },
           },
           shape: node.shape || 'box',
           size: node.size || 26,
           font: {
-            color: '#ffffff',
+            color: graphLabel,
             size: 11,
-            face: 'Inter, sans-serif',
+            face: 'Arial, sans-serif',
             bold: true,
           },
           margin: 12,
-          borderWidth: isHighlighted ? 3 : 2,
+          borderWidth: 1,
           shadow: {
             enabled: true,
-            color: 'rgba(0,0,0,0.12)',
-            size: 6,
-            x: 2,
-            y: 3,
+            color: 'rgba(0,0,0,0.08)',
+            size: 4,
+            x: 1,
+            y: 2,
           },
         };
       })
@@ -79,15 +108,15 @@ export default function PhotoClusterGraph({
           label: edge.label,
           pairId: edge.pairId,
           color: {
-            color: isSelected ? '#f43f5e' : (edge.color?.color || '#e11d48'),
-            highlight: '#f43f5e',
+            color: isSelected ? graphRisk : graphEdge,
+            highlight: graphRisk,
           },
-          width: isSelected ? (edge.width || 3) + 2 : (edge.width || 2.5),
+          width: isSelected ? 3.5 : 2,
           dashes: edge.dashes || false,
           font: {
             size: 9.5,
-            color: '#0f172a',
-            background: isSelected ? '#ffe4e6' : '#ffffff',
+            color: graphLabel,
+            background: isSelected ? warningBg : surface,
             strokeWidth: 0,
             bold: true,
           },
@@ -172,43 +201,43 @@ export default function PhotoClusterGraph({
   return (
     <div className="flex flex-col h-full bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
       {/* Graph Toolbar Header */}
-      <div className="px-4 py-3 bg-slate-900 text-slate-100 border-b border-slate-800 flex items-center justify-between gap-3">
+      <div className="px-4 py-3 bg-[#F4F6F8] text-[#000000] border-b border-[#D5D9DE] flex items-center justify-between gap-3">
         <div className="flex items-center space-x-2.5">
-          <div className="w-7 h-7 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center border border-amber-400/30">
+          <div className="w-7 h-7 rounded-lg bg-[#E8F1FB] text-[#000000] flex items-center justify-center border border-[#BBD4F0]">
             <NetworkIcon className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="text-xs font-bold text-slate-100 flex items-center space-x-2">
+            <h3 className="text-xs font-bold text-[#000000] flex items-center space-x-2">
               <span>National Photo Cluster Topology</span>
-              <span className="text-[10px] bg-slate-800 text-amber-300 px-2 py-0.5 rounded border border-slate-700 font-mono">
+              <span className="text-[10px] bg-[#E8F1FB] text-[#000000] px-2 py-0.5 rounded border border-[#BBD4F0]">
                 Nodes = Institutions • Edges = Reused Photos
               </span>
             </h3>
-            <p className="text-[10px] text-slate-400">
+            <p className="text-[10px] text-[#333333]">
               Interactive force-directed cluster graph. Click any edge or institution to inspect comparison.
             </p>
           </div>
         </div>
 
         {/* Zoom Controls */}
-        <div className="flex items-center space-x-1 bg-slate-800 rounded-lg p-1 border border-slate-700">
+        <div className="flex items-center space-x-1 bg-white rounded-[8px] p-1 border border-[#BFC5CC]">
           <button
             onClick={handleZoomIn}
-            className="p-1 rounded text-slate-300 hover:text-white hover:bg-slate-700 transition-colors"
+            className="p-1 rounded-[8px] text-[#000000] hover:bg-[#F1F3F5] transition-colors"
             title="Zoom In"
           >
             <ZoomIn className="w-3.5 h-3.5" />
           </button>
           <button
             onClick={handleZoomOut}
-            className="p-1 rounded text-slate-300 hover:text-white hover:bg-slate-700 transition-colors"
+            className="p-1 rounded-[8px] text-[#000000] hover:bg-[#F1F3F5] transition-colors"
             title="Zoom Out"
           >
             <ZoomOut className="w-3.5 h-3.5" />
           </button>
           <button
             onClick={handleFit}
-            className="p-1 rounded text-slate-300 hover:text-white hover:bg-slate-700 transition-colors"
+            className="p-1 rounded-[8px] text-[#000000] hover:bg-[#F1F3F5] transition-colors"
             title="Fit Graph to Viewport"
           >
             <RotateCcw className="w-3.5 h-3.5" />
@@ -220,7 +249,7 @@ export default function PhotoClusterGraph({
       <div 
         ref={containerRef} 
         id="photo-cluster-graph-canvas"
-        className="flex-1 w-full min-h-[500px] bg-slate-50 cursor-grab active:cursor-grabbing relative"
+        className="flex-1 w-full min-h-[500px] bg-white cursor-grab active:cursor-grabbing relative"
       />
 
       {/* Interactive Legend & Stats Footer */}

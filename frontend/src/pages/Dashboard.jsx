@@ -296,16 +296,16 @@ export default function Dashboard({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="flex flex-col gap-6">
       
       {/* 1. Executive Hero Banner */}
       <div className="bg-gradient-to-r from-sky-50 via-indigo-50/40 to-slate-50 border border-slate-200/90 rounded-2xl p-6 shadow-xs relative overflow-hidden">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
           <div>
-            <div className="flex items-center space-x-2 text-xs font-bold text-orange-700 uppercase tracking-widest mb-1.5">
-              <span>{currentRole === 'institution_user' ? 'Institution Scrutiny Portal' : 'AICTE Central Scrutiny Division'}</span>
+            <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-orange-700 uppercase tracking-widest mb-1">
+              <span className="whitespace-nowrap">{currentRole === 'institution_user' ? 'Institution Scrutiny Portal' : 'AICTE Central Scrutiny Division'}</span>
               <span>•</span>
-              <span>{currentRole === 'institution_user' ? (currentUser?.full_name || 'My Institution Dossier') : 'Extension of Approval (EoA) 2025-26'}</span>
+              <span className="whitespace-nowrap">{currentRole === 'institution_user' ? (currentUser?.full_name || 'My Institution Dossier') : 'Extension of Approval (EoA) 2025-26'}</span>
               {!isLiveMode && <DemoDataBadge />}
             </div>
             <h1 className="text-2xl font-black text-slate-900 tracking-tight">
@@ -343,7 +343,7 @@ export default function Dashboard({
             <button
               id="launch-audit-ledger-btn"
               onClick={() => onNavigateTab('audit-ledger')}
-              className="px-3.5 py-2.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 text-xs font-semibold transition-all shadow-xs flex items-center space-x-2 cursor-pointer"
+              className="px-4 py-2.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 text-xs font-semibold transition-all shadow-xs flex items-center space-x-2 cursor-pointer"
             >
               <History className="w-4 h-4 text-emerald-600" />
               <span>Audit History Ledger</span>
@@ -363,15 +363,15 @@ export default function Dashboard({
       <div className="bg-white border border-slate-200 rounded-2xl shadow-xs overflow-hidden">
         
         {/* Table Header & Controls Bar */}
-        <div className="p-5 border-b border-slate-200 bg-slate-50/60 space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="px-6 py-4 border-b border-slate-200 bg-slate-50/60">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
             <div>
               <h2 className="text-base font-bold text-slate-900 flex items-center space-x-2">
                 <Building2 className="w-5 h-5 text-sky-600" />
                 <span>{currentRole === 'institution_user' ? 'My Institution Applications' : 'Risk-Ranked Triage Queue'} ({filteredAndSortedApplications.length} Applications)</span>
                 {!isLiveMode && <DemoDataBadge />}
               </h2>
-              <p className="text-xs text-slate-500 mt-0.5">
+              <p className="text-xs text-slate-500 mt-1">
                 {currentRole === 'institution_user' 
                   ? 'Your institutional dossiers submitted for AICTE regulatory approval.'
                   : 'Applications ordered by calculated regulatory risk score (High-to-Low). Urgent discrepancies surface at the top.'}
@@ -384,7 +384,7 @@ export default function Dashboard({
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-700 font-medium focus:outline-none focus:border-sky-500 shadow-2xs"
+                className="bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-700 font-medium focus:outline-none focus:border-sky-500 shadow-2xs h-9"
               >
                 <option value="risk_desc">Risk Score (Highest First) 🔥</option>
                 <option value="risk_asc">Risk Score (Lowest First)</option>
@@ -395,22 +395,22 @@ export default function Dashboard({
           </div>
 
           {/* Filter Bar */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 pt-1">
+          <div className="flex flex-wrap items-center gap-3">
             
             {/* Search Input */}
-            <div className="lg:col-span-4 relative">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+            <div className="flex-1 min-w-[260px] relative">
+              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
               <input
                 type="text"
                 placeholder="Search by college, app #, AICTE ID, city..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-white border border-slate-200 rounded-xl pl-9 pr-3 py-2 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-sky-500 shadow-2xs"
+                className="w-full h-10 bg-white border border-slate-200 rounded-xl pl-9 pr-8 py-2 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-sky-500 shadow-2xs"
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600 text-xs"
+                  className="absolute right-2.5 top-3 text-slate-400 hover:text-slate-600 text-xs"
                 >
                   ✕
                 </button>
@@ -418,11 +418,11 @@ export default function Dashboard({
             </div>
 
             {/* State Filter */}
-            <div className="lg:col-span-2">
+            <div className="min-w-[170px] flex-1 sm:flex-initial">
               <select
                 value={selectedState}
                 onChange={(e) => setSelectedState(e.target.value)}
-                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-700 font-medium focus:outline-none focus:border-sky-500 shadow-2xs"
+                className="w-full h-10 bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-700 font-medium focus:outline-none focus:border-sky-500 shadow-2xs"
               >
                 <option value="ALL">All States ({stateOptions.length - 1})</option>
                 {stateOptions.filter((s) => s !== 'ALL').map((s) => (
@@ -432,11 +432,11 @@ export default function Dashboard({
             </div>
 
             {/* Category Filter */}
-            <div className="lg:col-span-2">
+            <div className="min-w-[160px] flex-1 sm:flex-initial">
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-700 font-medium focus:outline-none focus:border-sky-500 shadow-2xs"
+                className="w-full h-10 bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-700 font-medium focus:outline-none focus:border-sky-500 shadow-2xs"
               >
                 <option value="ALL">All Categories</option>
                 {categoryOptions.filter((c) => c !== 'ALL').map((c) => (
@@ -446,11 +446,11 @@ export default function Dashboard({
             </div>
 
             {/* Status Filter (Exact statutory labels) */}
-            <div className="lg:col-span-2">
+            <div className="min-w-[170px] flex-1 sm:flex-initial">
               <select
                 value={selectedStatus}
                 onChange={(e) => setSelectedStatus(e.target.value)}
-                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-700 font-medium focus:outline-none focus:border-sky-500 shadow-2xs"
+                className="w-full h-10 bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-700 font-medium focus:outline-none focus:border-sky-500 shadow-2xs"
               >
                 <option value="ALL">All Statuses ({statusOptions.length - 1})</option>
                 {statusOptions.filter((st) => st !== 'ALL').map((st) => (
@@ -460,11 +460,11 @@ export default function Dashboard({
             </div>
 
             {/* Severity Filter */}
-            <div className="lg:col-span-1">
+            <div className="min-w-[140px] flex-1 sm:flex-initial">
               <select
                 value={selectedSeverity}
                 onChange={(e) => setSelectedSeverity(e.target.value)}
-                className="w-full bg-white border border-slate-200 rounded-xl px-2 py-2 text-xs text-slate-700 font-medium focus:outline-none focus:border-sky-500 shadow-2xs"
+                className="w-full h-10 bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-700 font-medium focus:outline-none focus:border-sky-500 shadow-2xs"
               >
                 <option value="ALL">All Severity</option>
                 {severityOptions.filter((sev) => sev !== 'ALL').map((sev) => (
@@ -474,14 +474,14 @@ export default function Dashboard({
             </div>
 
             {/* Reset Filters */}
-            <div className="lg:col-span-1">
+            <div className="min-w-[90px]">
               <button
                 onClick={handleResetFilters}
-                className="w-full h-full py-2 px-2 bg-slate-100 hover:bg-slate-200/80 text-slate-600 rounded-xl text-xs font-semibold flex items-center justify-center space-x-1 transition-colors"
+                className="w-full h-10 py-2 px-3 bg-slate-100 hover:bg-slate-200/80 text-slate-600 rounded-xl text-xs font-semibold flex items-center justify-center space-x-1.5 transition-colors"
                 title="Reset all search filters"
               >
-                <RotateCcw className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Reset</span>
+                <RotateCcw className="w-3.5 h-3.5 shrink-0" />
+                <span>Reset</span>
               </button>
             </div>
 
@@ -493,12 +493,12 @@ export default function Dashboard({
           <table className="w-full text-left text-xs">
             <thead className="bg-slate-50 text-slate-500 uppercase tracking-wider text-[10px] font-bold border-b border-slate-200">
               <tr>
-                <th className="py-3 px-4">Application & Institution</th>
-                <th className="py-3 px-4">State & Category</th>
-                <th className="py-3 px-4">Risk Rank</th>
-                <th className="py-3 px-4">Primary Anomaly / Discrepancy</th>
-                <th className="py-3 px-4">Statutory Status</th>
-                <th className="py-3 px-4 text-right">Officer Actions</th>
+                <th className="py-3 px-4 min-w-[260px]">Application & Institution</th>
+                <th className="py-3 px-4 min-w-[150px]">State & Category</th>
+                <th className="py-3 px-4 min-w-[130px] whitespace-nowrap">Risk Rank</th>
+                <th className="py-3 px-4 min-w-[260px]">Primary Anomaly / Discrepancy</th>
+                <th className="py-3 px-4 min-w-[160px] whitespace-nowrap">Statutory Status</th>
+                <th className="py-3 px-4 text-right min-w-[240px] whitespace-nowrap">Officer Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200 text-slate-700">
@@ -526,17 +526,17 @@ export default function Dashboard({
                       className="hover:bg-slate-50/80 transition-colors group"
                     >
                       {/* Application & College */}
-                      <td className="py-3.5 px-4 min-w-[240px]">
+                      <td className="py-3.5 px-4 min-w-[240px] align-top">
                         <div className="flex items-center space-x-2">
                           <span className="font-mono text-xs font-bold text-sky-800 bg-sky-50 px-2 py-0.5 rounded border border-sky-200/90">
                             {app.application_no}
                           </span>
                           <span className="text-[10px] text-slate-500 font-medium">AY {app.academic_year}</span>
                         </div>
-                        <h3 className="text-xs font-bold text-slate-900 mt-1 line-clamp-1 group-hover:text-sky-700 transition-colors">
+                        <h3 className="text-xs font-bold text-slate-900 mt-1 leading-snug group-hover:text-sky-700 transition-colors">
                           {app.institution_name}
                         </h3>
-                        <div className="text-[11px] text-slate-500 flex items-center space-x-1.5 mt-0.5">
+                        <div className="text-[11px] text-slate-500 flex flex-wrap items-center gap-1.5 mt-1">
                           <span>AICTE ID: {app.aicte_id}</span>
                           <span>•</span>
                           <span>{app.city}</span>
@@ -544,17 +544,17 @@ export default function Dashboard({
                       </td>
 
                       {/* State & Category */}
-                      <td className="py-3.5 px-4 whitespace-nowrap">
+                      <td className="py-3.5 px-4 align-top">
                         <span className="inline-block text-[11px] font-semibold text-slate-800 bg-slate-100 border border-slate-200 px-2 py-0.5 rounded-full mb-1">
                           {app.state}
                         </span>
-                        <div className="text-[11px] text-slate-600 truncate max-w-[180px]" title={app.category}>
+                        <div className="text-[11px] text-slate-600 leading-snug" title={app.category}>
                           {app.category}
                         </div>
                       </td>
 
                       {/* Risk Score Pill & Bar */}
-                      <td className="py-3.5 px-4 whitespace-nowrap">
+                      <td className="py-3.5 px-4 align-top">
                         <div className="flex items-center space-x-2">
                           <span className={`text-xs font-black px-2 py-0.5 rounded-md border ${
                             isHighRisk
@@ -565,7 +565,7 @@ export default function Dashboard({
                           }`}>
                             {app.risk_score}/100
                           </span>
-                          <span className="text-[11px] font-semibold text-slate-600">
+                          <span className="text-[11px] font-semibold text-slate-600 whitespace-nowrap">
                             {app.risk_level} Risk
                           </span>
                         </div>
@@ -581,14 +581,14 @@ export default function Dashboard({
                       </td>
 
                       {/* Primary Anomaly Findings */}
-                      <td className="py-3.5 px-4 max-w-xs">
-                        <p className="text-[11px] text-slate-700 leading-snug line-clamp-2" title={app.primary_issue}>
+                      <td className="py-3.5 px-4 align-top">
+                        <p className="text-[11px] text-slate-700 leading-snug" title={app.primary_issue}>
                           {app.primary_issue}
                         </p>
                         {app.flags && app.flags.length > 0 && (
-                          <div className="flex flex-wrap gap-1 mt-1">
+                          <div className="flex flex-col items-start gap-2 mt-2">
                             {app.flags.slice(0, 2).map((fl, fi) => (
-                              <span key={fi} className="text-[9px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded border border-slate-200">
+                              <span key={fi} className="text-[9px] bg-slate-100 text-slate-600 px-2.5 py-1 rounded border border-slate-200">
                                 {fl}
                               </span>
                             ))}
@@ -600,13 +600,13 @@ export default function Dashboard({
                       </td>
 
                       {/* Exact Statutory Status Chip */}
-                      <td className="py-3.5 px-4 whitespace-nowrap">
+                      <td className="py-3.5 px-4 align-top">
                         <StatusChip status={app.status} />
                       </td>
 
                       {/* Action Buttons */}
-                      <td className="py-3.5 px-4 text-right whitespace-nowrap">
-                        <div className="flex items-center justify-end space-x-1.5">
+                      <td className="py-3.5 px-4 text-right align-top min-w-[240px]">
+                        <div className="flex flex-wrap items-center justify-end gap-2">
                           {currentRole !== 'institution_user' ? (
                             <>
                               <button
@@ -614,11 +614,11 @@ export default function Dashboard({
                                   onSelectApplication(app);
                                   onNavigateTab('evidence-lens');
                                 }}
-                                className="px-2.5 py-1.5 rounded-lg bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-200 text-xs font-bold transition-all shadow-2xs flex items-center space-x-1 cursor-pointer"
+                                className="px-3 py-2 rounded-lg bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-200 text-xs font-bold transition-all shadow-2xs inline-flex items-center space-x-2 whitespace-nowrap cursor-pointer"
                                 title="Inspect application dossier in Evidence Lens"
                               >
-                                <span>Evidence Lens</span>
-                                <ChevronRight className="w-3.5 h-3.5" />
+                                <span className="whitespace-nowrap">Evidence Lens</span>
+                                <ChevronRight className="w-3.5 h-3.5 shrink-0" />
                               </button>
 
                               <button
@@ -626,11 +626,11 @@ export default function Dashboard({
                                   setActionModalApp(app);
                                   setOfficerComment('');
                                 }}
-                                className="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold transition-all shadow-2xs flex items-center space-x-1 cursor-pointer"
+                                className="px-3 py-2 rounded-lg bg-[#CFE3FA] hover:bg-[#B9D6F5] text-[#000000] border border-[#8DB6E6] text-xs font-semibold transition-all shadow-2xs inline-flex items-center space-x-2 whitespace-nowrap cursor-pointer"
                                 title="Record signed officer determination with mandatory comment"
                               >
-                                <MessageSquare className="w-3 h-3 text-sky-400" />
-                                <span>Take Action</span>
+                                <MessageSquare className="w-3 h-3 text-[#000000] shrink-0" />
+                                <span className="whitespace-nowrap">Take Action</span>
                               </button>
                             </>
                           ) : (
@@ -639,11 +639,11 @@ export default function Dashboard({
                                 onSelectApplication(app);
                                 onNavigateTab('preflight');
                               }}
-                              className="px-2.5 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold transition-all shadow-2xs flex items-center space-x-1 cursor-pointer"
+                              className="px-3 py-2 rounded-lg bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold transition-all shadow-2xs inline-flex items-center space-x-2 whitespace-nowrap cursor-pointer"
                               title="Run pre-flight self-assessment check"
                             >
                               <span>Self-Audit Check</span>
-                              <ChevronRight className="w-3.5 h-3.5" />
+                              <ChevronRight className="w-3.5 h-3.5 shrink-0" />
                             </button>
                           )}
                         </div>
@@ -668,7 +668,7 @@ export default function Dashboard({
                 Live Document Ingestion, OCR & Forensics Scanner
               </h2>
             </div>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-xs text-slate-500 mt-1">
               Ingest compliance certificates to test PaddleOCR extraction, classification confidence, Error-Level Analysis (ELA), and cryptographic receipt creation.
             </p>
           </div>
@@ -679,11 +679,11 @@ export default function Dashboard({
 
         <form onSubmit={handleDocumentUpload} className="grid grid-cols-1 md:grid-cols-12 gap-4">
           <div className="md:col-span-4">
-            <label className="text-xs font-semibold text-slate-700 block mb-1">Document Category:</label>
+            <label className="text-xs font-semibold text-slate-700 block mb-1.5">Document Category:</label>
             <select
               value={docType}
               onChange={(e) => setDocType(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-sky-500 focus:bg-white"
+              className="w-full h-10 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-sky-500 focus:bg-white"
             >
               <option value="Auto-Detect">Auto-Detect via ML Classifier</option>
               <option value="Fire Safety Certificate">Fire Safety Certificate / NOC</option>
@@ -696,15 +696,15 @@ export default function Dashboard({
           </div>
 
           <div className="md:col-span-5">
-            <label className="text-xs font-semibold text-slate-700 block mb-1">Select File:</label>
-            <div className="border border-dashed border-slate-300 hover:border-sky-400 rounded-xl px-4 py-2 bg-slate-50/60 relative cursor-pointer flex items-center justify-between">
+            <label className="text-xs font-semibold text-slate-700 block mb-1.5">Select File:</label>
+            <div className="border border-dashed border-slate-300 hover:border-sky-400 rounded-xl px-4 py-2 bg-slate-50/60 relative cursor-pointer flex items-center justify-between h-10">
               <input
                 type="file"
                 required
                 onChange={(e) => setUploadFile(e.target.files[0])}
                 className="absolute inset-0 opacity-0 cursor-pointer"
               />
-              <span className="text-xs text-slate-700 truncate font-medium">
+              <span className="text-xs text-slate-700 font-medium break-all">
                 {uploadFile ? uploadFile.name : 'Choose PDF, Scan or Image (Max 25MB)'}
               </span>
               <FileSearch className="w-4 h-4 text-sky-600 shrink-0 ml-2" />
@@ -739,7 +739,7 @@ export default function Dashboard({
 
       {/* 5. Officer Action Determination Modal (Mandatory Comment Enforced) */}
       {actionModalApp && (
-        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 bg-[rgba(0,0,0,0.15)] backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4 animate-in zoom-in-95">
             <div className="flex items-center justify-between pb-3 border-b border-slate-200">
               <div>

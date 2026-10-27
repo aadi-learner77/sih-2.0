@@ -189,63 +189,65 @@ export default function App() {
         />
 
         {/* Main Content Workspace */}
-        <main className="flex-1 overflow-y-auto p-6 md:p-8 space-y-6 bg-slate-50/60">
-          {activeTab === 'dashboard' && (
-            <Dashboard 
-              applications={isLiveMode ? applications : []}
-              onSelectApplication={handleSelectApplication}
-              onNavigateTab={setActiveTab}
-              onRefresh={() => loadData(currentRole)}
-              isLiveMode={isLiveMode}
-              currentRole={currentRole}
-              currentUser={currentUser}
-            />
-          )}
+        <main className="flex-1 overflow-y-auto bg-slate-50/60 p-4 sm:p-6 lg:p-8">
+          <div className="max-w-[1440px] mx-auto w-full flex flex-col gap-6">
+            {activeTab === 'dashboard' && (
+              <Dashboard 
+                applications={isLiveMode ? applications : []}
+                onSelectApplication={handleSelectApplication}
+                onNavigateTab={setActiveTab}
+                onRefresh={() => loadData(currentRole)}
+                isLiveMode={isLiveMode}
+                currentRole={currentRole}
+                currentUser={currentUser}
+              />
+            )}
 
-          {activeTab === 'evidence-lens' && (
-            <EvidenceLens 
-              evidenceLensData={evidenceLensData} 
-              activeApplication={activeApplication}
-              evidenceLensError={evidenceLensError}
-              onRefresh={() => {
-                if (activeApplication) {
-                  handleSelectApplication(activeApplication);
-                } else {
-                  loadData(currentRole);
-                }
-              }}
-            />
-          )}
+            {activeTab === 'evidence-lens' && (
+              <EvidenceLens 
+                evidenceLensData={evidenceLensData} 
+                activeApplication={activeApplication}
+                evidenceLensError={evidenceLensError}
+                onRefresh={() => {
+                  if (activeApplication) {
+                    handleSelectApplication(activeApplication);
+                  } else {
+                    loadData(currentRole);
+                  }
+                }}
+              />
+            )}
 
-          {activeTab === 'impossibility-engine' && (
-            <ImpossibilityGraph />
-          )}
+            {activeTab === 'impossibility-engine' && (
+              <ImpossibilityGraph />
+            )}
 
-          {activeTab === 'photo-radar' && (
-            <PhotoReuseRadar 
-              onNavigateTab={setActiveTab}
-              onSelectApplication={handleSelectApplication}
-            />
-          )}
+            {activeTab === 'photo-radar' && (
+              <PhotoReuseRadar 
+                onNavigateTab={setActiveTab}
+                onSelectApplication={handleSelectApplication}
+              />
+            )}
 
-          {activeTab === 'regulations' && (
-            <RuleConfigPage />
-          )}
+            {activeTab === 'regulations' && (
+              <RuleConfigPage />
+            )}
 
-          {activeTab === 'preflight' && (
-            <PreFlightScorecard 
-              currentUser={currentUser}
-              onNavigateToEvidenceLens={() => setActiveTab('evidence-lens')}
-            />
-          )}
+            {activeTab === 'preflight' && (
+              <PreFlightScorecard 
+                currentUser={currentUser}
+                onNavigateToEvidenceLens={() => setActiveTab('evidence-lens')}
+              />
+            )}
 
-          {activeTab === 'inspection-planner' && (
-            <InspectionPlannerPage />
-          )}
+            {activeTab === 'inspection-planner' && (
+              <InspectionPlannerPage />
+            )}
 
-          {activeTab === 'audit-ledger' && (
-            <AuditAndReceiptsPage activeApplicationId={activeApplication?.id || 1} />
-          )}
+            {activeTab === 'audit-ledger' && (
+              <AuditAndReceiptsPage activeApplicationId={activeApplication?.id || 1} />
+            )}
+          </div>
         </main>
       </div>
 

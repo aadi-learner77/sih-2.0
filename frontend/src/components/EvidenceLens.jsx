@@ -273,18 +273,18 @@ export default function EvidenceLens({ evidenceLensData, activeApplication, onRe
                   onClick={() => handleSelectFinding(idx)}
                   className={`px-3 py-1.5 rounded-xl text-xs font-medium border transition-all flex items-center space-x-2 ${
                     isSelected
-                      ? 'bg-slate-900 border-slate-900 text-white font-bold shadow-xs'
-                      : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300'
+                      ? 'bg-[#E8F1FB] border-[#BBD4F0] text-[#000000] font-bold shadow-xs'
+                      : 'bg-white border-[#D5D9DE] text-[#333333] hover:bg-[#F4F6F8]'
                   }`}
                 >
                   {isGraph ? (
-                    <NetworkIcon className={`w-3.5 h-3.5 ${isSelected ? 'text-rose-400' : 'text-slate-500'}`} />
+                    <NetworkIcon className={`w-3.5 h-3.5 ${isSelected ? 'text-[#000000]' : 'text-[#333333]'}`} />
                   ) : (
-                    <FileText className={`w-3.5 h-3.5 ${isSelected ? 'text-sky-400' : 'text-slate-500'}`} />
+                    <FileText className={`w-3.5 h-3.5 ${isSelected ? 'text-[#000000]' : 'text-[#333333]'}`} />
                   )}
                   <span>{typeof finding.id === 'number' ? `Finding #${finding.id}` : finding.id}</span>
                   <span className={`text-[10px] px-1.5 py-0.2 rounded font-sans ${
-                    isSelected ? 'bg-slate-800 text-slate-200' : 'bg-slate-100 text-slate-600'
+                    isSelected ? 'bg-[#CFE3FA] text-[#000000]' : 'bg-[#F4F6F8] text-[#333333]'
                   }`}>
                     {isGraph ? 'vis-network' : 'BBox'}
                   </span>
@@ -644,7 +644,7 @@ export default function EvidenceLens({ evidenceLensData, activeApplication, onRe
                           />
                           <div className="min-w-0">
                             <div className="text-xs font-bold">{opt.label}</div>
-                            <div className="text-[10px] text-slate-500 truncate">{opt.desc}</div>
+                            <div className="text-[10px] text-slate-500 leading-snug">{opt.desc}</div>
                           </div>
                         </div>
                       </label>

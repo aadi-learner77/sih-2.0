@@ -395,13 +395,13 @@ export default function PreFlightScorecard({ currentUser, onNavigateToEvidenceLe
           <div className="md:col-span-5 bg-white rounded-2xl p-5 border border-slate-200 shadow-2xs flex flex-col sm:flex-row items-center gap-5">
             
             {/* Physical 3-Lens Traffic Light Housing */}
-            <div className="bg-slate-900 border-2 border-slate-800 rounded-2xl p-2.5 flex sm:flex-col items-center justify-center gap-2 shadow-inner shrink-0">
+            <div className="bg-[#F4F6F8] border border-[#D5D9DE] rounded-2xl p-2.5 flex sm:flex-col items-center justify-center gap-2 shrink-0">
               {/* Red Light */}
               <div 
                 className={`w-7 h-7 rounded-full border-2 transition-all duration-300 flex items-center justify-center ${
                   trafficLightState === 'RED'
                     ? 'bg-rose-500 border-rose-300 shadow-[0_0_16px_rgba(244,63,94,0.9)] animate-pulse'
-                    : 'bg-rose-950/60 border-rose-900 opacity-30'
+                    : 'bg-rose-100 border-rose-200 opacity-40'
                 }`}
                 title="Critical Deficiencies"
               >
@@ -413,7 +413,7 @@ export default function PreFlightScorecard({ currentUser, onNavigateToEvidenceLe
                 className={`w-7 h-7 rounded-full border-2 transition-all duration-300 flex items-center justify-center ${
                   trafficLightState === 'AMBER'
                     ? 'bg-amber-400 border-amber-200 shadow-[0_0_16px_rgba(251,191,36,0.9)] animate-pulse'
-                    : 'bg-amber-950/60 border-amber-900 opacity-30'
+                    : 'bg-amber-100 border-amber-200 opacity-40'
                 }`}
                 title="Scrutiny Inquiry Likely"
               >
@@ -425,7 +425,7 @@ export default function PreFlightScorecard({ currentUser, onNavigateToEvidenceLe
                 className={`w-7 h-7 rounded-full border-2 transition-all duration-300 flex items-center justify-center ${
                   trafficLightState === 'GREEN'
                     ? 'bg-emerald-500 border-emerald-200 shadow-[0_0_16px_rgba(16,185,129,0.9)] animate-pulse'
-                    : 'bg-emerald-950/60 border-emerald-900 opacity-30'
+                    : 'bg-emerald-100 border-emerald-200 opacity-40'
                 }`}
                 title="Ready for Scrutiny Submission"
               >
@@ -616,9 +616,9 @@ export default function PreFlightScorecard({ currentUser, onNavigateToEvidenceLe
                       <FileText className="w-3.5 h-3.5" />
                     </div>
                     <div className="min-w-0">
-                      <div className="font-bold text-slate-900 truncate text-xs">{docType}</div>
-                      <div className="text-[10px] text-slate-500 flex items-center space-x-2 font-mono">
-                        <span className="truncate">{file.name}</span>
+                      <div className="font-bold text-slate-900 text-xs">{docType}</div>
+                      <div className="text-[10px] text-slate-500 flex flex-wrap items-center gap-1.5 font-mono">
+                        <span className="break-all">{file.name}</span>
                         <span>•</span>
                         <span>{file.size}</span>
                       </div>

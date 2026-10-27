@@ -98,7 +98,7 @@ export default function OfficerKpiCards({
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-stretch">
       {cards.map((card) => {
         const Icon = card.icon;
         const isSelected = selectedStatusFilter === card.filterTarget;
@@ -107,26 +107,26 @@ export default function OfficerKpiCards({
           <div
             key={card.id}
             onClick={() => onStatusFilterClick && card.filterTarget && onStatusFilterClick(card.filterTarget)}
-            className={`bg-white rounded-2xl p-4 border transition-all duration-200 cursor-pointer group hover:-translate-y-0.5 hover:shadow-md relative overflow-hidden ${
+            className={`bg-white rounded-2xl p-6 border transition-all duration-200 cursor-pointer group hover:-translate-y-0.5 hover:shadow-md relative overflow-hidden flex flex-col justify-between h-full ${
               isSelected
                 ? 'border-sky-500 ring-2 ring-sky-500/20 shadow-sm'
                 : 'border-slate-200/90 hover:border-slate-300 shadow-xs'
             }`}
           >
             {/* Top Row: Icon & Trend */}
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center justify-between">
               <div className={`w-9 h-9 rounded-xl flex items-center justify-center shadow-xs transition-transform group-hover:scale-105 ${card.iconBg}`}>
                 <Icon className="w-5 h-5 shrink-0" />
               </div>
-              <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border flex items-center gap-1 ${card.accentBg}`}>
-                {card.trendPositive === true && <TrendingUp className="w-2.5 h-2.5" />}
-                {card.trendPositive === false && <ShieldAlert className="w-2.5 h-2.5" />}
+              <span className={`text-[10px] font-semibold px-2.5 py-1 rounded-full border flex items-center gap-1.5 ${card.accentBg}`}>
+                {card.trendPositive === true && <TrendingUp className="w-2.5 h-2.5 shrink-0" />}
+                {card.trendPositive === false && <ShieldAlert className="w-2.5 h-2.5 shrink-0" />}
                 <span>{card.trend}</span>
               </span>
             </div>
 
-            {/* Metric Value */}
-            <div className="space-y-0.5">
+            {/* Metric Value: icon row, label, value, and caption separated by 8px */}
+            <div className="flex flex-col gap-2 mt-2">
               <div className="text-[11px] font-semibold text-slate-500 tracking-wide uppercase">
                 {card.title}
               </div>
@@ -134,7 +134,7 @@ export default function OfficerKpiCards({
                 <span>{card.value}</span>
                 {card.unit && <span className="text-xs font-normal text-slate-500">{card.unit}</span>}
               </div>
-              <p className="text-[11px] text-slate-500 truncate pt-0.5">
+              <p className="text-[11px] text-slate-500 leading-snug">
                 {card.subtitle}
               </p>
             </div>

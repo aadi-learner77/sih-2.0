@@ -271,7 +271,7 @@ export default function RuleConfigPage() {
                   <span className="text-xs font-bold text-slate-900">{rule.title}</span>
                   <span className="text-[10px] font-mono text-slate-500">{rule.clause_id}</span>
                 </div>
-                <div className="text-[11px] text-slate-500 mt-1 truncate">
+                <div className="text-[11px] text-slate-500 mt-1 leading-snug">
                   {rule.chapter}
                 </div>
                 <div className="text-[10px] text-purple-800 font-mono mt-1 font-semibold">
@@ -529,8 +529,8 @@ export default function RuleConfigPage() {
 
                     return (
                       <div key={item.courseType} className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
-                        <div className="flex justify-between items-center text-xs">
-                          <span className="font-bold text-slate-800 truncate" title={item.courseType}>
+                        <div className="flex justify-between items-center text-xs gap-2">
+                          <span className="font-bold text-slate-800" title={item.courseType}>
                             {item.courseType}
                           </span>
                           <span className={`text-[10px] font-bold px-1.5 py-0.2 rounded font-mono shrink-0 ${
@@ -689,7 +689,7 @@ export default function RuleConfigPage() {
         PUBLISH NEW RULE VERSION MODAL (CONFIRMATION REQUIRED)
       */}
       {showPublishModal && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 bg-[rgba(0,0,0,0.15)] backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl border border-slate-200 max-w-lg w-full p-6 shadow-2xl space-y-4 animate-scaleUp">
             
             <div className="flex items-start justify-between">
