@@ -251,20 +251,41 @@ export const api = {
   },
 
   // Forensics Engine & Proof-of-Reality
-  analyzeDocumentForensics: async (formData) => {
-    const res = await apiClient.post('/forensics/document/analyze', formData, {
+  analyzeDocumentForensics: async (data) => {
+    let payload = data;
+    if (!(data instanceof FormData)) {
+      payload = new FormData();
+      Object.entries(data || {}).forEach(([k, v]) => {
+        if (v !== undefined && v !== null) payload.append(k, v);
+      });
+    }
+    const res = await apiClient.post('/forensics/document/analyze', payload, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
     return res.data;
   },
-  checkSunShadowPlausibility: async (formData) => {
-    const res = await apiClient.post('/forensics/photo/sun-shadow-plausibility', formData, {
+  checkSunShadowPlausibility: async (data) => {
+    let payload = data;
+    if (!(data instanceof FormData)) {
+      payload = new FormData();
+      Object.entries(data || {}).forEach(([k, v]) => {
+        if (v !== undefined && v !== null) payload.append(k, v);
+      });
+    }
+    const res = await apiClient.post('/forensics/photo/sun-shadow-plausibility', payload, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
     return res.data;
   },
-  checkBuiltUpPlausibility: async (formData) => {
-    const res = await apiClient.post('/forensics/geospatial/built-up-plausibility', formData, {
+  checkBuiltUpPlausibility: async (data) => {
+    let payload = data;
+    if (!(data instanceof FormData)) {
+      payload = new FormData();
+      Object.entries(data || {}).forEach(([k, v]) => {
+        if (v !== undefined && v !== null) payload.append(k, v);
+      });
+    }
+    const res = await apiClient.post('/forensics/geospatial/built-up-plausibility', payload, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
     return res.data;

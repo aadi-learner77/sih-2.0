@@ -16,11 +16,15 @@ import {
   Network as NetworkIcon,
   RefreshCw,
   Info,
-  ExternalLink
+  ExternalLink,
+  FileSearch,
+  Compass
 } from 'lucide-react';
 import PhotoClusterGraph from './PhotoClusterGraph';
 import PhotoComparisonPanel from './PhotoComparisonPanel';
 import DemoDataBadge from './DemoDataBadge';
+import DocumentForensicsView from './DocumentForensicsView';
+import ProofOfRealityView from './ProofOfRealityView';
 import { MOCK_RADAR_PAIRS, MOCK_RADAR_GRAPH, SIMULATED_UPLOAD_PAYLOAD } from '../data/mockPhotoRadarData';
 import { api } from '../services/api';
 
@@ -28,12 +32,13 @@ import { api } from '../services/api';
  * National Photo Reuse Radar Screen:
  * - Force-directed cluster graph where institutions are NODES and shared photos are EDGES
  * - Side panel with side-by-side photo comparison (original vs near-duplicate, difference overlay)
- * - Similarity scores breakdown (Hamming distance, OpenCLIP cosine, Visual %)
- * - Button to open affected applications
- * - Prominent "Simulate Upload" button for interactive live demos
- * - Strict adherence to "Indicator for review" on all AI flags
+ * - Three integrated tabs:
+ *   1. Photo Reuse Radar
+ *   2. Document Forensics
+ *   3. Proof-of-Reality (sun-shadow and satellite built-up indicators)
  */
 export default function PhotoReuseRadar({ onNavigateTab, onSelectApplication }) {
+  const [forensicsSubTab, setForensicsSubTab] = useState('radar'); // 'radar', 'document-forensics', 'proof-of-reality'
   const [graphData, setGraphData] = useState(MOCK_RADAR_GRAPH);
   const [radarPairs, setRadarPairs] = useState(MOCK_RADAR_PAIRS);
   const [selectedPairId, setSelectedPairId] = useState('PAIR-LAB-001');
@@ -304,9 +309,63 @@ export default function PhotoReuseRadar({ onNavigateTab, onSelectApplication }) 
 
   return (
     <div className="space-y-6 max-w-[1720px] mx-auto">
-      
-      {/* Top Banner & Control Deck */}
-      <div className="bg-gradient-to-r from-amber-50 via-white to-slate-50 border border-amber-200/90 rounded-2xl p-5 shadow-xs">
+      {/* Three Sub-Tabs Navigation for Photo Radar & Forensics */}
+      <div className="flex flex-wrap items-center gap-2 p-1.5 bg-slate-200/80 rounded-2xl border border-slate-300/80 w-fit">
+        <button
+          id="tab-photo-reuse-radar"
+          onClick={() => setForensicsSubTab('radar')}
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer ${
+            forensicsSubTab === 'radar'
+              ? 'bg-amber-600 text-white shadow-sm'
+              : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
+          }`}
+        >
+          <ScanEye className="w-4 h-4" />
+          <span>Photo Reuse Radar</span>
+        </button>
+
+        <button
+          id="tab-document-forensics"
+          onClick={() => setForensicsSubTab('document-forensics')}
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer ${
+            forensicsSubTab === 'document-forensics'
+              ? 'bg-amber-600 text-white shadow-sm'
+              : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
+          }`}
+        >
+          <FileSearch className="w-4 h-4" />
+          <span>Document Forensics</span>
+        </button>
+
+        <button
+          id="tab-proof-of-reality"
+          onClick={() => setForensicsSubTab('proof-of-reality')}
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer ${
+            forensicsSubTab === 'proof-of-reality'
+              ? 'bg-amber-600 text-white shadow-sm'
+              : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
+          }`}
+        >
+          <Compass className="w-4 h-4" />
+          <span>Proof-of-Reality</span>
+        </button>
+      </div>
+
+      {/* Tab 2: Document Forensics */}
+      {forensicsSubTab === 'document-forensics' && (
+        <DocumentForensicsView />
+      )}
+
+      {/* Tab 3: Proof-of-Reality (Sun-Shadow and Satellite Built-Up Indicators) */}
+      {forensicsSubTab === 'proof-of-reality' && (
+        <ProofOfRealityView />
+      )}
+
+      {/* Tab 1: Photo Reuse Radar */}
+      {forensicsSubTab === 'radar' && (
+        <>
+          {/* Top Banner & Control Deck */}
+          <div className="bg-gradient-to-r from-amber-50 via-white to-slate-50 border border-amber-200/90 rounded-2xl p-5 shadow-xs">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-amber-200/70">
           <div>
             <div className="flex flex-wrap items-center gap-2 mb-1.5">
@@ -476,6 +535,8 @@ export default function PhotoReuseRadar({ onNavigateTab, onSelectApplication }) 
         </div>
 
       </div>
+        </>
+      )}
 
     </div>
   );
