@@ -88,11 +88,11 @@ export default function Navbar({
   }, [activeApplication?.id]);
 
   return (
-    <header className="shrink-0 bg-white border-b border-slate-200 sticky top-0 z-40 px-3 sm:px-6 py-2 sm:py-2.5 shadow-xs w-full">
-      <div className="flex items-center justify-between gap-2 sm:gap-3 w-full">
+    <header className="shrink-0 bg-white border-b border-slate-200 sticky top-0 z-40 px-3 sm:px-4 lg:px-6 py-2 shadow-xs w-full">
+      <div className="flex flex-wrap items-center justify-between gap-2 w-full">
         
         {/* Brand & AICTE Identity */}
-        <div className="flex items-center space-x-2 sm:space-x-3 shrink-0 min-w-0">
+        <div className="flex items-center space-x-2 sm:space-x-3 shrink min-w-0">
           {/* Mobile Menu Hamburger Toggle Button */}
           {onToggleMobileMenu && (
             <button
@@ -126,28 +126,33 @@ export default function Navbar({
                   AICTE EoA
                 </span>
               </div>
-              <p className="hidden 2xl:block text-[11px] text-slate-500 leading-tight">
+              <p className="hidden xl:block text-[11px] text-slate-500 leading-tight truncate max-w-[280px]">
                 Regulatory Decision-Support & Multi-Modal Document Intelligence
               </p>
             </div>
           </div>
 
-          <div className="hidden lg:flex items-center ml-2 pl-3 border-l border-slate-200 shrink-0">
-            <div className="flex items-center space-x-2 px-2.5 py-1 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-xs font-medium whitespace-nowrap">
+          {/* Statutory Advisory Pill - Icon tooltip on <1024px, compact text on 1024-1440px, full on >=1440px */}
+          <div className="flex items-center ml-1 sm:ml-2 pl-2 sm:pl-3 border-l border-slate-200 shrink min-w-0">
+            <div 
+              title="Advisory Indicators Only • Non-Punitive Review • No Auto-Rejection"
+              className="flex items-center space-x-1.5 px-2 py-1 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-xs font-medium cursor-help"
+            >
               <AlertTriangle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-              <span>Advisory Indicators Only • Non-Punitive Review • No Auto-Rejection</span>
+              <span className="hidden lg:inline xl:hidden">Advisory Indicators Only</span>
+              <span className="hidden xl:inline">Advisory Indicators Only • Non-Punitive Review • No Auto-Rejection</span>
             </div>
           </div>
         </div>
 
         {/* Action Controls, Alert Bell & Role Switcher */}
-        <div className="flex items-center space-x-2.5 shrink-0">
+        <div className="flex items-center flex-wrap gap-1.5 sm:gap-2 justify-end min-w-0">
           
           {/* Data Source Mode Badge / Toggle */}
           <button
             onClick={onToggleLiveMode}
             id="data-source-mode-btn"
-            className={`hidden md:flex items-center space-x-1.5 px-2.5 py-1 rounded-lg border text-xs font-medium transition-all ${
+            className={`hidden 2xl:flex items-center space-x-1.5 px-2.5 py-1 rounded-lg border text-xs font-medium transition-all ${
               isLiveMode
                 ? 'bg-emerald-50 text-emerald-700 border-emerald-300'
                 : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
@@ -161,23 +166,22 @@ export default function Navbar({
           {/* Active Ledger Status Badge */}
           <div 
             id="navbar-ledger-badge"
-            className={`hidden sm:flex items-center space-x-1.5 px-2.5 py-1 rounded-lg border text-xs font-mono font-medium whitespace-nowrap transition-colors ${
+            className={`hidden xl:flex items-center space-x-1.5 px-2 py-1 rounded-lg border text-xs font-mono font-medium whitespace-nowrap transition-colors ${
               ledgerStatus.intact
                 ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
                 : 'bg-rose-50 border-rose-200 text-rose-700'
             }`}
+            title={`Ledger: ${ledgerStatus.intact ? 'INTACT' : 'TAMPERED'} (${ledgerStatus.blocks} Blocks)`}
           >
             <ShieldCheck className={`w-3.5 h-3.5 ${ledgerStatus.intact ? 'text-emerald-600' : 'text-rose-600'}`} />
-            <span>Ledger: {ledgerStatus.intact ? 'INTACT' : 'TAMPERED'} ({ledgerStatus.blocks} Blocks)</span>
+            <span>Ledger: {ledgerStatus.intact ? 'INTACT' : 'TAMPERED'}</span>
           </div>
 
           {/* Active Application Selector */}
           {activeApplication && (
-            <div className="hidden 2xl:flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-slate-50 border border-slate-200 text-xs text-slate-700">
-              <Building2 className="w-3.5 h-3.5 text-sky-600" />
-              <span className="font-semibold text-slate-900">{activeApplication.application_no}</span>
-              <span className="text-slate-300">|</span>
-              <span className="text-slate-600 font-medium">{activeApplication.institution_name}</span>
+            <div className="hidden 2xl:flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-slate-50 border border-slate-200 text-xs text-slate-700 max-w-[180px] truncate">
+              <Building2 className="w-3.5 h-3.5 text-sky-600 shrink-0" />
+              <span className="font-semibold text-slate-900 truncate">{activeApplication.application_no}</span>
             </div>
           )}
 
@@ -190,57 +194,59 @@ export default function Navbar({
             id="theme-toggle-btn"
             onClick={toggleTheme}
             aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-            className="w-10 h-10 min-w-[40px] rounded-[8px] border border-[var(--btn-secondary-border)] bg-[var(--btn-secondary-bg)] hover:bg-[var(--btn-secondary-hover)] text-[var(--text)] flex items-center justify-center cursor-pointer transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--focus)] focus:ring-offset-2 shrink-0 shadow-2xs"
+            className="w-9 h-9 sm:w-10 sm:h-10 rounded-[8px] border border-[var(--btn-secondary-border)] bg-[var(--btn-secondary-bg)] hover:bg-[var(--btn-secondary-hover)] text-[var(--text)] flex items-center justify-center cursor-pointer transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--focus)] focus:ring-offset-2 shrink-0 shadow-2xs"
           >
             {theme === 'dark' ? (
-              <Sun className="w-[18px] h-[18px] shrink-0 text-[var(--text)]" />
+              <Sun className="w-4 h-4 sm:w-[18px] sm:h-[18px] shrink-0 text-[var(--text)]" />
             ) : (
-              <Moon className="w-[18px] h-[18px] shrink-0 text-[var(--text)]" />
+              <Moon className="w-4 h-4 sm:w-[18px] sm:h-[18px] shrink-0 text-[var(--text)]" />
             )}
           </button>
 
-          {/* Role-Aware Switcher (if onRoleChange prop provided) */}
+          {/* Role-Aware Switcher */}
           {onRoleChange && (
-            <div className="flex items-center space-x-1.5 bg-slate-50 p-1 rounded-xl border border-slate-200 shadow-2xs">
-              <UserCheck className="w-4 h-4 ml-2 text-sky-600 shrink-0" />
+            <div className="flex items-center space-x-1 bg-slate-50 p-1 rounded-xl border border-slate-200 shadow-2xs max-w-[130px] sm:max-w-[160px] xl:max-w-[210px]">
+              <UserCheck className="w-3.5 h-3.5 ml-1 text-sky-600 shrink-0" />
               <select
                 id="header-role-select"
                 value={currentRole}
                 onChange={(e) => onRoleChange(e.target.value)}
-                className="bg-transparent text-xs text-slate-800 font-semibold px-2 py-1 outline-none cursor-pointer"
+                className="bg-transparent text-xs text-slate-800 font-semibold px-1 py-1 outline-none cursor-pointer truncate w-full"
               >
-                <option value="scrutiny_officer">Scrutiny Officer (Primary Triage)</option>
-                <option value="senior_officer">Senior Officer (Escalation & Approvals)</option>
-                <option value="admin">Central Admin (System Controls)</option>
-                <option value="auditor">Auditor (Read-Only Ledger)</option>
-                <option value="institution_user">Institution User (Apex Tech)</option>
+                <option value="scrutiny_officer">Scrutiny Officer</option>
+                <option value="senior_officer">Senior Officer</option>
+                <option value="admin">Central Admin</option>
+                <option value="auditor">Auditor</option>
+                <option value="institution_user">Institution User</option>
               </select>
             </div>
           )}
 
-          {/* Authenticated User Profile & Role Badge */}
-          <div className="flex items-center space-x-2.5 bg-slate-50 pl-3 pr-2 py-1.5 rounded-xl border border-slate-200 shadow-2xs">
-            <div className="flex items-center space-x-2">
-              <UserCheck className="w-4 h-4 text-sky-600 shrink-0" />
-              <div className="text-left hidden sm:flex flex-col items-start gap-0.5">
-                <div className="text-xs font-bold text-slate-800 leading-tight">
-                  {currentUser?.full_name || currentUser?.email || 'Dr. Sunita Deshmukh'}
+          {/* Authenticated User Profile & Role Badge - ALWAYS VISIBLE */}
+          <div className="flex items-center space-x-2 bg-slate-50 pl-2.5 pr-1.5 py-1 rounded-xl border border-slate-200 shadow-2xs shrink-0">
+            <div className="flex items-center space-x-1.5 min-w-0">
+              <div className="w-7 h-7 rounded-lg bg-sky-100 border border-sky-200 flex items-center justify-center text-sky-700 font-bold text-xs shrink-0">
+                {(currentUser?.full_name || currentUser?.email || 'SO')[0].toUpperCase()}
+              </div>
+              <div className="text-left hidden md:flex flex-col items-start min-w-0 max-w-[110px] xl:max-w-[140px]">
+                <div className="text-xs font-bold text-slate-800 leading-tight truncate w-full">
+                  {currentUser?.full_name || currentUser?.email?.split('@')[0] || 'Dr. Deshmukh'}
                 </div>
-                <span id="header-role-badge" className="role-badge-pill">
+                <span id="header-role-badge" className="role-badge-pill truncate max-w-full text-[9px] py-0 px-1.5">
                   {currentRole ? currentRole.replace('_', ' ') : 'Scrutiny Officer'}
                 </span>
               </div>
             </div>
 
-            {/* Logout Action */}
+            {/* Logout Action - ALWAYS VISIBLE */}
             {onLogout && (
               <button
                 id="header-signout-btn"
                 onClick={onLogout}
-                className="p-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition cursor-pointer text-xs flex items-center space-x-1"
+                className="px-2 py-1 rounded-lg text-slate-600 hover:text-rose-700 hover:bg-rose-50 transition cursor-pointer text-xs font-semibold flex items-center space-x-1 shrink-0 border border-transparent hover:border-rose-200"
                 title="Sign out of PRAMAAN-X session"
               >
-                <span className="text-[11px] font-medium hidden md:inline">Sign Out</span>
+                <span>Sign Out</span>
               </button>
             )}
           </div>
