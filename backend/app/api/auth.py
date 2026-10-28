@@ -98,4 +98,12 @@ def login(request: LoginRequest, req: Request, db: Session = Depends(get_db)):
 @router.get("/me", response_model=UserOut)
 def read_current_user(current_user: User = Depends(get_current_user)):
     """Returns profile and role claims of currently authenticated session."""
-    return current_user
+    return {
+        "id": current_user.id,
+        "email": current_user.email,
+        "full_name": current_user.full_name,
+        "role": normalize_role(current_user.role),
+        "institution_id": current_user.institution_id,
+        "is_active": current_user.is_active,
+    }
+

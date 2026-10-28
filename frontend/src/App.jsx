@@ -12,6 +12,7 @@ import InspectionPlannerPage from './pages/InspectionPlannerPage';
 import ManualReviewQueuePage from './pages/ManualReviewQueuePage';
 import DocumentIntelligencePage from './pages/DocumentIntelligencePage';
 import LoginPage from './pages/LoginPage';
+import { ShieldAlert } from 'lucide-react';
 import { api } from './services/api';
 
 const ROLE_PERMITTED_TABS = {
@@ -155,7 +156,25 @@ export default function App() {
       handleLogout();
     };
     window.addEventListener('pramaan_unauthorized', handleUnauthorized);
-    return () => window.removeEventListener('pramaan_unauthorized', handleUnauthorized);
+
+    // Periodic health check to keep Live Backend API status truthful
+    let isMounted = true;
+    const checkBackendHealth = async () => {
+      try {
+        const res = await fetch('http://localhost:8000/health');
+        if (isMounted) setIsLiveMode(res.ok);
+      } catch (e) {
+        if (isMounted) setIsLiveMode(false);
+      }
+    };
+    checkBackendHealth();
+    const healthInterval = setInterval(checkBackendHealth, 5000);
+
+    return () => {
+      window.removeEventListener('pramaan_unauthorized', handleUnauthorized);
+      isMounted = false;
+      clearInterval(healthInterval);
+    };
   }, []);
 
   const handleLoginSuccess = async (userProfile) => {
@@ -202,6 +221,9 @@ export default function App() {
     return <LoginPage onLoginSuccess={handleLoginSuccess} />;
   }
 
+  const permittedTabs = ROLE_PERMITTED_TABS[currentUser?.role || currentRole] || ROLE_PERMITTED_TABS.scrutiny_officer;
+  const isTabAllowed = permittedTabs.includes(activeTab);
+
   return (
     <div className="h-screen w-screen bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-sky-500 selection:text-white overflow-hidden">
       {/* Top AICTE Navigation */}
@@ -226,77 +248,101 @@ export default function App() {
         {/* Main Content Workspace */}
         <main className="flex-1 overflow-y-auto bg-slate-50/60 p-4 sm:p-6 lg:p-8">
           <div className="max-w-[1440px] mx-auto w-full flex flex-col gap-6">
-            {activeTab === 'dashboard' && (
-              <Dashboard 
-                applications={isLiveMode ? applications : []}
-                onSelectApplication={handleSelectApplication}
-                onNavigateTab={setActiveTab}
-                onRefresh={() => loadData(currentRole)}
-                isLiveMode={isLiveMode}
-                currentRole={currentRole}
-                currentUser={currentUser}
-              />
-            )}
+            {!isTabAllowed ? (
+              <div 
+                id="access-restricted-card"
+                className="bg-white rounded-2xl border border-rose-200 p-8 text-center flex flex-col items-center justify-center gap-4 my-8 shadow-sm"
+              >
+                <div className="w-14 h-14 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center">
+                  <ShieldAlert className="w-7 h-7" />
+                </div>
+                <h2 className="text-xl font-bold text-slate-800">Access Restricted</h2>
+                <p className="text-sm text-slate-600 max-w-md">
+                  Your active role (<span className="font-semibold text-rose-700 capitalize">{currentRole?.replace('_', ' ')}</span>) is not authorized to access the <strong>{activeTab}</strong> regulatory module directly.
+                </p>
+                <button
+                  id="return-to-dashboard-btn"
+                  onClick={() => setActiveTab('dashboard')}
+                  className="mt-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-semibold hover:bg-indigo-700 transition-colors cursor-pointer"
+                >
+                  Return to Dashboard
+                </button>
+              </div>
+            ) : (
+              <>
+                {activeTab === 'dashboard' && (
+                  <Dashboard 
+                    applications={isLiveMode ? applications : []}
+                    onSelectApplication={handleSelectApplication}
+                    onNavigateTab={setActiveTab}
+                    onRefresh={() => loadData(currentRole)}
+                    isLiveMode={isLiveMode}
+                    currentRole={currentRole}
+                    currentUser={currentUser}
+                  />
+                )}
 
-            {activeTab === 'evidence-lens' && (
-              <EvidenceLens 
-                applications={applications}
-                onSelectApplication={handleSelectApplication}
-                evidenceLensData={evidenceLensData} 
-                activeApplication={activeApplication}
-                evidenceLensError={evidenceLensError}
-                onRefresh={() => {
-                  if (activeApplication) {
-                    handleSelectApplication(activeApplication);
-                  } else {
-                    loadData(currentRole);
-                  }
-                }}
-              />
-            )}
+                {activeTab === 'evidence-lens' && (
+                  <EvidenceLens 
+                    applications={applications}
+                    onSelectApplication={handleSelectApplication}
+                    evidenceLensData={evidenceLensData} 
+                    activeApplication={activeApplication}
+                    evidenceLensError={evidenceLensError}
+                    onRefresh={() => {
+                      if (activeApplication) {
+                        handleSelectApplication(activeApplication);
+                      } else {
+                        loadData(currentRole);
+                      }
+                    }}
+                  />
+                )}
 
-            {activeTab === 'manual-review-queue' && (
-              <ManualReviewQueuePage 
-                currentUser={currentUser}
-                onNavigateToAudit={() => setActiveTab('audit-ledger')}
-              />
-            )}
+                {activeTab === 'manual-review-queue' && (
+                  <ManualReviewQueuePage 
+                    currentUser={currentUser}
+                    onNavigateToAudit={() => setActiveTab('audit-ledger')}
+                  />
+                )}
 
-            {activeTab === 'impossibility-engine' && (
-              <ImpossibilityGraph />
-            )}
+                {activeTab === 'impossibility-engine' && (
+                  <ImpossibilityGraph />
+                )}
 
-            {activeTab === 'document-intelligence' && (
-              <DocumentIntelligencePage 
-                onNavigateTab={setActiveTab}
-                onSelectApplication={handleSelectApplication}
-              />
-            )}
+                {activeTab === 'document-intelligence' && (
+                  <DocumentIntelligencePage 
+                    onNavigateTab={setActiveTab}
+                    onSelectApplication={handleSelectApplication}
+                  />
+                )}
 
-            {activeTab === 'photo-radar' && (
-              <PhotoReuseRadar 
-                onNavigateTab={setActiveTab}
-                onSelectApplication={handleSelectApplication}
-              />
-            )}
+                {activeTab === 'photo-radar' && (
+                  <PhotoReuseRadar 
+                    onNavigateTab={setActiveTab}
+                    onSelectApplication={handleSelectApplication}
+                  />
+                )}
 
-            {activeTab === 'regulations' && (
-              <RuleConfigPage />
-            )}
+                {activeTab === 'regulations' && (
+                  <RuleConfigPage />
+                )}
 
-            {activeTab === 'preflight' && (
-              <PreFlightScorecard 
-                currentUser={currentUser}
-                onNavigateToEvidenceLens={() => setActiveTab('evidence-lens')}
-              />
-            )}
+                {activeTab === 'preflight' && (
+                  <PreFlightScorecard 
+                    currentUser={currentUser}
+                    onNavigateToEvidenceLens={() => setActiveTab('evidence-lens')}
+                  />
+                )}
 
-            {activeTab === 'inspection-planner' && (
-              <InspectionPlannerPage />
-            )}
+                {activeTab === 'inspection-planner' && (
+                  <InspectionPlannerPage />
+                )}
 
-            {activeTab === 'audit-ledger' && (
-              <AuditAndReceiptsPage activeApplicationId={activeApplication?.id || 1} />
+                {activeTab === 'audit-ledger' && (
+                  <AuditAndReceiptsPage activeApplicationId={activeApplication?.id || 1} />
+                )}
+              </>
             )}
           </div>
         </main>

@@ -196,6 +196,7 @@ export default function LoginPage({ onLoginSuccess }) {
             </div>
 
             <button
+              id="login-submit-btn"
               type="submit"
               disabled={isLoading}
               className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-xl shadow-md text-sm font-bold text-white bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 disabled:opacity-60 transition cursor-pointer"
@@ -231,6 +232,7 @@ export default function LoginPage({ onLoginSuccess }) {
                 return (
                   <button
                     key={preset.role}
+                    id={`preset-role-${preset.role}`}
                     type="button"
                     onClick={() => handleSelectPreset(preset)}
                     className={`text-left p-2.5 rounded-xl border transition flex flex-col justify-between ${
