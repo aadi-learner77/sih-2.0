@@ -290,20 +290,20 @@ def seed_database(reset: bool = False):
         updated_at=now
     )
     
-    # Clean benchmark application for Royal College
+    # Benchmark application for Royal College (Expired Fire NOC)
     app2 = Application(
         application_no="EOA-2025-ENG-1102",
         institution_id=inst2.id,
         academic_year="2025-26",
         category="Extension of Approval (EoA)",
-        status="APPROVED_WITH_CONDITIONS",
-        preflight_readiness_score=94.2,
-        checklist_completion_pct=100.0,
-        advisory_flags_count=1,
+        status="EXPIRED",
+        preflight_readiness_score=68.5,
+        checklist_completion_pct=85.0,
+        advisory_flags_count=2,
         impossibility_flags_count=1,
         forensic_flags_count=0,
-        issuer_discrepancy_count=0,
-        ai_advisory_summary="High compliance readiness. Minor cadre proportion advisory noted.",
+        issuer_discrepancy_count=1,
+        ai_advisory_summary="State Fire Portal returns lapsed Fire Safety Certificate. NOC renewal pending inquiry.",
         submission_date=now - timedelta(days=12),
         created_at=now - timedelta(days=12),
         updated_at=now - timedelta(days=2)
