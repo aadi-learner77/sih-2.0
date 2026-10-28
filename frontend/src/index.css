@@ -123,14 +123,13 @@
   html,
   body,
   #root {
-    height: 100% !important;
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    overflow: hidden !important;
-    background-color: var(--bg) !important;
-    color: var(--text) !important;
-    font-family: Arial, Helvetica, sans-serif !important;
+    min-height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
     line-height: 1.5;
     font-weight: 400;
@@ -317,6 +316,38 @@ aside button[id^="sidebar-tab-"] span.badge,
 aside button[id^="sidebar-tab-"] span[class*="rounded-full"],
 aside button[id^="sidebar-tab-"] span[class*="border"] {
   white-space: nowrap !important;
+}
+
+/* Demo account cards and multiline role cards can wrap naturally and maintain column layout */
+.preset-account-card,
+[id^="preset-role-"] {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  text-align: left !important;
+  height: 100% !important;
+  min-height: auto !important;
+  padding: 12px !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.preset-account-card p,
+[id^="preset-role-"] p {
+  white-space: normal !important;
+  word-break: break-word !important;
+  overflow-wrap: anywhere !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.preset-account-card span[class*="rounded-full"],
+[id^="preset-role-"] span[class*="rounded-full"] {
+  white-space: nowrap !important;
+  padding: 2px 8px !important;
+  font-size: 10px !important;
+  line-height: 1.2 !important;
 }
 
 /* Remove any sharp corner overrides */

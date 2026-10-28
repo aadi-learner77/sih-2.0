@@ -37,6 +37,7 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [isLiveMode, setIsLiveMode] = useState(false);
   const [sidebarCounts, setSidebarCounts] = useState({ impossibilities: 0, advisoryFlags: 0 });
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleLogout = () => {
     localStorage.removeItem('pramaan_token');
@@ -225,7 +226,7 @@ export default function App() {
   const isTabAllowed = permittedTabs.includes(activeTab);
 
   return (
-    <div className="h-screen w-screen bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-sky-500 selection:text-white overflow-hidden">
+    <div className="h-screen w-full max-w-full bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-sky-500 selection:text-white overflow-hidden">
       {/* Top AICTE Navigation */}
       <Navbar 
         currentUser={currentUser}
@@ -234,20 +235,27 @@ export default function App() {
         activeApplication={activeApplication}
         isLiveMode={isLiveMode}
         onToggleLiveMode={() => setIsLiveMode(!isLiveMode)}
+        isMobileMenuOpen={isMobileMenuOpen}
+        onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
       />
 
-      <div className="flex-1 flex overflow-hidden min-h-0">
-        {/* Left Navigation Sidebar (Role-Aware) */}
+      <div className="flex-1 min-h-0 flex overflow-hidden relative">
+        {/* Left Navigation Sidebar (Role-Aware & Responsive Mobile Drawer) */}
         <Sidebar 
           activeTab={activeTab} 
-          setActiveTab={setActiveTab}
+          setActiveTab={(tab) => {
+            setActiveTab(tab);
+            setIsMobileMenuOpen(false);
+          }}
           currentRole={currentRole}
           counts={sidebarCounts}
+          isOpen={isMobileMenuOpen}
+          onClose={() => setIsMobileMenuOpen(false)}
         />
 
         {/* Main Content Workspace */}
-        <main className="flex-1 overflow-y-auto bg-slate-50/60 p-4 sm:p-6 lg:p-8">
-          <div className="max-w-[1440px] mx-auto w-full flex flex-col gap-6">
+        <main className="flex-1 overflow-y-auto min-h-0 bg-slate-50/60 p-3 sm:p-5 lg:p-6 pb-20 w-full min-w-0">
+          <div className="w-full max-w-[1600px] mx-auto flex flex-col gap-4 sm:gap-6 min-w-0">
             {!isTabAllowed ? (
               <div 
                 id="access-restricted-card"
@@ -349,7 +357,7 @@ export default function App() {
       </div>
 
       {/* Statutory Footer */}
-      <footer className="shrink-0 bg-white border-t border-slate-200 py-2.5 px-6 text-center text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-2 shadow-sm">
+      <footer className="flex-none bg-white border-t border-slate-200 py-2.5 px-4 sm:px-6 text-center text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-2 shadow-sm z-30">
         <div className="flex items-center space-x-2">
           <span className="font-bold text-slate-700">PRAMAAN-X v1.0.0</span>
           <span>•</span>

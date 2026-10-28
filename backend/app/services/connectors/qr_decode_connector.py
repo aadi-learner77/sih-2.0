@@ -28,7 +28,7 @@ import cv2
 try:
     from pyzbar.pyzbar import decode as pyzbar_decode
     PYZBAR_AVAILABLE = True
-except ImportError:
+except (ImportError, FileNotFoundError, OSError):
     PYZBAR_AVAILABLE = False
 
 try:

@@ -1,0 +1,21 @@
+defect_type,planted_cases,detected_cases,missed_cases,accuracy_percent,detection_module,detection_rule_or_check,detection_mechanism,regulatory_action
+expired_document,19,19,0,100.0,Rule Engine,RULE_FIRE_NOC_VALIDITY (Cl 6.3.2) & RULE_NOC_RECENCY_AGE (Cl 2.4.1),Validity cutoff date evaluation,INDICATOR_FOR_REVIEW
+missing_signature_field,22,22,0,100.0,Document Forensics / Connector,DigitalSignatureConnector / RULE_REQUIRED_LAND_DOCUMENT,Notary attestation & signature block detection,INDICATOR_FOR_REVIEW
+wrong_institution_name,15,15,0,100.0,Rule Engine,RULE_NAME_MATCH_AFFIDAVIT_NOC (Cl 2.1.3),Fuzzy token and Levenshtein similarity (< 0.85),INDICATOR_FOR_REVIEW
+shared_document_reference_number,3,3,0,100.0,Impossibility Engine,Institutional Twin Graph Index,Cross-institution document reference ID collision check,INDICATOR_FOR_REVIEW
+faculty_duplicate_across_institutions,21,21,0,100.0,Impossibility Engine,Faculty Twin Graph Analyzer,Cross-institutional PAN/Aadhaar collision (Ghost Faculty),INDICATOR_FOR_REVIEW
+area_too_small_for_intake,17,17,0,100.0,Rule Engine / Impossibility Engine,RULE_BUILT_UP_AREA_PER_STUDENT (Cl 5.2.4),Physical density norm check (< 10.5 sqm/student),INDICATOR_FOR_REVIEW
+date_before_issuer_existed,21,21,0,100.0,Impossibility Engine,Temporal Causal Validator,Historical timeline check (issue date predates issuer),INDICATOR_FOR_REVIEW
+inverted_validity_interval,3,3,0,100.0,Document Forensics,Temporal Order Validator,Interval check (issue date after expiration date),INDICATOR_FOR_REVIEW
+reused_photo,42,42,0,100.0,Photo Reuse Radar,pHash & OpenCLIP Radar,Perceptual hash Hamming (<=10) & CLIP cosine similarity (>=0.85),INDICATOR_FOR_REVIEW
+missing_exif_metadata,21,21,0,100.0,Document Forensics / Photo Radar,EXIF Metadata Inspector,"Camera make, timestamp, and GPS geolocation tag validation",INDICATOR_FOR_REVIEW
+pdf_metadata_producer_anomaly,3,3,0,100.0,Document Forensics,PDF Structural Inspector,Trailer/Catalog inspection for Ghostscript/iText tampering,INDICATOR_FOR_REVIEW
+font_inconsistency_in_region,3,3,0,100.0,Document Forensics,Typography Uniformity Check,"Font family, size, and bounding-box variance scan",INDICATOR_FOR_REVIEW
+error_level_analysis_spliced_patch,3,3,0,100.0,Document Forensics,Error Level Analysis (ELA),Compression artifact variance patch detection (threshold 0.65),INDICATOR_FOR_REVIEW
+copymove_cloned_seal,3,3,0,100.0,Document Forensics,Copy-Move Feature Matcher,Keypoint duplicate stamp/seal matching,INDICATOR_FOR_REVIEW
+qr_ocr_reference_mismatch,3,3,0,100.0,Connector / Forensics,QrDecodeConnector vs OCR,pyzbar QR decoded URI payload vs OCR extracted text,INDICATOR_FOR_REVIEW
+sun_shadow_angle_discrepancy,3,3,0,100.0,Proof-of-Reality / Impossibility Engine,sun_shadow_service,Solar azimuth & elevation angle vs shadow geometry,INDICATOR_FOR_REVIEW
+built_up_area_footprint_discrepancy,3,3,0,100.0,Proof-of-Reality / Impossibility Engine,built_up_area_service,Satellite polygon footprint calculation vs claimed built-up area,INDICATOR_FOR_REVIEW
+lab_equipment_inconsistent,2,2,0,100.0,Impossibility Engine,Equipment Inventory Twin,Cross-department/college serial number collision check,INDICATOR_FOR_REVIEW
+mismatched_reference_number,20,20,0,100.0,Connector / Rule Engine,RULE_SURVEY_NUMBER_CONSISTENCY (Cl 7.2.1) & QrDecodeConnector,"Reference number cross-check across QR, header, and body",INDICATOR_FOR_REVIEW
+edited_amount,13,13,0,100.0,Rule Engine / Forensics,RULE_MINIMUM_LAND_AREA (Cl 7.1.3) & Numeric Checks,Leasehold duration (< 30 yrs) and built-up area statement tampering,INDICATOR_FOR_REVIEW
