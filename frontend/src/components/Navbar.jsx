@@ -91,8 +91,8 @@ export default function Navbar({
   }, [activeApplication?.id]);
 
   return (
-    <header className="shrink-0 bg-white border-b border-slate-200 sticky top-0 z-40 px-3 sm:px-6 py-2 sm:py-2.5 shadow-xs w-full">
-      <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-3 w-full">
+    <header className="shrink-0 bg-white border-b border-slate-200 sticky top-0 z-40 px-3 sm:px-6 py-2 shadow-xs w-full">
+      <div className="flex items-center justify-between gap-3 w-full">
         
         {/* Brand & AICTE Identity */}
         <div className="flex items-center space-x-2 sm:space-x-3 shrink-0 min-w-0">
@@ -129,73 +129,25 @@ export default function Navbar({
                   AICTE EoA
                 </span>
               </div>
-              <p className="hidden 2xl:block text-[11px] text-slate-500 leading-tight">
-                Regulatory Decision-Support & Multi-Modal Document Intelligence
-              </p>
-            </div>
-          </div>
-
-          <div className="hidden lg:flex items-center ml-2 pl-3 border-l border-slate-200 shrink-0">
-            <div className="flex items-center space-x-2 px-2.5 py-1 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-xs font-medium whitespace-nowrap">
-              <AlertTriangle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-              <span>Advisory Indicators Only • Non-Punitive Review • No Auto-Rejection</span>
             </div>
           </div>
         </div>
 
         {/* Action Controls, Alert Bell & Role Switcher */}
-        <div className="flex flex-wrap items-center justify-end gap-2 sm:gap-2.5 shrink-0 min-w-0">
+        <div className="flex items-center justify-end gap-2 sm:gap-2.5 shrink-0">
           
-          {/* Desktop Secondary Badges (>= 1280px) */}
-          <button
-            onClick={onToggleLiveMode}
-            id="data-source-mode-btn"
-            className={`hidden xl:flex items-center space-x-1.5 px-2.5 py-1 rounded-lg border text-xs font-medium transition-all ${
-              isLiveMode
-                ? 'bg-emerald-50 text-emerald-700 border-emerald-300'
-                : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
-            }`}
-            title="Toggle between Live API and Rich Mock Dataset"
-          >
-            <span className={`w-2 h-2 rounded-full ${isLiveMode ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400'}`} />
-            <span>{isLiveMode ? 'Live Backend API' : 'Demo / Mock Data'}</span>
-          </button>
-
-          {/* Active Ledger Status Badge */}
-          <div 
-            id="navbar-ledger-badge"
-            className={`hidden xl:flex items-center space-x-1.5 px-2.5 py-1 rounded-lg border text-xs font-mono font-medium whitespace-nowrap transition-colors ${
-              ledgerStatus.intact
-                ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
-                : 'bg-rose-50 border-rose-200 text-rose-700'
-            }`}
-          >
-            <ShieldCheck className={`w-3.5 h-3.5 ${ledgerStatus.intact ? 'text-emerald-600' : 'text-rose-600'}`} />
-            <span>Ledger: {ledgerStatus.intact ? 'INTACT' : 'TAMPERED'} ({ledgerStatus.blocks} Blocks)</span>
-          </div>
-
-          {/* Active Application Selector */}
-          {activeApplication && (
-            <div className="hidden 2xl:flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-slate-50 border border-slate-200 text-xs text-slate-700">
-              <Building2 className="w-3.5 h-3.5 text-sky-600" />
-              <span className="font-semibold text-slate-900">{activeApplication.application_no}</span>
-              <span className="text-slate-300">|</span>
-              <span className="text-slate-600 font-medium truncate max-w-[160px]">{activeApplication.institution_name}</span>
-            </div>
-          )}
-
-          {/* Secondary Badges Overflow Menu for Smaller Screens (< 1280px) */}
-          <div className="relative xl:hidden">
+          {/* Secondary Badges Status Button & Menu */}
+          <div className="relative">
             <button
               type="button"
               id="header-overflow-menu-btn"
               onClick={() => setShowOverflowMenu(!showOverflowMenu)}
-              className="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-xs font-semibold text-slate-700 cursor-pointer transition-colors"
+              className="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-xs font-semibold text-slate-700 cursor-pointer transition-colors shadow-2xs"
               title="View system status, ledger, and application info"
               aria-label="System status and badges menu"
             >
-              <span className={`w-2 h-2 rounded-full ${isLiveMode ? 'bg-emerald-500' : 'bg-slate-400'}`} />
-              <span className="hidden sm:inline text-xs">Status</span>
+              <span className={`w-2 h-2 rounded-full ${isLiveMode ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400'}`} />
+              <span className="text-xs font-medium">Status & Badges</span>
               <MoreHorizontal className="w-4 h-4 text-slate-600 shrink-0" />
             </button>
 
@@ -205,12 +157,12 @@ export default function Navbar({
                   className="fixed inset-0 z-40 bg-transparent" 
                   onClick={() => setShowOverflowMenu(false)} 
                 />
-                <div className="absolute right-0 mt-2 w-72 sm:w-80 bg-white border border-slate-200 rounded-xl shadow-xl p-3 z-50 flex flex-col gap-2.5">
+                <div className="absolute right-0 mt-2 w-72 sm:w-80 bg-white border border-slate-200 rounded-xl shadow-xl p-3 z-50 flex flex-col gap-2.5 animate-fadeIn">
                   <div className="flex items-center justify-between pb-2 border-b border-slate-100">
                     <span className="text-xs font-bold text-slate-800">System Status & Badges</span>
                     <button 
                       onClick={() => setShowOverflowMenu(false)}
-                      className="text-slate-400 hover:text-slate-700 p-0.5 text-xs font-bold"
+                      className="text-slate-400 hover:text-slate-700 p-0.5 text-xs font-bold cursor-pointer"
                     >
                       ✕
                     </button>
@@ -265,6 +217,7 @@ export default function Navbar({
               </>
             )}
           </div>
+
 
           {/* Operational Alert Bell with Drawer */}
           <AlertBellDrawer currentRole={currentRole} />

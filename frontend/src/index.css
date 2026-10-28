@@ -1388,15 +1388,24 @@ main {
   max-width: 100%;
 }
 
-/* Align left edges consistently: max-width 1600px, full width, centered only on ultra-wide displays */
+/* Align left edges consistently: 100% fluid width, centered only on ultra-wide displays >2000px */
 main > div,
 .app-content-wrapper,
 div[class*="max-w-[1720px]"],
 div[class*="max-w-7xl"] {
-  max-width: 1600px !important;
+  max-width: 100% !important;
   margin-left: auto !important;
   margin-right: auto !important;
   width: 100% !important;
+}
+
+@media (min-width: 2000px) {
+  main > div,
+  .app-content-wrapper,
+  div[class*="max-w-[1720px]"],
+  div[class*="max-w-7xl"] {
+    max-width: 1720px !important;
+  }
 }
 
 /* Gap between major sections or cards stacked vertically: 24px */
