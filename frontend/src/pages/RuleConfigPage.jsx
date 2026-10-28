@@ -27,19 +27,16 @@ import {
   SIMULATION_RULES 
 } from '../data/mockWhatIfData';
 import DemoDataBadge from '../components/DemoDataBadge';
+import RulesCatalogView from '../components/RulesCatalogView';
 import { api } from '../services/api';
 
 /**
- * Policy What-If Simulator for Admins:
- * - Pick a rule from the AICTE handbook catalog
- * - Edit its parameter with an interactive slider
- * - Call the dry-run endpoint (/rules/dry-run)
- * - Show how many applications change status across the 150-cohort
- * - Bar charts by State and Course Type (Baseline vs Simulated)
- * - Before / After transition table
- * - "Publish New Rule Version" button requiring modal confirmation
+ * Policy What-If Simulator & Regulation-as-Code Engine:
+ * - Tab 1: AICTE Handbook Rules Catalog & Formatted Clause Citations
+ * - Tab 2: Policy What-If Simulator with Dry-Run Execution across 150 colleges
  */
 export default function RuleConfigPage() {
+  const [activeTopTab, setActiveTopTab] = useState('catalog'); // 'catalog' | 'simulator'
   const [selectedRuleId, setSelectedRuleId] = useState('RULE-FSR-001');
   const [currentRule, setCurrentRule] = useState(SIMULATION_RULES[0]);
   const [sliderValue, setSliderValue] = useState(SIMULATION_RULES[0].default_simulated_value);
@@ -54,6 +51,14 @@ export default function RuleConfigPage() {
   const [isPublishing, setIsPublishing] = useState(false);
   const [publishedReceipt, setPublishedReceipt] = useState(null);
   const [activeRuleVersion, setActiveRuleVersion] = useState('v1.0.4');
+
+  const handleSelectRuleForSimulation = (rule) => {
+    const matched = SIMULATION_RULES.find(
+      (r) => r.rule_code === rule.rule_code || (r.clause_id && rule.clause_id && r.clause_id.includes(rule.clause_id))
+    ) || SIMULATION_RULES[0];
+    setSelectedRuleId(matched.id);
+    setActiveTopTab('simulator');
+  };
 
   // Dry-Run API execution calling POST /rules/dry-run
   const executeDryRun = async (rule, val) => {
@@ -172,9 +177,45 @@ export default function RuleConfigPage() {
 
   return (
     <div className="space-y-6 max-w-[1720px] mx-auto">
-      
-      {/* Top Banner */}
-      <div className="bg-gradient-to-r from-purple-50 via-white to-slate-50 border border-purple-200/90 rounded-2xl p-6 shadow-xs">
+      {/* Sub-Tabs Switcher for Regulations */}
+      <div className="flex flex-wrap items-center gap-2 p-1.5 bg-slate-200/80 rounded-2xl border border-slate-300/80 w-fit">
+        <button
+          id="tab-rules-catalog"
+          onClick={() => setActiveTopTab('catalog')}
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer ${
+            activeTopTab === 'catalog'
+              ? 'bg-purple-700 text-white shadow-sm'
+              : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
+          }`}
+        >
+          <BookOpenCheck className="w-4 h-4" />
+          <span>Rules Catalog & Clause Citations</span>
+        </button>
+
+        <button
+          id="tab-what-if-simulator"
+          onClick={() => setActiveTopTab('simulator')}
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer ${
+            activeTopTab === 'simulator'
+              ? 'bg-purple-700 text-white shadow-sm'
+              : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
+          }`}
+        >
+          <Sliders className="w-4 h-4" />
+          <span>Policy What-If Simulator</span>
+        </button>
+      </div>
+
+      {/* View 1: Rules Catalog */}
+      {activeTopTab === 'catalog' && (
+        <RulesCatalogView onSelectForSimulation={handleSelectRuleForSimulation} />
+      )}
+
+      {/* View 2: What-If Simulator */}
+      {activeTopTab === 'simulator' && (
+        <>
+          {/* Top Banner */}
+          <div className="bg-gradient-to-r from-purple-50 via-white to-slate-50 border border-purple-200/90 rounded-2xl p-6 shadow-xs">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
             <div className="flex flex-wrap items-center gap-2 mb-1.5">
@@ -683,6 +724,8 @@ export default function RuleConfigPage() {
           </div>
 
         </div>
+      )}
+        </>
       )}
 
       {/* 
