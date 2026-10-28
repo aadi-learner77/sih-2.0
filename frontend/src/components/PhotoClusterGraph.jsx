@@ -77,19 +77,19 @@ export default function PhotoClusterGraph({
             },
           },
           shape: node.shape || 'box',
-          size: node.size || 26,
+          size: node.size ? Math.max(node.size, 28) : 32,
           font: {
             color: graphLabel,
-            size: 11,
-            face: 'Arial, sans-serif',
+            size: 13,
+            face: 'Inter, system-ui, sans-serif',
             bold: true,
           },
-          margin: 12,
-          borderWidth: 1,
+          margin: 14,
+          borderWidth: 2,
           shadow: {
             enabled: true,
-            color: 'rgba(0,0,0,0.08)',
-            size: 4,
+            color: 'rgba(0,0,0,0.1)',
+            size: 5,
             x: 1,
             y: 2,
           },
@@ -111,18 +111,19 @@ export default function PhotoClusterGraph({
             color: isSelected ? graphRisk : graphEdge,
             highlight: graphRisk,
           },
-          width: isSelected ? 3.5 : 2,
+          width: isSelected ? 4 : 2.5,
           dashes: edge.dashes || false,
           font: {
-            size: 9.5,
+            size: 11,
             color: graphLabel,
             background: isSelected ? warningBg : surface,
             strokeWidth: 0,
             bold: true,
+            face: 'Inter, system-ui, sans-serif',
           },
           arrows: {
-            to: { enabled: true, scaleFactor: 0.7 },
-            from: { enabled: true, scaleFactor: 0.7 },
+            to: { enabled: true, scaleFactor: 0.8 },
+            from: { enabled: true, scaleFactor: 0.8 },
           },
           smooth: { type: 'curvedCW', roundness: 0.15 },
         };
@@ -130,16 +131,21 @@ export default function PhotoClusterGraph({
     );
 
     const options = {
+      autoResize: true,
       physics: {
         solver: 'forceAtlas2Based',
         forceAtlas2Based: {
-          gravitationalConstant: -70,
-          centralGravity: 0.008,
-          springLength: 170,
-          springConstant: 0.06,
-          damping: 0.45,
+          gravitationalConstant: -130,
+          centralGravity: 0.006,
+          springLength: 210,
+          springConstant: 0.05,
+          damping: 0.5,
         },
-        stabilization: { iterations: 140 },
+        stabilization: {
+          enabled: true,
+          iterations: 150,
+          updateInterval: 25,
+        },
       },
       interaction: {
         hover: true,
@@ -149,12 +155,35 @@ export default function PhotoClusterGraph({
         tooltipDelay: 150,
       },
       nodes: {
-        scaling: { min: 16, max: 36 },
+        scaling: { min: 20, max: 40 },
       },
     };
 
     const network = new Network(containerRef.current, { nodes, edges }, options);
     networkRef.current = network;
+
+    // Automatically zoom to fit once layout settles
+    network.once('stabilizationIterationsDone', () => {
+      network.fit({ animation: { duration: 500, easingFunction: 'easeInOutQuad' } });
+    });
+    network.once('stabilized', () => {
+      network.fit({ animation: { duration: 500, easingFunction: 'easeInOutQuad' } });
+    });
+
+    const initTimer = setTimeout(() => {
+      if (networkRef.current) {
+        networkRef.current.fit();
+      }
+    }, 350);
+
+    const resizeObserver = new ResizeObserver(() => {
+      if (networkRef.current) {
+        networkRef.current.fit();
+      }
+    });
+    if (containerRef.current) {
+      resizeObserver.observe(containerRef.current);
+    }
 
     // Handle Edge or Node selection
     network.on('click', (params) => {
@@ -177,6 +206,8 @@ export default function PhotoClusterGraph({
     });
 
     return () => {
+      clearTimeout(initTimer);
+      resizeObserver.disconnect();
       if (network) network.destroy();
     };
   }, [graphData, selectedPairId, highlightedNodeId]);
@@ -249,7 +280,7 @@ export default function PhotoClusterGraph({
       <div 
         ref={containerRef} 
         id="photo-cluster-graph-canvas"
-        className="flex-1 w-full min-h-[500px] bg-white cursor-grab active:cursor-grabbing relative"
+        className="w-full h-[540px] min-h-[520px] bg-white cursor-grab active:cursor-grabbing relative"
       />
 
       {/* Interactive Legend & Stats Footer */}

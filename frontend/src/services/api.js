@@ -65,6 +65,14 @@ export const api = {
     const res = await apiClient.get(`/applications/${id}/evidence-lens`);
     return res.data;
   },
+  validateApplication: async (id) => {
+    const res = await apiClient.post(`/applications/${id}/validate`);
+    return res.data;
+  },
+  getAllFindings: async (severity, status) => {
+    const res = await apiClient.get('/applications/findings/all', { params: { severity, status } });
+    return res.data;
+  },
 
   // Documents & OCR
   uploadDocument: async (applicationId, file, docType) => {
@@ -242,6 +250,24 @@ export const api = {
       institution_id: instId,
       application_category: category,
       facts: facts || {},
+    });
+    return res.data;
+  },
+  uploadPreflightDocument: async (instId, docType, file) => {
+    const formData = new FormData();
+    formData.append('institution_id', instId);
+    if (docType) formData.append('document_type', docType);
+    formData.append('file', file);
+    const res = await apiClient.post('/preflight/upload', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return res.data;
+  },
+  ingestDocument: async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const res = await apiClient.post('/documents/ingest', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
     });
     return res.data;
   },

@@ -161,6 +161,7 @@ class PreflightScanResponse(BaseModel):
     rule_indicators: List[Dict[str, Any]]
     impossibility_indicators: List[Dict[str, Any]]
     recommendations: List[str]
+    uploaded_documents: Optional[List[Dict[str, Any]]] = None
 
 # Application Submission
 class ApplicationSubmitRequest(BaseModel):

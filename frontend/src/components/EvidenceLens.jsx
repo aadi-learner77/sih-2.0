@@ -14,7 +14,8 @@ import {
   FileCheck, 
   Upload, 
   RefreshCw,
-  ShieldCheck
+  ShieldCheck,
+  Play
 } from 'lucide-react';
 import { MOCK_FINDINGS } from '../data/mockFindingData';
 import DocumentBoundingBoxViewer from './DocumentBoundingBoxViewer';
@@ -35,13 +36,24 @@ import { api } from '../services/api';
  * Mandatory Policy Rule:
  * Show the exact wording "Indicator for review" on all AI flags.
  */
-export default function EvidenceLens({ evidenceLensData, activeApplication, onRefresh, evidenceLensError }) {
+export default function EvidenceLens({ 
+  applications = [],
+  onSelectApplication,
+  evidenceLensData, 
+  activeApplication, 
+  onRefresh, 
+  evidenceLensError 
+}) {
   const [selectedFindingIndex, setSelectedFindingIndex] = useState(0);
   const [officerAction, setOfficerAction] = useState('REQUEST_MORE_EVIDENCE');
   const [officerComment, setOfficerComment] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [commentError, setCommentError] = useState('');
   const [actionSuccessReceipt, setActionSuccessReceipt] = useState(null);
+
+  // Validation execution state
+  const [isValidating, setIsValidating] = useState(false);
+  const [validationError, setValidationError] = useState('');
 
   // Rectification flow state
   const [isRectifyModalOpen, setIsRectifyModalOpen] = useState(false);
@@ -57,6 +69,24 @@ export default function EvidenceLens({ evidenceLensData, activeApplication, onRe
     ? MOCK_FINDINGS 
     : (evidenceLensData?.findings || evidenceLensData?.evidence_lens_items || []);
 
+  const isEvaluated = evidenceLensData?.is_evaluated ?? (
+    activeApplication?.status && !['SUBMITTED', 'PENDING'].includes(activeApplication.status)
+  );
+
+  const handleRunValidation = async () => {
+    const appId = activeApplication?.id || evidenceLensData?.application?.id || 1;
+    setIsValidating(true);
+    setValidationError('');
+    try {
+      await api.validateApplication(appId);
+      onRefresh?.();
+    } catch (err) {
+      setValidationError(err.response?.data?.detail || err.message || 'Validation execution failed');
+    } finally {
+      setIsValidating(false);
+    }
+  };
+
   // Reset selectedFindingIndex when application changes
   useEffect(() => {
     setSelectedFindingIndex(0);
@@ -65,35 +95,135 @@ export default function EvidenceLens({ evidenceLensData, activeApplication, onRe
     setActionSuccessReceipt(null);
   }, [activeApplication?.id, evidenceLensData?.application?.id]);
 
+  const renderAppSelector = () => {
+    if (!applications || applications.length === 0) return null;
+    return (
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white border border-slate-200/90 rounded-2xl p-4 shadow-xs">
+        <div className="flex items-center space-x-3 min-w-0">
+          <div className="w-9 h-9 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center shrink-0 border border-sky-200">
+            <Scale className="w-5 h-5" />
+          </div>
+          <div className="min-w-0">
+            <div className="text-xs font-bold text-slate-900 truncate">
+              {activeApplication?.institution_name || evidenceLensData?.application?.institution_name || 'Active Institution'}
+            </div>
+            <div className="text-[11px] text-slate-500 font-mono">
+              {activeApplication?.application_no || evidenceLensData?.application?.application_no} • {activeApplication?.category || 'Extension of Approval (EoA)'}
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center space-x-2 shrink-0">
+          <label htmlFor="evidence-lens-app-select" className="text-xs text-slate-500 font-medium">Select Dossier:</label>
+          <select
+            id="evidence-lens-app-select"
+            value={activeApplication?.id || ''}
+            onChange={(e) => {
+              const selected = applications.find(a => a.id === parseInt(e.target.value, 10));
+              if (selected && onSelectApplication) {
+                onSelectApplication(selected);
+              }
+            }}
+            className="bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 font-semibold focus:outline-none focus:border-sky-500 shadow-2xs cursor-pointer max-w-xs truncate"
+          >
+            {applications.map(app => (
+              <option key={app.id} value={app.id}>
+                {app.application_no} • {app.institution_name} ({(app.advisory_flags_count || 0) + (app.impossibility_flags_count || 0)} flags - {app.status})
+              </option>
+            ))}
+          </select>
+          <button
+            onClick={onRefresh}
+            className="p-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 cursor-pointer shadow-2xs"
+            title="Reload application dossier"
+          >
+            <RefreshCw className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      </div>
+    );
+  };
+
   // Handle empty findings list
   if (!isDemoData && findingsList.length === 0) {
     return (
       <div className="space-y-6 max-w-[1720px] mx-auto">
+        {renderAppSelector()}
         {evidenceLensError && (
           <div className="bg-rose-50 border border-rose-200 text-rose-800 px-4 py-3 rounded-xl flex items-center space-x-2 text-xs font-semibold">
             <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
             <span>{evidenceLensError}</span>
           </div>
         )}
-        <div className="bg-white border border-slate-200 rounded-2xl p-12 text-center shadow-xs">
-          <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-4 border border-emerald-200">
-            <ShieldCheck className="w-7 h-7" />
+
+        {!isEvaluated ? (
+          <div className="bg-white border border-slate-200 rounded-2xl p-12 text-center shadow-xs">
+            <div className="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mx-auto mb-4 border border-amber-200">
+              <Clock className="w-7 h-7" />
+            </div>
+            <h2 className="text-xl font-black text-slate-900 tracking-tight">
+              Application Dossier Pending Evaluation
+            </h2>
+            <p className="text-sm text-slate-600 mt-2 max-w-xl mx-auto">
+              Application{' '}
+              <span className="font-mono font-bold text-slate-800">
+                {activeApplication?.application_no || evidenceLensData?.application?.application_no || 'selected'}
+              </span>{' '}
+              ({activeApplication?.institution_name || evidenceLensData?.application?.institution_name || 'Institution'}) has been submitted to the scrutiny queue, but has not yet been processed through the automated statutory validation engine.
+            </p>
+            <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
+              <button
+                id="btn-run-regulatory-validation"
+                disabled={isValidating}
+                onClick={handleRunValidation}
+                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-700 hover:to-indigo-700 text-white text-xs font-bold transition-all shadow-sm shadow-sky-600/20 flex items-center space-x-2 cursor-pointer disabled:opacity-50"
+              >
+                {isValidating ? (
+                  <>
+                    <RefreshCw className="w-4 h-4 animate-spin" />
+                    <span>Executing Regulation-as-Code Engine...</span>
+                  </>
+                ) : (
+                  <>
+                    <Play className="w-4 h-4" />
+                    <span>Run Validation on Dossier</span>
+                  </>
+                )}
+              </button>
+              <button
+                onClick={onRefresh}
+                className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold cursor-pointer"
+              >
+                Refresh Status
+              </button>
+            </div>
+            {validationError && (
+              <div className="mt-4 text-xs font-semibold text-rose-600 bg-rose-50 border border-rose-200 rounded-xl p-3 max-w-md mx-auto">
+                {validationError}
+              </div>
+            )}
           </div>
-          <h2 className="text-xl font-black text-slate-900 tracking-tight">
-            No Statutory Compliance Discrepancies
-          </h2>
-          <p className="text-sm text-slate-600 mt-2 max-w-xl mx-auto">
-            The regulatory intelligence engine evaluated application{' '}
-            <span className="font-mono font-bold text-slate-800">
-              {activeApplication?.application_no || evidenceLensData?.application?.application_no || 'selected'}
-            </span>{' '}
-            ({activeApplication?.institution_name || evidenceLensData?.application?.institution_name || 'Institution'}) against all statutory clauses in AICTE APH 2025-26 and found zero compliance defects or adverse indicators.
-          </p>
-          <div className="mt-6 inline-flex items-center space-x-2 text-xs font-bold text-emerald-700 bg-emerald-50 px-3.5 py-1.5 rounded-full border border-emerald-200">
-            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-            <span>All declared fields conform to statutory handbook norms</span>
+        ) : (
+          <div className="bg-white border border-slate-200 rounded-2xl p-12 text-center shadow-xs">
+            <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-4 border border-emerald-200">
+              <ShieldCheck className="w-7 h-7" />
+            </div>
+            <h2 className="text-xl font-black text-slate-900 tracking-tight">
+              Evaluated: Zero Statutory Compliance Discrepancies
+            </h2>
+            <p className="text-sm text-slate-600 mt-2 max-w-xl mx-auto">
+              The regulatory intelligence engine evaluated application{' '}
+              <span className="font-mono font-bold text-slate-800">
+                {activeApplication?.application_no || evidenceLensData?.application?.application_no || 'selected'}
+              </span>{' '}
+              ({activeApplication?.institution_name || evidenceLensData?.application?.institution_name || 'Institution'}) against all statutory clauses in AICTE APH 2025-26 and found zero compliance defects or adverse indicators.
+            </p>
+            <div className="mt-6 inline-flex items-center space-x-2 text-xs font-bold text-emerald-700 bg-emerald-50 px-3.5 py-1.5 rounded-full border border-emerald-200">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+              <span>All declared fields conform to statutory handbook norms</span>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     );
   }

@@ -69,7 +69,7 @@ def list_applications(
     - Institution Users: strictly restricted to their own institution's dossiers.
     - Officers, Admin, Auditor: can view all applications.
     """
-    query = db.query(Application)
+    query = db.query(Application).filter(~Application.application_no.like("APP-TEST-%"))
     user_role = normalize_role(current_user.role)
 
     if user_role == ROLE_INSTITUTION_USER:
@@ -395,18 +395,30 @@ def get_evidence_lens(
         request=req
     )
 
+    has_evals = (
+        len(items) > 0 or 
+        db.query(RuleEvaluation).filter(RuleEvaluation.application_id == app.id).count() > 0 or
+        (app.status not in ["SUBMITTED", "PENDING"])
+    )
+
     return {
         "application": {
             "id": app.id,
             "application_no": app_no,
             "institution_id": app.institution_id,
             "institution_name": inst_name,
-            "category": category
+            "category": category,
+            "status": app.status,
+            "is_evaluated": has_evals,
+            "advisory_flags_count": app.advisory_flags_count,
+            "preflight_readiness_score": app.preflight_readiness_score
         },
         "application_id": app.id,
         "application_no": app_no,
         "institution_name": inst_name,
         "category": category,
+        "status": app.status,
+        "is_evaluated": has_evals,
         "evidence_lens_items": items,
         "findings": items
     }

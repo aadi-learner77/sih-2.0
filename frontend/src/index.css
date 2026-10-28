@@ -121,7 +121,13 @@
 
 @layer base {
   html,
-  body {
+  body,
+  #root {
+    height: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
     background-color: var(--bg) !important;
     color: var(--text) !important;
     font-family: Arial, Helvetica, sans-serif !important;
@@ -434,7 +440,6 @@ button.bg-sky-600,
 button.bg-purple-600,
 button.bg-purple-700,
 button.bg-indigo-600,
-button.bg-emerald-600,
 button.bg-amber-600,
 button.bg-slate-900,
 button.primary,
@@ -467,7 +472,6 @@ button.bg-sky-600:hover,
 button.bg-purple-600:hover,
 button.bg-purple-700:hover,
 button.bg-indigo-600:hover,
-button.bg-emerald-600:hover,
 button.bg-amber-600:hover,
 button.bg-slate-900:hover,
 button.primary:hover,
@@ -478,6 +482,53 @@ button[class*="from-amber-600"]:hover {
   background-color: var(--primary-hover) !important; /* #B9D6F5 */
   border-color: var(--primary-border) !important;
   color: var(--text) !important;
+}
+
+/* Dedicated Verify Chain Button: Emerald green with crisp white text in light and dark mode */
+#verify-chain-button,
+button#verify-chain-button,
+.btn-verify-chain {
+  background-color: #059669 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border: 1px solid #047857 !important;
+  font-weight: 700 !important;
+}
+
+#verify-chain-button:hover,
+button#verify-chain-button:hover,
+.btn-verify-chain:hover {
+  background-color: #047857 !important;
+  border-color: #065f46 !important;
+  color: #ffffff !important;
+}
+
+#verify-chain-button *,
+button#verify-chain-button *,
+.btn-verify-chain * {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
+[data-theme="dark"] #verify-chain-button,
+[data-theme="dark"] button#verify-chain-button,
+.dark #verify-chain-button,
+.dark button#verify-chain-button {
+  background-color: #059669 !important;
+  color: #ffffff !important;
+  border-color: #10b981 !important;
+}
+
+[data-theme="dark"] #verify-chain-button:hover,
+.dark #verify-chain-button:hover {
+  background-color: #047857 !important;
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] #verify-chain-button *,
+.dark #verify-chain-button * {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
 }
 
 .btn-primary *,
@@ -627,6 +678,92 @@ span[class*="badge"],
 [class*="text-purple-"] *,
 [class*="bg-orange-"] * {
   color: var(--info-text) !important;
+}
+
+/* Header Role Badge clean pill override: prevent heavy blue box */
+.role-badge-pill,
+#header-role-badge,
+span.role-badge-pill,
+span#header-role-badge {
+  background-color: var(--surface-muted) !important;
+  background-image: none !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text-muted) !important;
+  padding: 2px 8px !important;
+  border-radius: 9999px !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  line-height: 1.2 !important;
+  box-shadow: none !important;
+}
+
+.role-badge-pill *,
+#header-role-badge * {
+  color: var(--text-muted) !important;
+}
+
+[data-theme="dark"] .role-badge-pill,
+[data-theme="dark"] #header-role-badge,
+.dark .role-badge-pill,
+.dark #header-role-badge {
+  background-color: var(--surface-muted) !important;
+  border-color: var(--border) !important;
+  color: var(--text-muted) !important;
+}
+
+header img,
+header .navbar-logo {
+  object-fit: contain !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+/* Alert Bell Drawer Dark/Light Surface Support */
+#alert-bell-drawer-modal,
+.alert-drawer-container {
+  background-color: var(--surface) !important;
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+
+#alert-bell-drawer-modal .drawer-header,
+#alert-bell-drawer-modal .drawer-footer {
+  background-color: var(--surface-muted) !important;
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+
+#alert-bell-drawer-modal .drawer-filter-bar {
+  background-color: var(--surface) !important;
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+
+[data-theme="dark"] #alert-bell-drawer-modal,
+.dark #alert-bell-drawer-modal {
+  background-color: var(--surface) !important;
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+
+[data-theme="dark"] #alert-bell-drawer-modal .drawer-header,
+[data-theme="dark"] #alert-bell-drawer-modal .drawer-footer,
+.dark #alert-bell-drawer-modal .drawer-header,
+.dark #alert-bell-drawer-modal .drawer-footer {
+  background-color: var(--surface-muted) !important;
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+
+[data-theme="dark"] #alert-bell-drawer-modal .drawer-filter-bar,
+.dark #alert-bell-drawer-modal .drawer-filter-bar {
+  background-color: var(--surface) !important;
+  color: var(--text) !important;
+  border-color: var(--border) !important;
 }
 
 /* Success: background #E3F4E8, text #14532D */
@@ -1058,7 +1195,7 @@ div.bg-slate-900.font-mono {
 [role="menu"],
 [role="listbox"],
 div[class*="pointer-events-none"][class*="z-30"],
-div[class*="z-50"],
+div[class*="z-50"]:not(.fixed):not([class*="fixed"]),
 .vis-tooltip,
 div.vis-tooltip,
 .popover,
@@ -1069,6 +1206,16 @@ div.vis-tooltip,
   border-radius: var(--radius-sm) !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
   overflow: hidden !important;
+}
+
+/* Modal Backdrops / Overlays: must remain semi-transparent and borderless */
+.modal-backdrop-overlay,
+div.modal-backdrop-overlay,
+div[class*="modal-backdrop-overlay"] {
+  background-color: rgba(0, 0, 0, 0.35) !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
 }
 
 /* Zoom controls */
@@ -1218,8 +1365,10 @@ header.border-b > div,
 header[class*="border-b"] > div {
   display: flex !important;
   align-items: center !important;
+  justify-content: space-between !important;
   gap: var(--space-3) !important; /* 12px */
-  flex-wrap: wrap !important;
+  flex-wrap: nowrap !important;
+  width: 100% !important;
 }
 
 /* Sidebar: padding 16px; nav items 10px 12px padding with an 8px gap between items; section label to first item gap 8px; space between sidebar groups 24px */

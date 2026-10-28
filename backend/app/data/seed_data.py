@@ -103,12 +103,14 @@ def seed_rules_from_engine(db: Session):
     db.commit()
 
 
-def seed_database():
+def seed_database(reset: bool = False):
+    if reset:
+        Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
     db: Session = SessionLocal()
 
-    # If users already exist, check if Institution Twin tables need seeding & ensure RBAC accounts exist
-    if db.query(User).first():
+    # If users already exist and not resetting, check if Institution Twin tables need seeding & ensure RBAC accounts exist
+    if not reset and db.query(User).first():
         seed_rules_from_engine(db)
         seed_institution_twin_tables(db)
         ensure_rbac_users(db)
@@ -979,9 +981,8 @@ def seed_institution_twin_tables(db: Session):
 
 if __name__ == "__main__":
     import sys
-    if "--reset" in sys.argv or "--force" in sys.argv:
+    do_reset = "--reset" in sys.argv or "--force" in sys.argv
+    if do_reset:
         print("Resetting PRAMAAN-X database schema to clean baseline...")
-        Base.metadata.drop_all(bind=engine)
-        Base.metadata.create_all(bind=engine)
-    seed_database()
+    seed_database(reset=do_reset)
 

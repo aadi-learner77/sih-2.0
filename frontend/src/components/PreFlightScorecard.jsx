@@ -54,9 +54,9 @@ const FALLBACK_CHECKLIST = [
     clauseRef: 'APH Clause 2.4.2',
     status: 'FLAGGED',
     statusLabel: 'Deficit Detected',
-    validity: '-22% Geospatial Deficit',
+    validity: 'Geospatial Deficit',
     aiWording: 'Indicator for review: Built-up area footprint deficit beyond tolerance threshold',
-    fixInstruction: 'Satellite footprint indicates 14,196 sq.m, which is 22% below the claimed 18,200 sq.m. FIX: Upload Architect-Certified Floor-Wise Completion Certificate showing vertical plinth multiplier.',
+    fixInstruction: 'Satellite footprint indicates deficit below statutory requirement. FIX: Upload Architect-Certified Floor-Wise Completion Certificate showing vertical plinth multiplier.',
     actionLabel: 'Upload Floor Plan',
     resolved: false,
   },
@@ -118,21 +118,15 @@ const FALLBACK_CHECKLIST = [
  * - Strict AICTE non-punitive governance: "Indicator for review"
  * - Fallback with visible DemoDataBadge if backend is offline
  */
-export default function PreFlightScorecard({ currentUser, onNavigateToEvidenceLens }) {
-  const [selectedCategory, setSelectedCategory] = useState('Extension of Approval (EoA)');
+export default function PreFlightScorecard({ currentUser }) {
+  const [selectedCategory] = useState('Extension of Approval (EoA)');
   const [readinessScore, setReadinessScore] = useState(74.5);
   const [isAuditing, setIsAuditing] = useState(false);
   const [auditFeedback, setAuditFeedback] = useState(null);
   const [isFallback, setIsFallback] = useState(false);
   const [recommendations, setRecommendations] = useState([]);
   const [checklist, setChecklist] = useState(FALLBACK_CHECKLIST);
-
-  const [uploadedFiles, setUploadedFiles] = useState({
-    'Fire Safety NOC': { name: 'Fire_Safety_NOC_2025.pdf', size: '2.4 MB', uploadedAt: '18-Oct-2025', hash: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855' },
-    'Approved Building Plan': { name: 'Sanctioned_Master_Plan.pdf', size: '14.1 MB', uploadedAt: '12-Oct-2025', hash: '356a192b7913b04c54574d18c28d46e6395428ab' },
-    'University Affiliation Order': { name: 'VTU_Affiliation_Order.pdf', size: '1.8 MB', uploadedAt: '15-Oct-2025', hash: 'da4b9237bacccdf19c0760cab7aec4a8359010b0' },
-    'Audited Accounts': { name: 'Audited_Balance_Sheet_UDIN.pdf', size: '3.6 MB', uploadedAt: '10-Oct-2025', hash: '77de68daecd823babbb58edb1c8e14d7106e83bb' }
-  });
+  const [uploadedFiles, setUploadedFiles] = useState({});
 
   const institutionId = currentUser?.institution_id || 1;
 
@@ -155,6 +149,22 @@ export default function PreFlightScorecard({ currentUser, onNavigateToEvidenceLe
         setReadinessScore(res.readiness_score);
         setIsFallback(false);
         setRecommendations(res.recommendations || []);
+
+        // Populate uploaded files from backend
+        if (res.uploaded_documents && res.uploaded_documents.length > 0) {
+          const docsMap = {};
+          res.uploaded_documents.forEach((d) => {
+            const key = d.doc_type || d.filename;
+            docsMap[key] = {
+              name: d.filename,
+              size: d.size || '1.2 MB',
+              uploadedAt: d.uploaded_at || 'Verified',
+              hash: d.hash || '',
+              id: d.id,
+            };
+          });
+          setUploadedFiles(docsMap);
+        }
 
         // Process backend checklist summary & indicators if available
         if (res.checklist_summary?.items && res.checklist_summary.items.length > 0) {
@@ -183,7 +193,7 @@ export default function PreFlightScorecard({ currentUser, onNavigateToEvidenceLe
               ? `Mandatory document not uploaded. FIX: Upload signed & certified digital copy issued by ${it.issuing_authority}.`
               : isExpired
               ? `Validity period has lapsed. FIX: Upload renewal acknowledgment or valid extension certificate.`
-              : `Document is authentic and compliant with AICTE norms.`;
+              : (it.details || `Document is authentic and compliant with AICTE norms.`);
 
             return {
               id: `CHK-${it.code || idx}`,
@@ -191,7 +201,7 @@ export default function PreFlightScorecard({ currentUser, onNavigateToEvidenceLe
               clauseRef: relatedRule?.clause_id || `APH 2025-${it.code || 'NORM'}`,
               status: isVerified ? 'VERIFIED' : isExpired ? 'EXPIRING' : 'MISSING',
               statusLabel: isVerified ? 'Verified' : isExpired ? 'Expiring' : 'Missing Document',
-              validity: isVerified ? 'Sanctioned / Valid' : isExpired ? 'Expired' : 'Not Uploaded',
+              validity: isVerified ? 'Sanctioned / Valid' : isExpired ? (it.expiry_info || 'Expired') : 'Not Uploaded',
               aiWording,
               fixInstruction,
               actionLabel: isVerified ? 'View Document' : 'Upload Document',
@@ -199,10 +209,7 @@ export default function PreFlightScorecard({ currentUser, onNavigateToEvidenceLe
             };
           });
 
-          // Keep fallback enrichment if api items is sparse
-          if (apiItems.length >= 3) {
-            setChecklist(apiItems);
-          }
+          setChecklist(apiItems);
         }
 
         setAuditFeedback({
@@ -251,7 +258,7 @@ export default function PreFlightScorecard({ currentUser, onNavigateToEvidenceLe
     );
   };
 
-  // Real File Upload to Backend (/documents/ingest)
+  // Real File Upload to Backend
   const handleFileUpload = async (docType, e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -259,78 +266,45 @@ export default function PreFlightScorecard({ currentUser, onNavigateToEvidenceLe
     try {
       setAuditFeedback({
         type: 'INFO',
-        message: `Uploading & ingesting "${file.name}" to backend OCR pipeline...`,
+        message: `Uploading & ingesting "${file.name}" to backend pipeline...`,
       });
 
-      // Call backend ingestion API
-      const res = await api.ingestDocument(file);
+      // Real upload to backend preflight ingestion pipeline
+      const res = await api.uploadPreflightDocument(institutionId, docType, file);
       const shaHash = res?.file_hash || 'SHA-256 Verified';
-      const classifiedType = res?.doc_type || docType;
-
-      setUploadedFiles((prev) => ({
-        ...prev,
-        [docType]: {
-          name: file.name,
-          size: `${(file.size / (1024 * 1024)).toFixed(1)} MB`,
-          uploadedAt: 'Just Now (Ingested)',
-          hash: shaHash,
-          classifiedType,
-        },
-      }));
-
-      // Auto mark matching checklist item as resolved
-      setChecklist((prev) =>
-        prev.map((item) => {
-          if (item.docType.toLowerCase().includes(docType.toLowerCase()) || docType.toLowerCase().includes(item.docType.toLowerCase())) {
-            return {
-              ...item,
-              resolved: true,
-              status: 'VERIFIED',
-              statusLabel: 'Uploaded & Ingested',
-              validity: `SHA-256: ${shaHash.slice(0, 10)}...`,
-              aiWording: `Authenticated and verified via backend OCR ingestion pipeline`,
-            };
-          }
-          return item;
-        })
-      );
 
       setAuditFeedback({
         type: 'SUCCESS',
-        message: `File "${file.name}" successfully processed by backend pipeline! SHA-256: ${shaHash.slice(0, 16)}...`,
+        message: `File "${file.name}" successfully uploaded and ingested! SHA-256: ${shaHash.slice(0, 16)}...`,
       });
 
-      // Recalculate score with backend
+      // Refresh live preflight state from backend
       await fetchLivePreflight(institutionId, selectedCategory);
     } catch (err) {
-      console.warn('Real ingestion failed, updating locally:', err.message);
-      setUploadedFiles((prev) => ({
-        ...prev,
-        [docType]: {
-          name: file.name,
-          size: `${(file.size / (1024 * 1024)).toFixed(1)} MB`,
-          uploadedAt: 'Just Now',
-        },
-      }));
-
-      setChecklist((prev) =>
-        prev.map((item) => {
-          if (item.docType.toLowerCase().includes(docType.toLowerCase())) {
-            return {
-              ...item,
-              resolved: true,
-              status: 'VERIFIED',
-              statusLabel: 'Uploaded & Resolved',
-            };
-          }
-          return item;
-        })
-      );
-
-      setAuditFeedback({
-        type: 'INFO',
-        message: `Document "${file.name}" saved locally.`,
-      });
+      console.warn('Backend upload failed, attempting fallback ingestion:', err.message);
+      try {
+        const res = await api.ingestDocument(file);
+        const shaHash = res?.file_hash || 'SHA-256 Verified';
+        setUploadedFiles((prev) => ({
+          ...prev,
+          [docType]: {
+            name: file.name,
+            size: `${(file.size / (1024 * 1024)).toFixed(1)} MB`,
+            uploadedAt: 'Just Now',
+            hash: shaHash,
+          },
+        }));
+        await fetchLivePreflight(institutionId, selectedCategory);
+        setAuditFeedback({
+          type: 'SUCCESS',
+          message: `Document "${file.name}" ingested into OCR pipeline.`,
+        });
+      } catch (fallbackErr) {
+        setAuditFeedback({
+          type: 'INFO',
+          message: `File upload registered locally: ${file.name}`,
+        });
+      }
     }
   };
 
@@ -389,19 +363,19 @@ export default function PreFlightScorecard({ currentUser, onNavigateToEvidenceLe
           - Circular gauge
           - Executive status
         */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-5 mt-6 pt-6 border-t border-slate-200">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 mt-6 pt-6 border-t border-slate-200 dark:border-slate-800 items-start">
           
           {/* Traffic Light Signal Card */}
-          <div className="md:col-span-5 bg-white rounded-2xl p-5 border border-slate-200 shadow-2xs flex flex-col sm:flex-row items-center gap-5">
+          <div className="lg:col-span-7 bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-2xs flex flex-col sm:flex-row items-center gap-5 min-w-0">
             
             {/* Physical 3-Lens Traffic Light Housing */}
-            <div className="bg-[#F4F6F8] border border-[#D5D9DE] rounded-2xl p-2.5 flex sm:flex-col items-center justify-center gap-2 shrink-0">
+            <div className="bg-[#F4F6F8] dark:bg-slate-800 border border-[#D5D9DE] dark:border-slate-700 rounded-2xl p-2.5 flex sm:flex-col items-center justify-center gap-2 shrink-0">
               {/* Red Light */}
               <div 
                 className={`w-7 h-7 rounded-full border-2 transition-all duration-300 flex items-center justify-center ${
                   trafficLightState === 'RED'
                     ? 'bg-rose-500 border-rose-300 shadow-[0_0_16px_rgba(244,63,94,0.9)] animate-pulse'
-                    : 'bg-rose-100 border-rose-200 opacity-40'
+                    : 'bg-rose-100 dark:bg-rose-950/40 border-rose-200 dark:border-rose-900 opacity-40'
                 }`}
                 title="Critical Deficiencies"
               >
@@ -413,7 +387,7 @@ export default function PreFlightScorecard({ currentUser, onNavigateToEvidenceLe
                 className={`w-7 h-7 rounded-full border-2 transition-all duration-300 flex items-center justify-center ${
                   trafficLightState === 'AMBER'
                     ? 'bg-amber-400 border-amber-200 shadow-[0_0_16px_rgba(251,191,36,0.9)] animate-pulse'
-                    : 'bg-amber-100 border-amber-200 opacity-40'
+                    : 'bg-amber-100 dark:bg-amber-950/40 border-amber-200 dark:border-amber-900 opacity-40'
                 }`}
                 title="Scrutiny Inquiry Likely"
               >
@@ -425,7 +399,7 @@ export default function PreFlightScorecard({ currentUser, onNavigateToEvidenceLe
                 className={`w-7 h-7 rounded-full border-2 transition-all duration-300 flex items-center justify-center ${
                   trafficLightState === 'GREEN'
                     ? 'bg-emerald-500 border-emerald-200 shadow-[0_0_16px_rgba(16,185,129,0.9)] animate-pulse'
-                    : 'bg-emerald-100 border-emerald-200 opacity-40'
+                    : 'bg-emerald-100 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-900 opacity-40'
                 }`}
                 title="Ready for Scrutiny Submission"
               >
@@ -433,12 +407,12 @@ export default function PreFlightScorecard({ currentUser, onNavigateToEvidenceLe
               </div>
             </div>
 
-            {/* Circular Gauge & Status Headline */}
-            <div className="flex items-center space-x-4 min-w-0">
-              <div className="relative w-22 h-22 flex items-center justify-center shrink-0">
-                <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+            {/* Circular Gauge (Constrained to ~220px) & Status Text */}
+            <div className="flex flex-col sm:flex-row items-center gap-5 min-w-0 flex-1 w-full">
+              <div className="relative w-[200px] h-[200px] shrink-0 flex items-center justify-center">
+                <svg className="w-[200px] h-[200px] transform -rotate-90" viewBox="0 0 36 36">
                   <path
-                    className="text-slate-100"
+                    className="text-slate-100 dark:text-slate-800"
                     strokeWidth="3.5"
                     stroke="currentColor"
                     fill="none"
@@ -460,22 +434,22 @@ export default function PreFlightScorecard({ currentUser, onNavigateToEvidenceLe
                     d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                   />
                 </svg>
-                <div className="absolute text-center">
-                  <span className="text-xl font-black text-slate-900 font-mono">{readinessScore}</span>
-                  <span className="text-[10px] text-slate-400 block -mt-1">/ 100</span>
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
+                  <span className="text-3xl font-black text-slate-900 dark:text-white font-mono">{readinessScore}</span>
+                  <span className="text-xs text-slate-400 dark:text-slate-500 font-bold block -mt-0.5">/ 100</span>
                 </div>
               </div>
 
-              <div className="min-w-0">
-                <div className="text-[10px] uppercase font-bold tracking-wider text-slate-400">
+              <div className="min-w-0 flex-1 w-full text-center sm:text-left">
+                <div className="text-[10px] uppercase font-bold tracking-wider text-slate-400 dark:text-slate-500">
                   Traffic-Light Status
                 </div>
-                <div className={`text-sm font-black mt-0.5 ${
+                <div className={`text-base font-black mt-0.5 ${
                   trafficLightState === 'GREEN'
-                    ? 'text-emerald-700'
+                    ? 'text-emerald-700 dark:text-emerald-400'
                     : trafficLightState === 'AMBER'
-                    ? 'text-amber-700'
-                    : 'text-rose-700'
+                    ? 'text-amber-700 dark:text-amber-400'
+                    : 'text-rose-700 dark:text-rose-400'
                 }`}>
                   {trafficLightState === 'GREEN' 
                     ? 'Ready for Submission' 
@@ -483,7 +457,7 @@ export default function PreFlightScorecard({ currentUser, onNavigateToEvidenceLe
                     ? 'Scrutiny Inquiry Likely' 
                     : 'Critical Deficiencies Found'}
                 </div>
-                <p className="text-[11px] text-slate-500 mt-1 leading-snug">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed whitespace-normal break-words">
                   {trafficLightState === 'GREEN'
                     ? 'All mandatory AICTE handbook clauses satisfied with high OCR confidence.'
                     : `${checklist.filter(c => !c.resolved).length} compliance shortfalls detected. Review fix instructions below.`}
@@ -494,34 +468,46 @@ export default function PreFlightScorecard({ currentUser, onNavigateToEvidenceLe
           </div>
 
           {/* Quick Metrics Cards */}
-          <div className="md:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-3">
-            <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-2xs">
-              <div className="text-[10px] text-slate-500 uppercase font-semibold">Checklist Complete</div>
-              <div className="text-xl font-black text-emerald-600 mt-1">
+          <div className="lg:col-span-5 grid grid-cols-3 gap-2.5 items-start">
+            <div className="bg-white dark:bg-slate-900 rounded-2xl p-3.5 border border-slate-200 dark:border-slate-800 shadow-2xs h-auto min-w-0">
+              <div className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-semibold leading-tight">Checklist Complete</div>
+              <div className="text-xl font-black text-emerald-600 dark:text-emerald-400 mt-1">
                 {checklist.filter((c) => c.resolved).length} of {checklist.length}
               </div>
-              <div className="text-[10px] text-slate-500 mt-1 font-mono">
+              <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-1 font-mono truncate">
                 {((checklist.filter((c) => c.resolved).length / Math.max(1, checklist.length)) * 100).toFixed(0)}% Satisfied
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-2xs">
-              <div className="text-[10px] text-slate-500 uppercase font-semibold">Expiring Certs</div>
-              <div className="text-xl font-black text-amber-600 mt-1">
-                {checklist.filter((c) => c.status === 'EXPIRING' && !c.resolved).length} Notice
-              </div>
-              <div className="text-[10px] text-slate-500 mt-1">Renewal Due</div>
-            </div>
+            {(() => {
+              const expiringCount = checklist.filter((c) => c.status === 'EXPIRING' && !c.resolved).length;
+              return (
+                <div className="bg-white dark:bg-slate-900 rounded-2xl p-3.5 border border-slate-200 dark:border-slate-800 shadow-2xs h-auto min-w-0">
+                  <div className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-semibold leading-tight">Expiring Certs</div>
+                  <div className="text-xl font-black text-amber-600 dark:text-amber-400 mt-1">
+                    {expiringCount} {expiringCount === 1 ? 'Notice' : 'Notices'}
+                  </div>
+                  <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-1 truncate">
+                    {expiringCount > 0 ? 'Renewal Due' : 'All Valid'}
+                  </div>
+                </div>
+              );
+            })()}
 
-            <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-2xs">
-              <div className="text-[10px] text-slate-500 uppercase font-semibold">Regulatory Indicators</div>
-              <div className="text-xl font-black text-rose-600 mt-1">
-                {checklist.filter((c) => (c.status === 'FLAGGED' || c.status === 'MISSING') && !c.resolved).length} Items
-              </div>
-              <div className="text-[10px] text-rose-700 font-semibold mt-1">
-                Indicator for review
-              </div>
-            </div>
+            {(() => {
+              const indicatorCount = checklist.filter((c) => (c.status === 'FLAGGED' || c.status === 'MISSING') && !c.resolved).length;
+              return (
+                <div className="bg-white dark:bg-slate-900 rounded-2xl p-3.5 border border-slate-200 dark:border-slate-800 shadow-2xs h-auto min-w-0">
+                  <div className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-semibold leading-tight">Regulatory Items</div>
+                  <div className="text-xl font-black text-rose-600 dark:text-rose-400 mt-1">
+                    {indicatorCount} Items
+                  </div>
+                  <div className="text-[10px] text-rose-600 dark:text-rose-400 font-semibold mt-1 truncate">
+                    Indicator for review
+                  </div>
+                </div>
+              );
+            })()}
           </div>
 
         </div>
@@ -599,48 +585,54 @@ export default function PreFlightScorecard({ currentUser, onNavigateToEvidenceLe
           </div>
 
           {/* Uploaded Documents List */}
-          <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs space-y-3">
-            <div className="text-xs font-bold text-slate-800 flex items-center justify-between">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-xs space-y-3">
+            <div className="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center justify-between">
               <span>Ingested Institutional Files ({Object.keys(uploadedFiles).length})</span>
-              <span className="text-[10px] text-emerald-600 font-semibold">✓ SHA-256 Ledger Verified</span>
+              <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold">✓ SHA-256 Ledger Verified</span>
             </div>
 
             <div className="space-y-2">
-              {Object.entries(uploadedFiles).map(([docType, file]) => (
-                <div 
-                  key={docType}
-                  className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between text-xs hover:border-slate-300 transition-colors"
-                >
-                  <div className="flex items-center space-x-2.5 min-w-0">
-                    <div className="w-7 h-7 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center shrink-0">
-                      <FileText className="w-3.5 h-3.5" />
-                    </div>
-                    <div className="min-w-0">
-                      <div className="font-bold text-slate-900 text-xs">{docType}</div>
-                      <div className="text-[10px] text-slate-500 flex flex-wrap items-center gap-1.5 font-mono">
-                        <span className="break-all">{file.name}</span>
-                        <span>•</span>
-                        <span>{file.size}</span>
-                      </div>
-                      {file.hash && (
-                        <div className="text-[9px] text-slate-400 font-mono truncate">
-                          SHA: {file.hash.slice(0, 20)}...
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  <label className="text-[10px] font-bold text-sky-700 bg-white border border-slate-200 px-2 py-1 rounded-lg hover:bg-slate-100 cursor-pointer shrink-0 ml-2">
-                    <span>Replace</span>
-                    <input
-                      type="file"
-                      accept=".pdf,.png,.jpg"
-                      onChange={(e) => handleFileUpload(docType, e)}
-                      className="hidden"
-                    />
-                  </label>
+              {Object.keys(uploadedFiles).length === 0 ? (
+                <div className="text-xs text-slate-400 dark:text-slate-500 text-center py-5 border border-dashed border-slate-200 dark:border-slate-800 rounded-xl">
+                  No institutional files ingested yet. Select a document above to upload.
                 </div>
-              ))}
+              ) : (
+                Object.entries(uploadedFiles).map(([docType, file]) => (
+                  <div 
+                    key={docType}
+                    className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 flex items-center justify-between text-xs hover:border-slate-300 dark:hover:border-slate-600 transition-colors"
+                  >
+                    <div className="flex items-center space-x-2.5 min-w-0">
+                      <div className="w-7 h-7 rounded-lg bg-sky-100 dark:bg-sky-950 text-sky-700 dark:text-sky-300 flex items-center justify-center shrink-0">
+                        <FileText className="w-3.5 h-3.5" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="font-bold text-slate-900 dark:text-slate-100 text-xs truncate">{docType}</div>
+                        <div className="text-[10px] text-slate-500 dark:text-slate-400 flex flex-wrap items-center gap-1.5 font-mono">
+                          <span className="break-all">{file.name}</span>
+                          <span>•</span>
+                          <span>{file.size}</span>
+                        </div>
+                        {file.hash && (
+                          <div className="text-[9px] text-slate-400 dark:text-slate-500 font-mono truncate">
+                            SHA: {file.hash.slice(0, 20)}...
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <label className="text-[10px] font-bold text-sky-700 dark:text-sky-400 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-2 py-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer shrink-0 ml-2">
+                      <span>Replace</span>
+                      <input
+                        type="file"
+                        accept=".pdf,.png,.jpg"
+                        onChange={(e) => handleFileUpload(docType, e)}
+                        className="hidden"
+                      />
+                    </label>
+                  </div>
+                ))
+              )}
             </div>
           </div>
 

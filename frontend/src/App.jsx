@@ -33,6 +33,7 @@ export default function App() {
   const [evidenceLensError, setEvidenceLensError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [isLiveMode, setIsLiveMode] = useState(false);
+  const [sidebarCounts, setSidebarCounts] = useState({ impossibilities: 0, advisoryFlags: 0 });
 
   const handleLogout = () => {
     localStorage.removeItem('pramaan_token');
@@ -44,6 +45,7 @@ export default function App() {
     setActiveApplication(null);
     setEvidenceLensData(null);
     setEvidenceLensError(null);
+    setSidebarCounts({ impossibilities: 0, advisoryFlags: 0 });
   };
 
   const loadData = async (role = currentRole) => {
@@ -53,7 +55,20 @@ export default function App() {
       if (apps && Array.isArray(apps) && apps.length > 0) {
         setApplications(apps);
         setIsLiveMode(true);
-        const primary = apps[0];
+
+        // Select the application with the most findings or the highest regulatory risk
+        const sortedApps = [...apps].sort((a, b) => {
+          const findingsA = (a.advisory_flags_count || 0) + (a.impossibility_flags_count || 0) + (a.forensic_flags_count || 0);
+          const findingsB = (b.advisory_flags_count || 0) + (b.impossibility_flags_count || 0) + (b.forensic_flags_count || 0);
+          if (findingsB !== findingsA) {
+            return findingsB - findingsA; // Most findings first
+          }
+          const scoreA = a.preflight_readiness_score !== undefined ? a.preflight_readiness_score : 100;
+          const scoreB = b.preflight_readiness_score !== undefined ? b.preflight_readiness_score : 100;
+          return scoreA - scoreB; // Lowest readiness first (highest risk)
+        });
+
+        const primary = sortedApps[0] || apps[0];
         setActiveApplication(primary);
         try {
           setEvidenceLensError(null);
@@ -64,6 +79,24 @@ export default function App() {
           console.warn('Evidence lens fetch fallback:', detail);
           setEvidenceLensError(`Evidence lens request failed for ${primary.application_no || `App #${primary.id}`}: ${detail}`);
           setEvidenceLensData(null);
+        }
+
+        // Fetch dynamic counts from API for sidebar badges (/graph/impossibilities and /applications/findings/all)
+        try {
+          const [impRes, findingsRes] = await Promise.allSettled([
+            api.getImpossibilities(),
+            api.getAllFindings()
+          ]);
+          const impCount = impRes.status === 'fulfilled' && Array.isArray(impRes.value) ? impRes.value.length : 0;
+          const advCount = findingsRes.status === 'fulfilled' && Array.isArray(findingsRes.value) 
+            ? findingsRes.value.length 
+            : (primary?.advisory_flags_count || 0);
+          setSidebarCounts({
+            impossibilities: impCount,
+            advisoryFlags: advCount
+          });
+        } catch (_cntErr) {
+          // ignore count fetch error
         }
       } else {
         setApplications([]);
@@ -165,7 +198,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-sky-500 selection:text-white">
+    <div className="h-screen w-screen bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-sky-500 selection:text-white overflow-hidden">
       {/* Top AICTE Navigation */}
       <Navbar 
         currentUser={currentUser}
@@ -176,16 +209,13 @@ export default function App() {
         onToggleLiveMode={() => setIsLiveMode(!isLiveMode)}
       />
 
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex-1 flex overflow-hidden min-h-0">
         {/* Left Navigation Sidebar (Role-Aware) */}
         <Sidebar 
           activeTab={activeTab} 
           setActiveTab={setActiveTab}
           currentRole={currentRole}
-          counts={{
-            impossibilities: 2,
-            advisoryFlags: activeApplication?.advisory_flags_count || 4
-          }}
+          counts={sidebarCounts}
         />
 
         {/* Main Content Workspace */}
@@ -205,6 +235,8 @@ export default function App() {
 
             {activeTab === 'evidence-lens' && (
               <EvidenceLens 
+                applications={applications}
+                onSelectApplication={handleSelectApplication}
                 evidenceLensData={evidenceLensData} 
                 activeApplication={activeApplication}
                 evidenceLensError={evidenceLensError}
@@ -252,7 +284,7 @@ export default function App() {
       </div>
 
       {/* Statutory Footer */}
-      <footer className="bg-white border-t border-slate-200 py-3.5 px-6 text-center text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-2 shadow-sm">
+      <footer className="shrink-0 bg-white border-t border-slate-200 py-2.5 px-6 text-center text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-2 shadow-sm">
         <div className="flex items-center space-x-2">
           <span className="font-bold text-slate-700">PRAMAAN-X v1.0.0</span>
           <span>•</span>

@@ -132,8 +132,11 @@ def generate_checklist_status(category: str, submitted_documents: List[Any]) -> 
     
     for item in checklist_template:
         doc_match = None
+        it_name = (item.get("name") or "").lower()
+        it_code = (item.get("code") or "").lower()
         for doc_type, doc in doc_map.items():
-            if item["name"].lower() in doc_type.lower() or item["code"].lower() in doc_type.lower():
+            dt_lower = (doc_type or "").lower()
+            if dt_lower and (dt_lower in it_name or it_name in dt_lower or it_code in dt_lower or dt_lower in it_code):
                 doc_match = doc
                 break
                 

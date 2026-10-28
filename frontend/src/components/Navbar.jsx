@@ -38,44 +38,57 @@ export default function Navbar({
   useEffect(() => {
     const activeTheme = document.documentElement.getAttribute('data-theme') || localStorage.getItem('theme') || 'light';
     setTheme(activeTheme);
+    document.documentElement.setAttribute('data-theme', activeTheme);
+    if (activeTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   }, []);
 
   const toggleTheme = () => {
     const nextTheme = theme === 'dark' ? 'light' : 'dark';
     setTheme(nextTheme);
     document.documentElement.setAttribute('data-theme', nextTheme);
+    if (nextTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
     try {
       localStorage.setItem('theme', nextTheme);
     } catch (e) {}
     window.dispatchEvent(new CustomEvent('themechange', { detail: { theme: nextTheme } }));
   };
   return (
-    <header className="bg-white/95 backdrop-blur-md border-b border-slate-200 sticky top-0 z-40 px-6 py-3 shadow-xs">
-      <div className="flex flex-wrap items-center justify-between gap-3 max-w-[1440px] mx-auto w-full">
+    <header className="shrink-0 bg-white border-b border-slate-200 sticky top-0 z-40 px-4 sm:px-6 py-2.5 shadow-xs">
+      <div className="flex items-center justify-between gap-3 max-w-[1440px] mx-auto w-full">
         
         {/* Brand & AICTE Identity */}
-        <div className="flex items-center space-x-4">
-          <div className="flex items-center space-x-3 shrink-0">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 via-orange-600 to-sky-600 flex items-center justify-center shadow-md shadow-orange-500/20 text-white font-black text-xl tracking-wider">
-              PX
-            </div>
-            <div>
+        <div className="flex items-center space-x-3 shrink-0 min-w-0">
+          <div className="flex items-center space-x-2.5 shrink-0">
+            <img 
+              src="/logo.png" 
+              alt="PRAMAAN-X Logo" 
+              className="w-9 h-9 object-contain rounded-lg shrink-0 navbar-logo shadow-xs" 
+            />
+            <div className="shrink-0">
               <div className="flex items-center space-x-2">
-                <span className="text-xl font-bold tracking-tight text-slate-900">
+                <span className="text-lg sm:text-xl font-bold tracking-tight text-slate-900">
                   PRAMAAN-X
                 </span>
                 <span className="text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-orange-50 text-orange-700 border border-orange-200">
                   AICTE EoA Scrutiny
                 </span>
               </div>
-              <p className="text-[11px] text-slate-500 leading-tight">
+              <p className="hidden 2xl:block text-[11px] text-slate-500 leading-tight">
                 Regulatory Decision-Support & Multi-Modal Document Intelligence
               </p>
             </div>
           </div>
 
-          <div className="hidden xl:flex items-center ml-4 pl-4 border-l border-slate-200">
-            <div className="flex items-center space-x-2 px-3 py-1 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-xs font-medium">
+          <div className="hidden lg:flex items-center ml-2 pl-3 border-l border-slate-200 shrink-0">
+            <div className="flex items-center space-x-2 px-2.5 py-1 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-xs font-medium whitespace-nowrap">
               <AlertTriangle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
               <span>Advisory Indicators Only • Non-Punitive Review • No Auto-Rejection</span>
             </div>
@@ -83,7 +96,7 @@ export default function Navbar({
         </div>
 
         {/* Action Controls, Alert Bell & Role Switcher */}
-        <div className="flex items-center space-x-3 shrink-0">
+        <div className="flex items-center space-x-2.5 shrink-0">
           
           {/* Data Source Mode Badge / Toggle */}
           <button
@@ -100,7 +113,7 @@ export default function Navbar({
           </button>
 
           {/* Active Ledger Status Badge */}
-          <div className="hidden lg:flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-mono font-medium">
+          <div className="hidden sm:flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-mono font-medium whitespace-nowrap">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
             <span>Ledger: INTACT (7 Blocks)</span>
           </div>
@@ -155,13 +168,13 @@ export default function Navbar({
           <div className="flex items-center space-x-2.5 bg-slate-50 pl-3 pr-2 py-1.5 rounded-xl border border-slate-200 shadow-2xs">
             <div className="flex items-center space-x-2">
               <UserCheck className="w-4 h-4 text-sky-600 shrink-0" />
-              <div className="text-left hidden sm:block">
+              <div className="text-left hidden sm:flex flex-col items-start gap-0.5">
                 <div className="text-xs font-bold text-slate-800 leading-tight">
-                  {currentUser?.full_name || currentUser?.email || 'Logged In User'}
+                  {currentUser?.full_name || currentUser?.email || 'Dr. Sunita Deshmukh'}
                 </div>
-                <div className="text-[10px] font-semibold text-sky-700 uppercase tracking-wider">
-                  {currentRole?.replace('_', ' ')}
-                </div>
+                <span id="header-role-badge" className="role-badge-pill">
+                  {currentRole ? currentRole.replace('_', ' ') : 'Scrutiny Officer'}
+                </span>
               </div>
             </div>
 

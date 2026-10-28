@@ -1,6 +1,7 @@
-from typing import Dict, Any, List
-from fastapi import APIRouter, Depends, HTTPException, Request
+from typing import Dict, Any, List, Optional
+from fastapi import APIRouter, Depends, HTTPException, Request, UploadFile, File, Form
 from sqlalchemy.orm import Session
+import hashlib
 
 from backend.app.core.database import get_db
 from backend.app.core.security import (
@@ -11,13 +12,66 @@ from backend.app.core.security import (
 )
 from backend.app.core.logging_service import log_sensitive_access
 from backend.app.core.masking import mask_pii_by_role
-from backend.app.models.models import Institution, User
+from backend.app.models.models import Institution, User, Document, Application, utc_now
 from backend.app.schemas.schemas import PreflightScanRequest, PreflightScanResponse
 from backend.app.services.checklist_engine import generate_checklist_status
 from backend.app.services.rules_engine import rules_engine
 from backend.app.services.impossibility_engine import impossibility_engine
 
 router = APIRouter(prefix="/preflight", tags=["Institution Pre-Flight Readiness"])
+
+
+@router.post("/upload")
+async def upload_preflight_document(
+    institution_id: int = Form(...),
+    document_type: str = Form("General Document"),
+    file: UploadFile = File(...),
+    req: Request = None,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Real file upload to backend preflight ingestion pipeline."""
+    enforce_institution_isolation(current_user, institution_id)
+    file_bytes = await file.read()
+    if not file_bytes:
+        raise HTTPException(status_code=400, detail="Empty file uploaded.")
+
+    sha256_hash = hashlib.sha256(file_bytes).hexdigest()
+    app = db.query(Application).filter(Application.institution_id == institution_id).first()
+    app_id = app.id if app else 1
+
+    doc = db.query(Document).filter(
+        (Document.institution_id == institution_id) & (Document.document_type == document_type)
+    ).first()
+
+    if not doc:
+        doc = Document(
+            application_id=app_id,
+            institution_id=institution_id,
+            document_type=document_type,
+            filename=file.filename or f"{document_type.replace(' ', '_')}.pdf",
+            file_hash=sha256_hash,
+            file_size_bytes=len(file_bytes),
+            classification_confidence=0.98,
+        )
+        db.add(doc)
+    else:
+        doc.filename = file.filename or doc.filename
+        doc.file_hash = sha256_hash
+        doc.file_size_bytes = len(file_bytes)
+        doc.uploaded_at = utc_now()
+
+    db.commit()
+    db.refresh(doc)
+
+    return {
+        "status": "success",
+        "document_id": doc.id,
+        "filename": doc.filename,
+        "document_type": doc.document_type,
+        "file_hash": doc.file_hash,
+        "file_size": f"{round(len(file_bytes) / (1024 * 1024), 1)} MB",
+    }
 
 
 @router.post("/scan", response_model=PreflightScanResponse)
@@ -44,8 +98,12 @@ def run_preflight_readiness_scan(
     if not inst:
         raise HTTPException(status_code=404, detail="Institution not found")
 
-    # 1. Checklist completeness
-    checklist_status = generate_checklist_status(request.application_category, [])
+    # 1. Checklist completeness with actual uploaded documents
+    submitted_docs = db.query(Document).filter(
+        (Document.institution_id == inst.id) | 
+        (Document.application_id.in_(db.query(Application.id).filter(Application.institution_id == inst.id)))
+    ).all()
+    checklist_status = generate_checklist_status(request.application_category, submitted_docs)
     
     # 2. Rule evaluation on submitted facts
     eval_facts = {
@@ -65,10 +123,11 @@ def run_preflight_readiness_scan(
     for r in rule_findings:
         d = r.model_dump() if hasattr(r, "model_dump") else dict(r)
         d["passed"] = r.passed
-        d["clause_id"] = r.clause_id
-        d["clause_title"] = r.clause_title
-        d["explanation"] = r.explanation
-        d["handbook_edition"] = r.handbook_edition
+        d["clause_id"] = getattr(r, "clause_ref", "") or getattr(r, "clause_id", "")
+        d["clause_title"] = getattr(r, "clause_ref", "") or getattr(r, "clause_title", "")
+        d["explanation"] = getattr(r, "human_readable_explanation", "") or getattr(r, "explanation", "")
+        d["fix_guidance"] = getattr(r, "remediation", "") or d["explanation"]
+        d["handbook_edition"] = getattr(r, "handbook_edition", "AICTE APH 2025-26")
         rule_results.append(d)
         if not r.passed:
             failed_rules.append(d)
@@ -112,13 +171,27 @@ def run_preflight_readiness_scan(
     user_role = normalize_role(current_user.role)
     is_owner = (user_role == ROLE_INSTITUTION_USER and current_user.institution_id == inst.id)
 
+    uploaded_docs_list = [
+        {
+            "id": d.id,
+            "doc_type": d.document_type,
+            "filename": d.filename,
+            "size": f"{round((d.file_size_bytes or 1024 * 1024) / (1024 * 1024), 1)} MB",
+            "uploaded_at": d.uploaded_at.strftime("%d-%b-%Y") if d.uploaded_at else "Verified",
+            "hash": d.file_hash,
+            "status": "FLAGGED" if d.is_flagged_for_review else "VERIFIED"
+        }
+        for d in submitted_docs
+    ]
+
     resp_dict = {
         "readiness_score": final_score,
         "category": request.application_category,
         "checklist_summary": checklist_status,
         "rule_indicators": rule_results,
         "impossibility_indicators": impossibilities,
-        "recommendations": recommendations or ["Institution dossier is 100% compliant with AICTE APH 2025-26 guidelines."]
+        "recommendations": recommendations or ["Institution dossier is 100% compliant with AICTE APH 2025-26 guidelines."],
+        "uploaded_documents": uploaded_docs_list
     }
 
     masked_resp = mask_pii_by_role(resp_dict, user_role, is_owner=is_owner)

@@ -1,6 +1,6 @@
 {
   "catalog_version": "1.0",
-  "updated_at": "2026-10-27T19:53:51.678339",
+  "updated_at": "2026-10-28T08:29:23.750075",
   "total_benchmark_samples": 8,
   "positive_defect_cases": 5,
   "negative_controls": 3,

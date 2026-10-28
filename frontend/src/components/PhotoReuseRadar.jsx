@@ -91,13 +91,15 @@ export default function PhotoReuseRadar({ onNavigateTab, onSelectApplication }) 
               original_photo: {
                 institution_name: c.institutions?.[0]?.institution_name || 'Original Applicant',
                 institution_id: c.institutions?.[0]?.institution_id || 'INST_001',
-                photo_url: c.photos?.[0]?.file_path ? `/uploads/${c.photos[0].filename}` : 'https://images.unsplash.com/photo-1562774053-701939374585?w=800&auto=format&fit=crop&q=80',
+                image_url: c.photos?.[0]?.filename ? `/images/${c.photos[0].filename}` : '/images/computer_lab_original.jpg',
+                file_name: c.photos?.[0]?.filename || 'original_evidence.jpg',
                 phash: c.photos?.[0]?.phash || 'a8f0c3d2e1b4a5f6',
               },
               duplicate_photo: {
                 institution_name: c.institutions?.[1]?.institution_name || 'Reusing Applicant',
                 institution_id: c.institutions?.[1]?.institution_id || 'INST_002',
-                photo_url: c.photos?.[1]?.file_path ? `/uploads/${c.photos[1].filename}` : 'https://images.unsplash.com/photo-1562774053-701939374585?w=800&auto=format&fit=crop&q=80',
+                image_url: c.photos?.[1]?.filename ? `/images/${c.photos[1].filename}` : '/images/computer_lab_reused.jpg',
+                file_name: c.photos?.[1]?.filename || 'reused_evidence.jpg',
                 phash: c.photos?.[1]?.phash || 'a8f0c3d2e1b4a5f8',
               }
             }));
@@ -105,6 +107,8 @@ export default function PhotoReuseRadar({ onNavigateTab, onSelectApplication }) 
             setSelectedPairId(formattedPairs[0].id);
           }
           setIsDemoData(false);
+        } else {
+          setIsDemoData(true);
         }
       } catch (err) {
         console.warn('Running Photo Reuse Radar in rich demo fallback mode:', err.message);
@@ -290,6 +294,14 @@ export default function PhotoReuseRadar({ onNavigateTab, onSelectApplication }) 
     }
   };
 
+  const institutionCount = graphData.nodes.filter(
+    (n) => n.shape !== 'dot' && n.group !== 'photo' && n.node_type !== 'Photo'
+  ).length || graphData.nodes.length;
+  const conflictLinksCount = graphData.edges.length;
+  const maxSimilarity = radarPairs.length > 0 
+    ? Math.max(...radarPairs.map((p) => Number(p.similarity_score) || 0))
+    : 99.1;
+
   return (
     <div className="space-y-6 max-w-[1720px] mx-auto">
       
@@ -351,17 +363,17 @@ export default function PhotoReuseRadar({ onNavigateTab, onSelectApplication }) 
         <div className="pt-3.5 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
           <div className="bg-white/80 p-2.5 rounded-xl border border-slate-200 shadow-2xs">
             <div className="text-[10px] text-slate-500 uppercase font-semibold">Institutions in Graph</div>
-            <div className="text-lg font-black text-slate-900 mt-0.5">{graphData.nodes.length} Colleges</div>
+            <div className="text-lg font-black text-slate-900 mt-0.5">{institutionCount} Colleges</div>
           </div>
 
           <div className="bg-white/80 p-2.5 rounded-xl border border-slate-200 shadow-2xs">
             <div className="text-[10px] text-slate-500 uppercase font-semibold">Shared Photo Edges</div>
-            <div className="text-lg font-black text-rose-600 mt-0.5">{graphData.edges.length} Conflict Links</div>
+            <div className="text-lg font-black text-rose-600 mt-0.5">{conflictLinksCount} Conflict Links</div>
           </div>
 
           <div className="bg-white/80 p-2.5 rounded-xl border border-slate-200 shadow-2xs">
             <div className="text-[10px] text-slate-500 uppercase font-semibold">Max Visual Similarity</div>
-            <div className="text-lg font-black text-rose-700 mt-0.5">99.1% (Hamming = 0)</div>
+            <div className="text-lg font-black text-rose-700 mt-0.5">{maxSimilarity}% Match</div>
           </div>
 
           <div className="bg-white/80 p-2.5 rounded-xl border border-slate-200 shadow-2xs">

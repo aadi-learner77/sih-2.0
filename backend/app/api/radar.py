@@ -53,6 +53,14 @@ def get_photo_reuse_clusters(
     Returns cluster detection graph JSON with nodes (Institutions, Photos) and edges (claims, reuses).
     """
     try:
+        if len(photo_radar_service.catalog) <= 1:
+            photo_radar_service._load_index()
+            if len(photo_radar_service.catalog) <= 1:
+                photos_dir = Path("generated_data/photos")
+                if photos_dir.exists():
+                    photo_radar_service.index_photos_directory(photos_dir)
+                    photo_radar_service._save_index()
+
         cluster_response = photo_radar_service.detect_photo_reuse_clusters(
             exact_hamming_threshold=exact_hamming_threshold,
             near_duplicate_hamming_threshold=near_duplicate_hamming_threshold,

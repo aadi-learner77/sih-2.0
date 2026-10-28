@@ -112,6 +112,67 @@ app.include_router(inspections_router)
 def on_startup():
     # Seed initial synthetic benchmark data on start
     seed_database()
+    
+    # Pre-populate representative manual review queue cases if empty
+    from backend.app.services.connectors import default_manual_review_queue
+    if len(default_manual_review_queue.list()) == 0:
+        default_manual_review_queue.enqueue(
+            result={
+                "status": "manual_review_required",
+                "source": "api_lookup:state_fire_services",
+                "request_hash": "a1f72b94c0388de84291884bb0728c0b299e900c4314e304892c90ad7d72c1c1",
+                "response_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "authoritative_data": {"noc_status": "EXPIRED", "expiry_date": "2024-11-30", "portal_ref": "FS/NOC/BLR/2024/9812"},
+                "discrepancies": [{"field": "valid_till", "claimed": "2026-03-31", "authoritative": "2024-11-30"}]
+            },
+            doc_fields={
+                "document_type": "Fire Safety Certificate",
+                "reference_number": "FS/NOC/BLR/2024/9812",
+                "institution_id": "INST_001",
+                "institution_name": "Apex Institute of Technology & Science",
+                "authority": "fire"
+            },
+            reason="Indicator for review: Claimed validity (2026-03-31) conflicts with State Fire Services Portal record (expired 2024-11-30).",
+            priority="HIGH"
+        )
+        default_manual_review_queue.enqueue(
+            result={
+                "status": "source_unavailable",
+                "source": "api_lookup:bhoomi_land_registry",
+                "request_hash": "c5d2e7b94c0388de84291884bb0728c0b299e900c4314e304892c90ad7d72c2d2",
+                "response_hash": "f4c0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b966",
+                "authoritative_data": {"error": "Gateway timeout (HTTP 503)", "attempts": 3},
+                "discrepancies": []
+            },
+            doc_fields={
+                "document_type": "Land Title Deed / 7-12 Extract",
+                "reference_number": "LND/KA/SURV/42/1",
+                "institution_id": "INST_002",
+                "institution_name": "Royal College of Engineering",
+                "authority": "land"
+            },
+            reason="Indicator for review: Authoritative Land Registry Gateway timed out after 3 retries with exponential backoff. Requires officer verification.",
+            priority="MEDIUM"
+        )
+        default_manual_review_queue.enqueue(
+            result={
+                "status": "manual_review_required",
+                "source": "digital_signature:dsig_validator",
+                "request_hash": "b8e1a7b94c0388de84291884bb0728c0b299e900c4314e304892c90ad7d72c3f3",
+                "response_hash": "17d0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852ba77",
+                "authoritative_data": {"issuer_ca": "Apex Trust Sub-CA", "ca_trusted": False},
+                "discrepancies": [{"field": "ca_trust_chain", "claimed": "e-Mudhra / CCA Root", "found": "Untrusted Self-Signed Sub-CA"}]
+            },
+            doc_fields={
+                "document_type": "University Affiliation Order",
+                "reference_number": "AFF/VTU/2024/8819",
+                "institution_id": "INST_001",
+                "institution_name": "Apex Institute of Technology & Science",
+                "authority": "affiliation"
+            },
+            reason="Indicator for review: Digital signature valid, but signing certificate is issued by an untrusted intermediate CA not in CCA India trust store.",
+            priority="MEDIUM"
+        )
 
 @app.get("/")
 def root():
@@ -126,4 +187,6 @@ def root():
 
 @app.get("/health")
 def health_check():
-    return {"status": "HEALTHY", "db": "CONNECTED"}
+    db_engine = "SQLite" if settings.DATABASE_URL.startswith("sqlite") else "PostgreSQL"
+    return {"status": "HEALTHY", "db": "CONNECTED", "database_engine": db_engine}
+

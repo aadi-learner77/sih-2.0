@@ -34,6 +34,13 @@ export default function PhotoComparisonPanel({
   const [wipePosition, setWipePosition] = useState(50); // percentage 0-100 for slider
   const [overlayOpacity, setOverlayOpacity] = useState(65);
   const [toastMsg, setToastMsg] = useState('');
+  const [origImgError, setOrigImgError] = useState(false);
+  const [dupImgError, setDupImgError] = useState(false);
+
+  React.useEffect(() => {
+    setOrigImgError(false);
+    setDupImgError(false);
+  }, [pairData?.id]);
 
   if (!pairData) {
     return (
@@ -49,6 +56,36 @@ export default function PhotoComparisonPanel({
 
   const { original_photo, duplicate_photo } = pairData;
 
+  const resolvePhotoUrl = (photo) => {
+    if (!photo) return '/images/computer_lab_original.jpg';
+    const url = photo.image_url || photo.photo_url || '';
+    if (url.startsWith('http://') || url.startsWith('https://')) return url;
+    if (url.startsWith('/images/')) return url;
+    if (photo.file_name) return `/images/${photo.file_name}`;
+    if (photo.filename) return `/images/${photo.filename}`;
+    if (url) {
+      const parts = url.split('/');
+      const last = parts[parts.length - 1];
+      if (last) return `/images/${last}`;
+    }
+    return '/images/computer_lab_original.jpg';
+  };
+
+  const origUrl = resolvePhotoUrl(original_photo);
+  const dupUrl = resolvePhotoUrl(duplicate_photo);
+
+  const ImagePlaceholder = ({ fileName, subtitle }) => (
+    <div className="w-full h-full min-h-[160px] flex flex-col items-center justify-center p-4 bg-slate-100 text-slate-500 text-center select-none">
+      <ImageIcon className="w-8 h-8 text-slate-400 mb-1.5" />
+      <span className="text-[11px] font-mono font-bold text-slate-700 max-w-[200px] truncate" title={fileName}>
+        {fileName || 'image_asset.jpg'}
+      </span>
+      <span className="text-[10px] text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded mt-1 font-medium">
+        {subtitle || 'Evidence Asset Registered'}
+      </span>
+    </div>
+  );
+
   const handleOpenApp = (appNo, instName) => {
     setToastMsg(`Opening application dossier for ${instName} (${appNo})...`);
     setTimeout(() => setToastMsg(''), 3500);
@@ -58,7 +95,7 @@ export default function PhotoComparisonPanel({
   };
 
   return (
-    <div className="flex flex-col h-full bg-white border border-slate-200 rounded-2xl shadow-xs overflow-hidden">
+    <div className="flex flex-col bg-white border border-slate-200 rounded-2xl shadow-xs overflow-hidden max-h-[calc(100vh-140px)] min-h-[600px]">
       {/* Side Panel Header */}
       <div className="p-4 bg-[#F4F6F8] text-[#000000] border-b border-[#D5D9DE] flex items-center justify-between gap-3">
         <div className="min-w-0">
@@ -101,9 +138,9 @@ export default function PhotoComparisonPanel({
       <div className="flex-1 p-4 overflow-y-auto space-y-4">
         
         {/* View Mode Switcher Toolbar */}
-        <div className="flex items-center justify-between bg-slate-100 p-1.5 rounded-xl border border-slate-200 text-xs">
-          <span className="text-[11px] font-bold text-slate-600 px-2">Comparison View:</span>
-          <div className="flex space-x-1">
+        <div className="flex flex-wrap items-center justify-between gap-2 bg-slate-100 p-1.5 rounded-xl border border-slate-200 text-xs">
+          <span className="text-[11px] font-bold text-slate-700 px-1 shrink-0">Comparison View:</span>
+          <div className="flex flex-wrap gap-1 items-center">
             <button
               id="view-mode-side-by-side"
               onClick={() => setViewMode('side_by_side')}
@@ -157,17 +194,22 @@ export default function PhotoComparisonPanel({
                     <span className="w-2 h-2 rounded-full bg-slate-500" />
                     <span>Original Submission</span>
                   </span>
-                  <span className="font-mono text-slate-500">{original_photo.academic_year}</span>
+                  <span className="font-mono text-slate-500">{original_photo.academic_year || '2024-25'}</span>
                 </div>
 
                 <div className="relative aspect-[4/3] bg-[#F4F6F8] overflow-hidden group">
-                  <img 
-                    src={original_photo.image_url} 
-                    alt={original_photo.facility_name} 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute bottom-2 left-2 bg-white/95 text-[#000000] border border-[#D5D9DE] text-[9px] font-mono px-2 py-0.5 rounded shadow-xs">
-                    {original_photo.file_name}
+                  {origImgError ? (
+                    <ImagePlaceholder fileName={original_photo.file_name || original_photo.filename} subtitle="Original Evidence Scan" />
+                  ) : (
+                    <img 
+                      src={origUrl} 
+                      alt={original_photo.facility_name} 
+                      onError={() => setOrigImgError(true)}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  )}
+                  <div className="absolute bottom-2 left-2 bg-white/95 text-[#000000] border border-[#D5D9DE] text-[9px] font-mono px-2 py-0.5 rounded shadow-xs max-w-[80%] truncate">
+                    {original_photo.file_name || original_photo.filename || 'original_image.jpg'}
                   </div>
                 </div>
 
@@ -176,14 +218,14 @@ export default function PhotoComparisonPanel({
                     {original_photo.institution_name}
                   </div>
                   <div className="text-[11px] text-slate-500">
-                    {original_photo.city}
+                    {original_photo.city || 'Campus Facility'}
                   </div>
                   <div className="text-[11px] text-slate-700 bg-slate-50 p-1.5 rounded border border-slate-100 font-medium">
-                    {original_photo.facility_name}
+                    {original_photo.facility_name || pairData.category}
                   </div>
                   <div className="pt-1.5 border-t border-slate-100 flex items-center justify-between text-[10px] font-mono text-slate-500">
-                    <span>App: {original_photo.application_no}</span>
-                    <span>Date: {original_photo.submission_date}</span>
+                    <span>App: {original_photo.application_no || 'APP-HISTORICAL'}</span>
+                    <span>Date: {original_photo.submission_date || 'Verified'}</span>
                   </div>
                 </div>
               </div>
@@ -195,20 +237,25 @@ export default function PhotoComparisonPanel({
                     <span className="w-2 h-2 rounded-full bg-rose-600 animate-pulse" />
                     <span>Current Near-Duplicate</span>
                   </span>
-                  <span className="font-mono text-rose-700">{duplicate_photo.academic_year}</span>
+                  <span className="font-mono text-rose-700">{duplicate_photo.academic_year || '2025-26'}</span>
                 </div>
 
                 <div className="relative aspect-[4/3] bg-[#F4F6F8] overflow-hidden group">
-                  <img 
-                    src={duplicate_photo.image_url} 
-                    alt={duplicate_photo.facility_name} 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
+                  {dupImgError ? (
+                    <ImagePlaceholder fileName={duplicate_photo.file_name || duplicate_photo.filename} subtitle="Flagged Near-Duplicate" />
+                  ) : (
+                    <img 
+                      src={dupUrl} 
+                      alt={duplicate_photo.facility_name} 
+                      onError={() => setDupImgError(true)}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  )}
                   <div className="absolute top-2 right-2 bg-rose-600 text-white text-[9px] font-bold px-2 py-0.5 rounded shadow-sm">
                     {pairData.similarity_score}% RE-USE
                   </div>
-                  <div className="absolute bottom-2 left-2 bg-white/95 text-[#000000] border border-[#D5D9DE] text-[9px] font-mono px-2 py-0.5 rounded shadow-xs">
-                    {duplicate_photo.file_name}
+                  <div className="absolute bottom-2 left-2 bg-white/95 text-[#000000] border border-[#D5D9DE] text-[9px] font-mono px-2 py-0.5 rounded shadow-xs max-w-[80%] truncate">
+                    {duplicate_photo.file_name || duplicate_photo.filename || 'reused_image.jpg'}
                   </div>
                 </div>
 
@@ -217,14 +264,14 @@ export default function PhotoComparisonPanel({
                     {duplicate_photo.institution_name}
                   </div>
                   <div className="text-[11px] text-slate-500">
-                    {duplicate_photo.city}
+                    {duplicate_photo.city || 'Applicant Campus'}
                   </div>
                   <div className="text-[11px] text-rose-900 bg-rose-50/60 p-1.5 rounded border border-rose-100 font-medium">
-                    {duplicate_photo.facility_name}
+                    {duplicate_photo.facility_name || pairData.category}
                   </div>
                   <div className="pt-1.5 border-t border-slate-100 flex items-center justify-between text-[10px] font-mono text-slate-500">
-                    <span>App: {duplicate_photo.application_no}</span>
-                    <span>Date: {duplicate_photo.submission_date}</span>
+                    <span>App: {duplicate_photo.application_no || 'APP-CURRENT'}</span>
+                    <span>Date: {duplicate_photo.submission_date || 'Under Review'}</span>
                   </div>
                 </div>
               </div>
@@ -251,15 +298,17 @@ export default function PhotoComparisonPanel({
               <div className="relative aspect-[4/3] rounded-lg overflow-hidden border border-[#D5D9DE] bg-white">
                 {/* Base Image (Original) */}
                 <img 
-                  src={original_photo.image_url} 
+                  src={origUrl} 
                   alt="Original" 
+                  onError={() => setOrigImgError(true)}
                   className="absolute inset-0 w-full h-full object-cover"
                 />
 
                 {/* Overlaid Near Duplicate Image with dynamic difference filter */}
                 <img 
-                  src={duplicate_photo.image_url} 
+                  src={dupUrl} 
                   alt="Duplicate" 
+                  onError={() => setDupImgError(true)}
                   className="absolute inset-0 w-full h-full object-cover mix-blend-difference"
                   style={{ opacity: overlayOpacity / 100 }}
                 />
@@ -327,8 +376,9 @@ export default function PhotoComparisonPanel({
               <div className="relative aspect-[4/3] rounded-lg overflow-hidden border border-[#D5D9DE] select-none cursor-ew-resize">
                 {/* Background: Duplicate Image (Right Side) */}
                 <img 
-                  src={duplicate_photo.image_url} 
+                  src={dupUrl} 
                   alt="Duplicate Photo" 
+                  onError={() => setDupImgError(true)}
                   className="absolute inset-0 w-full h-full object-cover"
                 />
 
@@ -338,8 +388,9 @@ export default function PhotoComparisonPanel({
                   style={{ width: `${wipePosition}%` }}
                 >
                   <img 
-                    src={original_photo.image_url} 
+                    src={origUrl} 
                     alt="Original Photo" 
+                    onError={() => setOrigImgError(true)}
                     className="absolute inset-0 w-full h-full object-cover max-w-none"
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />
