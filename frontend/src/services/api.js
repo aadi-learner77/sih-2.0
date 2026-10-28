@@ -225,16 +225,56 @@ export const api = {
     return res.data;
   },
 
-  // Manual Review Queue
-  getManualReviewQueue: async () => {
-    const res = await apiClient.get('/verification/connector/manual-review-queue');
+  // Manual Review Queue & Connector Verification
+  getManualReviewQueue: async (status = null, priority = null) => {
+    const params = {};
+    if (status) params.status = status;
+    if (priority) params.priority = priority;
+    const res = await apiClient.get('/verification/connector/manual-review-queue', { params });
     return res.data;
   },
-  resolveManualReviewItem: async (itemId, resolution, notes) => {
+  resolveManualReviewItem: async (itemId, resolution, notes, officerEmail = 'senior.officer@aicte.gov.in') => {
     const res = await apiClient.post(`/verification/connector/manual-review-queue/${itemId}/resolve`, {
-      resolution,
-      notes,
+      officer_email: officerEmail,
+      resolution_status: resolution,
+      notes: notes || '',
     });
+    return res.data;
+  },
+  verifyConnector: async (payload) => {
+    const res = await apiClient.post('/verification/connector/verify', payload);
+    return res.data;
+  },
+  compositeVerifyConnector: async (payload) => {
+    const res = await apiClient.post('/verification/connector/composite-verify', payload);
+    return res.data;
+  },
+
+  // Forensics Engine & Proof-of-Reality
+  analyzeDocumentForensics: async (formData) => {
+    const res = await apiClient.post('/forensics/document/analyze', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return res.data;
+  },
+  checkSunShadowPlausibility: async (formData) => {
+    const res = await apiClient.post('/forensics/photo/sun-shadow-plausibility', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return res.data;
+  },
+  checkBuiltUpPlausibility: async (formData) => {
+    const res = await apiClient.post('/forensics/geospatial/built-up-plausibility', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return res.data;
+  },
+  getForensicsCalibration: async () => {
+    const res = await apiClient.get('/forensics/calibration');
+    return res.data;
+  },
+  runForensicsCalibration: async (params = {}) => {
+    const res = await apiClient.post('/forensics/calibrate', null, { params });
     return res.data;
   },
 

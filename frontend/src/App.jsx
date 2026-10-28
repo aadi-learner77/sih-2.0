@@ -9,15 +9,16 @@ import RuleConfigPage from './pages/RuleConfigPage';
 import PreFlightScorecard from './components/PreFlightScorecard';
 import AuditAndReceiptsPage from './pages/AuditAndReceiptsPage';
 import InspectionPlannerPage from './pages/InspectionPlannerPage';
+import ManualReviewQueuePage from './pages/ManualReviewQueuePage';
 import LoginPage from './pages/LoginPage';
 import { api } from './services/api';
 
 const ROLE_PERMITTED_TABS = {
   institution_user: ['dashboard', 'preflight', 'audit-ledger'],
-  auditor: ['dashboard', 'evidence-lens', 'impossibility-engine', 'audit-ledger'],
-  scrutiny_officer: ['dashboard', 'evidence-lens', 'impossibility-engine', 'photo-radar', 'preflight', 'inspection-planner', 'audit-ledger'],
-  senior_officer: ['dashboard', 'evidence-lens', 'impossibility-engine', 'photo-radar', 'regulations', 'preflight', 'inspection-planner', 'audit-ledger'],
-  admin: ['dashboard', 'evidence-lens', 'impossibility-engine', 'photo-radar', 'regulations', 'preflight', 'inspection-planner', 'audit-ledger'],
+  auditor: ['dashboard', 'evidence-lens', 'impossibility-engine', 'manual-review-queue', 'document-intelligence', 'audit-ledger'],
+  scrutiny_officer: ['dashboard', 'evidence-lens', 'manual-review-queue', 'preflight', 'document-intelligence', 'photo-radar', 'impossibility-engine', 'inspection-planner', 'audit-ledger'],
+  senior_officer: ['dashboard', 'evidence-lens', 'manual-review-queue', 'preflight', 'document-intelligence', 'photo-radar', 'impossibility-engine', 'regulations', 'inspection-planner', 'audit-ledger'],
+  admin: ['dashboard', 'evidence-lens', 'manual-review-queue', 'preflight', 'document-intelligence', 'photo-radar', 'impossibility-engine', 'regulations', 'inspection-planner', 'audit-ledger'],
 };
 
 export default function App() {
@@ -81,19 +82,22 @@ export default function App() {
           setEvidenceLensData(null);
         }
 
-        // Fetch dynamic counts from API for sidebar badges (/graph/impossibilities and /applications/findings/all)
+        // Fetch dynamic counts from API for sidebar badges (/graph/impossibilities, /applications/findings/all, /verification/connector/manual-review-queue)
         try {
-          const [impRes, findingsRes] = await Promise.allSettled([
+          const [impRes, findingsRes, queueRes] = await Promise.allSettled([
             api.getImpossibilities(),
-            api.getAllFindings()
+            api.getAllFindings(),
+            api.getManualReviewQueue()
           ]);
           const impCount = impRes.status === 'fulfilled' && Array.isArray(impRes.value) ? impRes.value.length : 0;
           const advCount = findingsRes.status === 'fulfilled' && Array.isArray(findingsRes.value) 
             ? findingsRes.value.length 
             : (primary?.advisory_flags_count || 0);
+          const queueCount = queueRes.status === 'fulfilled' && Array.isArray(queueRes.value) ? queueRes.value.length : 0;
           setSidebarCounts({
             impossibilities: impCount,
-            advisoryFlags: advCount
+            advisoryFlags: advCount,
+            manualReview: queueCount
           });
         } catch (_cntErr) {
           // ignore count fetch error
@@ -247,6 +251,13 @@ export default function App() {
                     loadData(currentRole);
                   }
                 }}
+              />
+            )}
+
+            {activeTab === 'manual-review-queue' && (
+              <ManualReviewQueuePage 
+                currentUser={currentUser}
+                onNavigateToAudit={() => setActiveTab('audit-ledger')}
               />
             )}
 
