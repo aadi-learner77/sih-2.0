@@ -107,7 +107,7 @@ export default function LoginPage({ onLoginSuccess }) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-850 to-slate-950 flex flex-col justify-center py-12 sm:px-6 lg:px-8 text-slate-100 font-sans selection:bg-orange-500 selection:text-white">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-850 to-slate-950 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 text-slate-100 font-sans selection:bg-orange-500 selection:text-white relative overflow-x-hidden">
       {/* Background Decorative Gradient Orbs */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-sky-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -152,11 +152,11 @@ export default function LoginPage({ onLoginSuccess }) {
 
           <form className="space-y-5" onSubmit={handleSubmit}>
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider">
+              <label htmlFor="email" className="block text-xs font-semibold text-slate-300 uppercase tracking-wider">
                 Official Email Address
               </label>
               <div className="mt-1.5 relative rounded-xl shadow-xs">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500 z-10">
                   <Mail className="h-4 w-4" />
                 </div>
                 <input
@@ -168,17 +168,17 @@ export default function LoginPage({ onLoginSuccess }) {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="officer@aicte-india.org"
-                  className="block w-full pl-10 pr-3.5 py-2.5 bg-slate-950/80 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
+                  className="block w-full !pl-12 pr-3.5 py-2.5 bg-slate-950/80 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition box-border"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider">
+              <label htmlFor="password" className="block text-xs font-semibold text-slate-300 uppercase tracking-wider">
                 Password
               </label>
               <div className="mt-1.5 relative rounded-xl shadow-xs">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500 z-10">
                   <Lock className="h-4 w-4" />
                 </div>
                 <input
@@ -190,7 +190,7 @@ export default function LoginPage({ onLoginSuccess }) {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••••••"
-                  className="block w-full pl-10 pr-3.5 py-2.5 bg-slate-950/80 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
+                  className="block w-full !pl-12 pr-3.5 py-2.5 bg-slate-950/80 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition box-border"
                 />
               </div>
             </div>
@@ -226,30 +226,33 @@ export default function LoginPage({ onLoginSuccess }) {
               </span>
             </div>
 
-            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-              {PRESET_ACCOUNTS.map((preset) => {
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 auto-rows-fr w-full box-border">
+              {PRESET_ACCOUNTS.map((preset, index) => {
                 const isSelected = email === preset.email;
+                const isLastOdd = index === PRESET_ACCOUNTS.length - 1 && PRESET_ACCOUNTS.length % 2 !== 0;
                 return (
                   <button
                     key={preset.role}
                     id={`preset-role-${preset.role}`}
                     type="button"
                     onClick={() => handleSelectPreset(preset)}
-                    className={`text-left p-2.5 rounded-xl border transition flex flex-col justify-between ${
+                    className={`w-full h-full min-w-0 text-left p-3 rounded-xl border transition flex flex-col justify-start items-stretch box-border cursor-pointer select-none ${
+                      isLastOdd ? 'sm:col-span-2' : ''
+                    } ${
                       isSelected
                         ? 'bg-orange-500/15 border-orange-500/50 ring-1 ring-orange-500/30'
-                        : 'bg-slate-950/50 border-slate-800 hover:bg-slate-800/60 hover:border-slate-700'
-                    }`}
+                        : 'bg-slate-950/60 border-slate-800 hover:bg-slate-800/80 hover:border-slate-700'
+                    } focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900`}
                   >
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-white">
+                    <div className="w-full min-w-0 flex flex-wrap items-center justify-between gap-1.5 mb-1.5">
+                      <span className="text-xs font-bold text-white tracking-tight min-w-0">
                         {preset.title}
                       </span>
-                      <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${preset.badgeColor}`}>
+                      <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border shrink-0 max-w-full ${preset.badgeColor}`}>
                         {preset.role}
                       </span>
                     </div>
-                    <p className="text-[11px] text-slate-400 truncate mt-1">
+                    <p className="text-[11px] text-slate-400 leading-relaxed m-0 p-0 text-left w-full min-w-0 [overflow-wrap:anywhere] break-words whitespace-normal">
                       {preset.desc}
                     </p>
                   </button>

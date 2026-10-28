@@ -602,6 +602,33 @@ textarea {
   box-shadow: none !important;
 }
 
+/* Inputs with leading icons: guarantee 46px left padding so icon and text never collide */
+input[class*="pl-10"],
+input[class*="pl-11"],
+input[class*="pl-12"],
+input[class*="!pl-"],
+input#email,
+input#password {
+  padding-left: 46px !important;
+}
+
+/* Demo accounts quick-fill buttons in login */
+button[id^="preset-role-"] {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  box-sizing: border-box !important;
+  text-align: left !important;
+  gap: 6px !important;
+}
+
+button[id^="preset-role-"] span[class*="rounded-full"] {
+  padding: 2px 8px !important;
+  font-size: 10px !important;
+  line-height: 1.2 !important;
+}
+
 select {
   min-width: 140px !important;
   cursor: pointer !important;
