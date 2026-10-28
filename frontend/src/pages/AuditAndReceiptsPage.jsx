@@ -1274,6 +1274,17 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
           </div>
         </div>
       )}
+
+      {/* Audit Database Engine Footer */}
+      <footer id="audit-database-footer" className="mt-8 pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500">
+        <div className="flex items-center space-x-2">
+          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>Active Immutable Ledger Storage: <strong className="text-slate-700 font-semibold">{dbEngineName} Engine</strong> (PostgreSQL production parity / SQLite runtime)</span>
+        </div>
+        <div className="text-[11px] font-mono text-slate-400 mt-2 sm:mt-0">
+          SHA-256 Hash Chain • Ed25519 Elliptic-Curve Signatures • Canonical JSON Payloads
+        </div>
+      </footer>
     </div>
   );
 }

@@ -60,6 +60,29 @@ export default function Navbar({
     } catch (e) {}
     window.dispatchEvent(new CustomEvent('themechange', { detail: { theme: nextTheme } }));
   };
+  const [ledgerStatus, setLedgerStatus] = useState({ intact: true, blocks: 7, loading: true });
+
+  useEffect(() => {
+    let isMounted = true;
+    const checkLedger = async () => {
+      try {
+        const res = await api.verifyAuditChain(activeApplication?.id || 1);
+        if (isMounted && res) {
+          setLedgerStatus({
+            intact: res.is_intact ?? res.is_valid ?? true,
+            blocks: res.chain_length ?? res.total_receipts ?? 7,
+            loading: false
+          });
+        }
+      } catch (err) {
+        if (isMounted) setLedgerStatus(prev => ({ ...prev, loading: false }));
+      }
+    };
+    checkLedger();
+    const interval = setInterval(checkLedger, 5000);
+    return () => { isMounted = false; clearInterval(interval); };
+  }, [activeApplication?.id]);
+
   return (
     <header className="shrink-0 bg-white border-b border-slate-200 sticky top-0 z-40 px-4 sm:px-6 py-2.5 shadow-xs">
       <div className="flex items-center justify-between gap-3 max-w-[1440px] mx-auto w-full">
@@ -71,6 +94,7 @@ export default function Navbar({
               src="/logo.png" 
               alt="PRAMAAN-X Logo" 
               className="w-9 h-9 object-contain rounded-lg shrink-0 navbar-logo shadow-xs" 
+              onError={(e) => { e.target.style.display = 'none'; }}
             />
             <div className="shrink-0">
               <div className="flex items-center space-x-2">
@@ -101,6 +125,7 @@ export default function Navbar({
           {/* Data Source Mode Badge / Toggle */}
           <button
             onClick={onToggleLiveMode}
+            id="data-source-mode-btn"
             className={`hidden md:flex items-center space-x-1.5 px-2.5 py-1 rounded-lg border text-xs font-medium transition-all ${
               isLiveMode
                 ? 'bg-emerald-50 text-emerald-700 border-emerald-300'
@@ -113,9 +138,16 @@ export default function Navbar({
           </button>
 
           {/* Active Ledger Status Badge */}
-          <div className="hidden sm:flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-mono font-medium whitespace-nowrap">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-            <span>Ledger: INTACT (7 Blocks)</span>
+          <div 
+            id="navbar-ledger-badge"
+            className={`hidden sm:flex items-center space-x-1.5 px-2.5 py-1 rounded-lg border text-xs font-mono font-medium whitespace-nowrap transition-colors ${
+              ledgerStatus.intact
+                ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
+                : 'bg-rose-50 border-rose-200 text-rose-700'
+            }`}
+          >
+            <ShieldCheck className={`w-3.5 h-3.5 ${ledgerStatus.intact ? 'text-emerald-600' : 'text-rose-600'}`} />
+            <span>Ledger: {ledgerStatus.intact ? 'INTACT' : 'TAMPERED'} ({ledgerStatus.blocks} Blocks)</span>
           </div>
 
           {/* Active Application Selector */}
@@ -151,6 +183,7 @@ export default function Navbar({
             <div className="flex items-center space-x-1.5 bg-slate-50 p-1 rounded-xl border border-slate-200 shadow-2xs">
               <UserCheck className="w-4 h-4 ml-2 text-sky-600 shrink-0" />
               <select
+                id="header-role-select"
                 value={currentRole}
                 onChange={(e) => onRoleChange(e.target.value)}
                 className="bg-transparent text-xs text-slate-800 font-semibold px-2 py-1 outline-none cursor-pointer"
@@ -181,6 +214,7 @@ export default function Navbar({
             {/* Logout Action */}
             {onLogout && (
               <button
+                id="header-signout-btn"
                 onClick={onLogout}
                 className="p-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition cursor-pointer text-xs flex items-center space-x-1"
                 title="Sign out of PRAMAAN-X session"

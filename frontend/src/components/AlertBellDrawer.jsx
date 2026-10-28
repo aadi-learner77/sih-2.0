@@ -44,7 +44,7 @@ export default function AlertBellDrawer({ currentRole }) {
     setLoading(true);
     try {
       const liveAlerts = await api.getAlerts();
-      if (liveAlerts && Array.isArray(liveAlerts) && liveAlerts.length > 0) {
+      if (Array.isArray(liveAlerts)) {
         setAlerts(liveAlerts);
         setIsDemoData(false);
       } else {
