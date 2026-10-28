@@ -107,41 +107,41 @@ export default function LoginPage({ onLoginSuccess }) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-850 to-slate-950 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 text-slate-100 font-sans selection:bg-orange-500 selection:text-white relative overflow-x-hidden">
+    <div className="min-h-[100dvh] w-full bg-gradient-to-br from-slate-900 via-slate-850 to-slate-950 flex flex-col justify-center items-center py-4 sm:py-6 md:py-8 px-3 sm:px-6 lg:px-8 text-slate-100 font-sans selection:bg-orange-500 selection:text-white relative overflow-y-auto overflow-x-hidden">
       {/* Background Decorative Gradient Orbs */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-sky-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/4 left-1/4 w-80 h-80 sm:w-96 sm:h-96 bg-orange-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 sm:w-96 sm:h-96 bg-sky-500/10 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
+      <div className="w-full max-w-md sm:max-w-lg md:max-w-xl relative z-10 flex flex-col items-center">
         {/* Brand Logo & Header */}
-        <div className="flex justify-center mb-4">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-500 via-orange-600 to-sky-600 flex items-center justify-center shadow-xl shadow-orange-500/20 text-white font-black text-3xl tracking-wider">
+        <div className="flex justify-center mb-2 sm:mb-3">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-amber-500 via-orange-600 to-sky-600 flex items-center justify-center shadow-lg shadow-orange-500/20 text-white font-black text-2xl sm:text-3xl tracking-wider">
             PX
           </div>
         </div>
 
-        <h2 className="text-center text-3xl font-black tracking-tight text-white">
+        <h2 className="text-center text-2xl sm:text-3xl font-black tracking-tight text-white">
           PRAMAAN-X
         </h2>
-        <p className="mt-1.5 text-center text-xs font-semibold uppercase tracking-widest text-orange-400">
+        <p className="mt-0.5 text-center text-[11px] sm:text-xs font-semibold uppercase tracking-widest text-orange-400">
           All India Council for Technical Education (AICTE)
         </p>
-        <p className="mt-1 text-center text-sm text-slate-400">
+        <p className="mt-0.5 text-center text-xs text-slate-400">
           Regulatory Scrutiny & Multi-Modal Document Intelligence
         </p>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-xl relative z-10">
-        <div className="bg-slate-900/80 backdrop-blur-xl py-8 px-6 shadow-2xl rounded-2xl sm:px-10 border border-slate-800">
+      <div className="mt-3.5 sm:mt-5 w-full max-w-md sm:max-w-lg md:max-w-xl relative z-10">
+        <div className="bg-slate-900/90 backdrop-blur-xl py-5 px-4 sm:py-6 sm:px-7 md:px-8 shadow-2xl rounded-2xl border border-slate-800">
           
           {/* Statutory Disclaimer Pill */}
-          <div className="mb-6 p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs flex items-center space-x-2">
-            <Scale className="w-4 h-4 text-amber-400 shrink-0" />
-            <span>AI Decision-Support System • Non-Punitive Advisory Review • Role-Based Access</span>
+          <div className="mb-3.5 p-2 sm:p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-300 text-[11px] sm:text-xs flex items-center space-x-2">
+            <Scale className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+            <span className="leading-tight">AI Decision-Support System • Non-Punitive Advisory Review • Role-Based Access</span>
           </div>
 
           {errorMessage && (
-            <div className="mb-6 p-3.5 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs flex items-start space-x-2.5 animate-fadeIn">
+            <div className="mb-3.5 p-2.5 sm:p-3 rounded-lg bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs flex items-start space-x-2 animate-fadeIn">
               <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
               <div>
                 <span className="font-semibold">Authentication Error: </span>
@@ -150,13 +150,13 @@ export default function LoginPage({ onLoginSuccess }) {
             </div>
           )}
 
-          <form className="space-y-5" onSubmit={handleSubmit}>
+          <form className="space-y-3 sm:space-y-3.5" onSubmit={handleSubmit}>
             <div>
-              <label htmlFor="email" className="block text-xs font-semibold text-slate-300 uppercase tracking-wider">
+              <label htmlFor="email" className="block text-[11px] font-semibold text-slate-300 uppercase tracking-wider">
                 Official Email Address
               </label>
-              <div className="mt-1.5 relative rounded-xl shadow-xs">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500 z-10">
+              <div className="mt-1 relative rounded-xl shadow-xs">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500 z-10">
                   <Mail className="h-4 w-4" />
                 </div>
                 <input
@@ -168,17 +168,17 @@ export default function LoginPage({ onLoginSuccess }) {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="officer@aicte-india.org"
-                  className="block w-full !pl-12 pr-3.5 py-2.5 bg-slate-950/80 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition box-border"
+                  className="block w-full !pl-10 pr-3 py-2 bg-slate-950/80 border border-slate-700 rounded-lg text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition box-border"
                 />
               </div>
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-xs font-semibold text-slate-300 uppercase tracking-wider">
+              <label htmlFor="password" className="block text-[11px] font-semibold text-slate-300 uppercase tracking-wider">
                 Password
               </label>
-              <div className="mt-1.5 relative rounded-xl shadow-xs">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500 z-10">
+              <div className="mt-1 relative rounded-xl shadow-xs">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500 z-10">
                   <Lock className="h-4 w-4" />
                 </div>
                 <input
@@ -190,7 +190,7 @@ export default function LoginPage({ onLoginSuccess }) {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••••••"
-                  className="block w-full !pl-12 pr-3.5 py-2.5 bg-slate-950/80 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition box-border"
+                  className="block w-full !pl-10 pr-3 py-2 bg-slate-950/80 border border-slate-700 rounded-lg text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition box-border"
                 />
               </div>
             </div>
@@ -199,11 +199,11 @@ export default function LoginPage({ onLoginSuccess }) {
               id="login-submit-btn"
               type="submit"
               disabled={isLoading}
-              className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-xl shadow-md text-sm font-bold text-white bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 disabled:opacity-60 transition cursor-pointer"
+              className="w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-lg shadow-md text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 disabled:opacity-60 transition cursor-pointer"
             >
               {isLoading ? (
                 <div className="flex items-center space-x-2">
-                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                   <span>Authenticating & Verifying Role...</span>
                 </div>
               ) : (
@@ -216,17 +216,17 @@ export default function LoginPage({ onLoginSuccess }) {
           </form>
 
           {/* Preset Roles Quick Selector */}
-          <div className="mt-8 pt-6 border-t border-slate-800">
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+          <div className="mt-4 pt-3.5 border-t border-slate-800">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
                 Demo Accounts Quick-Fill
               </span>
-              <span className="text-[11px] text-slate-500">
-                Click to load role credentials
+              <span className="text-[10px] text-slate-500">
+                Click role to load
               </span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 auto-rows-fr w-full box-border">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 auto-rows-fr w-full box-border">
               {PRESET_ACCOUNTS.map((preset, index) => {
                 const isSelected = email === preset.email;
                 const isLastOdd = index === PRESET_ACCOUNTS.length - 1 && PRESET_ACCOUNTS.length % 2 !== 0;
@@ -236,23 +236,23 @@ export default function LoginPage({ onLoginSuccess }) {
                     id={`preset-role-${preset.role}`}
                     type="button"
                     onClick={() => handleSelectPreset(preset)}
-                    className={`w-full h-full min-w-0 text-left p-3 rounded-xl border transition flex flex-col justify-start items-stretch box-border cursor-pointer select-none ${
+                    className={`w-full min-w-0 text-left p-2 sm:p-2.5 rounded-lg border transition flex flex-col justify-between box-border cursor-pointer select-none ${
                       isLastOdd ? 'sm:col-span-2' : ''
                     } ${
                       isSelected
                         ? 'bg-orange-500/15 border-orange-500/50 ring-1 ring-orange-500/30'
                         : 'bg-slate-950/60 border-slate-800 hover:bg-slate-800/80 hover:border-slate-700'
-                    } focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900`}
+                    } focus:outline-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-orange-500`}
                   >
-                    <div className="w-full min-w-0 flex flex-wrap items-center justify-between gap-1.5 mb-1.5">
-                      <span className="text-xs font-bold text-white tracking-tight min-w-0">
+                    <div className="w-full min-w-0 flex items-center justify-between gap-1 mb-1">
+                      <span className="text-xs font-bold text-white tracking-tight truncate">
                         {preset.title}
                       </span>
-                      <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border shrink-0 max-w-full ${preset.badgeColor}`}>
-                        {preset.role}
+                      <span className={`text-[9px] font-semibold px-1.5 py-0.2 rounded-full border shrink-0 ${preset.badgeColor}`}>
+                        {preset.role.replace('_', ' ')}
                       </span>
                     </div>
-                    <p className="text-[11px] text-slate-400 leading-relaxed m-0 p-0 text-left w-full min-w-0 [overflow-wrap:anywhere] break-words whitespace-normal">
+                    <p className="text-[10px] text-slate-400 leading-snug line-clamp-2">
                       {preset.desc}
                     </p>
                   </button>
@@ -264,8 +264,8 @@ export default function LoginPage({ onLoginSuccess }) {
         </div>
 
         {/* Footer */}
-        <p className="mt-6 text-center text-xs text-slate-500">
-          Protected by Statutory Cryptographic Audit Ledger • JWT Signed with HS256
+        <p className="mt-3 text-center text-[10px] sm:text-[11px] text-slate-500">
+          Statutory Cryptographic Audit Ledger • JWT Authenticated
         </p>
       </div>
     </div>

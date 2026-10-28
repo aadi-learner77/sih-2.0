@@ -10,7 +10,8 @@ import {
   Lock,
   Compass,
   Clock,
-  FileSearch
+  FileSearch,
+  X
 } from 'lucide-react';
 
 /**
@@ -20,13 +21,15 @@ import {
  * - Intelligence (Document Intelligence, Photo Radar & Forensics, Impossibility Engine)
  * - Verification and Audit (Audit and Receipts, Regulation-as-Code)
  * - Planning (Inspection Planner)
- * Fully scrollable and respects active officer role permissions.
+ * Fully scrollable, responsive mobile drawer, and respects active officer role permissions.
  */
 export default function Sidebar({ 
   activeTab, 
   setActiveTab, 
   counts = {},
-  currentRole = 'scrutiny_officer' 
+  currentRole = 'scrutiny_officer',
+  isOpen = false,
+  onClose = () => {}
 }) {
   const navSections = [
     {
@@ -141,43 +144,73 @@ export default function Sidebar({
     }
   ];
 
+  const handleItemClick = (id) => {
+    setActiveTab(id);
+    if (onClose) onClose();
+  };
+
   return (
-    <aside className="w-[285px] bg-white border-r border-slate-200 flex flex-col justify-between shrink-0 h-full overflow-y-auto p-4 gap-6 scrollbar-thin">
-      <div className="flex flex-col gap-5">
-        
-        {/* Role Identity Header */}
-        <div className="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-200/80 flex items-center justify-between shrink-0">
-          <div className="min-w-0">
-            <div className="text-[10px] uppercase font-bold tracking-wider text-slate-400">
-              Active Role
+    <>
+      {/* Mobile Backdrop Overlay */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-40 lg:hidden transition-opacity animate-fadeIn" 
+          onClick={onClose} 
+          aria-hidden="true"
+        />
+      )}
+
+      <aside className={`
+        fixed inset-y-0 left-0 z-50 w-[280px] max-w-[85vw] bg-white border-r border-slate-200 
+        flex flex-col justify-between h-full overflow-y-auto p-4 gap-6 scrollbar-thin shadow-2xl transition-transform duration-250 ease-in-out
+        lg:static lg:z-auto lg:w-[280px] lg:shadow-none lg:translate-x-0 lg:flex
+        ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+      `}>
+        <div className="flex flex-col gap-5">
+          
+          {/* Role Identity Header */}
+          <div className="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-200/80 flex items-center justify-between shrink-0">
+            <div className="min-w-0">
+              <div className="text-[10px] uppercase font-bold tracking-wider text-slate-400">
+                Active Role
+              </div>
+              <div className="text-xs font-bold text-slate-800 capitalize truncate">
+                {currentRole?.replace('_', ' ')}
+              </div>
             </div>
-            <div className="text-xs font-bold text-slate-800 capitalize">
-              {currentRole?.replace('_', ' ')}
+            <div className="flex items-center space-x-2 shrink-0">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
+              <button
+                type="button"
+                onClick={onClose}
+                className="lg:hidden p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 transition cursor-pointer"
+                aria-label="Close sidebar"
+              >
+                <X className="w-4 h-4" />
+              </button>
             </div>
           </div>
-          <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
-        </div>
 
-        {/* Grouped Navigation Sections */}
-        {navSections.map((section) => {
-          const permittedItems = section.items.filter(item => item.roles.includes(currentRole));
-          if (permittedItems.length === 0) return null;
+          {/* Grouped Navigation Sections */}
+          {navSections.map((section) => {
+            const permittedItems = section.items.filter(item => item.roles.includes(currentRole));
+            if (permittedItems.length === 0) return null;
 
-          return (
-            <div key={section.title} className="space-y-1.5">
-              <div className="text-[10px] font-bold tracking-wider text-slate-400 uppercase px-3 mb-1">
-                {section.title}
-              </div>
+            return (
+              <div key={section.title} className="space-y-1.5">
+                <div className="text-[10px] font-bold tracking-wider text-slate-400 uppercase px-3 mb-1">
+                  {section.title}
+                </div>
 
-              <div className="flex flex-col gap-1">
-                {permittedItems.map((item) => {
-                  const Icon = item.icon;
-                  const isActive = activeTab === item.id;
-                  return (
-                    <button
-                      key={item.id}
-                      id={`sidebar-tab-${item.id}`}
-                      onClick={() => setActiveTab(item.id)}
+                <div className="flex flex-col gap-1">
+                  {permittedItems.map((item) => {
+                    const Icon = item.icon;
+                    const isActive = activeTab === item.id;
+                    return (
+                      <button
+                        key={item.id}
+                        id={`sidebar-tab-${item.id}`}
+                        onClick={() => handleItemClick(item.id)}
                       className={`w-full flex items-start justify-between px-3 py-2 rounded-xl text-left transition-all group cursor-pointer gap-2 ${
                         isActive
                           ? 'bg-sky-50 text-sky-800 font-semibold border border-sky-200/90 shadow-2xs'
@@ -220,6 +253,7 @@ export default function Sidebar({
         </div>
       </div>
     </aside>
+    </>
   );
 }
 

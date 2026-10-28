@@ -123,14 +123,13 @@
   html,
   body,
   #root {
-    height: 100% !important;
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    overflow: hidden !important;
-    background-color: var(--bg) !important;
-    color: var(--text) !important;
-    font-family: Arial, Helvetica, sans-serif !important;
+    min-height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
     line-height: 1.5;
     font-weight: 400;
