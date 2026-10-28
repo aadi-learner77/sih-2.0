@@ -586,7 +586,7 @@ export const MOCK_OFFICER_ACTIONS = [
     application_no: 'APP-2025-06618',
     institution_name: 'Northern Institute of Management Studies',
     action_type: 'REJECT',
-    comment: 'Adverse status determination recorded by committee: Unrectifiable legal title litigation and forged land conversion sanction order confirmed by district revenue magistrate.',
+    comment: 'Adverse status determination recorded by committee: Unrectifiable legal title litigation and unverified land conversion sanction order with conflicting registry seal confirmed by district revenue magistrate.',
     officer_name: 'Prof. K. Rajagopalan',
     officer_email: 'k.rajagopalan@aicte-india.org',
     officer_role: 'admin',

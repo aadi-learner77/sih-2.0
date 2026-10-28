@@ -657,7 +657,7 @@ export default function EvidenceLens({
                 </div>
 
                 <div className="text-[10px] text-slate-500 italic border-t border-slate-200 pt-1.5">
-                  Statutory Rule: {pipeline?.ai_confidence?.advisory_disclaimer || 'AI outputs are decision-support aids for committee inquiry, not proofs of forgery.'}
+                  Statutory Rule: {pipeline?.ai_confidence?.advisory_disclaimer || 'AI outputs are decision-support aids for committee inquiry, not proofs of document alteration.'}
                 </div>
               </div>
             </div>

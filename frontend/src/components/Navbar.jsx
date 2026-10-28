@@ -7,7 +7,8 @@ import {
   Sparkles,
   Layers,
   Sun,
-  Moon
+  Moon,
+  LogOut
 } from 'lucide-react';
 import AlertBellDrawer from './AlertBellDrawer';
 
@@ -219,6 +220,7 @@ export default function Navbar({
                 className="p-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition cursor-pointer text-xs flex items-center space-x-1"
                 title="Sign out of PRAMAAN-X session"
               >
+                <LogOut className="w-4 h-4" />
                 <span className="text-[11px] font-medium hidden md:inline">Sign Out</span>
               </button>
             )}

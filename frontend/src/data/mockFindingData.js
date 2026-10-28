@@ -108,7 +108,7 @@ export const MOCK_FINDINGS = [
         risk_level: 'CRITICAL',
         wording: 'Indicator for review: Document validity period discrepancy detected',
         model_rationale: 'High OCR confidence (97.8%) combined with authoritative state API verification confirms certificate expired before the commencement of AY 2025-26.',
-        advisory_disclaimer: 'AI outputs are decision-support aids for committee inquiry, not proofs of forgery.',
+        advisory_disclaimer: 'AI outputs are decision-support aids for committee inquiry, not proofs of document alteration.',
       },
       officer_action: {
         stage: 6,
@@ -211,7 +211,7 @@ export const MOCK_FINDINGS = [
         risk_level: 'CRITICAL',
         wording: 'Indicator for review: Concurrent full-time tenure detected across multiple institutions',
         model_rationale: 'Deterministic match on masked PAN (AB****89C) + exact DOB match (12-Aug-1975) + overlapping service dates constitutes an indicator for review under exclusivity guidelines.',
-        advisory_disclaimer: 'AI outputs are decision-support aids for committee inquiry, not proofs of forgery.',
+        advisory_disclaimer: 'AI outputs are decision-support aids for committee inquiry, not proofs of document alteration.',
       },
       officer_action: {
         stage: 6,
@@ -324,7 +324,7 @@ export const MOCK_FINDINGS = [
         risk_level: 'WARNING',
         wording: 'Indicator for review: Built-up area footprint deficit beyond tolerance threshold',
         model_rationale: 'Geospatial area measurement discrepancy indicates either multi-story floor multiplier mismatch or under-construction blocks.',
-        advisory_disclaimer: 'AI outputs are decision-support aids for committee inquiry, not proofs of forgery.',
+        advisory_disclaimer: 'AI outputs are decision-support aids for committee inquiry, not proofs of document alteration.',
       },
       officer_action: {
         stage: 6,
