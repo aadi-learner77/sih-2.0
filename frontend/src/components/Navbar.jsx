@@ -88,8 +88,8 @@ export default function Navbar({
   }, [activeApplication?.id]);
 
   return (
-    <header className="shrink-0 bg-white border-b border-slate-200 sticky top-0 z-40 px-3 sm:px-6 py-2 sm:py-2.5 shadow-xs">
-      <div className="flex items-center justify-between gap-2 sm:gap-3 max-w-[1440px] mx-auto w-full">
+    <header className="shrink-0 bg-white border-b border-slate-200 sticky top-0 z-40 px-3 sm:px-6 py-2 sm:py-2.5 shadow-xs w-full">
+      <div className="flex items-center justify-between gap-2 sm:gap-3 w-full">
         
         {/* Brand & AICTE Identity */}
         <div className="flex items-center space-x-2 sm:space-x-3 shrink-0 min-w-0">

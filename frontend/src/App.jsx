@@ -255,7 +255,7 @@ export default function App() {
 
         {/* Main Content Workspace */}
         <main className="flex-1 overflow-y-auto bg-slate-50/60 p-3 sm:p-5 lg:p-6 w-full min-w-0">
-          <div className="max-w-[1440px] mx-auto w-full flex flex-col gap-4 sm:gap-6 min-w-0">
+          <div className="w-full flex flex-col gap-4 sm:gap-6 min-w-0">
             {!isTabAllowed ? (
               <div 
                 id="access-restricted-card"

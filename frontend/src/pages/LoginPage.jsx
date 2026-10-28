@@ -226,36 +226,43 @@ export default function LoginPage({ onLoginSuccess }) {
               </span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 auto-rows-fr w-full box-border">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 auto-rows-fr w-full box-border">
               {PRESET_ACCOUNTS.map((preset, index) => {
                 const isSelected = email === preset.email;
                 const isLastOdd = index === PRESET_ACCOUNTS.length - 1 && PRESET_ACCOUNTS.length % 2 !== 0;
                 return (
-                  <button
+                  <div
                     key={preset.role}
                     id={`preset-role-${preset.role}`}
-                    type="button"
+                    role="button"
+                    tabIndex={0}
                     onClick={() => handleSelectPreset(preset)}
-                    className={`w-full min-w-0 text-left p-2 sm:p-2.5 rounded-lg border transition flex flex-col justify-between box-border cursor-pointer select-none ${
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handleSelectPreset(preset);
+                      }
+                    }}
+                    className={`preset-account-card w-full min-w-0 text-left p-2.5 sm:p-3 rounded-xl border transition flex flex-col justify-start box-border cursor-pointer select-none ${
                       isLastOdd ? 'sm:col-span-2' : ''
                     } ${
                       isSelected
-                        ? 'bg-orange-500/15 border-orange-500/50 ring-1 ring-orange-500/30'
-                        : 'bg-slate-950/60 border-slate-800 hover:bg-slate-800/80 hover:border-slate-700'
-                    } focus:outline-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-orange-500`}
+                        ? 'bg-sky-500/15 border-sky-500 ring-1 ring-sky-500/30'
+                        : 'bg-slate-950/60 border-slate-700/80 hover:bg-slate-800/80 hover:border-slate-600'
+                    } focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500`}
                   >
-                    <div className="w-full min-w-0 flex items-center justify-between gap-1 mb-1">
-                      <span className="text-xs font-bold text-white tracking-tight truncate">
+                    <div className="w-full min-w-0 flex items-center justify-between gap-1.5 mb-1.5">
+                      <span className="text-xs font-bold text-slate-100 tracking-tight">
                         {preset.title}
                       </span>
-                      <span className={`text-[9px] font-semibold px-1.5 py-0.2 rounded-full border shrink-0 ${preset.badgeColor}`}>
+                      <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border shrink-0 ${preset.badgeColor}`}>
                         {preset.role.replace('_', ' ')}
                       </span>
                     </div>
-                    <p className="text-[10px] text-slate-400 leading-snug line-clamp-2">
+                    <p className="text-[11px] text-slate-400 leading-normal m-0 p-0 text-left w-full break-words whitespace-normal">
                       {preset.desc}
                     </p>
-                  </button>
+                  </div>
                 );
               })}
             </div>
