@@ -226,7 +226,7 @@ export default function App() {
   const isTabAllowed = permittedTabs.includes(activeTab);
 
   return (
-    <div className="h-[100dvh] w-full max-w-full bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-sky-500 selection:text-white overflow-hidden">
+    <div className="min-h-screen min-h-[100dvh] w-full max-w-full bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-sky-500 selection:text-white">
       {/* Top AICTE Navigation */}
       <Navbar 
         currentUser={currentUser}
@@ -239,7 +239,7 @@ export default function App() {
         onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
       />
 
-      <div className="flex-1 flex overflow-hidden min-h-0 relative">
+      <div className="app-shell-grid min-h-0 relative">
         {/* Left Navigation Sidebar (Role-Aware & Responsive Mobile Drawer) */}
         <Sidebar 
           activeTab={activeTab} 
@@ -254,8 +254,8 @@ export default function App() {
         />
 
         {/* Main Content Workspace */}
-        <main className="flex-1 overflow-y-auto bg-slate-50/60 p-3 sm:p-5 lg:p-6 w-full min-w-0">
-          <div className="w-full flex flex-col gap-4 sm:gap-6 min-w-0">
+        <main className="app-main-column w-full min-w-0">
+          <div className="app-content-wrapper flex flex-col gap-4 sm:gap-6 min-w-0">
             {!isTabAllowed ? (
               <div 
                 id="access-restricted-card"

@@ -120,21 +120,46 @@
 @tailwind utilities;
 
 @layer base {
-  html,
-  body,
-  #root {
-    min-height: 100%;
+  html {
     width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+    font-size: 16px;
+  }
+
+  body {
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
     background-color: var(--bg);
     color: var(--text);
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 14px;
+    font-size: clamp(0.875rem, 0.8rem + 0.3vw, 1rem);
     line-height: 1.5;
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  #root {
+    min-height: 100vh;
+    min-height: 100dvh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  img, svg, video, canvas {
+    max-width: 100%;
+    height: auto;
   }
 
   /* Global headings hierarchy */
@@ -1319,16 +1344,56 @@ div[class*="relative"][class*="overflow-hidden"][class*="bg-slate-"] {
    ========================================================================== */
 
 /* 1. Page and Section Spacing */
+:root {
+  --header-height: 57px;
+}
+
+/* App Shell CSS Grid Layout */
+.app-shell-grid {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0%;
+  min-height: 0;
+  width: 100%;
+  position: relative;
+}
+
+@media (min-width: 1024px) {
+  .app-shell-grid {
+    display: grid !important;
+    grid-template-columns: clamp(220px, 18vw, 280px) 1fr !important;
+    height: calc(100dvh - var(--header-height, 57px)) !important;
+    overflow: hidden !important;
+  }
+
+  .app-sidebar-column {
+    width: 100% !important;
+    height: calc(100dvh - var(--header-height, 57px)) !important;
+    overflow-y: auto !important;
+    position: sticky !important;
+    top: var(--header-height, 57px) !important;
+  }
+}
+
+.app-main-column {
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  overflow-y: auto;
+  background-color: var(--bg);
+}
+
 main {
-  padding: var(--space-6) !important; /* 32px desktop */
+  padding: clamp(12px, 2vw, 32px) !important;
   max-width: 100%;
 }
 
-/* Align left edges consistently: max-width 1440px centred */
+/* Align left edges consistently: max-width 1600px, full width, centered only on ultra-wide displays */
 main > div,
+.app-content-wrapper,
 div[class*="max-w-[1720px]"],
 div[class*="max-w-7xl"] {
-  max-width: 1440px !important;
+  max-width: 1600px !important;
   margin-left: auto !important;
   margin-right: auto !important;
   width: 100% !important;
@@ -1527,50 +1592,61 @@ ol:not([class*="space-"]):not([class*="flex-row"]),
 /* ==========================================================================
    RESPONSIVE BREAKPOINTS (Mobile & Tablet)
    ========================================================================== */
-@media (max-width: 1100px) {
-  /* Stat cards drop to 2 columns on tablet */
+.kpi-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-4, 16px);
+  width: 100%;
+  align-items: stretch;
+}
+
+/* Large desktop (≥1280px): 5-column grid */
+@media (min-width: 1280px) {
+  .kpi-cards-grid,
+  div[class*="grid-cols-1"][class*="sm:grid-cols-2"][class*="lg:grid-cols-5"] {
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  }
+}
+
+/* Laptop/tablet landscape (1024–1279px): 3 columns */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .kpi-cards-grid,
+  div[class*="grid-cols-1"][class*="sm:grid-cols-2"][class*="lg:grid-cols-5"] {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+/* Tablet portrait (768–1023px): 2 columns */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .kpi-cards-grid,
   div[class*="grid-cols-1"][class*="sm:grid-cols-2"][class*="lg:grid-cols-5"] {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
 }
 
-@media (max-width: 1024px) {
-  main {
-    padding: var(--space-5) !important; /* 24px tablet */
+/* Mobile (<768px): reflow automatically or stacked */
+@media (max-width: 767px) {
+  .kpi-cards-grid,
+  div[class*="grid-cols-1"][class*="sm:grid-cols-2"][class*="lg:grid-cols-5"] {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)) !important;
   }
 }
 
-@media (max-width: 768px) {
-  div.flex-1.flex.overflow-hidden {
-    flex-direction: column !important;
-    overflow-y: auto !important;
-  }
-  aside,
-  aside.bg-white {
-    width: 100% !important;
-    min-width: 100% !important;
-    border-right: none !important;
-    border-bottom: 1px solid var(--border) !important;
+@media (max-width: 480px) {
+  .kpi-cards-grid,
+  div[class*="grid-cols-1"][class*="sm:grid-cols-2"][class*="lg:grid-cols-5"] {
+    grid-template-columns: 1fr !important;
   }
 }
 
+/* Responsive card padding adjustments on smaller viewports */
 @media (max-width: 640px) {
-  main {
-    padding: var(--space-4) !important; /* 16px mobile */
-  }
-
-  /* Card padding shrinks to 20px on mobile */
   div.rounded-2xl.p-6,
   div.rounded-2xl.p-5,
   div[class*="rounded-2xl"][class*="p-6"],
   div[class*="rounded-2xl"][class*="p-5"],
   div[class*="rounded-2xl"][class*="p-4"]:not(:has(> div[class*="border-b"])) {
-    padding: 20px !important;
-  }
-
-  /* Stat cards drop to 1 column on mobile */
-  div[class*="grid-cols-1"][class*="sm:grid-cols-2"][class*="lg:grid-cols-5"] {
-    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+    padding: clamp(14px, 4vw, 20px) !important;
   }
 }
 

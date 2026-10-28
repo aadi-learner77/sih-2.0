@@ -395,10 +395,10 @@ export default function Dashboard({
           </div>
 
           {/* Filter Bar */}
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3 w-full">
             
             {/* Search Input */}
-            <div className="flex-1 min-w-[260px] relative">
+            <div className="flex-[1_1_220px] min-w-[160px] relative">
               <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
               <input
                 type="text"
@@ -418,7 +418,7 @@ export default function Dashboard({
             </div>
 
             {/* State Filter */}
-            <div className="min-w-[170px] flex-1 sm:flex-initial">
+            <div className="flex-[1_1_160px] min-w-[150px]">
               <select
                 value={selectedState}
                 onChange={(e) => setSelectedState(e.target.value)}
@@ -432,7 +432,7 @@ export default function Dashboard({
             </div>
 
             {/* Category Filter */}
-            <div className="min-w-[160px] flex-1 sm:flex-initial">
+            <div className="flex-[1_1_160px] min-w-[150px]">
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
@@ -446,7 +446,7 @@ export default function Dashboard({
             </div>
 
             {/* Status Filter (Exact statutory labels) */}
-            <div className="min-w-[170px] flex-1 sm:flex-initial">
+            <div className="flex-[1_1_160px] min-w-[150px]">
               <select
                 value={selectedStatus}
                 onChange={(e) => setSelectedStatus(e.target.value)}
@@ -460,7 +460,7 @@ export default function Dashboard({
             </div>
 
             {/* Severity Filter */}
-            <div className="min-w-[140px] flex-1 sm:flex-initial">
+            <div className="flex-[1_1_160px] min-w-[140px]">
               <select
                 value={selectedSeverity}
                 onChange={(e) => setSelectedSeverity(e.target.value)}
@@ -474,10 +474,10 @@ export default function Dashboard({
             </div>
 
             {/* Reset Filters */}
-            <div className="min-w-[90px]">
+            <div className="flex-[1_1_120px] min-w-[100px]">
               <button
                 onClick={handleResetFilters}
-                className="w-full h-10 py-2 px-3 bg-slate-100 hover:bg-slate-200/80 text-slate-600 rounded-xl text-xs font-semibold flex items-center justify-center space-x-1.5 transition-colors"
+                className="w-full h-10 py-2 px-3 bg-slate-100 hover:bg-slate-200/80 text-slate-600 rounded-xl text-xs font-semibold flex items-center justify-center space-x-1.5 transition-colors cursor-pointer"
                 title="Reset all search filters"
               >
                 <RotateCcw className="w-3.5 h-3.5 shrink-0" />
@@ -489,8 +489,8 @@ export default function Dashboard({
         </div>
 
         {/* Table Body */}
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
+        <div className="overflow-x-auto w-full">
+          <table className="w-full text-left text-xs min-w-[840px]">
             <thead className="bg-slate-50 text-slate-500 uppercase tracking-wider text-[10px] font-bold border-b border-slate-200">
               <tr>
                 <th className="py-3 px-4 min-w-[260px]">Application & Institution</th>
@@ -677,13 +677,13 @@ export default function Dashboard({
           </span>
         </div>
 
-        <form onSubmit={handleDocumentUpload} className="grid grid-cols-1 md:grid-cols-12 gap-4">
-          <div className="md:col-span-4">
+        <form onSubmit={handleDocumentUpload} className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end w-full">
+          <div className="w-full flex flex-col justify-end">
             <label className="text-xs font-semibold text-slate-700 block mb-1.5">Document Category:</label>
             <select
               value={docType}
               onChange={(e) => setDocType(e.target.value)}
-              className="w-full h-10 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-sky-500 focus:bg-white"
+              className="w-full h-11 min-h-[44px] bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-sky-500 focus:bg-white cursor-pointer"
             >
               <option value="Auto-Detect">Auto-Detect via ML Classifier</option>
               <option value="Fire Safety Certificate">Fire Safety Certificate / NOC</option>
@@ -695,27 +695,27 @@ export default function Dashboard({
             </select>
           </div>
 
-          <div className="md:col-span-5">
+          <div className="w-full flex flex-col justify-end">
             <label className="text-xs font-semibold text-slate-700 block mb-1.5">Select File:</label>
-            <div className="border border-dashed border-slate-300 hover:border-sky-400 rounded-xl px-4 py-2 bg-slate-50/60 relative cursor-pointer flex items-center justify-between h-10">
+            <div className="border border-dashed border-slate-300 hover:border-sky-400 rounded-xl px-4 py-2 bg-slate-50/60 relative cursor-pointer flex items-center justify-between h-11 min-h-[44px]">
               <input
                 type="file"
                 required
                 onChange={(e) => setUploadFile(e.target.files[0])}
-                className="absolute inset-0 opacity-0 cursor-pointer"
+                className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
               />
-              <span className="text-xs text-slate-700 font-medium break-all">
+              <span className="text-xs text-slate-700 font-medium truncate pr-2">
                 {uploadFile ? uploadFile.name : 'Choose PDF, Scan or Image (Max 25MB)'}
               </span>
               <FileSearch className="w-4 h-4 text-sky-600 shrink-0 ml-2" />
             </div>
           </div>
 
-          <div className="md:col-span-3 flex items-end">
+          <div className="w-full flex flex-col justify-end">
             <button
               type="submit"
               disabled={uploading || !uploadFile}
-              className="w-full py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold transition-all shadow-sm disabled:opacity-50 flex items-center justify-center space-x-2"
+              className="w-full h-11 min-h-[44px] py-2.5 px-4 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold transition-all shadow-sm disabled:opacity-50 flex items-center justify-center space-x-2 cursor-pointer"
             >
               <span>{uploading ? 'Processing OCR & ELA...' : 'Upload & Analyze Document'}</span>
             </button>
