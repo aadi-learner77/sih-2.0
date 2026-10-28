@@ -30,7 +30,8 @@ export default function Navbar({
   isLiveMode = false,
   onToggleLiveMode,
   isMobileMenuOpen = false,
-  onToggleMobileMenu
+  onToggleMobileMenu,
+  onNavigateTab
 }) {
   const [theme, setTheme] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -176,6 +177,20 @@ export default function Navbar({
             <ShieldCheck className={`w-3.5 h-3.5 ${ledgerStatus.intact ? 'text-emerald-600' : 'text-rose-600'}`} />
             <span>Ledger: {ledgerStatus.intact ? 'INTACT' : 'TAMPERED'}</span>
           </div>
+
+          {/* System Architecture & Blueprint Quick Link */}
+          {onNavigateTab && (
+            <button
+              onClick={() => onNavigateTab('system-architecture')}
+              id="header-architecture-btn"
+              className="hidden lg:flex items-center space-x-1.5 px-2.5 py-1 rounded-lg border border-sky-200 bg-sky-50 hover:bg-sky-100 text-sky-700 text-xs font-semibold transition cursor-pointer shadow-2xs"
+              title="Open System Architecture & Evidence Showcase"
+            >
+              <Layers className="w-3.5 h-3.5 text-sky-600 shrink-0" />
+              <span className="hidden xl:inline">Architecture & Blueprint</span>
+              <span className="xl:hidden">Blueprint</span>
+            </button>
+          )}
 
           {/* Active Application Selector */}
           {activeApplication && (

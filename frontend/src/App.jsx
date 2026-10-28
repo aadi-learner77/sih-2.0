@@ -11,16 +11,17 @@ import AuditAndReceiptsPage from './pages/AuditAndReceiptsPage';
 import InspectionPlannerPage from './pages/InspectionPlannerPage';
 import ManualReviewQueuePage from './pages/ManualReviewQueuePage';
 import DocumentIntelligencePage from './pages/DocumentIntelligencePage';
+import SystemArchitecturePage from './pages/SystemArchitecturePage';
 import LoginPage from './pages/LoginPage';
 import { ShieldAlert } from 'lucide-react';
 import { api } from './services/api';
 
 const ROLE_PERMITTED_TABS = {
-  institution_user: ['dashboard', 'preflight', 'audit-ledger'],
-  auditor: ['dashboard', 'evidence-lens', 'impossibility-engine', 'manual-review-queue', 'document-intelligence', 'audit-ledger'],
-  scrutiny_officer: ['dashboard', 'evidence-lens', 'manual-review-queue', 'preflight', 'document-intelligence', 'photo-radar', 'impossibility-engine', 'inspection-planner', 'audit-ledger'],
-  senior_officer: ['dashboard', 'evidence-lens', 'manual-review-queue', 'preflight', 'document-intelligence', 'photo-radar', 'impossibility-engine', 'regulations', 'inspection-planner', 'audit-ledger'],
-  admin: ['dashboard', 'evidence-lens', 'manual-review-queue', 'preflight', 'document-intelligence', 'photo-radar', 'impossibility-engine', 'regulations', 'inspection-planner', 'audit-ledger'],
+  institution_user: ['dashboard', 'preflight', 'audit-ledger', 'system-architecture'],
+  auditor: ['dashboard', 'evidence-lens', 'impossibility-engine', 'manual-review-queue', 'document-intelligence', 'audit-ledger', 'system-architecture'],
+  scrutiny_officer: ['dashboard', 'evidence-lens', 'manual-review-queue', 'preflight', 'document-intelligence', 'photo-radar', 'impossibility-engine', 'inspection-planner', 'audit-ledger', 'system-architecture'],
+  senior_officer: ['dashboard', 'evidence-lens', 'manual-review-queue', 'preflight', 'document-intelligence', 'photo-radar', 'impossibility-engine', 'regulations', 'inspection-planner', 'audit-ledger', 'system-architecture'],
+  admin: ['dashboard', 'evidence-lens', 'manual-review-queue', 'preflight', 'document-intelligence', 'photo-radar', 'impossibility-engine', 'regulations', 'inspection-planner', 'audit-ledger', 'system-architecture'],
 };
 
 export default function App() {
@@ -237,6 +238,7 @@ export default function App() {
         onToggleLiveMode={() => setIsLiveMode(!isLiveMode)}
         isMobileMenuOpen={isMobileMenuOpen}
         onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        onNavigateTab={setActiveTab}
       />
 
       <div className="flex-1 min-h-0 flex overflow-hidden relative">
@@ -349,6 +351,10 @@ export default function App() {
 
                 {activeTab === 'audit-ledger' && (
                   <AuditAndReceiptsPage activeApplicationId={activeApplication?.id || 1} />
+                )}
+
+                {activeTab === 'system-architecture' && (
+                  <SystemArchitecturePage onNavigateTab={setActiveTab} />
                 )}
               </>
             )}

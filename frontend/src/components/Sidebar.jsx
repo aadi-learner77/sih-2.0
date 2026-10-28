@@ -11,6 +11,7 @@ import {
   Compass,
   Clock,
   FileSearch,
+  Workflow,
   X
 } from 'lucide-react';
 
@@ -139,6 +140,20 @@ export default function Sidebar({
           badgeColor: 'bg-teal-50 text-teal-700 border-teal-200',
           desc: 'District clusters & visit order',
           roles: ['scrutiny_officer', 'senior_officer', 'admin'],
+        },
+      ]
+    },
+    {
+      title: 'Showcase & Blueprint',
+      items: [
+        {
+          id: 'system-architecture',
+          label: 'System Architecture',
+          icon: Workflow,
+          badge: 'Interactive',
+          badgeColor: 'bg-sky-50 text-sky-700 border-sky-200',
+          desc: 'Interactive spec, pipeline & evidence',
+          roles: ['scrutiny_officer', 'senior_officer', 'admin', 'auditor', 'institution_user'],
         },
       ]
     }
