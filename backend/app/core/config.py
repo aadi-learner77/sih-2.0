@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24  # 24 hours
     CORS_ORIGINS: str = os.getenv("CORS_ORIGINS", "*")
     
-    UPLOAD_DIR: str = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "uploads")
+    UPLOAD_DIR: str = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..", "uploads"))
     RULES_DIR: str = os.path.join(os.path.dirname(os.path.dirname(__file__)), "rules")
     
     # Mock External Issuer latency in seconds (0 for instantaneous, >0 for realistic async demo)
