@@ -369,6 +369,17 @@ def process_verification(
 # FASTAPI ENDPOINTS
 # ==============================================================================
 
+@app.get("/")
+def root():
+    """Root welcome endpoint indicating operational status."""
+    return {
+        "service": "PRAMAAN-X Authoritative Mock Statutory Issuer Gateway",
+        "status": "OPERATIONAL",
+        "health": "/health",
+        "docs": "/docs",
+        "authorities": ["fire", "affiliation", "accreditation", "land"]
+    }
+
 @app.get("/health", status_code=status.HTTP_200_OK)
 def health_check():
     """Health check endpoint exposing operational metrics and record counts."""
