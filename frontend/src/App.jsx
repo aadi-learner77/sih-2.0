@@ -10,6 +10,7 @@ import PreFlightScorecard from './components/PreFlightScorecard';
 import AuditAndReceiptsPage from './pages/AuditAndReceiptsPage';
 import InspectionPlannerPage from './pages/InspectionPlannerPage';
 import ManualReviewQueuePage from './pages/ManualReviewQueuePage';
+import DocumentIntelligencePage from './pages/DocumentIntelligencePage';
 import LoginPage from './pages/LoginPage';
 import { api } from './services/api';
 
@@ -263,6 +264,13 @@ export default function App() {
 
             {activeTab === 'impossibility-engine' && (
               <ImpossibilityGraph />
+            )}
+
+            {activeTab === 'document-intelligence' && (
+              <DocumentIntelligencePage 
+                onNavigateTab={setActiveTab}
+                onSelectApplication={handleSelectApplication}
+              />
             )}
 
             {activeTab === 'photo-radar' && (
