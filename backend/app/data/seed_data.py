@@ -122,8 +122,10 @@ def seed_database(reset: bool = False):
     # 1. Predefined Roles
     roles = [
         Role(code="scrutiny_officer", name="Scrutiny Committee Officer", description="Reviews application dossiers, inspects Evidence Lens, issues show-cause inquiries."),
+        Role(code="senior_officer", name="Senior Regulatory Officer", description="Senior regulatory oversight, What-If dry-runs, and rule pack management."),
         Role(code="regional_officer", name="Regional Bureau Officer", description="Regional regulatory oversight, hearing coordination, and final approvals."),
         Role(code="admin", name="Central AICTE Administrator", description="Regulation-as-Code YAML configuration and platform auditing."),
+        Role(code="auditor", name="Statutory Compliance Auditor", description="Read-only audit access to immutable ledger receipts and access logs."),
         Role(code="institution_user", name="Institution Registrar / Representative", description="Submits applications, uploads compliance documents, views pre-flight scores.")
     ]
     db.add_all(roles)
@@ -175,6 +177,14 @@ def seed_database(reset: bool = False):
             full_name="Chief Technology Cell",
             role="admin",
             role_id=role_map.get("admin"),
+            is_active=True
+        ),
+        User(
+            email="auditor@aicte-india.org",
+            hashed_password=hash_password("AicteAuditor@2025"),
+            full_name="Independent Statutory Auditor",
+            role="auditor",
+            role_id=role_map.get("auditor"),
             is_active=True
         ),
         User(
@@ -628,7 +638,12 @@ def seed_database(reset: bool = False):
     seed_institution_twin_tables(db)
     seed_rules_from_engine(db)
 
-    print("PRAMAAN-X Database seeding completed successfully with 7 chained audit receipts!")
+    try:
+        from backend.app.services.alert_service import AlertService
+        AlertService().run_full_scan(db)
+    except Exception as e:
+        print(f"Alert scan notice: {e}")
+    print("PRAMAAN-X Database seeding completed successfully with 7 chained audit receipts and operational alerts!")
     db.close()
 
 
