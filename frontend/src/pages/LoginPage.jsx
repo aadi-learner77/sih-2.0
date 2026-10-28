@@ -107,7 +107,7 @@ export default function LoginPage({ onLoginSuccess }) {
   };
 
   return (
-    <div className="min-h-[100dvh] w-full bg-gradient-to-br from-slate-900 via-slate-850 to-slate-950 flex flex-col justify-center items-center py-4 sm:py-6 md:py-8 px-3 sm:px-6 lg:px-8 text-slate-100 font-sans selection:bg-orange-500 selection:text-white relative overflow-y-auto overflow-x-hidden">
+    <div className="min-h-screen overflow-y-auto py-8 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-900 via-slate-850 to-slate-950 flex flex-col justify-center items-center text-slate-100 font-sans selection:bg-orange-500 selection:text-white relative">
       {/* Background Decorative Gradient Orbs */}
       <div className="absolute top-1/4 left-1/4 w-80 h-80 sm:w-96 sm:h-96 bg-orange-500/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-80 h-80 sm:w-96 sm:h-96 bg-sky-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -226,24 +226,17 @@ export default function LoginPage({ onLoginSuccess }) {
               </span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 auto-rows-fr w-full box-border">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 auto-rows-fr w-full box-border">
               {PRESET_ACCOUNTS.map((preset, index) => {
                 const isSelected = email === preset.email;
                 const isLastOdd = index === PRESET_ACCOUNTS.length - 1 && PRESET_ACCOUNTS.length % 2 !== 0;
                 return (
-                  <div
+                  <button
                     key={preset.role}
                     id={`preset-role-${preset.role}`}
-                    role="button"
-                    tabIndex={0}
+                    type="button"
                     onClick={() => handleSelectPreset(preset)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        handleSelectPreset(preset);
-                      }
-                    }}
-                    className={`preset-account-card w-full min-w-0 text-left p-2.5 sm:p-3 rounded-xl border transition flex flex-col justify-start box-border cursor-pointer select-none ${
+                    className={`preset-account-card w-full h-full min-w-0 text-left p-3 rounded-xl border transition flex flex-col gap-1 justify-start box-border cursor-pointer select-none ${
                       isLastOdd ? 'sm:col-span-2' : ''
                     } ${
                       isSelected
@@ -251,18 +244,18 @@ export default function LoginPage({ onLoginSuccess }) {
                         : 'bg-slate-950/60 border-slate-700/80 hover:bg-slate-800/80 hover:border-slate-600'
                     } focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500`}
                   >
-                    <div className="w-full min-w-0 flex items-center justify-between gap-1.5 mb-1.5">
-                      <span className="text-xs font-bold text-slate-100 tracking-tight">
+                    <div className="w-full min-w-0 flex flex-wrap items-center justify-between gap-1.5 mb-1">
+                      <span className="text-xs font-bold text-slate-100 tracking-tight min-w-0">
                         {preset.title}
                       </span>
-                      <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border shrink-0 ${preset.badgeColor}`}>
+                      <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border shrink-0 whitespace-nowrap ${preset.badgeColor}`}>
                         {preset.role.replace('_', ' ')}
                       </span>
                     </div>
-                    <p className="text-[11px] text-slate-400 leading-normal m-0 p-0 text-left w-full break-words whitespace-normal">
+                    <p className="text-xs text-slate-400 leading-relaxed m-0 p-0 text-left w-full whitespace-normal break-words">
                       {preset.desc}
                     </p>
-                  </div>
+                  </button>
                 );
               })}
             </div>
