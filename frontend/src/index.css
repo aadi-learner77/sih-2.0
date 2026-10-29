@@ -129,7 +129,7 @@
     padding: 0;
     background-color: var(--bg);
     color: var(--text);
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Inter, "Noto Sans Devanagari", system-ui, sans-serif;
     font-size: 14px;
     line-height: 1.5;
     font-weight: 400;
@@ -170,7 +170,7 @@
   optgroup,
   select,
   textarea {
-    font-family: Arial, Helvetica, sans-serif !important;
+    font-family: inherit;
   }
 
   /* Monospace stack exclusively for code, IDs and index numbers */
@@ -319,8 +319,7 @@ aside button[id^="sidebar-tab-"] span[class*="border"] {
 }
 
 /* Demo account cards and multiline role cards can wrap naturally and maintain column layout */
-.preset-account-card,
-[id^="preset-role-"] {
+.preset-account-card {
   display: flex !important;
   flex-direction: column !important;
   align-items: stretch !important;
@@ -333,8 +332,7 @@ aside button[id^="sidebar-tab-"] span[class*="border"] {
   box-sizing: border-box !important;
 }
 
-.preset-account-card p,
-[id^="preset-role-"] p {
+.preset-account-card p {
   white-space: normal !important;
   word-break: break-word !important;
   overflow-wrap: anywhere !important;
@@ -342,8 +340,7 @@ aside button[id^="sidebar-tab-"] span[class*="border"] {
   padding: 0 !important;
 }
 
-.preset-account-card span[class*="rounded-full"],
-[id^="preset-role-"] span[class*="rounded-full"] {
+.preset-account-card span[class*="rounded-full"] {
   white-space: nowrap !important;
   padding: 2px 8px !important;
   font-size: 10px !important;
@@ -644,7 +641,7 @@ input#password {
 }
 
 /* Demo accounts quick-fill buttons in login */
-button[id^="preset-role-"] {
+.legacy-preset-btn {
   display: flex !important;
   flex-direction: column !important;
   align-items: stretch !important;
@@ -654,7 +651,7 @@ button[id^="preset-role-"] {
   gap: 6px !important;
 }
 
-button[id^="preset-role-"] span[class*="rounded-full"] {
+.legacy-preset-btn span[class*="rounded-full"] {
   padding: 2px 8px !important;
   font-size: 10px !important;
   line-height: 1.2 !important;
@@ -1764,4 +1761,413 @@ table tr:hover {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-muted);
 }
+
+/* ========================================================
+   PRAMAAN-X "Truth Engine" Redesign Animations
+   ======================================================== */
+@keyframes pramaan-rotate-chakra {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pramaan-scan-beam {
+  0% {
+    top: 0%;
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes pramaan-float-a {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(0.4deg);
+  }
+}
+
+@keyframes pramaan-float-b {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(7px) rotate(-0.5deg);
+  }
+}
+
+@keyframes pramaan-shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  20%, 60% {
+    transform: translateX(-5px);
+  }
+  40%, 80% {
+    transform: translateX(5px);
+  }
+}
+
+@keyframes pramaan-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes pramaan-glow-pulse {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+.animate-chakra-slow {
+  animation: pramaan-rotate-chakra 80s linear infinite;
+}
+
+.animate-scan-beam {
+  animation: pramaan-scan-beam 4.5s ease-in-out infinite;
+}
+
+.animate-float-a {
+  animation: pramaan-float-a 7s ease-in-out infinite;
+}
+
+.animate-float-b {
+  animation: pramaan-float-b 8.5s ease-in-out infinite;
+}
+
+.animate-shake {
+  animation: pramaan-shake 0.4s ease-in-out;
+}
+
+.animate-shimmer {
+  background-size: 200% 100%;
+  animation: pramaan-shimmer 2s linear infinite;
+}
+
+.animate-glow-pulse {
+  animation: pramaan-glow-pulse 4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-chakra-slow,
+  .animate-scan-beam,
+  .animate-float-a,
+  .animate-float-b,
+  .animate-shake,
+  .animate-shimmer,
+  .animate-glow-pulse,
+  .animate-fade-up {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* ========================================================
+   Clean Login Card Utilities & Input Fixes
+   ======================================================== */
+@keyframes pramaan-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: pramaan-fade-up 400ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.login-dotted-grid {
+  background-image: radial-gradient(rgba(148, 163, 184, 0.3) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Prevent browser autofill from breaking input backgrounds and text alignment */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+  -webkit-text-fill-color: #0F172A !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* ========================================================
+   PRAMAAN-X "Trust Meets Technology" Login Screen Scoped CSS
+   ======================================================== */
+@keyframes hash-block-pulse {
+  0%, 100% {
+    border-color: rgba(34, 211, 238, 0.25);
+    background-color: rgba(10, 31, 61, 0.6);
+    box-shadow: 0 0 0 rgba(34, 211, 238, 0);
+  }
+  50% {
+    border-color: rgba(34, 211, 238, 0.9);
+    background-color: rgba(20, 57, 107, 0.85);
+    box-shadow: 0 0 16px rgba(34, 211, 238, 0.45), 0 0 4px rgba(139, 92, 246, 0.35);
+  }
+}
+
+.hash-glow-0 { animation: hash-block-pulse 3.5s ease-in-out infinite 0s; }
+.hash-glow-1 { animation: hash-block-pulse 3.5s ease-in-out infinite 0.7s; }
+.hash-glow-2 { animation: hash-block-pulse 3.5s ease-in-out infinite 1.4s; }
+.hash-glow-3 { animation: hash-block-pulse 3.5s ease-in-out infinite 2.1s; }
+.hash-glow-4 { animation: hash-block-pulse 3.5s ease-in-out infinite 2.8s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hash-glow-0,
+  .hash-glow-1,
+  .hash-glow-2,
+  .hash-glow-3,
+  .hash-glow-4 {
+    animation: none !important;
+  }
+}
+
+/* Background Dot Grid for Left Panel */
+.brand-dot-grid {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1.2px, transparent 1.2px);
+  background-size: 20px 20px;
+}
+
+/* Background Dot Grid for Right Panel */
+.form-dot-grid {
+  background-image: radial-gradient(rgba(148, 163, 184, 0.28) 1.2px, transparent 1.2px);
+  background-size: 24px 24px;
+}
+
+/* Scoped Overrides for #login-root against Dashboard CSS */
+#login-root {
+  font-family: Inter, "Noto Sans Devanagari", system-ui, sans-serif !important;
+  box-sizing: border-box !important;
+}
+
+#login-root * {
+  box-sizing: border-box !important;
+}
+
+#login-root input[type="email"],
+#login-root input[type="password"],
+#login-root input[type="text"] {
+  background-color: #FFFFFF !important;
+  border: 1px solid #CBD5E1 !important;
+  border-radius: 12px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  padding-left: 44px !important;
+  padding-right: 44px !important;
+  font-size: 14px !important;
+  color: #0F172A !important;
+  box-shadow: none !important;
+  transition: border-color 150ms ease, box-shadow 150ms ease !important;
+}
+
+#login-root input[type="email"]:focus,
+#login-root input[type="password"]:focus,
+#login-root input[type="text"]:focus {
+  border-color: #06B6D4 !important; /* Cyan-500 */
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.25) !important;
+}
+
+#login-root input.input-error {
+  border-color: #EF4444 !important;
+}
+#login-root input.input-error:focus {
+  border-color: #EF4444 !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2) !important;
+}
+
+#login-root .eye-toggle-btn {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  min-height: 0 !important;
+  height: 36px !important;
+  width: 36px !important;
+  padding: 0 !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #94A3B8 !important;
+  transition: color 150ms ease !important;
+}
+
+#login-root .eye-toggle-btn:hover {
+  color: #475569 !important;
+}
+
+#login-root .eye-toggle-btn * {
+  color: inherit !important;
+}
+
+#login-root .login-submit-btn {
+  background: linear-gradient(135deg, #0A1F3D 0%, #14396B 100%) !important;
+  background-color: #0A1F3D !important;
+  color: #FFFFFF !important;
+  border: none !important;
+  border-radius: 12px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 14px rgba(20, 57, 107, 0.25) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  width: 100% !important;
+  transition: transform 120ms ease, box-shadow 120ms ease, opacity 120ms ease !important;
+}
+
+#login-root .login-submit-btn:hover:not(:disabled) {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 20px rgba(20, 57, 107, 0.35) !important;
+  background: linear-gradient(135deg, #07152B 0%, #1A4785 100%) !important;
+}
+
+#login-root .login-submit-btn:active:not(:disabled) {
+  transform: translateY(0px) !important;
+}
+
+#login-root .login-submit-btn:disabled {
+  opacity: 0.65 !important;
+  cursor: not-allowed !important;
+}
+
+#login-root .login-submit-btn * {
+  color: #FFFFFF !important;
+}
+
+#login-root .lang-segment-btn {
+  background: transparent !important;
+  border: none !important;
+  min-height: 0 !important;
+  height: 24px !important;
+  padding: 2px 10px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  border-radius: 9999px !important;
+  cursor: pointer !important;
+  box-shadow: none !important;
+}
+
+#login-root .lang-segment-btn.active {
+  background-color: #FFFFFF !important;
+  color: #0A1F3D !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+#login-root .lang-segment-btn:not(.active) {
+  color: #64748B !important;
+}
+
+#login-root .lang-segment-btn:not(.active):hover {
+  color: #0A1F3D !important;
+}
+
+#login-root .role-card-btn {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  height: 64px !important;
+  min-height: 64px !important;
+  padding: 8px 10px !important;
+  border-radius: 12px !important;
+  background-color: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+  text-align: left !important;
+  transition: all 150ms ease !important;
+  box-shadow: none !important;
+  width: 100% !important;
+}
+
+#login-root .role-card-btn:hover {
+  border-color: #CBD5E1 !important;
+  background-color: #F8FAFC !important;
+}
+
+#login-root .role-card-btn.selected {
+  background-color: #F0F9FF !important;
+  border: 1.5px solid #0284C7 !important;
+  box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.15) !important;
+}
+
+#login-root .role-card-btn * {
+  white-space: normal !important;
+}
+
+#login-root .link-text-btn {
+  background: transparent !important;
+  border: none !important;
+  min-height: 0 !important;
+  height: auto !important;
+  padding: 0 !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  color: #64748B !important;
+  cursor: pointer !important;
+  box-shadow: none !important;
+}
+
+#login-root .link-text-btn:hover {
+  color: #14396B !important;
+  text-decoration: underline !important;
+}
+
+#login-root .audit-footer-pill {
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 5px 12px !important;
+  border-radius: 9999px !important;
+  background-color: #F8FAFC !important;
+  border: 1px solid #E2E8F0 !important;
+  font-size: 11px !important;
+  color: #64748B !important;
+  white-space: nowrap !important;
+}
+
+#login-root span.pulse-dot {
+  display: inline-block !important;
+  width: 6px !important;
+  height: 6px !important;
+  min-width: 6px !important;
+  min-height: 6px !important;
+  padding: 0 !important;
+  border-radius: 9999px !important;
+  border: none !important;
+  background-color: #10B981 !important;
+}
+
+
 
