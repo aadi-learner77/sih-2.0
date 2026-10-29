@@ -11,6 +11,7 @@ import {
   Compass,
   Clock,
   FileSearch,
+  Workflow,
   X
 } from 'lucide-react';
 
@@ -80,7 +81,7 @@ export default function Sidebar({
           id: 'document-intelligence',
           label: 'Document Intelligence',
           icon: FileSearch,
-          badge: 'OCR + Schema',
+          badge: 'Text + Schema',
           badgeColor: 'bg-indigo-50 text-indigo-700 border-indigo-200',
           desc: 'Field extraction & OCR bbox',
           roles: ['scrutiny_officer', 'senior_officer', 'admin', 'auditor'],
@@ -141,6 +142,20 @@ export default function Sidebar({
           roles: ['scrutiny_officer', 'senior_officer', 'admin'],
         },
       ]
+    },
+    {
+      title: 'Showcase & Blueprint',
+      items: [
+        {
+          id: 'system-architecture',
+          label: 'System Architecture',
+          icon: Workflow,
+          badge: 'Interactive',
+          badgeColor: 'bg-sky-50 text-sky-700 border-sky-200',
+          desc: 'Interactive spec, pipeline & evidence',
+          roles: ['scrutiny_officer', 'senior_officer', 'admin', 'auditor', 'institution_user'],
+        },
+      ]
     }
   ];
 
@@ -161,9 +176,9 @@ export default function Sidebar({
       )}
 
       <aside className={`
-        fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] bg-white border-r border-slate-200 
-        flex flex-col justify-between h-full overflow-y-auto p-4 gap-6 scrollbar-thin shadow-2xl transition-transform duration-250 ease-in-out
-        lg:static lg:z-auto lg:w-full lg:max-w-none lg:h-full lg:shadow-none lg:translate-x-0 lg:flex app-sidebar-column
+        fixed inset-y-0 left-0 z-50 w-64 sm:w-72 max-w-[85vw] bg-white border-r border-slate-200 
+        flex flex-col justify-between h-full overflow-y-auto p-4 pb-8 gap-6 scrollbar-thin shadow-2xl transition-transform duration-250 ease-in-out
+        lg:relative lg:z-0 lg:w-64 xl:w-72 lg:shrink-0 lg:shadow-none lg:translate-x-0 lg:flex
         ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
         <div className="flex flex-col gap-5">

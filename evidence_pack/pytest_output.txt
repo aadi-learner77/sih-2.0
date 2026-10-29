@@ -1,0 +1,83 @@
+﻿........................................................................ [ 40%]
+........................................................................ [ 81%]
+.................................                                        [100%]
+============================== warnings summary ===============================
+.venv\Lib\site-packages\pydantic\_internal\_config.py:295
+.venv\Lib\site-packages\pydantic\_internal\_config.py:295
+.venv\Lib\site-packages\pydantic\_internal\_config.py:295
+.venv\Lib\site-packages\pydantic\_internal\_config.py:295
+.venv\Lib\site-packages\pydantic\_internal\_config.py:295
+.venv\Lib\site-packages\pydantic\_internal\_config.py:295
+.venv\Lib\site-packages\pydantic\_internal\_config.py:295
+.venv\Lib\site-packages\pydantic\_internal\_config.py:295
+.venv\Lib\site-packages\pydantic\_internal\_config.py:295
+  A:\SIH_AKXY\.venv\Lib\site-packages\pydantic\_internal\_config.py:295: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.10/migration/
+    warnings.warn(DEPRECATION_MESSAGE, DeprecationWarning)
+
+.venv\Lib\site-packages\starlette\testclient.py:40
+  A:\SIH_AKXY\.venv\Lib\site-packages\starlette\testclient.py:40: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = typing.Callable[[], typing.ContextManager[anyio.abc.BlockingPortal]]
+
+<frozen importlib._bootstrap>:488
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+<frozen importlib._bootstrap>:488
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type swigvarlink has no __module__ attribute
+
+backend\app\main.py:111
+  A:\SIH_AKXY\backend\app\main.py:111: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    @app.on_event("startup")
+
+.venv\Lib\site-packages\fastapi\applications.py:4495
+  A:\SIH_AKXY\.venv\Lib\site-packages\fastapi\applications.py:4495: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    return self.router.on_event(event_type)
+
+.venv\Lib\site-packages\fastapi\applications.py:1051
+  A:\SIH_AKXY\.venv\Lib\site-packages\fastapi\applications.py:1051: PytestCollectionWarning: cannot collect 'test_app' because it is not a function.
+    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
+
+backend/tests/test_alert_service.py: 4 warnings
+backend/tests/test_evidence_lens_endpoint.py: 5 warnings
+backend/tests/test_rbac_and_endpoints.py: 33 warnings
+backend/tests/test_rectification_and_features.py: 10 warnings
+  A:\SIH_AKXY\.venv\Lib\site-packages\jose\jwt.py:311: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    now = timegm(datetime.utcnow().utctimetuple())
+
+backend/tests/test_document_forensics.py::test_check1_pdf_metadata_producer_and_incremental_updates
+  A:\SIH_AKXY\backend\app\services\calibrate_forensics.py:331: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    "updated_at": datetime.utcnow().isoformat(),
+
+backend/tests/test_document_forensics.py: 29 warnings
+  A:\SIH_AKXY\backend\app\services\document_forensics.py:945: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    analyzed_at=datetime.utcnow().isoformat(),
+
+backend/tests/test_document_forensics.py::test_forensics_calibration_precision_recall_sweep
+backend/tests/test_document_forensics.py::test_api_calibration_endpoints
+  A:\SIH_AKXY\backend\app\services\calibrate_forensics.py:459: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    "calibration_timestamp": datetime.utcnow().isoformat(),
+
+backend/tests/test_photo_radar.py: 29 warnings
+  A:\SIH_AKXY\backend\app\services\photo_radar.py:431: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    "indexed_at": datetime.utcnow().isoformat()
+
+backend/tests/test_photo_radar.py::test_ground_truth_precision_recall_benchmark
+  A:\SIH_AKXY\backend\app\services\evaluate_photo_radar.py:179: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    "evaluation_timestamp": datetime.utcnow().isoformat(),
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+177 passed, 132 warnings in 166.68s (0:02:46)
