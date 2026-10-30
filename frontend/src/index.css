@@ -18,45 +18,53 @@
   --radius-pill: 999px;
 
   /* 2. LIGHT THEME TOKENS */
-  --bg: #FFFFFF;
+  --bg: #F4F7FC;
   --surface: #FFFFFF;
-  --surface-muted: #F4F6F8;
-  --border: #D5D9DE;
-  --text: #000000;
-  --text-muted: #333333;
-  --btn-primary-bg: #CFE3FA;
-  --btn-primary-text: #000000;
-  --btn-primary-border: #8DB6E6;
-  --btn-primary-hover: #B9D6F5;
+  --surface-2: #F8FAFD;
+  --surface-muted: #EEF3FA;
+  --border: #E2E8F4;
+  --text: #0A1F3D;
+  --text-muted: #51607F;
+  --primary: #1F4BFF;
+  --primary-hover: #14396B;
+  --accent: #FF9933;
+  --ring: rgba(31, 75, 255, 0.25);
+  --focus: #1F4BFF;
+  --card-shadow: 0 4px 20px -2px rgba(10, 31, 61, 0.05), 0 1px 4px -1px rgba(10, 31, 61, 0.03);
+  --card-shadow-hover: 0 10px 28px -4px rgba(10, 31, 61, 0.09), 0 2px 8px -2px rgba(10, 31, 61, 0.05);
+
+  --btn-primary-bg: #1F4BFF;
+  --btn-primary-text: #FFFFFF;
+  --btn-primary-border: #1F4BFF;
+  --btn-primary-hover: #14396B;
   --btn-secondary-bg: #FFFFFF;
-  --btn-secondary-border: #BFC5CC;
-  --btn-secondary-hover: #F1F3F5;
-  --active-bg: #E8F1FB;
-  --info-bg: #E8F1FB;
-  --info-text: #1A4E85;
-  --info-border: #BBD4F0;
-  --success-bg: #E3F4E8;
-  --success-text: #14532D;
-  --warning-bg: #FFF1CC;
-  --warning-text: #5C4300;
-  --danger-bg: #FBE3E1;
-  --danger-text: #7A1A12;
-  --focus: #4A90D9;
+  --btn-secondary-border: #E2E8F4;
+  --btn-secondary-hover: #F8FAFD;
+  --active-bg: #EBF2FD;
+
+  --info-bg: #EBF2FD;
+  --info-text: #1F4BFF;
+  --info-border: #C8DBFC;
+  --success-bg: #E8F8F0;
+  --success-text: #056636;
+  --success-border: #AEE2C8;
+  --warning-bg: #FFF5E5;
+  --warning-text: #8A4B00;
+  --warning-border: #FCD69E;
+  --danger-bg: #FDEEEF;
+  --danger-text: #A11B24;
+  --danger-border: #F7B8BC;
+
   --graph-edge: #8A94A0;
   --graph-node: #6FA8DC;
   --graph-node-stroke: #3D6FA3;
   --graph-risk: #E58A82;
-  --graph-label: #000000;
+  --graph-label: #0A1F3D;
 
-  /* Legacy Aliases */
-  --primary: var(--btn-primary-bg);
-  --primary-hover: var(--btn-primary-hover);
-  --primary-border: var(--btn-primary-border);
-  --border-secondary-btn: var(--btn-secondary-border);
-  --secondary-hover: var(--btn-secondary-hover);
   --nav-active-bg: var(--active-bg);
 }
 
+.dark,
 [data-theme="dark"] {
   color-scheme: dark;
 
@@ -76,42 +84,49 @@
   --radius-pill: 999px;
 
   /* 3. DARK THEME TOKENS */
-  --bg: #1B1F24;
-  --surface: #242A31;
-  --surface-muted: #2C333B;
-  --border: #3A424B;
-  --text: #F2F4F6;
-  --text-muted: #C5CBD2;
-  --btn-primary-bg: #2F5F95;
-  --btn-primary-text: #FFFFFF;
-  --btn-primary-border: #4A7DB5;
-  --btn-primary-hover: #3A72B0;
-  --btn-secondary-bg: #242A31;
-  --btn-secondary-border: #4A535D;
-  --btn-secondary-hover: #2C333B;
-  --active-bg: #2B3F57;
-  --info-bg: #25384F;
-  --info-text: #BBD8F7;
-  --info-border: #3E5C80;
-  --success-bg: #1F3B2A;
-  --success-text: #BFE8CC;
-  --warning-bg: #4A3A12;
-  --warning-text: #FFE29A;
-  --danger-bg: #4B2321;
-  --danger-text: #FFC9C4;
-  --focus: #7DB4EE;
-  --graph-edge: #7C8794;
-  --graph-node: #5B9BD5;
-  --graph-node-stroke: #A9CCEE;
-  --graph-risk: #E58A82;
-  --graph-label: #F2F4F6;
+  --bg: #060914;
+  --surface: rgba(14, 21, 41, 0.75);
+  --surface-2: rgba(22, 33, 62, 0.65);
+  --surface-muted: rgba(255, 255, 255, 0.05);
+  --border: rgba(255, 255, 255, 0.10);
+  --text: #E6ECFF;
+  --text-muted: #9AA8CF;
+  --primary: #3B6BFF;
+  --primary-hover: #5A84FF;
+  --accent: #FFB020;
+  --ring: rgba(59, 107, 255, 0.35);
+  --focus: #3B6BFF;
+  --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
+  --card-shadow-hover: 0 12px 40px 0 rgba(0, 0, 0, 0.6), 0 0 20px rgba(59, 107, 255, 0.15);
 
-  /* Legacy Aliases */
-  --primary: var(--btn-primary-bg);
-  --primary-hover: var(--btn-primary-hover);
-  --primary-border: var(--btn-primary-border);
-  --border-secondary-btn: var(--btn-secondary-border);
-  --secondary-hover: var(--btn-secondary-hover);
+  --btn-primary-bg: #3B6BFF;
+  --btn-primary-text: #FFFFFF;
+  --btn-primary-border: #3B6BFF;
+  --btn-primary-hover: #5A84FF;
+  --btn-secondary-bg: rgba(255, 255, 255, 0.06);
+  --btn-secondary-border: rgba(255, 255, 255, 0.12);
+  --btn-secondary-hover: rgba(255, 255, 255, 0.10);
+  --active-bg: rgba(59, 107, 255, 0.18);
+
+  --info-bg: rgba(31, 75, 255, 0.15);
+  --info-text: #8EB3FF;
+  --info-border: rgba(31, 75, 255, 0.35);
+  --success-bg: rgba(16, 185, 129, 0.15);
+  --success-text: #6EE7B7;
+  --success-border: rgba(16, 185, 129, 0.35);
+  --warning-bg: rgba(245, 158, 11, 0.15);
+  --warning-text: #FCD34D;
+  --warning-border: rgba(245, 158, 11, 0.35);
+  --danger-bg: rgba(239, 68, 68, 0.15);
+  --danger-text: #FCA5A5;
+  --danger-border: rgba(239, 68, 68, 0.35);
+
+  --graph-edge: #526075;
+  --graph-node: #38BDF8;
+  --graph-node-stroke: #0284C7;
+  --graph-risk: #F87171;
+  --graph-label: #E6ECFF;
+
   --nav-active-bg: var(--active-bg);
 }
 
@@ -692,10 +707,6 @@ textarea:focus {
 /* ==========================================================================
    BADGES & STATUS PILLS (Soft pastels with dark text, no bright/neon fills)
    ========================================================================== */
-span[class*="rounded"],
-span.font-mono,
-span[class*="border"],
-span[class*="badge"],
 .badge,
 .pill,
 .status-chip {
@@ -713,13 +724,6 @@ span[class*="badge"],
 }
 
 /* Info and "flagship/new" badges: #E8F1FB background, #1A4E85 text, 1px solid #BBD4F0 border */
-[class*="bg-sky-"],
-[class*="text-sky-"],
-[class*="bg-indigo-"],
-[class*="text-indigo-"],
-[class*="bg-purple-"],
-[class*="text-purple-"],
-[class*="bg-orange-"],
 .badge-info {
   background-color: var(--info-bg) !important; /* #E8F1FB */
   color: var(--info-text) !important; /* #1A4E85 */
@@ -2486,3 +2490,55 @@ body:has(#login-root),
     transform: none !important;
   }
 }
+
+/* ==========================================================================
+   APP SHELL & REGULATORY COMMAND CENTER THEME EXTENSIONS
+   ========================================================================== */
+.app-shell-bg {
+  background-color: var(--bg);
+  transition: background-color 150ms ease, color 150ms ease;
+  position: relative;
+}
+
+[data-theme="light"] .app-shell-bg,
+:root:not(.dark) .app-shell-bg {
+  background-image: radial-gradient(rgba(10, 31, 61, 0.05) 1.2px, transparent 1.2px);
+  background-size: 24px 24px;
+}
+
+.dark .app-shell-bg,
+[data-theme="dark"] .app-shell-bg {
+  background-image: 
+    radial-gradient(ellipse at 20% 0%, rgba(31, 75, 255, 0.10) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 100%, rgba(139, 92, 246, 0.08) 0%, transparent 60%);
+  background-attachment: fixed;
+}
+
+/* Slim scrollbar for sidebar and queues */
+.scrollbar-slim::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.scrollbar-slim::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-slim::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 9999px;
+}
+.scrollbar-slim::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Animated Hash-Chain Under Dashboard Header */
+@keyframes hash-node-pulse {
+  0%, 100% { opacity: 0.3; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.15); box-shadow: 0 0 10px #1F4BFF; }
+}
+
+.hash-chain-node-1 { animation: hash-node-pulse 2.8s ease-in-out 0s infinite; }
+.hash-chain-node-2 { animation: hash-node-pulse 2.8s ease-in-out 0.4s infinite; }
+.hash-chain-node-3 { animation: hash-node-pulse 2.8s ease-in-out 0.8s infinite; }
+.hash-chain-node-4 { animation: hash-node-pulse 2.8s ease-in-out 1.2s infinite; }
+.hash-chain-node-5 { animation: hash-node-pulse 2.8s ease-in-out 1.6s infinite; }
+.hash-chain-node-6 { animation: hash-node-pulse 2.8s ease-in-out 2.0s infinite; }
