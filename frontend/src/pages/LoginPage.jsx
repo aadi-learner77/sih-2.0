@@ -234,21 +234,6 @@ export default function LoginPage({ onLoginSuccess }) {
     }
   };
 
-  // 3D Card Tilt Effect on Mouse Move
-  const handleCardMouseMove = (e) => {
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const card = e.currentTarget;
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left - rect.width / 2;
-    const y = e.clientY - rect.top - rect.height / 2;
-    const rotateX = (-y / (rect.height / 2)) * 2.5;
-    const rotateY = (x / (rect.width / 2)) * 2.5;
-    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`;
-  };
-
-  const handleCardMouseLeave = (e) => {
-    e.currentTarget.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
-  };
 
   const handleSubmit = async (e) => {
     if (e && e.preventDefault) e.preventDefault();
@@ -367,9 +352,7 @@ export default function LoginPage({ onLoginSuccess }) {
 
           {/* Card Main Surface: Solid White with Rounded-3xl */}
           <div 
-            onMouseMove={handleCardMouseMove}
-            onMouseLeave={handleCardMouseLeave}
-            className="w-full login-white-card-surface p-6 sm:p-8 lg:p-10 box-border transition-transform duration-200 ease-out"
+            className="w-full login-white-card-surface p-6 sm:p-8 lg:p-10 box-border"
           >
           {/* Subtle Grain / Noise Overlay */}
           <div className="login-noise-overlay" aria-hidden="true" />
