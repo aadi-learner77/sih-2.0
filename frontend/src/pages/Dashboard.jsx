@@ -293,125 +293,75 @@ export default function Dashboard({
   return (
     <div className="flex flex-col gap-6">
 
-      {/* 1. Signature Hero Card with Travelling Gold Comet & Neon Cyan Streak (B5) */}
-      <div className="hero-card-comet-wrap">
-        <div className="relative rounded-[1.2rem] p-6 sm:p-8 overflow-hidden text-white bg-gradient-to-br from-[#0A1F3D] via-[#14396B] to-[#0B1B45] shadow-2xl">
-          
-          {/* Neon Cyan Streak Sliding Along Top Edge */}
-          <div className="hero-neon-streak" aria-hidden="true" />
-
-          {/* Two Soft Aurora Refraction Blobs Inside Hero */}
-          <div 
-            className="absolute -top-24 -left-20 w-96 h-96 rounded-full bg-[#1F4BFF]/25 blur-3xl pointer-events-none" 
-            aria-hidden="true" 
-          />
-          <div 
-            className="absolute -bottom-24 -right-20 w-96 h-96 rounded-full bg-[#8B5CF6]/20 blur-3xl pointer-events-none" 
-            aria-hidden="true" 
-          />
-
-          {/* Hero Content Grid */}
-          <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-            <div className="max-w-3xl">
-              {/* Eyebrow in Cyan */}
-              <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-[#22D3EE] uppercase tracking-wider mb-2">
-                <span>
-                  {isInstitutionUser 
-                    ? 'INSTITUTION SCRUTINY PORTAL' 
-                    : 'AICTE CENTRAL SCRUTINY DIVISION'}
-                </span>
-                <span>•</span>
-                <span>EXTENSION OF APPROVAL (EOA) 2025-26</span>
-                
-                {isAuditor && (
-                  <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-full text-[10px] font-bold">
-                    Read-Only Auditor
-                  </span>
-                )}
-
-                {!isLiveMode && <DemoDataBadge />}
-              </div>
-
-              {/* Title in Crisp White Inter 700 */}
-              <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-tight">
+      {/* 1. Calm, Fixed Navy-to-Cobalt Hero Banner with Explicit White Text */}
+      <div className="relative rounded-2xl p-6 sm:p-7 overflow-hidden text-white bg-gradient-to-r from-[#0A1F3D] to-[#14396B] border border-border/20 shadow-md">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+          <div className="max-w-2xl">
+            {/* Short Eyebrow */}
+            <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-[#8EB3FF] uppercase tracking-wide mb-1.5">
+              <span>
                 {isInstitutionUser 
-                  ? 'My Institution Dossier & Self-Assessment Status' 
-                  : isAuditor
-                  ? 'Independent Audit Overview & Cryptographic Verification'
-                  : isAdmin
-                  ? 'Administration & Regulatory Governance Overview'
-                  : 'Officer Scrutiny & Regulatory Triage Command Center'}
-              </h1>
-
-              {/* Subtitle in Soft Slate */}
-              <p className="text-xs sm:text-sm text-[#C7D2FE] mt-2 leading-relaxed max-w-2xl">
-                {isInstitutionUser
-                  ? 'Track statutory compliance verification, pre-flight readiness score, and pending documents for your registered institution prior to formal review.'
-                  : 'Risk-prioritized regulatory decision support system. Automated determinations prohibited; all findings are indicators for committee inquiry.'}
-              </p>
+                  ? 'Institution Scrutiny Portal' 
+                  : 'AICTE Central Scrutiny Division'}
+              </span>
+              <span>•</span>
+              <span>APH 2025-26</span>
+              {!isLiveMode && <DemoDataBadge />}
             </div>
 
-            {/* Hero Action Buttons: Cobalt Gradient Primary with White Text & Glass Secondary */}
-            <div className="flex flex-wrap items-center gap-3 shrink-0">
-              {isInstitutionUser ? (
-                <button
-                  type="button"
-                  id="launch-preflight-btn"
-                  onClick={() => onNavigateTab('preflight')}
-                  className="h-11 px-5 rounded-xl bg-gradient-to-r from-[#4D74FF] to-[#1F4BFF] hover:from-[#3B66FF] hover:to-[#0A2FD6] text-white text-xs font-bold transition-all shadow-[0_4px_16px_rgba(31,75,255,0.45)] flex items-center space-x-2 cursor-pointer"
-                >
-                  <SearchCode className="w-4 h-4 text-white" />
-                  <span className="text-white">Pre-Flight Self-Check</span>
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  id="launch-evidence-lens-btn"
-                  onClick={() => onNavigateTab('evidence-lens')}
-                  className="h-11 px-5 rounded-xl bg-gradient-to-r from-[#4D74FF] to-[#1F4BFF] hover:from-[#3B66FF] hover:to-[#0A2FD6] text-white text-xs font-bold transition-all shadow-[0_4px_16px_rgba(31,75,255,0.45)] flex items-center space-x-2 cursor-pointer"
-                >
-                  <SearchCode className="w-4 h-4 text-white" />
-                  <span className="text-white">Launch Evidence Lens</span>
-                </button>
-              )}
+            {/* Title 24px/700 */}
+            <h1 className="text-2xl font-bold text-white tracking-tight leading-snug">
+              {isInstitutionUser 
+                ? 'Institution Dossier & Self-Assessment' 
+                : isAuditor
+                ? 'Independent Audit & Verification'
+                : isAdmin
+                ? 'Administration & Regulatory Governance'
+                : 'Scrutiny & Regulatory Command Center'}
+            </h1>
 
+            {/* ONE Short Subtitle Line */}
+            <p className="text-xs sm:text-sm text-slate-200 mt-1.5 leading-normal">
+              {isInstitutionUser
+                ? 'Review compliance readiness and pending requirements prior to formal review.'
+                : 'Regulatory decision support system. Findings are advisory indicators for committee inquiry.'}
+            </p>
+          </div>
+
+          {/* Action Buttons: 40px, Solid Cobalt White Text & Plain Border Secondary */}
+          <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+            {isInstitutionUser ? (
               <button
                 type="button"
-                id="launch-audit-ledger-btn"
-                onClick={() => onNavigateTab('audit-ledger')}
-                className="h-11 px-5 rounded-xl bg-white/10 hover:bg-white/15 text-white border border-white/20 text-xs font-semibold transition-all backdrop-blur-md flex items-center space-x-2 cursor-pointer shadow-xs"
+                id="launch-preflight-btn"
+                onClick={() => onNavigateTab('preflight')}
+                className="h-10 px-4 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-semibold transition-colors flex items-center space-x-2 cursor-pointer shadow-xs"
               >
-                <History className="w-4 h-4 text-[#22D3EE]" />
-                <span className="text-white">Audit History Ledger</span>
+                <SearchCode className="w-4 h-4 text-white" />
+                <span className="text-white">Pre-Flight Self-Check</span>
               </button>
-            </div>
+            ) : (
+              <button
+                type="button"
+                id="launch-evidence-lens-btn"
+                onClick={() => onNavigateTab('evidence-lens')}
+                className="h-10 px-4 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-semibold transition-colors flex items-center space-x-2 cursor-pointer shadow-xs"
+              >
+                <SearchCode className="w-4 h-4 text-white" />
+                <span className="text-white">Launch Evidence Lens</span>
+              </button>
+            )}
+
+            <button
+              type="button"
+              id="launch-audit-ledger-btn"
+              onClick={() => onNavigateTab('audit-ledger')}
+              className="h-10 px-4 rounded-xl bg-white/10 hover:bg-white/15 text-white border border-white/25 text-xs font-semibold transition-colors flex items-center space-x-2 cursor-pointer"
+            >
+              <History className="w-4 h-4 text-white" />
+              <span className="text-white">Audit Ledger</span>
+            </button>
           </div>
-
-          {/* Verification Hash-Chain Strip (The Signature Motif) */}
-          <div className="mt-6 pt-5 border-t border-white/10 flex flex-col md:flex-row md:items-center justify-between text-xs text-[#C7D2FE] select-none gap-3">
-            <div className="flex items-center space-x-2 text-[10px] font-mono uppercase tracking-wider text-[#22D3EE] font-bold shrink-0">
-              <span className="w-2 h-2 rounded-full bg-[#22D3EE] animate-ping" />
-              <span>Verification Hash-Chain:</span>
-            </div>
-
-            <div className="flex items-center flex-1 min-w-[500px] justify-between relative px-2 py-1 overflow-x-auto scrollbar-slim">
-              <div className="absolute left-6 right-6 top-1/2 -translate-y-1/2 h-[1px] bg-white/15 -z-0" />
-              <div className="absolute left-6 right-6 top-1/2 -translate-y-1/2 h-[1px] bg-gradient-to-r from-[#22D3EE] via-[#1F4BFF] to-[#10B981] opacity-75 -z-0" />
-              {HASH_CHAIN_NODES.map((node, i) => (
-                <div key={node.id} className="relative z-10 flex flex-col items-center group cursor-default">
-                  <div 
-                    className={`w-3.5 h-3.5 rounded-full bg-[#0A1F3D] border-2 border-[#22D3EE] group-hover:scale-125 transition-transform flex items-center justify-center shadow-xs hash-chain-node-${i + 1}`}
-                  >
-                    <div className="w-1.5 h-1.5 rounded-full bg-[#22D3EE]" />
-                  </div>
-                  <span className="text-[10px] font-mono text-[#C7D2FE] mt-1 whitespace-nowrap group-hover:text-white transition-colors">
-                    {node.label}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-
         </div>
       </div>
 

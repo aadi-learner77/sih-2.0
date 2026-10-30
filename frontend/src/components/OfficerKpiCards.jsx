@@ -128,20 +128,15 @@ function KpiCardItem({ card, isSelected, onClick, loading }) {
       role="button"
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick(); } }}
-      className={`kpi-glass-card rounded-2xl p-5 border cursor-pointer group flex flex-col justify-between h-full border-t-[3px] ${
-        card.topAccent
-      } ${
+      className={`bg-surface rounded-xl p-4 border cursor-pointer group flex flex-col justify-between h-full transition-colors ${
         isSelected
-          ? 'ring-2 ring-primary/40 border-primary shadow-card'
-          : 'border-border shadow-card'
+          ? 'ring-2 ring-primary/40 border-primary shadow-xs'
+          : 'border-border hover:border-primary/30 shadow-xs'
       }`}
     >
-      {/* Single Gold Sweep on Hover */}
-      <div className="gold-hover-sweep" aria-hidden="true" />
-
       {/* Top Row: Icon Chip & Trend / Circular Ring */}
-      <div className="flex items-center justify-between relative z-10">
-        <div className={`w-9 h-9 rounded-xl flex items-center justify-center transition-transform group-hover:scale-105 shadow-xs ${card.iconBg}`}>
+      <div className="flex items-center justify-between">
+        <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${card.iconBg}`}>
           <Icon className="w-4 h-4 shrink-0" />
         </div>
 
@@ -156,16 +151,16 @@ function KpiCardItem({ card, isSelected, onClick, loading }) {
         )}
       </div>
 
-      {/* Metric Value: label, tabular-nums value, and caption */}
-      <div className="flex flex-col gap-1.5 mt-3 relative z-10">
-        <div className="text-[11px] font-semibold text-text-muted tracking-wide uppercase">
+      {/* Metric Value */}
+      <div className="flex flex-col gap-1 mt-3">
+        <div className="text-xs font-medium text-text-muted">
           {card.title}
         </div>
-        <div className="text-2xl font-black text-text tracking-tight flex items-baseline gap-1 font-mono tabular-nums">
+        <div className="text-2xl font-bold text-text tracking-tight flex items-baseline gap-1 font-sans tabular-nums">
           <span>{animatedValue}</span>
           {card.unit && <span className="text-xs font-normal text-text-muted">{card.unit}</span>}
         </div>
-        <p className="text-[11px] text-text-muted leading-snug truncate" title={card.subtitle}>
+        <p className="text-[11px] text-text-muted truncate" title={card.subtitle}>
           {card.subtitle}
         </p>
       </div>
