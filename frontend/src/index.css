@@ -1,3 +1,27 @@
+
+/* Glassmorphism ambient background glow */
+body {
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: 
+    radial-gradient(ellipse 90% 60% at 50% -10%, rgba(31, 75, 255, 0.22), transparent 70%),
+    radial-gradient(circle 600px at 100% 100%, rgba(34, 211, 238, 0.10), transparent);
+  transition: opacity 0.3s ease;
+}
+
+[data-theme="light"] body::before,
+:root:not(.dark) body::before {
+  background-image: 
+    radial-gradient(ellipse 90% 60% at 50% -10%, rgba(31, 75, 255, 0.08), transparent 70%),
+    radial-gradient(circle 600px at 100% 100%, rgba(139, 92, 246, 0.05), transparent);
+}
 :root,
 [data-theme="light"] {
   color-scheme: light;
@@ -19,12 +43,12 @@
 
   /* 2. LIGHT THEME TOKENS */
   --bg: #F5F7FB;
-  --surface: #FFFFFF;
-  --surface-2: #F8FAFD;
+  --surface: rgba(255, 255, 255, 0.85);
+  --surface-2: rgba(240, 245, 255, 0.85);
   --surface-muted: #EEF3FA;
   --border: #E2E8F3;
-  --text: #0F1B33;
-  --text-muted: #5B6B88;
+  --text: #000000;
+  --text-muted: #1E293B;
   --primary: #1F4BFF;
   --primary-hover: #14396B;
   --accent: #FF9933;
@@ -85,12 +109,12 @@
 
   /* 3. DARK THEME TOKENS */
   --bg: #070D1F;
-  --surface: #0E1730;
-  --surface-2: #162142;
+  --surface: rgba(14, 25, 54, 0.72);
+  --surface-2: rgba(22, 36, 74, 0.72);
   --surface-muted: #1A284F;
   --border: #1E2A4A;
-  --text: #E8EEFF;
-  --text-muted: #9AA8CF;
+  --text: #FFFFFF;
+  --text-muted: #CBD5E1;
   --primary: #3B6BFF;
   --primary-hover: #5A84FF;
   --accent: #FFB020;
@@ -2561,15 +2585,19 @@ body:has(#login-root),
 }
 
 [data-theme="dark"] .triage-table-card {
-  background: #080D1A;
-  border: 1px solid rgba(34, 211, 238, 0.25);
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  background: rgba(14, 25, 54, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 12px 36px 0 rgba(0, 0, 0, 0.45);
 }
 
 [data-theme="light"] .triage-table-card {
-  background: #FFFFFF;
-  border: 1px solid rgba(10, 31, 61, 0.10);
-  box-shadow: 0 10px 25px -8px rgba(10, 31, 61, 0.06);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(215, 226, 242, 0.85);
+  box-shadow: 0 10px 30px -5px rgba(15, 30, 80, 0.08);
 }
 
 /* Triage Table Row: 76px Minimum Height with Left Accent Bar on Hover */

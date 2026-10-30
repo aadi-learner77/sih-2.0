@@ -103,6 +103,7 @@ export default function Navbar({
     }
     try {
       localStorage.setItem('theme', targetTheme);
+      localStorage.setItem('pramaan_theme', targetTheme);
     } catch (_e) {}
     window.dispatchEvent(new CustomEvent('themechange', { detail: { theme: targetTheme } }));
   };
@@ -301,21 +302,48 @@ export default function Navbar({
             {/* Operational Alert Bell with Drawer */}
             <AlertBellDrawer currentRole={currentRole} />
 
-            {/* 40px Visible Sun / Moon Theme Toggle */}
-            <button
-              type="button"
-              id="theme-toggle-btn"
-              onClick={toggleTheme}
-              aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
-              title={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
-              className="w-10 h-10 rounded-xl border border-border bg-surface-2 hover:bg-surface text-text flex items-center justify-center cursor-pointer transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/60 shrink-0 shadow-xs"
+            {/* PROMINENT CREATIVE GLASS THEME TOGGLE (Segmented ☀️ Light | 🌙 Dark) */}
+            <div 
+              className="flex items-center p-1 rounded-full border border-border bg-surface-2/80 backdrop-blur-md shadow-xs shrink-0"
+              role="radiogroup" 
+              aria-label="Theme mode"
             >
-              {theme === 'dark' ? (
-                <Sun className="w-5 h-5 text-amber-400" />
-              ) : (
-                <Moon className="w-5 h-5 text-text" />
-              )}
-            </button>
+              <button
+                type="button"
+                id="theme-toggle-light"
+                onClick={() => {
+                  if (theme !== 'light') toggleTheme();
+                }}
+                className={`flex items-center space-x-1.5 px-2.5 sm:px-3 py-1 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer ${
+                  theme === 'light'
+                    ? 'bg-white text-black shadow-sm ring-1 ring-black/10'
+                    : 'text-text-muted hover:text-text'
+                }`}
+                title="Switch to Light Theme (Font in Black)"
+                aria-checked={theme === 'light'}
+              >
+                <Sun className={`w-3.5 h-3.5 ${theme === 'light' ? 'text-amber-500 fill-amber-400' : ''}`} />
+                <span className="hidden sm:inline">Light</span>
+              </button>
+
+              <button
+                type="button"
+                id="theme-toggle-dark"
+                onClick={() => {
+                  if (theme !== 'dark') toggleTheme();
+                }}
+                className={`flex items-center space-x-1.5 px-2.5 sm:px-3 py-1 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer ${
+                  theme === 'dark'
+                    ? 'bg-[#1F4BFF] text-white shadow-sm ring-1 ring-white/20'
+                    : 'text-text-muted hover:text-text'
+                }`}
+                title="Switch to Blue / Dark Theme (Font in White)"
+                aria-checked={theme === 'dark'}
+              >
+                <Moon className={`w-3.5 h-3.5 ${theme === 'dark' ? 'text-cyan-300 fill-cyan-300' : ''}`} />
+                <span className="hidden sm:inline">Dark</span>
+              </button>
+            </div>
 
             {/* USER MENU (Solid Surface, High Contrast) */}
             <div className="relative" ref={userMenuRef}>

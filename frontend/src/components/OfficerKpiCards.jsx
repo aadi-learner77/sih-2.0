@@ -128,7 +128,7 @@ function KpiCardItem({ card, isSelected, onClick, loading }) {
       role="button"
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick(); } }}
-      className={`bg-surface rounded-xl p-4 border cursor-pointer group flex flex-col justify-between h-full transition-colors ${
+      className={`backdrop-blur-xl bg-surface/80 rounded-2xl p-4 border cursor-pointer group flex flex-col justify-between h-full shadow-md hover:shadow-xl transition-all duration-300 ${
         isSelected
           ? 'ring-2 ring-primary/40 border-primary shadow-xs'
           : 'border-border hover:border-primary/30 shadow-xs'

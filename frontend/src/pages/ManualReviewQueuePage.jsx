@@ -250,14 +250,14 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
 
         {/* Counter Badges */}
         <div className="flex flex-wrap items-center gap-2">
-          <div className="px-3 py-1.5 rounded-xl border border-rose-500/25 bg-rose-500/10 text-rose-600 dark:text-rose-400 text-xs font-semibold flex items-center space-x-1.5">
+          <div className="px-3.5 py-1.5 rounded-full border border-rose-500/30 bg-rose-500/15 backdrop-blur-md shadow-xs text-rose-600 dark:text-rose-400 text-xs font-semibold flex items-center space-x-1.5">
             <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
             <span>{highPriorityCount} Urgent</span>
           </div>
-          <div className="px-3 py-1.5 rounded-xl border border-amber-500/25 bg-amber-500/10 text-amber-600 dark:text-amber-400 text-xs font-semibold">
+          <div className="px-3.5 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/15 backdrop-blur-md shadow-xs text-amber-600 dark:text-amber-400 text-xs font-semibold">
             <span>{pendingCount} Pending</span>
           </div>
-          <div className="px-3 py-1.5 rounded-xl border border-emerald-500/25 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-semibold">
+          <div className="px-3.5 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/15 backdrop-blur-md shadow-xs text-emerald-600 dark:text-emerald-400 text-xs font-semibold">
             <span>{resolvedCount} Resolved</span>
           </div>
           <button
@@ -272,7 +272,7 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
       </div>
 
       {/* Advisory Notice */}
-      <div className="bg-surface-2 border border-border rounded-xl p-3 flex items-start space-x-2.5 text-xs text-text-muted">
+      <div className="bg-surface-2/70 backdrop-blur-md border border-border/80 rounded-2xl p-3.5 flex items-start space-x-2.5 text-xs text-text-muted shadow-xs">
         <Info className="w-4 h-4 text-primary shrink-0 mt-0.5" />
         <div className="leading-relaxed">
           <strong>Statutory Protocol:</strong> Every automated flag represents an <em>"Indicator for review"</em>. Autonomous rejections are prohibited under AICTE guidelines.
@@ -296,7 +296,7 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
             placeholder="Search queue ID, institution, document, or reason..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full h-10 bg-surface border border-border rounded-xl pl-10 pr-4 text-xs text-text placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary/30 shadow-xs"
+            className="w-full h-10 bg-surface/80 backdrop-blur-md border border-border rounded-xl pl-10 pr-4 text-xs text-text placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary/40 shadow-xs transition-colors"
           />
         </div>
 
@@ -304,7 +304,7 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
           <select
             value={priorityFilter}
             onChange={(e) => setPriorityFilter(e.target.value)}
-            className="h-10 bg-surface text-text border border-border rounded-xl px-3 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-primary/30 shadow-xs cursor-pointer"
+            className="h-10 bg-surface/80 backdrop-blur-md text-text border border-border rounded-xl px-3 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-primary/40 shadow-xs cursor-pointer"
           >
             <option value="ALL">All Priorities</option>
             <option value="HIGH">High Priority</option>
@@ -315,7 +315,7 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="h-10 bg-surface text-text border border-border rounded-xl px-3 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-primary/30 shadow-xs cursor-pointer"
+            className="h-10 bg-surface/80 backdrop-blur-md text-text border border-border rounded-xl px-3 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-primary/40 shadow-xs cursor-pointer"
           >
             <option value="ALL">All Statuses</option>
             <option value="PENDING_REVIEW">Pending Review</option>
@@ -398,7 +398,7 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
 
                   {/* Col 2: Indicator for Review Box */}
                   <div className="lg:col-span-5">
-                    <div className="border-l-4 border-l-amber-500 bg-amber-500/10 border border-amber-500/25 rounded-xl p-3 space-y-1">
+                    <div className="border-l-4 border-l-amber-500 bg-amber-500/10 backdrop-blur-md border border-amber-500/25 rounded-2xl p-3.5 space-y-1.5 shadow-xs">
                       <div className="flex items-center space-x-1.5 text-amber-800 dark:text-amber-200 text-xs font-semibold">
                         <AlertTriangle className="w-3.5 h-3.5 text-amber-500 shrink-0" />
                         <span>Indicator for review</span>
@@ -410,7 +410,7 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
                   </div>
 
                   {/* Col 3: Source & Hashes */}
-                  <div className="lg:col-span-3 bg-surface-2 border border-border rounded-xl p-3 space-y-2 text-xs">
+                  <div className="lg:col-span-3 bg-surface-2/70 backdrop-blur-md border border-border rounded-2xl p-3.5 space-y-2 text-xs shadow-xs">
                     <div>
                       <span className="text-[10px] text-text-muted font-bold uppercase tracking-wider block">Gateway Source</span>
                       <span className="font-medium text-text text-xs break-words">{item.source}</span>
@@ -447,7 +447,7 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
                       id={`verify-now-${item.queue_id}`}
                       onClick={() => handleVerifyNow(item)}
                       disabled={isVerifying}
-                      className="h-9 px-3.5 rounded-xl text-xs font-semibold bg-surface-2 hover:bg-surface text-text border border-border transition-colors flex items-center space-x-1.5 cursor-pointer shadow-xs disabled:opacity-50"
+                      className="h-9 px-4 rounded-xl text-xs font-semibold bg-surface-2/80 hover:bg-surface text-text border border-border backdrop-blur-md transition-all shadow-xs flex items-center space-x-1.5 cursor-pointer disabled:opacity-50"
                     >
                       <Zap className={`w-3.5 h-3.5 ${isVerifying ? 'animate-bounce text-primary' : 'text-primary'}`} />
                       <span>{isVerifying ? 'Re-Querying...' : 'Verify Now'}</span>
@@ -459,7 +459,7 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
                         setResolveItem(item);
                         setResolveStatus(item.status === 'RESOLVED' ? 'RESOLVED' : 'VERIFIED');
                       }}
-                      className="h-9 px-3.5 bg-primary hover:bg-primary-hover text-white rounded-xl text-xs font-semibold transition-colors shadow-xs cursor-pointer"
+                      className="h-9 px-4 bg-primary hover:bg-primary-hover text-white rounded-xl text-xs font-semibold transition-all shadow-md shadow-primary/25 flex items-center space-x-1.5 cursor-pointer"
                     >
                       Resolve Ticket
                     </button>

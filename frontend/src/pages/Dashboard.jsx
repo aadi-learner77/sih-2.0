@@ -293,8 +293,8 @@ export default function Dashboard({
   return (
     <div className="flex flex-col gap-6">
 
-      {/* 1. Calm, Fixed Navy-to-Cobalt Hero Banner with Explicit White Text */}
-      <div className="relative rounded-2xl p-6 sm:p-7 overflow-hidden text-white bg-gradient-to-r from-[#0A1F3D] to-[#14396B] border border-border/20 shadow-md">
+      {/* 1. Glassmorphic Navy-to-Cobalt Hero Banner with Explicit White Text */}
+      <div className="relative rounded-2xl p-6 sm:p-7 overflow-hidden text-white bg-gradient-to-r from-[#0A1F3D]/90 via-[#0E274D]/90 to-[#14396B]/90 backdrop-blur-xl border border-white/10 shadow-xl">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
           <div className="max-w-2xl">
             {/* Short Eyebrow */}

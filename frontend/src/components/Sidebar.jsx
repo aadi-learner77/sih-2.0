@@ -168,7 +168,7 @@ export default function Sidebar({
 
       {/* Main Aside Component */}
       <aside className={`
-        fixed inset-y-0 left-0 z-50 bg-surface border-r border-border text-text
+        fixed inset-y-0 left-0 z-50 bg-surface/85 backdrop-blur-xl border-r border-border text-text
         flex flex-col justify-between h-full overflow-y-auto p-3 pb-6 gap-3 scrollbar-slim shadow-xl transition-[width] duration-200 ease-in-out
         lg:relative lg:z-0 lg:shrink-0 lg:shadow-none lg:translate-x-0 lg:flex
         ${isOpen ? 'translate-x-0 w-[260px]' : '-translate-x-full lg:translate-x-0'}
