@@ -38,6 +38,23 @@ export default function App() {
   const [isLiveMode, setIsLiveMode] = useState(false);
   const [sidebarCounts, setSidebarCounts] = useState({ impossibilities: 0, advisoryFlags: 0 });
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() => {
+    try {
+      return localStorage.getItem('pramaan_sidebar_collapsed') === 'true';
+    } catch (e) {
+      return false;
+    }
+  });
+
+  const handleToggleSidebarCollapse = () => {
+    setIsSidebarCollapsed(prev => {
+      const next = !prev;
+      try {
+        localStorage.setItem('pramaan_sidebar_collapsed', String(next));
+      } catch (e) {}
+      return next;
+    });
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('pramaan_token');
@@ -50,6 +67,18 @@ export default function App() {
     setEvidenceLensData(null);
     setEvidenceLensError(null);
     setSidebarCounts({ impossibilities: 0, advisoryFlags: 0 });
+  };
+
+  const handleRoleChange = (newRole) => {
+    setCurrentRole(newRole);
+    if (currentUser) {
+      setCurrentUser(prev => ({ ...prev, role: newRole }));
+    }
+    const allowed = ROLE_PERMITTED_TABS[newRole] || ROLE_PERMITTED_TABS.scrutiny_officer;
+    if (!allowed.includes(activeTab)) {
+      setActiveTab('dashboard');
+    }
+    loadData(newRole);
   };
 
   const loadData = async (role = currentRole) => {
@@ -85,7 +114,7 @@ export default function App() {
           setEvidenceLensData(null);
         }
 
-        // Fetch dynamic counts from API for sidebar badges (/graph/impossibilities, /applications/findings/all, /verification/connector/manual-review-queue)
+        // Fetch dynamic counts from API for sidebar badges
         try {
           const [impRes, findingsRes, queueRes] = await Promise.allSettled([
             api.getImpossibilities(),
@@ -208,9 +237,9 @@ export default function App() {
   // If verifying authentication on startup, show elegant loading screen
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-center text-white">
-        <div className="w-12 h-12 border-3 border-orange-500/30 border-t-orange-500 rounded-full animate-spin mb-4" />
-        <div className="text-sm font-semibold tracking-wide text-slate-300">
+      <div className="min-h-screen app-shell-bg flex flex-col items-center justify-center text-text">
+        <div className="w-12 h-12 border-3 border-primary/30 border-t-primary rounded-full animate-spin mb-4" />
+        <div className="text-sm font-semibold tracking-wide text-text-muted">
           Loading PRAMAAN-X Scrutiny Protocol...
         </div>
       </div>
@@ -226,21 +255,24 @@ export default function App() {
   const isTabAllowed = permittedTabs.includes(activeTab);
 
   return (
-    <div className="h-screen w-full max-w-full bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-sky-500 selection:text-white overflow-hidden">
+    <div className="h-screen w-full max-w-full app-shell-bg text-text flex flex-col font-sans selection:bg-primary selection:text-white overflow-hidden">
       {/* Top AICTE Navigation */}
       <Navbar 
         currentUser={currentUser}
         currentRole={currentRole}
+        onRoleChange={handleRoleChange}
         onLogout={handleLogout}
         activeApplication={activeApplication}
         isLiveMode={isLiveMode}
         onToggleLiveMode={() => setIsLiveMode(!isLiveMode)}
         isMobileMenuOpen={isMobileMenuOpen}
         onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        isSidebarCollapsed={isSidebarCollapsed}
+        onToggleSidebarCollapse={handleToggleSidebarCollapse}
       />
 
       <div className="flex-1 min-h-0 flex overflow-hidden relative">
-        {/* Left Navigation Sidebar (Role-Aware & Responsive Mobile Drawer) */}
+        {/* Left Navigation Sidebar (Role-Aware, Collapsible to Icon Rail, Responsive Mobile Drawer) */}
         <Sidebar 
           activeTab={activeTab} 
           setActiveTab={(tab) => {
@@ -251,27 +283,29 @@ export default function App() {
           counts={sidebarCounts}
           isOpen={isMobileMenuOpen}
           onClose={() => setIsMobileMenuOpen(false)}
+          isCollapsed={isSidebarCollapsed}
+          onToggleCollapse={handleToggleSidebarCollapse}
         />
 
         {/* Main Content Workspace */}
-        <main className="flex-1 overflow-y-auto min-h-0 bg-slate-50/60 p-3 sm:p-5 lg:p-6 pb-20 w-full min-w-0">
+        <main className="flex-1 overflow-y-auto min-h-0 bg-transparent p-3 sm:p-5 lg:p-6 pb-12 w-full min-w-0 scrollbar-slim">
           <div className="w-full max-w-[1600px] mx-auto flex flex-col gap-4 sm:gap-6 min-w-0">
             {!isTabAllowed ? (
               <div 
                 id="access-restricted-card"
-                className="bg-white rounded-2xl border border-rose-200 p-8 text-center flex flex-col items-center justify-center gap-4 my-8 shadow-sm"
+                className="bg-surface rounded-2xl border border-rose-500/30 p-8 text-center flex flex-col items-center justify-center gap-4 my-8 shadow-card"
               >
-                <div className="w-14 h-14 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center">
+                <div className="w-14 h-14 rounded-full bg-rose-500/10 text-rose-500 flex items-center justify-center">
                   <ShieldAlert className="w-7 h-7" />
                 </div>
-                <h2 className="text-xl font-bold text-slate-800">Access Restricted</h2>
-                <p className="text-sm text-slate-600 max-w-md">
-                  Your active role (<span className="font-semibold text-rose-700 capitalize">{currentRole?.replace('_', ' ')}</span>) is not authorized to access the <strong>{activeTab}</strong> regulatory module directly.
+                <h2 className="text-xl font-bold text-text">Access Restricted</h2>
+                <p className="text-sm text-text-muted max-w-md">
+                  Your active role (<span className="font-semibold text-rose-500 capitalize">{currentRole?.replace('_', ' ')}</span>) is not authorized to access the <strong>{activeTab}</strong> regulatory module directly.
                 </p>
                 <button
                   id="return-to-dashboard-btn"
                   onClick={() => setActiveTab('dashboard')}
-                  className="mt-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-semibold hover:bg-indigo-700 transition-colors cursor-pointer"
+                  className="mt-2 px-4 py-2 bg-primary text-white rounded-xl text-sm font-semibold hover:bg-primary/90 transition-colors cursor-pointer"
                 >
                   Return to Dashboard
                 </button>
@@ -356,14 +390,14 @@ export default function App() {
         </main>
       </div>
 
-      {/* Statutory Footer */}
-      <footer className="flex-none bg-white border-t border-slate-200 py-2.5 px-4 sm:px-6 text-center text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-2 shadow-sm z-30">
+      {/* Statutory Footer (compact 36px) */}
+      <footer className="h-9 shrink-0 bg-surface border-t border-border px-4 sm:px-6 flex items-center justify-between text-xs text-text-muted z-30 select-none">
         <div className="flex items-center space-x-2">
-          <span className="font-bold text-slate-700">PRAMAAN-X v1.0.0</span>
+          <span className="font-bold text-text">PRAMAAN-X v1.0.0</span>
           <span>•</span>
           <span>Regulatory Decision-Support System for AICTE India</span>
         </div>
-        <div className="text-[11px] text-slate-500">
+        <div className="text-[11px] text-text-muted hidden sm:block">
           Statutory Constraint: AI outputs are advisory indicators for committee inquiry. Automated rejections are prohibited under regulatory guidelines.
         </div>
       </footer>
