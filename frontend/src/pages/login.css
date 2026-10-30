@@ -1,0 +1,829 @@
+/* ========================================================
+   PRAMAAN-X Deep Navy Page + Solid White Web Card
+   Strictly Scoped under #login-root and .login-root
+   ======================================================== */
+
+:root {
+  --login-navy: #0A1F3D;
+  --login-brand-blue: #14396B;
+  --login-subtext: #51607F;
+  --login-label: #3B4A6B;
+  --login-border: #DDE5F0;
+  --login-input-border: #D5DEF5;
+  --login-divider: #E3E9FA;
+  --login-badge-bg: #F1F4F9;
+}
+
+@property --gradient-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes rotate-conic-border {
+  0% { --gradient-angle: 0deg; }
+  100% { --gradient-angle: 360deg; }
+}
+
+@keyframes rotate-gold-comet {
+  0% { --angle: 0deg; }
+  100% { --angle: 360deg; }
+}
+
+@keyframes aurora-drift-1 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(40px, -25px, 0) scale(1.08); }
+}
+
+@keyframes aurora-drift-2 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(-35px, 30px, 0) scale(1.06); }
+}
+
+@keyframes aurora-drift-3 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(25px, 20px, 0) scale(0.96); }
+}
+
+@keyframes login-scanner-sweep {
+  0% { left: -60%; opacity: 0; }
+  15% { opacity: 0.95; }
+  65% { opacity: 0.95; }
+  85% { left: 100%; opacity: 0; }
+  100% { left: 100%; opacity: 0; }
+}
+
+@keyframes login-bottom-scanner-sweep {
+  0% { left: 110%; opacity: 0; }
+  15% { opacity: 0.95; }
+  65% { opacity: 0.95; }
+  85% { left: -60%; opacity: 0; }
+  100% { left: -60%; opacity: 0; }
+}
+
+@keyframes dot-stream-travel {
+  0% { left: -8%; opacity: 0; }
+  15% { opacity: 0.75; }
+  85% { opacity: 0.75; }
+  100% { left: 108%; opacity: 0; }
+}
+
+@keyframes shield-glow-ring {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(20, 57, 107, 0.4), 0 0 16px rgba(20, 57, 107, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(20, 57, 107, 0), 0 0 24px rgba(20, 57, 107, 0.4);
+  }
+}
+
+@keyframes card-rise-fade {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes child-stagger {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes button-shimmer-sweep {
+  0% { transform: translateX(-150%) skewX(-20deg); }
+  100% { transform: translateX(250%) skewX(-20deg); }
+}
+
+@keyframes card-sheen-sweep {
+  0% { transform: translate3d(-100%, -100%, 0) rotate(35deg); }
+  30%, 100% { transform: translate3d(200%, 200%, 0) rotate(35deg); }
+}
+
+@keyframes pulse-green {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.55; transform: scale(1.15); }
+}
+
+/* ========================================================
+   Page Shell & Background: Deep Navy (#0B1B45 -> #0A1F3D -> #081433)
+   ======================================================== */
+#login-root,
+.login-root {
+  background-color: #0A1F3D !important;
+  background-image: linear-gradient(180deg, #0B1B45 0%, #0A1F3D 50%, #081433 100%) !important;
+  min-height: 100vh !important;
+  width: 100% !important;
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  font-family: Inter, "Noto Sans Devanagari", system-ui, sans-serif !important;
+  box-sizing: border-box !important;
+  color: var(--login-navy) !important;
+  padding: 2rem 1rem !important;
+}
+
+#login-root *,
+.login-root * {
+  box-sizing: border-box;
+}
+
+/* Faint white dot grid at ~0.06 opacity */
+.login-bg-dots {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1.2px, transparent 1.2px);
+  background-size: 24px 24px;
+}
+
+/* Soft, large, blurred light-blue/silver glow rising from the bottom centre behind the card */
+.login-bottom-glow {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 780px;
+  max-width: 92vw;
+  height: 380px;
+  background: radial-gradient(ellipse at center bottom, rgba(160, 185, 255, 0.35) 0%, rgba(160, 185, 255, 0.12) 50%, transparent 75%);
+  border-radius: 9999px;
+  filter: blur(120px);
+  pointer-events: none;
+  z-index: 6;
+}
+
+/* Very faint cyan/violet aurora blobs at sides */
+.login-aurora-blob-1 {
+  animation: aurora-drift-1 26s ease-in-out infinite;
+}
+.login-aurora-blob-2 {
+  animation: aurora-drift-2 32s ease-in-out infinite;
+}
+.login-aurora-blob-3 {
+  animation: aurora-drift-3 24s ease-in-out infinite;
+}
+
+/* Hash-Chain Decorative Lines */
+.hash-dot-line {
+  position: relative;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+}
+
+.hash-stream-dot-1,
+.hash-stream-dot-2,
+.hash-stream-dot-3 {
+  position: absolute;
+  top: -2px;
+  width: 5px;
+  height: 5px;
+  border-radius: 9999px;
+  background: #22D3EE;
+  box-shadow: 0 0 6px #22D3EE;
+  animation: dot-stream-travel 10s linear infinite;
+}
+
+.hash-stream-dot-2 {
+  animation-delay: 3.5s;
+  background: #8B5CF6;
+  box-shadow: 0 0 6px #8B5CF6;
+}
+
+.hash-stream-dot-3 {
+  animation-delay: 7s;
+}
+
+/* ========================================================
+   Ambient Glow Bleeding from Card Edges onto Navy Page
+   ======================================================== */
+.login-card-ambient-gold-glow {
+  position: absolute;
+  inset: -22px;
+  border-radius: 50px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 176, 32, 0.16) 0%,
+    rgba(255, 153, 51, 0.08) 52%,
+    transparent 74%
+  );
+  filter: blur(72px);
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* ========================================================
+   Card Container & Rotating Conic Border (Cyan -> Violet -> Cyan)
+   ======================================================== */
+.login-card-border-wrap {
+  position: relative;
+  border-radius: 28px;
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--gradient-angle, 0deg),
+    #22D3EE,
+    #8B5CF6,
+    #22D3EE
+  );
+  animation: rotate-conic-border 8s linear infinite;
+  box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.55), 0 0 40px -10px rgba(34, 211, 238, 0.15);
+  max-width: 1040px;
+  width: 100%;
+}
+
+/* ========================================================
+   Moving Gold Light Comet Border (2-3px ring masked on outer edge)
+   ======================================================== */
+.login-card-gold-comet-border {
+  position: absolute;
+  inset: -2px;
+  border-radius: 30px;
+  padding: 2.5px;
+  /* Fallback static gold border */
+  background: linear-gradient(135deg, rgba(255, 211, 107, 0.4), rgba(255, 153, 51, 0.2));
+  /* Modern dynamic comet conic-gradient */
+  background: conic-gradient(
+    from var(--angle, 0deg),
+    #FFFDF0 0deg,
+    #FFD36B 14deg,
+    #FFB020 42deg,
+    #FF9933 78deg,
+    transparent 92deg,
+    transparent 360deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: rotate-gold-comet 6s linear infinite;
+  filter: drop-shadow(0 0 18px rgba(255, 176, 32, 0.55)) drop-shadow(0 0 6px rgba(255, 211, 107, 0.8));
+  pointer-events: none;
+  z-index: 22;
+}
+
+@supports not (background: conic-gradient(from var(--angle, 0deg), #000, #fff)) {
+  .login-card-gold-comet-border {
+    background: linear-gradient(135deg, rgba(255, 211, 107, 0.4), rgba(255, 153, 51, 0.2)) !important;
+    animation: none !important;
+  }
+}
+
+/* ========================================================
+   Top Edge Neon Streak (Cyan -> Violet -> Cyan)
+   ======================================================== */
+.login-card-scanner-beam {
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 50%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #22D3EE, #8B5CF6, #22D3EE, transparent);
+  box-shadow: 0 0 14px #22D3EE, 0 0 8px #8B5CF6;
+  animation: login-scanner-sweep 7s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* ========================================================
+   Bottom Edge Neon Streak (Mirrors top, sweeps right to left)
+   ======================================================== */
+.login-card-bottom-streak {
+  position: absolute;
+  bottom: 0;
+  left: 110%;
+  width: 50%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #22D3EE, #8B5CF6, #22D3EE, transparent);
+  box-shadow: 0 0 14px #22D3EE, 0 0 8px #8B5CF6;
+  animation: login-bottom-scanner-sweep 9s ease-in-out infinite 1.8s;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* ========================================================
+   Solid White Card Surface
+   ======================================================== */
+.login-glass-card-surface,
+.login-white-card-surface {
+  background: #FFFFFF !important;
+  background-color: #FFFFFF !important;
+  border-radius: 26.5px !important;
+  color: var(--login-navy) !important;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1) !important;
+  z-index: 20;
+}
+
+.login-noise-overlay {
+  position: absolute;
+  inset: 0;
+  opacity: 0.015;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  z-index: 10;
+}
+
+.login-card-sheen {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    135deg,
+    transparent 44%,
+    rgba(255, 255, 255, 0.25) 49%,
+    rgba(255, 255, 255, 0.45) 50%,
+    rgba(255, 255, 255, 0.25) 51%,
+    transparent 56%
+  );
+  animation: card-sheen-sweep 12s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 12;
+}
+
+/* ========================================================
+   Brand Header & Shield Logo Tile (Dark Navy #0A1F3D)
+   ======================================================== */
+.login-shield-wrapper {
+  background-color: #0A1F3D !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 0 16px rgba(10, 31, 61, 0.25) !important;
+  animation: shield-glow-ring 3.5s ease-in-out infinite;
+}
+
+.login-wordmark-pramaan {
+  font-family: Inter, system-ui, sans-serif !important;
+  font-weight: 800 !important;
+  color: #0A1F3D !important;
+  letter-spacing: -0.03em !important;
+}
+
+.login-wordmark-x {
+  font-family: Inter, system-ui, sans-serif !important;
+  font-weight: 800 !important;
+  background: linear-gradient(90deg, #FFC76B 0%, #FF9933 50%, #FF7A00 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+  letter-spacing: -0.03em !important;
+}
+
+.login-devanagari-tag {
+  color: #51607F !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+/* ========================================================
+   Advisory Info Pill Banner (Amber)
+   ======================================================== */
+.login-advisory-pill {
+  background-color: #FFF1C7 !important;
+  border: 1px solid #F5D77A !important;
+  color: #7A4B00 !important;
+  border-radius: 9999px !important;
+  padding: 7px 14px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  font-size: 11.5px !important;
+  font-weight: 500 !important;
+  width: 100% !important;
+}
+
+.login-advisory-pill svg {
+  color: #7A4B00 !important;
+  stroke: #7A4B00 !important;
+}
+
+/* ========================================================
+   Form Inputs (White, 1px #D5DEF5, text #0A1F3D)
+   ======================================================== */
+#login-root input[type="email"],
+#login-root input[type="password"],
+#login-root input[type="text"],
+.login-root input[type="email"],
+.login-root input[type="password"],
+.login-root input[type="text"] {
+  background-color: #FFFFFF !important;
+  border: 1px solid #D5DEF5 !important;
+  border-radius: 12px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  padding-left: 44px !important;
+  padding-right: 44px !important;
+  font-size: 14px !important;
+  color: #0A1F3D !important;
+  box-shadow: inset 0 1px 2px rgba(10, 31, 61, 0.03) !important;
+  transition: border-color 150ms ease, box-shadow 150ms ease, background-color 150ms ease !important;
+  width: 100% !important;
+}
+
+#login-root input::placeholder,
+.login-root input::placeholder {
+  color: #8A97C2 !important;
+  opacity: 0.8 !important;
+}
+
+#login-root input:focus,
+.login-root input:focus {
+  border-color: #14396B !important;
+  outline: none !important;
+  background-color: #FFFFFF !important;
+  box-shadow: 0 0 0 3px rgba(20, 57, 107, 0.18), inset 0 1px 2px rgba(10, 31, 61, 0.03) !important;
+}
+
+#login-root input.input-error,
+.login-root input.input-error {
+  border-color: #EF4444 !important;
+}
+
+#login-root input:-webkit-autofill,
+.login-root input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 40px #FFFFFF inset !important;
+  -webkit-text-fill-color: #0A1F3D !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.login-input-icon {
+  color: #8A97C2 !important;
+  transition: color 150ms ease !important;
+}
+
+.login-input-icon.focused {
+  color: #14396B !important;
+}
+
+.input-progress-line {
+  height: 100%;
+  background: linear-gradient(90deg, #0A1F3D, #14396B);
+  transition: width 240ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.login-eye-toggle-btn {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  min-height: 0 !important;
+  height: 36px !important;
+  width: 36px !important;
+  padding: 0 !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #51607F !important;
+  position: absolute !important;
+  right: 8px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  transition: color 150ms ease !important;
+}
+
+.login-eye-toggle-btn:hover {
+  color: #14396B !important;
+}
+
+.login-eye-toggle-btn * {
+  color: inherit !important;
+}
+
+/* ========================================================
+   Primary Submit Button: Navy Gradient (#0A1F3D -> #14396B)
+   ======================================================== */
+.login-submit-btn-primary,
+#login-root .login-submit-btn-primary,
+#login-root #login-submit-btn,
+.login-root #login-submit-btn,
+button#login-submit-btn {
+  background: linear-gradient(135deg, #0A1F3D 0%, #14396B 100%) !important;
+  background-color: #0A1F3D !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 12px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  box-shadow: 0 8px 24px -4px rgba(10, 31, 61, 0.45) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  width: 100% !important;
+  position: relative !important;
+  overflow: hidden !important;
+  transition: transform 120ms ease, box-shadow 120ms ease, background 150ms ease !important;
+}
+
+.login-submit-btn-primary:hover:not(:disabled),
+#login-root .login-submit-btn-primary:hover:not(:disabled),
+#login-root #login-submit-btn:hover:not(:disabled),
+.login-root #login-submit-btn:hover:not(:disabled) {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 12px 28px -2px rgba(10, 31, 61, 0.55) !important;
+  background: linear-gradient(135deg, #14396B 0%, #1E4F94 100%) !important;
+}
+
+.login-submit-btn-primary:hover:not(:disabled) .btn-shimmer-effect {
+  animation: button-shimmer-sweep 1.2s ease-in-out infinite !important;
+}
+
+.login-submit-btn-primary:active:not(:disabled) {
+  transform: scale(0.98) !important;
+}
+
+.login-submit-btn-primary.success-state {
+  background: #10B981 !important;
+  background-color: #10B981 !important;
+  border-color: rgba(16, 185, 129, 0.4) !important;
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.5) !important;
+}
+
+.login-submit-btn-primary:disabled {
+  opacity: 0.75 !important;
+  cursor: not-allowed !important;
+}
+
+.login-submit-btn-primary *,
+#login-root .login-submit-btn-primary *,
+#login-root #login-submit-btn *,
+.login-root #login-submit-btn * {
+  color: #FFFFFF !important;
+}
+
+.btn-shimmer-effect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.22),
+    transparent
+  );
+  pointer-events: none;
+}
+
+/* ========================================================
+   Need Help Plain Text Link (#14396B, underline on hover)
+   ======================================================== */
+.login-need-help-link {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  color: #14396B !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  transition: color 150ms ease !important;
+  min-height: 0 !important;
+  height: auto !important;
+  display: inline !important;
+}
+
+.login-need-help-link:hover {
+  color: #0A1F3D !important;
+  text-decoration: underline !important;
+}
+
+/* ========================================================
+   Role Preset Cards (White tiles, 1px #DDE5F0 border)
+   ======================================================== */
+.role-preset-card {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  height: 58px !important;
+  min-height: 58px !important;
+  padding: 8px 14px !important;
+  border-radius: 12px !important;
+  background: #FFFFFF !important;
+  background-color: #FFFFFF !important;
+  border: 1px solid #DDE5F0 !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+  text-align: left !important;
+  transition: transform 150ms ease, border-color 150ms ease, box-shadow 150ms ease, background 150ms ease !important;
+  box-shadow: none !important;
+  width: 100% !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.role-preset-card:hover {
+  transform: translateY(-2px) !important;
+  border-color: #14396B !important;
+  background: #FFFFFF !important;
+  background-color: #FFFFFF !important;
+  box-shadow: 0 6px 18px rgba(10, 31, 61, 0.08) !important;
+}
+
+.role-preset-card.selected {
+  background: #EEF3FB !important;
+  background-color: #EEF3FB !important;
+  border-color: #14396B !important;
+  box-shadow: 0 0 0 1px #14396B, 0 4px 16px rgba(10, 31, 61, 0.12) !important;
+}
+
+.role-preset-card * {
+  white-space: normal !important;
+}
+
+.role-preset-title {
+  color: #0A1F3D !important;
+  font-weight: 600 !important;
+  font-size: 13.5px !important;
+  line-height: 1.25 !important;
+}
+
+.role-preset-desc {
+  color: #51607F !important;
+  font-size: 11px !important;
+  line-height: 1.25 !important;
+  margin-top: 2px !important;
+}
+
+.role-chip-container {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+  border-radius: 10px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  transition: transform 150ms ease;
+}
+
+.role-preset-card:hover .role-chip-container {
+  transform: scale(1.06) rotate(-2deg);
+}
+
+/* ========================================================
+   Demo Section Tag & Header
+   ======================================================== */
+.login-demo-badge {
+  background-color: #F1F4F9 !important;
+  border: 1px solid #DDE5F0 !important;
+  color: #3B4A6B !important;
+  padding: 2px 10px !important;
+  border-radius: 9999px !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+}
+
+/* ========================================================
+   Footer Strip & Language Toggle at Bottom Right
+   ======================================================== */
+.login-footer-pill {
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 6px 14px !important;
+  border-radius: 9999px !important;
+  background-color: #ECFDF3 !important;
+  border: 1px solid #BFEBD0 !important;
+  font-size: 11px !important;
+  color: #14532D !important;
+  white-space: nowrap !important;
+}
+
+.login-pulse-dot {
+  display: inline-block !important;
+  width: 6px !important;
+  height: 6px !important;
+  min-width: 6px !important;
+  min-height: 6px !important;
+  padding: 0 !important;
+  border-radius: 9999px !important;
+  border: none !important;
+  background-color: #10B981 !important;
+  box-shadow: 0 0 8px #10B981 !important;
+  animation: pulse-green 2s cubic-bezier(0.4, 0, 0.6, 1) infinite !important;
+}
+
+/* Compact Language Segmented Control at Bottom Right */
+.login-lang-control {
+  background: #F1F4F9 !important;
+  border: 1px solid #DDE5F0 !important;
+  border-radius: 9999px !important;
+  padding: 2.5px !important;
+  display: flex !important;
+  align-items: center !important;
+  position: relative !important;
+  box-shadow: 0 1px 3px rgba(10, 31, 61, 0.04) !important;
+}
+
+.login-lang-slider {
+  position: absolute;
+  top: 2.5px;
+  bottom: 2.5px;
+  width: calc(50% - 2.5px);
+  border-radius: 9999px;
+  background-color: #0A1F3D !important;
+  box-shadow: 0 2px 6px rgba(10, 31, 61, 0.25) !important;
+  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.login-lang-btn {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: #51607F !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  height: 24px !important;
+  min-height: 24px !important;
+  padding: 0 12px !important;
+  border-radius: 9999px !important;
+  cursor: pointer !important;
+  position: relative !important;
+  z-index: 10 !important;
+  transition: color 150ms ease !important;
+}
+
+.login-lang-btn.active {
+  color: #FFFFFF !important;
+}
+
+/* ========================================================
+   Help Modal on White
+   ======================================================== */
+.login-modal-glass {
+  background: #FFFFFF !important;
+  border: 1px solid #DDE5F0 !important;
+  box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.35) !important;
+  border-radius: 20px !important;
+  color: #0A1F3D !important;
+}
+
+/* ========================================================
+   Stagger & Entrance Keyframe Delays
+   ======================================================== */
+.animate-card-entrance {
+  animation: card-rise-fade 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.stagger-1 { animation: child-stagger 450ms ease-out 80ms forwards; }
+.stagger-2 { animation: child-stagger 450ms ease-out 160ms forwards; }
+.stagger-3 { animation: child-stagger 450ms ease-out 240ms forwards; }
+.stagger-4 { animation: child-stagger 450ms ease-out 320ms forwards; }
+.stagger-5 { animation: child-stagger 450ms ease-out 200ms forwards; }
+.stagger-6 { animation: child-stagger 450ms ease-out 380ms forwards; }
+
+/* ========================================================
+   Prefers Reduced Motion
+   ======================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .login-aurora-blob-1,
+  .login-aurora-blob-2,
+  .login-aurora-blob-3,
+  .login-card-border-wrap,
+  .login-card-sheen,
+  .login-pulse-dot,
+  .login-shield-wrapper,
+  .animate-card-entrance,
+  .stagger-1,
+  .stagger-2,
+  .stagger-3,
+  .stagger-4,
+  .stagger-5,
+  .stagger-6 {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .login-card-scanner-beam,
+  .login-card-bottom-streak {
+    animation: none !important;
+    opacity: 0 !important;
+    display: none !important;
+  }
+
+  .login-card-gold-comet-border {
+    animation: none !important;
+    background: linear-gradient(135deg, rgba(255, 211, 107, 0.4), rgba(255, 153, 51, 0.2)) !important;
+    filter: drop-shadow(0 0 10px rgba(255, 176, 32, 0.35)) !important;
+  }
+}

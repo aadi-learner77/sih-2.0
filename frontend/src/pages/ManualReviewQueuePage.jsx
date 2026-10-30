@@ -622,7 +622,7 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
                 >
                   <option value="RESOLVED">Verified (Discrepancy Explained / Cleared)</option>
                   <option value="IN_REVIEW">Request More Evidence / Clarification (Applicant Notice)</option>
-                  <option value="REJECTED">Recommend On-Site Physical Inspection</option>
+                  <option value="RECOMMEND_INSPECTION">Recommend On-Site Physical Inspection</option>
                   <option value="PENDING_REVIEW">Escalate to Regional Committee</option>
                 </select>
                 <p className="text-[10px] text-slate-400 mt-1">

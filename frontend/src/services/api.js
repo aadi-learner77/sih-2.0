@@ -57,10 +57,6 @@ export const api = {
     const res = await apiClient.get(`/applications/${id}`);
     return res.data;
   },
-  getChecklist: async (id) => {
-    const res = await apiClient.get(`/applications/${id}/checklist`);
-    return res.data;
-  },
   getEvidenceLens: async (id) => {
     const res = await apiClient.get(`/applications/${id}/evidence-lens`);
     return res.data;
@@ -101,14 +97,6 @@ export const api = {
   },
   updateRule: async (ruleId, updatedData) => {
     const res = await apiClient.put(`/rules/${ruleId}`, updatedData);
-    return res.data;
-  },
-  evaluateRules: async (appId) => {
-    const res = await apiClient.post(`/rules/evaluate/${appId}`);
-    return res.data;
-  },
-  updateOfficerDecision: async (evalId, decision, comment) => {
-    const res = await apiClient.patch(`/rules/evaluations/${evalId}/decision`, { decision, comment });
     return res.data;
   },
   executeWhatIfDryRun: async (payload) => {
