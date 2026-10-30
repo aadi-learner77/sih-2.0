@@ -186,11 +186,11 @@ export default function Navbar({
   };
 
   const roleColors = {
-    scrutiny_officer: 'bg-primary/10 text-primary border-primary/25',
-    senior_officer: 'bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 border-indigo-500/25',
-    admin: 'bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/25',
-    auditor: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-500/25',
-    institution_user: 'bg-teal-500/10 text-teal-700 dark:text-teal-300 border-teal-500/25'
+    scrutiny_officer: 'bg-surface-2 text-text border-border',
+    senior_officer: 'bg-surface-2 text-text border-border',
+    admin: 'bg-surface-2 text-text border-border',
+    auditor: 'bg-surface-2 text-text border-border',
+    institution_user: 'bg-surface-2 text-text border-border'
   };
 
   const userName = currentUser?.full_name || (
@@ -241,9 +241,9 @@ export default function Navbar({
                   </span>
                 </div>
                 
-                {/* AICTE EoA Chip: cobalt text on tinted background with 1px border */}
+                {/* AICTE EoA Chip: neutral glass capsule */}
                 <span 
-                  className="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-primary/10 text-primary border border-primary/25 shadow-xs"
+                  className="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-surface-2 text-text border border-border shadow-xs"
                   title="Approval Process Handbook (APH 2025-26) Regulatory Scrutiny"
                 >
                   AICTE EoA
@@ -253,14 +253,14 @@ export default function Navbar({
 
             {/* Admin Viewing As Chip */}
             {adminPreviewRole && (
-              <div className="hidden md:flex items-center space-x-2 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-800 dark:text-amber-200 text-xs font-semibold shadow-xs">
+              <div className="hidden md:flex items-center space-x-2 px-3 py-1 rounded-full bg-surface-2 border border-border text-text text-xs font-medium shadow-xs">
                 <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
                 <span>Viewing as <strong className="text-text capitalize">{adminPreviewRole.replace('_', ' ')}</strong></span>
                 <button
                   type="button"
                   id="return-to-admin-btn"
                   onClick={onReturnToAdmin}
-                  className="ml-1 px-2.5 py-0.5 rounded-md bg-amber-500/20 hover:bg-amber-500/30 text-amber-900 dark:text-amber-100 text-[11px] font-bold cursor-pointer transition-colors"
+                  className="ml-1 px-2.5 py-0.5 rounded-md bg-surface border border-border hover:bg-surface-2 text-text text-[11px] font-semibold cursor-pointer transition-colors"
                   title="Return to your Central Admin session"
                 >
                   Return to Admin
@@ -485,21 +485,21 @@ export default function Navbar({
         </div>
       </header>
 
-      {/* Single Line Advisory Notice (Dismissible) */}
+      {/* Single Line Advisory Notice (Clean, No Highlighter) */}
       {!isAdvisoryDismissed && (
         <div 
           role="status"
-          className="h-7 shrink-0 bg-amber-500/10 border-b border-amber-500/25 px-4 sm:px-6 flex items-center justify-between text-xs font-medium text-amber-800 dark:text-amber-200 z-30 transition-all select-none"
+          className="h-7 shrink-0 bg-surface-2 border-b border-border px-4 sm:px-6 flex items-center justify-between text-xs font-medium text-text-muted z-30 transition-all select-none"
         >
           <div className="flex items-center space-x-2 min-w-0">
-            <AlertTriangle className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
-            <span>Advisory only. No auto-rejection.</span>
+            <AlertTriangle className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+            <span className="text-text font-normal">Advisory only. No auto-rejection.</span>
           </div>
 
           <button
             type="button"
             onClick={handleDismissAdvisory}
-            className="text-amber-700 dark:text-amber-300 hover:text-amber-900 dark:hover:text-amber-100 p-0.5 rounded cursor-pointer"
+            className="text-text-muted hover:text-text p-0.5 rounded cursor-pointer"
             aria-label="Dismiss advisory note"
           >
             <X className="w-3.5 h-3.5" />

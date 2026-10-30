@@ -679,14 +679,14 @@ export default function DocumentIntelligencePage({ onNavigateTab, onSelectApplic
               </div>
             </div>
 
-            {/* Findings / Review Indicator Callout */}
+            {/* Findings / Review Indicator Callout (Clean Glass, No Highlighter) */}
             {hasFindings && (
-              <div className="border-l-4 border-l-amber-500 bg-surface-2 border border-border border-l-0 rounded-r-xl p-3.5 space-y-2.5">
+              <div className="bg-surface-2 border border-border rounded-xl p-3.5 space-y-2.5 shadow-xs">
                 <div className="flex items-start space-x-2.5">
                   <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
                   <div>
                     <h4 className="text-xs font-semibold text-text">Indicator for review detected</h4>
-                    <p className="text-[11px] text-muted mt-0.5 leading-relaxed">
+                    <p className="text-[11px] text-text-muted mt-0.5 leading-relaxed font-normal">
                       Extracted fields indicate statutory review required under AICTE Handbook regulations. 
                       Route this document to Evidence Lens for multi-stage determination.
                     </p>

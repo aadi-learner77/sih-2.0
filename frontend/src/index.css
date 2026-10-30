@@ -661,7 +661,7 @@ textarea:not(#login-root textarea):not(.login-root textarea) {
   min-height: 40px !important;
   height: auto !important;
   padding: 10px 14px !important;
-  color: #FFFFFF !important;
+  color: var(--text) !important;
   font-size: 13px !important;
   font-weight: 400 !important;
   box-shadow: none !important;
@@ -701,8 +701,8 @@ select {
 
 select option {
   padding: 8px 12px !important;
-  background-color: #FFFFFF !important;
-  color: #000000 !important;
+  background-color: var(--surface) !important;
+  color: var(--text) !important;
 }
 
 textarea {
@@ -847,45 +847,23 @@ header .navbar-logo {
   border-color: var(--border) !important;
 }
 
-/* Success: background #E3F4E8, text #14532D */
-[class*="bg-emerald-"],
-[class*="text-emerald-"],
+/* Semantic Badges: Clean surfaces, No marker highlighters */
 .badge-success {
-  background-color: var(--success-bg) !important; /* #E3F4E8 */
-  color: var(--success-text) !important; /* #14532D */
-  border: 1px solid rgba(20, 83, 45, 0.2) !important;
-}
-[class*="bg-emerald-"] *,
-[class*="text-emerald-"] * {
-  color: var(--success-text) !important;
+  background-color: var(--surface-2) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--border) !important;
 }
 
-/* Warning: background #FFF1CC, text #5C4300 */
-[class*="bg-amber-"],
-[class*="text-amber-"],
-[class*="bg-yellow-"],
 .badge-warning {
-  background-color: var(--warning-bg) !important; /* #FFF1CC */
-  color: var(--warning-text) !important; /* #5C4300 */
-  border: 1px solid rgba(92, 67, 0, 0.2) !important;
-}
-[class*="bg-amber-"] *,
-[class*="text-amber-"] * {
-  color: var(--warning-text) !important;
+  background-color: var(--surface-2) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--border) !important;
 }
 
-/* Danger: background #FBE3E1, text #7A1A12 */
-[class*="bg-rose-"],
-[class*="text-rose-"],
-[class*="bg-red-"],
 .badge-danger {
-  background-color: var(--danger-bg) !important; /* #FBE3E1 */
-  color: var(--danger-text) !important; /* #7A1A12 */
-  border: 1px solid rgba(122, 26, 18, 0.2) !important;
-}
-[class*="bg-rose-"] *,
-[class*="text-rose-"] * {
-  color: var(--danger-text) !important;
+  background-color: var(--surface-2) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--border) !important;
 }
 
 /* Neutral Pills / Meta Tags */
@@ -1064,17 +1042,17 @@ header div.w-10.h-10 {
   font-weight: 700 !important;
 }
 
-/* Notice banners in header */
+/* Notice banners in header: clean surface */
 header div[class*="bg-amber-"],
 header div.bg-amber-50 {
-  background-color: var(--warning-bg) !important;
-  border: 1px solid rgba(92, 67, 0, 0.2) !important;
+  background-color: var(--surface-2) !important;
+  border: 1px solid var(--border) !important;
   border-radius: var(--radius-md) !important;
-  color: var(--warning-text) !important;
+  color: var(--text) !important;
 }
 
 header div[class*="bg-amber-"] * {
-  color: var(--warning-text) !important;
+  color: var(--text) !important;
 }
 
 /* ==========================================================================

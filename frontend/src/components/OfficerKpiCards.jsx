@@ -136,7 +136,7 @@ function KpiCardItem({ card, isSelected, onClick, loading }) {
     >
       {/* Top Row: Icon Chip & Trend / Circular Ring */}
       <div className="flex items-center justify-between">
-        <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${card.iconBg}`}>
+        <div className={`w-8 h-8 rounded-lg flex items-center justify-center bg-surface-2 border border-border ${card.iconColor || 'text-primary'}`}>
           <Icon className="w-4 h-4 shrink-0" />
         </div>
 
@@ -187,9 +187,8 @@ export default function OfficerKpiCards({
       trendPositive: true,
       subtitle: 'EoA & New Inst Triage',
       icon: Inbox,
-      topAccent: 'border-t-primary',
-      iconBg: 'bg-primary/20 text-primary dark:text-cyan-300 border border-primary/30',
-      trendBadge: 'bg-primary/10 text-primary dark:text-cobalt-light border-primary/30',
+      iconColor: 'text-primary',
+      trendBadge: 'bg-surface-2 text-text border-border',
       filterTarget: 'ALL',
     },
     {
@@ -201,9 +200,8 @@ export default function OfficerKpiCards({
       trendPositive: true,
       subtitle: 'Authoritative Gateway Checked',
       icon: CheckCircle2,
-      topAccent: 'border-t-emerald-500',
-      iconBg: 'bg-emerald-500/20 text-emerald-600 dark:text-emerald-300 border border-emerald-500/30',
-      trendBadge: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/30',
+      iconColor: 'text-emerald-500',
+      trendBadge: 'bg-surface-2 text-text border-border',
       filterTarget: 'Verified',
     },
     {
@@ -215,9 +213,8 @@ export default function OfficerKpiCards({
       trendPositive: false,
       subtitle: 'Fire, Land & PWD NOCs',
       icon: Clock,
-      topAccent: 'border-t-amber-500',
-      iconBg: 'bg-amber-500/20 text-amber-600 dark:text-amber-300 border border-amber-500/30',
-      trendBadge: 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/30',
+      iconColor: 'text-amber-500',
+      trendBadge: 'bg-surface-2 text-text border-border',
       filterTarget: 'Expired',
     },
     {
@@ -229,9 +226,8 @@ export default function OfficerKpiCards({
       trendPositive: false,
       subtitle: 'Bhoomi / AISHE / CBDT',
       icon: AlertTriangle,
-      topAccent: 'border-t-rose-500',
-      iconBg: 'bg-rose-500/20 text-rose-600 dark:text-rose-300 border border-rose-500/30',
-      trendBadge: 'bg-rose-500/10 text-rose-700 dark:text-rose-400 border-rose-500/30',
+      iconColor: 'text-rose-500',
+      trendBadge: 'bg-surface-2 text-text border-border',
       filterTarget: 'Mismatch Detected',
     },
     {
@@ -243,9 +239,8 @@ export default function OfficerKpiCards({
       trendPositive: null,
       subtitle: 'Queued with Backoff Retry',
       icon: RefreshCw,
-      topAccent: 'border-t-indigo-500',
-      iconBg: 'bg-indigo-500/20 text-indigo-600 dark:text-indigo-300 border border-indigo-500/30',
-      trendBadge: 'bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 border-indigo-500/30',
+      iconColor: 'text-primary',
+      trendBadge: 'bg-surface-2 text-text border-border',
       filterTarget: 'Verification Pending',
     },
   ];

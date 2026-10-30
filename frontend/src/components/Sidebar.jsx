@@ -47,8 +47,6 @@ export default function Sidebar({
           id: 'dashboard',
           label: 'Dashboard',
           icon: LayoutDashboard,
-          badge: 'Live',
-          badgeColor: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20',
           roles: ['scrutiny_officer', 'senior_officer', 'admin', 'auditor', 'institution_user'],
         },
         {
@@ -56,7 +54,6 @@ export default function Sidebar({
           label: 'Evidence Lens',
           icon: SearchCode,
           badge: (counts.advisoryFlags && counts.advisoryFlags > 0) ? `${counts.advisoryFlags}` : null,
-          badgeColor: 'bg-primary/10 text-primary border-primary/20',
           roles: ['scrutiny_officer', 'senior_officer', 'admin', 'auditor'],
         },
         {
@@ -64,15 +61,12 @@ export default function Sidebar({
           label: 'Review Queue',
           icon: Clock,
           badge: (counts.manualReview && counts.manualReview > 0) ? `${counts.manualReview}` : null,
-          badgeColor: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20',
           roles: ['scrutiny_officer', 'senior_officer', 'admin', 'auditor'],
         },
         {
           id: 'preflight',
           label: 'Pre-Flight',
           icon: PlaneTakeoff,
-          badge: 'Sim',
-          badgeColor: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20',
           roles: ['scrutiny_officer', 'senior_officer', 'admin', 'institution_user'],
         },
       ]
@@ -84,16 +78,12 @@ export default function Sidebar({
           id: 'document-intelligence',
           label: 'Doc Intelligence',
           icon: FileSearch,
-          badge: 'OCR',
-          badgeColor: 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20',
           roles: ['scrutiny_officer', 'senior_officer', 'admin', 'auditor'],
         },
         {
           id: 'photo-radar',
           label: 'Photo Radar',
           icon: ScanEye,
-          badge: 'ELA',
-          badgeColor: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20',
           roles: ['scrutiny_officer', 'senior_officer', 'admin'],
         },
         {
@@ -101,7 +91,6 @@ export default function Sidebar({
           label: 'Impossibility Engine',
           icon: Network,
           badge: (counts.impossibilities && counts.impossibilities > 0) ? `${counts.impossibilities}` : null,
-          badgeColor: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20',
           roles: ['scrutiny_officer', 'senior_officer', 'admin', 'auditor'],
         },
       ]
@@ -113,16 +102,12 @@ export default function Sidebar({
           id: 'audit-ledger',
           label: 'Audit & Receipts',
           icon: FileCheck2,
-          badge: 'SHA-256',
-          badgeColor: 'bg-primary/10 text-primary border-primary/20',
           roles: ['scrutiny_officer', 'senior_officer', 'admin', 'auditor', 'institution_user'],
         },
         {
           id: 'regulations',
           label: 'Rules Catalog',
           icon: BookOpenCheck,
-          badge: 'APH',
-          badgeColor: 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20',
           roles: ['senior_officer', 'admin'],
         },
       ]
@@ -134,8 +119,6 @@ export default function Sidebar({
           id: 'inspection-planner',
           label: 'Inspection Planner',
           icon: Compass,
-          badge: 'GIS',
-          badgeColor: 'bg-teal-500/10 text-teal-600 dark:text-teal-400 border-teal-500/20',
           roles: ['scrutiny_officer', 'senior_officer', 'admin'],
         },
       ]
@@ -263,7 +246,7 @@ export default function Sidebar({
 
                           {/* Badge for expanded mode only */}
                           {item.badge && !isCollapsed && (
-                            <span className={`text-[9px] px-1.5 py-0.5 rounded-full border font-mono font-medium shrink-0 ${item.badgeColor}`}>
+                            <span className="text-[10px] px-2 py-0.5 rounded-full border border-border bg-surface-2 text-text font-mono font-medium shrink-0 shadow-2xs">
                               {item.badge}
                             </span>
                           )}

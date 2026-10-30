@@ -160,7 +160,7 @@ export default function EvidenceLens({
   return (
     <div className="space-y-5 max-w-[1720px] mx-auto">
       {evidenceLensError && (
-        <div className="bg-surface border-l-4 border-l-rose-500 border border-border p-3.5 rounded-xl flex items-center justify-between text-xs shadow-xs">
+        <div className="bg-surface-2 border border-border p-3.5 rounded-xl flex items-center justify-between text-xs shadow-xs">
           <div className="flex items-center space-x-2 font-medium text-text">
             <AlertTriangle className="w-4 h-4 text-rose-500 shrink-0" />
             <span>{evidenceLensError}</span>
@@ -176,7 +176,7 @@ export default function EvidenceLens({
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-border">
           <div>
             <div className="flex flex-wrap items-center gap-2 mb-1">
-              <span className="text-[11px] font-semibold text-primary bg-primary/10 px-2.5 py-0.5 rounded-full border border-primary/20">
+              <span className="text-[11px] font-semibold text-text bg-surface-2 px-2.5 py-0.5 rounded-full border border-border">
                 Evidence Lens
               </span>
               <span className="text-xs text-text-muted">•</span>
@@ -201,7 +201,7 @@ export default function EvidenceLens({
 
           {/* Clean Indicator for Review Card (No Highlighter) */}
           <div className="shrink-0 flex items-center gap-3">
-            <div className="border-l-4 border-l-amber-500 bg-surface-2 border border-border rounded-xl p-3 shadow-xs max-w-md">
+            <div className="bg-surface-2 border border-border rounded-xl p-3 shadow-xs max-w-md">
               <div className="flex items-center space-x-1.5 text-text font-semibold text-xs">
                 <ShieldAlert className="w-4 h-4 text-amber-500 shrink-0" />
                 <span>Indicator for review</span>
@@ -363,7 +363,7 @@ export default function EvidenceLens({
                   <span className="font-bold text-text text-xs">
                     {pipeline?.rule?.clause_citation || `${currentFinding?.clause_id || 'AICTE Norm'} - ${currentFinding?.clause_title || 'Compliance Clause'}`}
                   </span>
-                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/30">
+                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-surface border border-border text-text">
                     Deficient
                   </span>
                 </div>

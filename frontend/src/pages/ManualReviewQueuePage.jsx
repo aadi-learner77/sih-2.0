@@ -250,14 +250,16 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
 
         {/* Counter Badges */}
         <div className="flex flex-wrap items-center gap-2">
-          <div className="px-3.5 py-1.5 rounded-full border border-rose-500/30 bg-rose-500/15 backdrop-blur-md shadow-xs text-rose-600 dark:text-rose-400 text-xs font-semibold flex items-center space-x-1.5">
-            <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
+          <div className="px-3 py-1 rounded-full border border-border bg-surface-2 text-text text-xs font-medium flex items-center space-x-2 shadow-xs">
+            <span className="w-2 h-2 rounded-full bg-rose-500"></span>
             <span>{highPriorityCount} Urgent</span>
           </div>
-          <div className="px-3.5 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/15 backdrop-blur-md shadow-xs text-amber-600 dark:text-amber-400 text-xs font-semibold">
+          <div className="px-3 py-1 rounded-full border border-border bg-surface-2 text-text text-xs font-medium flex items-center space-x-2 shadow-xs">
+            <span className="w-2 h-2 rounded-full bg-amber-500"></span>
             <span>{pendingCount} Pending</span>
           </div>
-          <div className="px-3.5 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/15 backdrop-blur-md shadow-xs text-emerald-600 dark:text-emerald-400 text-xs font-semibold">
+          <div className="px-3 py-1 rounded-full border border-border bg-surface-2 text-text text-xs font-medium flex items-center space-x-2 shadow-xs">
+            <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
             <span>{resolvedCount} Resolved</span>
           </div>
           <button
@@ -347,11 +349,7 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
             return (
               <div 
                 key={item.queue_id || idx} 
-                className={`bg-surface border rounded-xl p-4 sm:p-5 shadow-xs transition-colors ${
-                  item.priority === 'HIGH' && !isResolved 
-                    ? 'border-rose-500/30' 
-                    : 'border-border'
-                }`}
+                className="bg-surface border border-border rounded-xl p-4 sm:p-5 shadow-xs transition-colors"
               >
                 {/* Card Top Row */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3 border-b border-border">
@@ -359,13 +357,7 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
                     <span className="font-mono font-bold bg-surface-2 text-text px-2 py-0.5 rounded-lg text-xs border border-border">
                       {item.queue_id}
                     </span>
-                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border ${
-                      item.priority === 'HIGH'
-                        ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/25'
-                        : item.priority === 'LOW'
-                        ? 'bg-surface-2 text-text-muted border-border'
-                        : 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/25'
-                    }`}>
+                    <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold uppercase border border-border bg-surface-2 text-text">
                       {item.priority} Priority
                     </span>
                     <StatusChip status={item.status} size="sm" />
@@ -396,17 +388,15 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
                     )}
                   </div>
 
-                  {/* Col 2: Indicator for Review Box */}
-                  <div className="lg:col-span-5">
-                    <div className="border-l-4 border-l-amber-500 bg-amber-500/10 backdrop-blur-md border border-amber-500/25 rounded-2xl p-3.5 space-y-1.5 shadow-xs">
-                      <div className="flex items-center space-x-1.5 text-amber-800 dark:text-amber-200 text-xs font-semibold">
-                        <AlertTriangle className="w-3.5 h-3.5 text-amber-500 shrink-0" />
-                        <span>Indicator for review</span>
-                      </div>
-                      <p className="text-xs text-text leading-relaxed">
-                        {item.reason}
-                      </p>
+                  {/* Col 2: Indicator for Review (Clean, No Highlighter) */}
+                  <div className="lg:col-span-5 space-y-1.5">
+                    <div className="flex items-center space-x-1.5 text-xs font-semibold text-text">
+                      <AlertTriangle className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                      <span>Indicator for review</span>
                     </div>
+                    <p className="text-xs text-text-muted leading-relaxed font-normal">
+                      {item.reason}
+                    </p>
                   </div>
 
                   {/* Col 3: Source & Hashes */}
@@ -542,12 +532,13 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
                 </div>
               </div>
 
-              {/* Flag Reason in Light Amber Callout (No Highlighter) */}
-              <div className="border-l-4 border-l-amber-500 bg-amber-500/10 border border-amber-500/25 p-3 rounded-xl text-xs space-y-1">
-                <div className="text-[11px] font-semibold text-amber-800 dark:text-amber-200">
-                  Flag Reason
+              {/* Flag Reason (Clean Surface, No Highlighter) */}
+              <div className="bg-surface-2 border border-border p-3.5 rounded-xl text-xs space-y-1">
+                <div className="text-[11px] font-semibold text-text flex items-center space-x-1.5">
+                  <AlertTriangle className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                  <span>Flag Reason</span>
                 </div>
-                <p className="text-text leading-relaxed">
+                <p className="text-text-muted leading-relaxed font-normal">
                   {resolveItem.reason}
                 </p>
               </div>

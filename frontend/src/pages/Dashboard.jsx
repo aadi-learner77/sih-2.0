@@ -597,13 +597,7 @@ export default function Dashboard({
                     {/* 3. Risk Rank (Score + Compact Bar) */}
                     <div className="min-w-0 pr-2">
                       <div className="flex items-center space-x-1.5">
-                        <span className={`text-[11px] font-black px-1.5 py-0.5 rounded-md border font-mono ${
-                          isHighRisk
-                            ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/30'
-                            : isMedRisk
-                            ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30'
-                            : 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30'
-                        }`}>
+                        <span className="text-[11px] font-bold px-1.5 py-0.5 rounded-md border border-border bg-surface-2 font-mono text-text">
                           {app.risk_score}/100
                         </span>
                         <span className="text-[11px] font-semibold text-text-muted whitespace-nowrap">
@@ -765,13 +759,7 @@ export default function Dashboard({
 
                   <div className="flex items-center justify-between pt-1">
                     <div className="flex items-center space-x-2">
-                      <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded border ${
-                        isHighRisk 
-                          ? 'bg-rose-500/10 text-rose-600 border-rose-500/30' 
-                          : isMedRisk 
-                          ? 'bg-amber-500/10 text-amber-600 border-amber-500/30' 
-                          : 'bg-emerald-500/10 text-emerald-600 border-emerald-500/30'
-                      }`}>
+                      <span className="text-xs font-mono font-bold px-2 py-0.5 rounded-md border border-border bg-surface-2 text-text">
                         Risk: {app.risk_score}/100
                       </span>
                     </div>
@@ -980,8 +968,8 @@ export default function Dashboard({
                   />
                 </div>
 
-                <div className="bg-amber-500/10 p-3 rounded-xl border border-amber-500/20 text-[11px] text-amber-900 dark:text-amber-300">
-                  ⚠️ <strong>Statutory Governance:</strong> Direct automated rejection is strictly disabled. Any adverse determination must proceed via an authorized officer action with a signed comment.
+                <div className="bg-surface-2 p-3 rounded-xl border border-border text-[11px] text-text-muted">
+                  <span className="text-amber-500 font-bold mr-1">⚠️ Statutory Governance:</span> Direct automated rejection is strictly disabled. Any adverse determination must proceed via an authorized officer action with a signed comment.
                 </div>
 
                 <div className="flex items-center justify-end space-x-2 pt-2">
