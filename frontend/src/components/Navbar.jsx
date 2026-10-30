@@ -11,9 +11,8 @@ import {
   UserCheck,
   PanelLeftClose,
   PanelLeftOpen,
-  HelpCircle,
-  Database,
-  Cpu
+  Cpu,
+  Monitor
 } from 'lucide-react';
 import AlertBellDrawer from './AlertBellDrawer';
 import { api } from '../services/api';
@@ -61,12 +60,15 @@ function AicteShieldLogo({ className = "w-7 h-7" }) {
 }
 
 /**
- * Compact 64px Regulatory Command Center Header
+ * Compact 64px Regulatory Command Center Header (Deep Navy Glass in both themes)
  */
 export default function Navbar({ 
   currentUser,
   currentRole = 'scrutiny_officer', 
-  onRoleChange,
+  isAdmin = false,
+  adminPreviewRole = null,
+  onAdminSwitchRole,
+  onReturnToAdmin,
   onLogout, 
   activeApplication, 
   isLiveMode = false,
@@ -83,6 +85,13 @@ export default function Navbar({
     return 'light';
   });
 
+  const [themePref, setThemePref] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('theme_preference') || 'auto';
+    }
+    return 'auto';
+  });
+
   const [ledgerStatus, setLedgerStatus] = useState({ intact: true, blocks: 7, loading: true });
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isStatusPopoverOpen, setIsStatusPopoverOpen] = useState(false);
@@ -93,16 +102,24 @@ export default function Navbar({
   const userMenuRef = useRef(null);
   const statusClusterRef = useRef(null);
 
-  // Sync theme on mount
-  useEffect(() => {
-    const activeTheme = document.documentElement.getAttribute('data-theme') || localStorage.getItem('theme') || 'light';
-    setTheme(activeTheme);
-    document.documentElement.setAttribute('data-theme', activeTheme);
-    if (activeTheme === 'dark') {
+  const applyTheme = (targetTheme) => {
+    setTheme(targetTheme);
+    document.documentElement.setAttribute('data-theme', targetTheme);
+    if (targetTheme === 'dark') {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
     }
+    try {
+      localStorage.setItem('theme', targetTheme);
+    } catch (_e) {}
+    window.dispatchEvent(new CustomEvent('themechange', { detail: { theme: targetTheme } }));
+  };
+
+  // Sync theme on mount
+  useEffect(() => {
+    const activeTheme = document.documentElement.getAttribute('data-theme') || localStorage.getItem('theme') || 'light';
+    applyTheme(activeTheme);
   }, []);
 
   // Close menus on click outside or Escape
@@ -155,17 +172,20 @@ export default function Navbar({
 
   const toggleTheme = () => {
     const nextTheme = theme === 'dark' ? 'light' : 'dark';
-    setTheme(nextTheme);
-    document.documentElement.setAttribute('data-theme', nextTheme);
-    if (nextTheme === 'dark') {
-      document.documentElement.classList.add('dark');
+    applyTheme(nextTheme);
+    setThemePref(nextTheme);
+    localStorage.setItem('theme_preference', nextTheme);
+  };
+
+  const handleSelectThemeMode = (mode) => {
+    setThemePref(mode);
+    localStorage.setItem('theme_preference', mode);
+    if (mode === 'system') {
+      const isSystemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      applyTheme(isSystemDark ? 'dark' : 'light');
     } else {
-      document.documentElement.classList.remove('dark');
+      applyTheme(mode);
     }
-    try {
-      localStorage.setItem('theme', nextTheme);
-    } catch (_e) {}
-    window.dispatchEvent(new CustomEvent('themechange', { detail: { theme: nextTheme } }));
   };
 
   const handleDismissAdvisory = () => {
@@ -179,72 +199,76 @@ export default function Navbar({
     scrutiny_officer: 'Scrutiny Officer',
     senior_officer: 'Regional Officer',
     admin: 'Central Admin',
-    auditor: 'Independent Auditor',
+    auditor: 'Auditor (Read-Only)',
     institution_user: 'Institution User'
   };
 
   const roleColors = {
-    scrutiny_officer: 'bg-cyan-500/10 text-cyan-700 dark:text-cyan-400 border-cyan-500/20',
-    senior_officer: 'bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-500/20',
-    admin: 'bg-purple-500/10 text-purple-700 dark:text-purple-400 border-purple-500/20',
-    auditor: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20',
-    institution_user: 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/20'
+    scrutiny_officer: 'bg-primary/20 text-[#C7D2FE] border-primary/30',
+    senior_officer: 'bg-indigo-500/20 text-indigo-200 border-indigo-500/30',
+    admin: 'bg-amber-500/20 text-amber-200 border-amber-500/30',
+    auditor: 'bg-emerald-500/20 text-emerald-200 border-emerald-500/30',
+    institution_user: 'bg-teal-500/20 text-teal-200 border-teal-500/30'
   };
 
-  const userInitial = (currentUser?.full_name || currentUser?.email || 'Dr. Deshmukh')[0].toUpperCase();
-  const userName = currentUser?.full_name || currentUser?.email?.split('@')[0] || 'Dr. Deshmukh';
+  const userName = currentUser?.full_name || (
+    currentRole === 'institution_user' 
+      ? 'Apex Institute of Technology' 
+      : 'Shri R. K. Sharma, Scrutiny Cell'
+  );
+
+  const userInitial = userName.trim().charAt(0).toUpperCase();
 
   return (
     <>
-      {/* 64px Compact Header */}
-      <header className="h-16 shrink-0 bg-surface/90 backdrop-blur-md border-b border-border sticky top-0 z-40 px-3 sm:px-5 lg:px-6 shadow-xs w-full transition-colors duration-150">
-        <div className="flex items-center justify-between h-full w-full gap-2 sm:gap-4">
+      {/* 64px Fixed Height Navy Glass Chrome Header */}
+      <header className="h-16 shrink-0 z-40 relative select-none bg-[#08132B]/90 backdrop-blur-md border-b border-white/10 text-white">
+        
+        {/* Thin bottom cyan-to-violet gradient line fading at edges */}
+        <div 
+          className="absolute bottom-0 left-0 right-0 h-[1.5px] pointer-events-none"
+          style={{
+            background: 'linear-gradient(90deg, transparent 0%, #22D3EE 30%, #8B5CF6 70%, transparent 100%)'
+          }}
+          aria-hidden="true"
+        />
+
+        <div className="h-full px-3 sm:px-6 flex items-center justify-between gap-3">
           
-          {/* LEFT: Sidebar Toggle + Brand Identity + AICTE Chip */}
-          <div className="flex items-center space-x-2.5 sm:space-x-3.5 shrink-0 min-w-0">
-            {/* Desktop Hamburger / Collapse Sidebar Button */}
+          {/* LEFT: Hamburger Toggle + PRAMAAN-X Wordmark + AICTE EoA Chip */}
+          <div className="flex items-center space-x-2 sm:space-x-3 min-w-0">
+            {/* Desktop Sidebar Collapse Toggle */}
             <button
               type="button"
-              id="desktop-sidebar-collapse-btn"
+              id="sidebar-desktop-collapse-btn"
               onClick={onToggleSidebarCollapse}
-              aria-label={isSidebarCollapsed ? "Expand sidebar rail" : "Collapse sidebar to icon rail"}
-              title={isSidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-              className="hidden lg:flex p-1.5 rounded-lg text-text-muted hover:text-text hover:bg-surface-2 border border-transparent hover:border-border transition-colors cursor-pointer"
+              aria-label={isSidebarCollapsed ? "Expand sidebar rail" : "Collapse sidebar rail"}
+              title={isSidebarCollapsed ? "Expand sidebar" : "Collapse to icon rail"}
+              className="hidden lg:flex p-2 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
             >
-              {isSidebarCollapsed ? (
-                <PanelLeftOpen className="w-5 h-5 text-text-muted" />
-              ) : (
-                <PanelLeftClose className="w-5 h-5 text-text-muted" />
-              )}
+              {isSidebarCollapsed ? <PanelLeftOpen className="w-5 h-5" /> : <PanelLeftClose className="w-5 h-5" />}
             </button>
 
-            {/* Mobile Drawer Toggle Button */}
+            {/* Mobile Drawer Hamburger */}
             <button
               type="button"
-              id="mobile-drawer-toggle-btn"
+              id="mobile-menu-toggle-btn"
               onClick={onToggleMobileMenu}
-              aria-label="Toggle navigation drawer"
-              className="lg:hidden p-1.5 rounded-lg text-text-muted hover:text-text hover:bg-surface-2 transition-colors cursor-pointer"
+              aria-label={isMobileMenuOpen ? "Close mobile menu" : "Open mobile menu"}
+              className="lg:hidden p-2 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
             >
-              {isMobileMenuOpen ? (
-                <X className="w-5 h-5 text-text" />
-              ) : (
-                <Menu className="w-5 h-5 text-text" />
-              )}
+              {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
 
-            {/* Brand Logo & Wordmark with saffron-gradient -X */}
-            <div 
-              className="flex items-center space-x-2 sm:space-x-2.5 cursor-pointer select-none group"
-              title="PRAMAAN-X • AICTE Regulatory Scrutiny & Multi-Modal Document Intelligence"
-            >
-              <div className="p-1 rounded-xl bg-navy/5 dark:bg-white/5 border border-border shrink-0 flex items-center justify-center shadow-2xs">
+            {/* Logo Emblem & Brand Wordmark */}
+            <div className="flex items-center space-x-2.5 min-w-0">
+              <div className="p-1 rounded-xl bg-white/5 border border-white/15 shrink-0 flex items-center justify-center shadow-xs">
                 <AicteShieldLogo className="w-7 h-7" />
               </div>
 
               <div className="flex items-center space-x-2">
                 <div className="flex items-baseline tracking-tight font-black font-sans text-lg sm:text-xl">
-                  <span className="text-text font-black">PRAMAAN</span>
+                  <span className="text-white font-black tracking-tight">PRAMAAN</span>
                   <span className="bg-gradient-to-r from-[#FFC76B] via-[#FF9933] to-[#FF7A00] bg-clip-text text-transparent font-black ml-0.5">
                     -X
                   </span>
@@ -252,16 +276,33 @@ export default function Navbar({
                 
                 {/* AICTE EoA Chip with Tooltip */}
                 <span 
-                  className="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/25"
+                  className="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-primary/20 text-[#C7D2FE] border border-primary/40 shadow-xs"
                   title="Approval Process Handbook (APH 2025-26) Regulatory Scrutiny"
                 >
                   AICTE EoA
                 </span>
               </div>
             </div>
+
+            {/* Admin Viewing As Chip (A1) */}
+            {adminPreviewRole && (
+              <div className="hidden md:flex items-center space-x-2 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-200 text-xs font-semibold shadow-xs">
+                <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+                <span>Viewing as <strong className="text-white capitalize">{adminPreviewRole.replace('_', ' ')}</strong></span>
+                <button
+                  type="button"
+                  id="return-to-admin-btn"
+                  onClick={onReturnToAdmin}
+                  className="ml-1 px-2.5 py-0.5 rounded-md bg-amber-500/30 hover:bg-amber-500/50 text-white text-[11px] font-bold cursor-pointer transition-colors shadow-2xs"
+                  title="Return to your Central Admin session"
+                >
+                  Return to Admin
+                </button>
+              </div>
+            )}
           </div>
 
-          {/* RIGHT: System Status Cluster + Notification Bell + Theme Toggle + User Menu */}
+          {/* RIGHT: Status Cluster + Bell + 40px Theme Toggle + User Menu */}
           <div className="flex items-center space-x-2 sm:space-x-3 shrink-0">
             
             {/* Single System Status Cluster Pill */}
@@ -270,33 +311,33 @@ export default function Navbar({
                 type="button"
                 id="system-status-cluster-btn"
                 onClick={() => setIsStatusPopoverOpen(!isStatusPopoverOpen)}
-                className="hidden md:flex items-center space-x-2.5 px-3 py-1.5 rounded-full border border-border bg-surface-2 hover:bg-surface-muted text-xs font-medium text-text transition-all cursor-pointer shadow-2xs"
+                className="hidden md:flex items-center space-x-2.5 px-3 py-1.5 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 text-xs font-medium text-slate-200 transition-all cursor-pointer shadow-xs"
                 title="Click for System Status details"
               >
                 {/* Live Backend Dot */}
                 <div className="flex items-center space-x-1.5">
                   <span 
                     className={`w-2 h-2 rounded-full ${
-                      isLiveMode ? 'bg-emerald-500 animate-pulse' : 'bg-amber-400'
+                      isLiveMode ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'
                     }`} 
                   />
-                  <span className="text-[11px] font-semibold text-text-muted">
+                  <span className="text-[11px] font-semibold text-slate-300">
                     {isLiveMode ? 'API Live' : 'Demo Mode'}
                   </span>
                 </div>
 
-                <span className="w-px h-3 bg-border" />
+                <span className="w-px h-3 bg-white/20" />
 
                 {/* Ledger Dot */}
                 <div className="flex items-center space-x-1.5">
                   <span 
                     className={`w-2 h-2 rounded-full ${
                       ledgerStatus.intact 
-                        ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.7)] animate-pulse' 
+                        ? 'bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.7)] animate-pulse' 
                         : 'bg-rose-500 animate-bounce'
                     }`} 
                   />
-                  <span className="text-[11px] font-semibold text-text-muted">
+                  <span className="text-[11px] font-semibold text-slate-300">
                     {ledgerStatus.intact ? 'Ledger Intact' : 'Ledger Flagged'}
                   </span>
                 </div>
@@ -304,26 +345,26 @@ export default function Navbar({
 
               {/* Status Details Popover */}
               {isStatusPopoverOpen && (
-                <div className="absolute right-0 mt-2 w-72 rounded-2xl border border-border bg-surface p-4 shadow-xl z-50 text-xs animate-fadeIn space-y-3">
-                  <div className="flex items-center justify-between font-bold text-text border-b border-border pb-2">
+                <div className="absolute right-0 mt-2 w-72 rounded-2xl border border-white/15 bg-[#0A1F3D] p-4 shadow-2xl z-50 text-xs text-white animate-fadeIn space-y-3">
+                  <div className="flex items-center justify-between font-bold text-white border-b border-white/10 pb-2">
                     <span className="flex items-center space-x-1.5">
-                      <Cpu className="w-4 h-4 text-primary" />
+                      <Cpu className="w-4 h-4 text-cyan-400" />
                       <span>System Architecture Status</span>
                     </span>
                     <button 
                       type="button" 
                       onClick={() => setIsStatusPopoverOpen(false)}
-                      className="text-text-muted hover:text-text cursor-pointer"
+                      className="text-slate-400 hover:text-white cursor-pointer"
                     >
                       ✕
                     </button>
                   </div>
 
                   <div className="space-y-2">
-                    <div className="p-2.5 rounded-xl bg-surface-2 border border-border flex items-start justify-between">
+                    <div className="p-2.5 rounded-xl bg-white/5 border border-white/10 flex items-start justify-between">
                       <div>
-                        <div className="font-semibold text-text">FastAPI Backend Connector</div>
-                        <div className="text-[11px] text-text-muted">
+                        <div className="font-semibold text-white">FastAPI Backend Connector</div>
+                        <div className="text-[11px] text-slate-300">
                           {isLiveMode ? 'Connected on :8000 (Live mode)' : 'Simulated offline / mock fallback'}
                         </div>
                       </div>
@@ -336,17 +377,17 @@ export default function Navbar({
                       </button>
                     </div>
 
-                    <div className="p-2.5 rounded-xl bg-surface-2 border border-border space-y-1">
-                      <div className="flex items-center justify-between font-semibold text-text">
+                    <div className="p-2.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
+                      <div className="flex items-center justify-between font-semibold text-white">
                         <span className="flex items-center space-x-1.5">
-                          <ShieldCheck className="w-4 h-4 text-emerald-500" />
+                          <ShieldCheck className="w-4 h-4 text-emerald-400" />
                           <span>SHA-256 Audit Ledger</span>
                         </span>
-                        <span className="font-mono text-emerald-600 dark:text-emerald-400 text-[11px]">
+                        <span className="font-mono text-emerald-400 text-[11px]">
                           {ledgerStatus.intact ? 'SECURED' : 'FLAGGED'}
                         </span>
                       </div>
-                      <div className="text-[11px] text-text-muted">
+                      <div className="text-[11px] text-slate-300">
                         Merkle root verified across {ledgerStatus.blocks} chronological blocks.
                       </div>
                     </div>
@@ -358,23 +399,23 @@ export default function Navbar({
             {/* Operational Alert Bell with Drawer */}
             <AlertBellDrawer currentRole={currentRole} />
 
-            {/* Animated Sun / Moon Theme Toggle */}
+            {/* 40px High-Contrast Sun / Moon Theme Toggle (A2) */}
             <button
               type="button"
               id="theme-toggle-btn"
               onClick={toggleTheme}
               aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
               title={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
-              className="w-9 h-9 rounded-xl border border-border bg-surface-2 hover:bg-surface-muted text-text flex items-center justify-center cursor-pointer transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary/40 shrink-0 shadow-2xs"
+              className="w-10 h-10 rounded-xl border border-white/20 bg-white/10 hover:bg-white/20 text-white flex items-center justify-center cursor-pointer transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary/60 shrink-0 shadow-xs"
             >
-              <div className="relative w-4 h-4 sm:w-[18px] sm:h-[18px]">
+              <div className="relative w-5 h-5 flex items-center justify-center">
                 <Sun 
-                  className={`w-full h-full text-amber-500 absolute inset-0 transition-all duration-300 transform ${
+                  className={`w-5 h-5 text-amber-400 absolute transition-all duration-300 transform ${
                     theme === 'dark' ? 'rotate-0 scale-100 opacity-100' : 'rotate-90 scale-0 opacity-0'
                   }`} 
                 />
                 <Moon 
-                  className={`w-full h-full text-slate-700 dark:text-slate-300 absolute inset-0 transition-all duration-300 transform ${
+                  className={`w-5 h-5 text-sky-200 absolute transition-all duration-300 transform ${
                     theme === 'dark' ? '-rotate-90 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'
                   }`} 
                 />
@@ -387,28 +428,28 @@ export default function Navbar({
                 type="button"
                 id="user-menu-btn"
                 onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                className="flex items-center space-x-2 pl-2 pr-2.5 py-1 rounded-xl border border-border bg-surface-2 hover:bg-surface-muted transition-all cursor-pointer shadow-2xs group"
+                className="flex items-center space-x-2 pl-2 pr-2.5 py-1.5 rounded-xl border border-white/20 bg-white/10 hover:bg-white/15 transition-all cursor-pointer shadow-xs group"
                 aria-expanded={isUserMenuOpen}
                 aria-haspopup="true"
               >
                 {/* Avatar initial chip */}
-                <div className="w-7 h-7 rounded-lg bg-primary/15 text-primary font-bold text-xs flex items-center justify-center border border-primary/25 shrink-0 shadow-2xs">
+                <div className="w-7 h-7 rounded-lg bg-primary text-white font-bold text-xs flex items-center justify-center border border-white/20 shrink-0 shadow-xs">
                   {userInitial}
                 </div>
 
                 {/* Name & Role Pill (Desktop) */}
                 <div className="text-left hidden sm:flex flex-col items-start min-w-0 max-w-[120px] lg:max-w-[150px]">
-                  <span className="text-xs font-bold text-text leading-tight truncate w-full">
+                  <span className="text-xs font-bold text-white leading-tight truncate w-full">
                     {userName}
                   </span>
                   <span className={`text-[9px] font-semibold px-1.5 py-0 rounded-md border truncate max-w-full ${
-                    roleColors[currentRole] || 'bg-slate-100 text-slate-700 border-slate-200'
+                    roleColors[currentRole] || 'bg-white/10 text-white border-white/20'
                   }`}>
                     {roleLabels[currentRole] || currentRole}
                   </span>
                 </div>
 
-                <ChevronDown className={`w-3.5 h-3.5 text-text-muted transition-transform duration-200 ${
+                <ChevronDown className={`w-3.5 h-3.5 text-slate-300 transition-transform duration-200 ${
                   isUserMenuOpen ? 'rotate-180' : ''
                 }`} />
               </button>
@@ -440,25 +481,58 @@ export default function Navbar({
                     </div>
                   </div>
 
-                  {/* Switch Role Quick Select for Evaluation / Demo */}
-                  {onRoleChange && (
+                  {/* Theme Option Row in User Menu (A2) */}
+                  <div className="p-2 border-t border-border mt-1">
+                    <div className="text-[10px] font-bold text-text-muted uppercase tracking-wider mb-1.5 flex items-center justify-between">
+                      <span>Interface Theme</span>
+                      <span className="text-primary font-mono capitalize">{theme}</span>
+                    </div>
+                    <div className="grid grid-cols-3 gap-1">
+                      {[
+                        { id: 'light', label: 'Light', icon: Sun },
+                        { id: 'dark', label: 'Dark', icon: Moon },
+                        { id: 'system', label: 'System', icon: Monitor }
+                      ].map((tOpt) => {
+                        const Icon = tOpt.icon;
+                        const isSelected = themePref === tOpt.id;
+                        return (
+                          <button
+                            key={tOpt.id}
+                            type="button"
+                            onClick={() => handleSelectThemeMode(tOpt.id)}
+                            className={`py-1 rounded-lg text-xs font-semibold capitalize border flex items-center justify-center space-x-1 transition-all cursor-pointer ${
+                              isSelected
+                                ? 'bg-primary text-white border-primary shadow-xs'
+                                : 'bg-surface-2 text-text-muted hover:text-text border-border'
+                            }`}
+                          >
+                            <Icon className="w-3 h-3" />
+                            <span>{tOpt.label}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Switch Demo Role: STRICTLY visible only when logged-in role is admin (A1) */}
+                  {isAdmin && onAdminSwitchRole && (
                     <div className="p-2 space-y-1 border-t border-border mt-1">
                       <label htmlFor="user-menu-role-select" className="text-[10px] font-bold text-text-muted uppercase tracking-wider flex items-center space-x-1">
                         <UserCheck className="w-3 h-3 text-primary" />
-                        <span>Switch Demo Role</span>
+                        <span>Switch Demo Role (Admin Only)</span>
                       </label>
                       <select
                         id="user-menu-role-select"
-                        value={currentRole}
+                        value={adminPreviewRole || 'admin'}
                         onChange={(e) => {
-                          onRoleChange(e.target.value);
+                          onAdminSwitchRole(e.target.value);
                           setIsUserMenuOpen(false);
                         }}
                         className="w-full bg-surface-2 border border-border rounded-lg px-2 py-1.5 text-xs text-text font-medium outline-none cursor-pointer"
                       >
+                        <option value="admin">Central Admin</option>
                         <option value="scrutiny_officer">Scrutiny Officer</option>
                         <option value="senior_officer">Regional Officer</option>
-                        <option value="admin">Central Admin</option>
                         <option value="auditor">Independent Auditor</option>
                         <option value="institution_user">Institution User</option>
                       </select>
@@ -494,22 +568,20 @@ export default function Navbar({
       {!isAdvisoryDismissed && (
         <div 
           role="status"
-          className="h-8 shrink-0 bg-amber-500/10 dark:bg-amber-950/30 backdrop-blur-md border-b border-amber-500/20 px-3 sm:px-6 flex items-center justify-between text-[11px] font-medium text-amber-900 dark:text-amber-200 z-30 transition-all select-none"
+          className="h-8 shrink-0 bg-amber-500/15 dark:bg-amber-950/40 backdrop-blur-md border-b border-amber-500/30 px-3 sm:px-6 flex items-center justify-between text-[11px] font-medium text-amber-900 dark:text-amber-200 z-30 transition-all select-none"
         >
           <div className="flex items-center space-x-2 min-w-0">
             <AlertTriangle className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
             <span className="truncate">
-              Advisory indicators only • Non-punitive review • No auto-rejection
+              <strong>Statutory Advisory:</strong> All algorithmic classifications are decision-support indicators for committee inquiry. Direct automated determinations are strictly prohibited under AICTE guidelines.
             </span>
           </div>
 
           <button
             type="button"
-            id="dismiss-advisory-strip-btn"
             onClick={handleDismissAdvisory}
-            title="Dismiss notice for this session"
-            aria-label="Dismiss advisory banner"
-            className="p-1 rounded text-amber-800/70 dark:text-amber-300/70 hover:text-amber-950 dark:hover:text-amber-100 hover:bg-amber-500/15 transition-colors cursor-pointer shrink-0 ml-2"
+            className="ml-3 text-amber-700 dark:text-amber-300 hover:text-amber-900 dark:hover:text-amber-100 p-0.5 rounded cursor-pointer"
+            aria-label="Dismiss statutory advisory"
           >
             <X className="w-3.5 h-3.5" />
           </button>
