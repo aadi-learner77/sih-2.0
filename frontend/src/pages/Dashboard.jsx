@@ -291,14 +291,14 @@ export default function Dashboard({
   const isAdmin = currentRole === 'admin';
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 max-w-[1440px] mx-auto w-full">
 
-      {/* 1. Glassmorphic Navy-to-Cobalt Hero Banner with Explicit White Text */}
-      <div className="relative rounded-2xl p-6 sm:p-7 overflow-hidden text-white bg-gradient-to-r from-[#0A1F3D]/90 via-[#0E274D]/90 to-[#14396B]/90 backdrop-blur-xl border border-white/10 shadow-xl">
+      {/* 1. Official Government Hero Banner: Solid Navy in Light, Carbon with Primary Accent Bar in Dark */}
+      <div className="relative rounded-lg p-6 sm:p-7 overflow-hidden bg-[#0B3D91] text-white dark:bg-surface dark:border dark:border-border dark:border-l-[3px] dark:border-l-primary shadow-card select-none">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
           <div className="max-w-2xl">
             {/* Short Eyebrow */}
-            <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-[#8EB3FF] uppercase tracking-wide mb-1.5">
+            <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-[#DCE6FA] dark:text-text-subtle uppercase tracking-wider mb-1.5">
               <span>
                 {isInstitutionUser 
                   ? 'Institution Scrutiny Portal' 
@@ -310,7 +310,7 @@ export default function Dashboard({
             </div>
 
             {/* Title 24px/700 */}
-            <h1 className="text-2xl font-bold text-white tracking-tight leading-snug">
+            <h1 className="text-2xl font-bold text-white dark:text-text tracking-tight leading-snug">
               {isInstitutionUser 
                 ? 'Institution Dossier & Self-Assessment' 
                 : isAuditor
@@ -320,35 +320,35 @@ export default function Dashboard({
                 : 'Scrutiny & Regulatory Command Center'}
             </h1>
 
-            {/* ONE Short Subtitle Line */}
-            <p className="text-xs sm:text-sm text-slate-200 mt-1.5 leading-normal">
+            {/* ONE Short Subtitle Line (Readable in both themes: #DCE6FA on navy, text-muted on carbon) */}
+            <p className="text-sm text-[#DCE6FA] dark:text-text-muted mt-1.5 leading-normal">
               {isInstitutionUser
                 ? 'Review compliance readiness and pending requirements prior to formal review.'
                 : 'Regulatory decision support system. Findings are advisory indicators for committee inquiry.'}
             </p>
           </div>
 
-          {/* Action Buttons: 40px, Solid Cobalt White Text & Plain Border Secondary */}
+          {/* Action Buttons: Solid White/Navy on light hero, Primary blue on dark hero; Secondary outline */}
           <div className="flex flex-wrap items-center gap-2.5 shrink-0">
             {isInstitutionUser ? (
               <button
                 type="button"
                 id="launch-preflight-btn"
                 onClick={() => onNavigateTab('preflight')}
-                className="h-10 px-4 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-semibold transition-colors flex items-center space-x-2 cursor-pointer shadow-xs"
+                className="h-10 px-4 rounded-lg bg-white hover:bg-slate-100 text-[#0B3D91] dark:bg-primary dark:hover:bg-primary-hover dark:text-white text-xs font-semibold transition-colors flex items-center space-x-2 cursor-pointer shadow-xs"
               >
-                <SearchCode className="w-4 h-4 text-white" />
-                <span className="text-white">Pre-Flight Self-Check</span>
+                <SearchCode className="w-4 h-4 text-inherit" />
+                <span>Pre-Flight Self-Check</span>
               </button>
             ) : (
               <button
                 type="button"
                 id="launch-evidence-lens-btn"
                 onClick={() => onNavigateTab('evidence-lens')}
-                className="h-10 px-4 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-semibold transition-colors flex items-center space-x-2 cursor-pointer shadow-xs"
+                className="h-10 px-4 rounded-lg bg-white hover:bg-slate-100 text-[#0B3D91] dark:bg-primary dark:hover:bg-primary-hover dark:text-white text-xs font-semibold transition-colors flex items-center space-x-2 cursor-pointer shadow-xs"
               >
-                <SearchCode className="w-4 h-4 text-white" />
-                <span className="text-white">Launch Evidence Lens</span>
+                <SearchCode className="w-4 h-4 text-inherit" />
+                <span>Launch Evidence Lens</span>
               </button>
             )}
 
@@ -356,16 +356,16 @@ export default function Dashboard({
               type="button"
               id="launch-audit-ledger-btn"
               onClick={() => onNavigateTab('audit-ledger')}
-              className="h-10 px-4 rounded-xl bg-white/10 hover:bg-white/15 text-white border border-white/25 text-xs font-semibold transition-colors flex items-center space-x-2 cursor-pointer"
+              className="h-10 px-4 rounded-lg border border-white/30 text-white hover:bg-white/10 dark:border-border dark:text-text dark:hover:bg-surface-2 text-xs font-semibold transition-colors flex items-center space-x-2 cursor-pointer"
             >
-              <History className="w-4 h-4 text-white" />
-              <span className="text-white">Audit Ledger</span>
+              <History className="w-4 h-4 text-inherit" />
+              <span>Audit Ledger</span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* 2. 5 Operational KPI Cards (B6) */}
+      {/* 2. 5 Operational KPI Cards */}
       <OfficerKpiCards 
         kpis={kpis} 
         selectedStatusFilter={selectedStatus}
@@ -373,16 +373,15 @@ export default function Dashboard({
         loading={loading}
       />
 
-      {/* 3. Triage Table Card: Rebuilt with CSS Grid Layout (A3, A6, A7, B7, B8) */}
-      <div className="triage-table-card overflow-hidden">
+      {/* 3. Triage Table Card: Clean Surface, 1px Border, 72px Rows */}
+      <div className="bg-surface border border-border rounded-lg shadow-card overflow-hidden">
         
         {/* Table Header & Controls Bar */}
         <div className="px-5 py-4 border-b border-border bg-surface-2/40">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
             <div>
-              <h2 className="text-base font-bold text-text flex items-center space-x-2">
-                <Building2 className="w-5 h-5 text-primary" />
-                {/* Fixed space before parenthesis (A7) */}
+              <h2 className="text-base font-semibold text-text flex items-center space-x-2">
+                <Building2 className="w-4 h-4 text-primary" />
                 <span>
                   {`${isInstitutionUser ? 'My Institution Applications' : 'Risk-Ranked Triage Queue'} (${filteredAndSortedApplications.length} Applications)`}
                 </span>
@@ -395,29 +394,29 @@ export default function Dashboard({
               </p>
             </div>
 
-            {/* Sort Dropdown */}
+            {/* Sort Dropdown on the Right */}
             <div className="flex items-center space-x-2 shrink-0">
               <span className="text-xs text-text-muted font-medium">Sort By:</span>
               <div className="relative">
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="appearance-none bg-surface border border-border rounded-xl pl-3 pr-8 py-1.5 text-xs text-text font-medium outline-none focus:border-primary shadow-xs h-11 cursor-pointer"
+                  className="appearance-none bg-surface border border-border rounded-lg pl-3 pr-8 py-1.5 text-xs text-text font-medium outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent shadow-xs h-10 cursor-pointer"
                 >
-                  <option value="risk_desc">Risk Score (Highest First) 🔥</option>
-                  <option value="risk_asc">Risk Score (Lowest First)</option>
-                  <option value="readiness">Pre-Flight Readiness (%)</option>
-                  <option value="name">Institution Name (A-Z)</option>
+                  <option value="risk_desc" className="bg-surface text-text">Risk Score (Highest First) 🔥</option>
+                  <option value="risk_asc" className="bg-surface text-text">Risk Score (Lowest First)</option>
+                  <option value="readiness" className="bg-surface text-text">Pre-Flight Readiness (%)</option>
+                  <option value="name" className="bg-surface text-text">Institution Name (A-Z)</option>
                 </select>
-                <ChevronDown className="w-3.5 h-3.5 text-text-muted absolute right-2.5 top-4 pointer-events-none" />
+                <ChevronDown className="w-3.5 h-3.5 text-text-muted absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               </div>
             </div>
           </div>
 
-          {/* Filters Bar: 40px Controls, pl-10 Search, Aligned Row (Fix 4) */}
+          {/* Filters Bar: One Row, 40px Controls, 8px Radius, 1px Border, 2px Accent Focus */}
           <div className="flex flex-wrap lg:flex-nowrap items-center gap-2.5">
             
-            {/* Search Input with pl-10 and Absolute Icon at left-3 */}
+            {/* Search Input with pl-10 and Absolute Icon */}
             <div className="flex-1 min-w-[220px] relative">
               <Search className="w-4 h-4 text-text-muted absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
@@ -425,7 +424,7 @@ export default function Dashboard({
                 placeholder="Search by college, app #, AICTE ID, city..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full h-10 bg-surface border border-border rounded-xl pl-10 pr-8 text-xs text-text placeholder-text-muted outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary shadow-xs transition-colors"
+                className="w-full h-10 bg-surface border border-border rounded-lg pl-10 pr-8 text-xs text-text placeholder-text-subtle outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent shadow-xs transition-colors"
               />
               {searchQuery && (
                 <button
@@ -443,7 +442,7 @@ export default function Dashboard({
               <select
                 value={selectedState}
                 onChange={(e) => setSelectedState(e.target.value)}
-                className="appearance-none w-full h-10 bg-surface border border-border rounded-xl pl-3 pr-8 text-xs text-text font-medium outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary shadow-xs cursor-pointer"
+                className="appearance-none w-full h-10 bg-surface border border-border rounded-lg pl-3 pr-8 text-xs text-text font-medium outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent shadow-xs cursor-pointer"
               >
                 <option value="ALL" className="bg-surface text-text">All States ({stateOptions.length - 1})</option>
                 {stateOptions.filter((s) => s !== 'ALL').map((s) => (
@@ -458,7 +457,7 @@ export default function Dashboard({
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="appearance-none w-full h-10 bg-surface border border-border rounded-xl pl-3 pr-8 text-xs text-text font-medium outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary shadow-xs cursor-pointer"
+                className="appearance-none w-full h-10 bg-surface border border-border rounded-lg pl-3 pr-8 text-xs text-text font-medium outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent shadow-xs cursor-pointer"
               >
                 <option value="ALL" className="bg-surface text-text">All Categories</option>
                 {categoryOptions.filter((c) => c !== 'ALL').map((c) => (
@@ -473,7 +472,7 @@ export default function Dashboard({
               <select
                 value={selectedStatus}
                 onChange={(e) => setSelectedStatus(e.target.value)}
-                className="appearance-none w-full h-10 bg-surface border border-border rounded-xl pl-3 pr-8 text-xs text-text font-medium outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary shadow-xs cursor-pointer"
+                className="appearance-none w-full h-10 bg-surface border border-border rounded-lg pl-3 pr-8 text-xs text-text font-medium outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent shadow-xs cursor-pointer"
               >
                 <option value="ALL" className="bg-surface text-text">All Statuses ({statusOptions.length - 1})</option>
                 {statusOptions.filter((st) => st !== 'ALL').map((st) => (
@@ -488,7 +487,7 @@ export default function Dashboard({
               <select
                 value={selectedSeverity}
                 onChange={(e) => setSelectedSeverity(e.target.value)}
-                className="appearance-none w-full h-10 bg-surface border border-border rounded-xl pl-3 pr-8 text-xs text-text font-medium outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary shadow-xs cursor-pointer"
+                className="appearance-none w-full h-10 bg-surface border border-border rounded-lg pl-3 pr-8 text-xs text-text font-medium outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent shadow-xs cursor-pointer"
               >
                 <option value="ALL" className="bg-surface text-text">All Severity</option>
                 {severityOptions.filter((sev) => sev !== 'ALL').map((sev) => (
@@ -502,9 +501,9 @@ export default function Dashboard({
             <button
               type="button"
               onClick={handleResetFilters}
-              className={`h-10 px-4 rounded-xl border text-xs font-semibold flex items-center justify-center space-x-1.5 transition-colors cursor-pointer shrink-0 ${
+              className={`h-10 px-4 rounded-lg border text-xs font-semibold flex items-center justify-center space-x-1.5 transition-colors cursor-pointer shrink-0 ${
                 activeFilterCount > 0 
-                  ? 'border-primary/50 bg-primary/10 text-primary dark:text-cyan-300 hover:bg-primary/20' 
+                  ? 'border-primary/50 bg-primary/10 text-primary dark:text-white hover:bg-primary/20' 
                   : 'border-border bg-surface-2 text-text-muted hover:text-text'
               }`}
               title="Reset all search filters"
@@ -521,10 +520,10 @@ export default function Dashboard({
           </div>
         </div>
 
-        {/* Desktop CSS Grid Triage Table (>=1024px: No horizontal scroll at 1280px or 1366px, No Overlap) */}
+        {/* Desktop Triage Table (>=1024px: No horizontal scroll at >= 1280px, No Overlap) */}
         <div className="hidden lg:block w-full">
-          {/* Header Row */}
-          <div className="grid xl:grid-cols-[minmax(260px,2fr)_150px_120px_minmax(220px,2fr)_200px_180px] grid-cols-[minmax(260px,2.5fr)_120px_minmax(220px,2.5fr)_200px_180px] px-5 py-3 bg-surface-2/60 text-text-muted uppercase tracking-wider text-[11px] font-bold border-b border-border items-center">
+          {/* Header Row: 12px, 600, sentence case, text-muted */}
+          <div className="grid xl:grid-cols-[minmax(260px,2fr)_150px_120px_minmax(220px,2fr)_200px_180px] grid-cols-[minmax(260px,2.5fr)_120px_minmax(220px,2.5fr)_200px_180px] px-5 py-3 bg-surface-2 text-text-muted text-[12px] font-semibold border-b border-border items-center">
             <div>Application & Institution</div>
             <div className="hidden xl:block">State & Category</div>
             <div>Risk Rank</div>
@@ -533,7 +532,7 @@ export default function Dashboard({
             <div className="text-right">Actions</div>
           </div>
 
-          {/* Table Rows */}
+          {/* Table Rows: 72px row height, hover surface-2, left bar 3px primary */}
           <div className="divide-y divide-border">
             {filteredAndSortedApplications.length === 0 ? (
               <div className="py-12 text-center text-text-muted">
@@ -556,29 +555,29 @@ export default function Dashboard({
                 return (
                   <div 
                     key={app.id}
-                    className="triage-grid-row grid xl:grid-cols-[minmax(260px,2fr)_150px_120px_minmax(220px,2fr)_200px_180px] grid-cols-[minmax(260px,2.5fr)_120px_minmax(220px,2.5fr)_200px_180px] px-5 py-3.5 items-center gap-2"
+                    className="grid xl:grid-cols-[minmax(260px,2fr)_150px_120px_minmax(220px,2fr)_200px_180px] grid-cols-[minmax(260px,2.5fr)_120px_minmax(220px,2.5fr)_200px_180px] px-5 py-3 items-center gap-2 min-h-[72px] hover:bg-surface-2 transition-colors border-l-[3px] border-l-transparent hover:border-l-primary group"
                   >
                     {/* 1. Application & Institution */}
                     <div className="min-w-0 pr-3">
                       <div className="flex items-center space-x-2">
-                        <span className="font-mono text-[11px] font-bold text-primary dark:text-cyan-300 bg-primary/10 px-2 py-0.5 rounded border border-primary/20 shrink-0">
+                        <span className="font-mono text-[11px] font-semibold text-text bg-surface-2 px-2 py-0.5 rounded border border-border shrink-0">
                           {app.application_no}
                         </span>
-                        <span className="text-[10px] text-text-muted font-medium">AY {app.academic_year}</span>
+                        <span className="text-xs text-text-muted">AY {app.academic_year}</span>
                       </div>
                       <h3 
-                        className="text-xs font-bold text-text mt-1 leading-snug truncate group-hover:text-primary transition-colors"
+                        className="text-sm font-semibold text-text mt-0.5 leading-snug truncate group-hover:text-primary transition-colors"
                         title={app.institution_name}
                       >
                         {app.institution_name}
                       </h3>
-                      <div className="text-[11px] text-text-muted flex flex-wrap items-center gap-1.5 mt-0.5">
+                      <div className="text-xs text-text-muted flex flex-wrap items-center gap-1.5 mt-0.5">
                         <span>AICTE ID: {app.aicte_id}</span>
                         <span>•</span>
                         <span>{app.city}</span>
                         {/* On 1024-1279px, show State & Category on second line */}
                         <span className="xl:hidden">•</span>
-                        <span className="xl:hidden font-semibold text-text">{app.state}</span>
+                        <span className="xl:hidden font-medium text-text">{app.state}</span>
                         <span className="xl:hidden">•</span>
                         <span className="xl:hidden text-text-muted truncate max-w-[140px]">{app.category}</span>
                       </div>
@@ -586,53 +585,53 @@ export default function Dashboard({
 
                     {/* 2. State & Category (Hidden on 1024-1279px, shown on >= 1280px) */}
                     <div className="hidden xl:block min-w-0 pr-3">
-                      <span className="inline-block text-[11px] font-semibold text-text bg-surface-2 border border-border px-2 py-0.5 rounded-full mb-1">
+                      <span className="inline-block text-xs font-medium text-text bg-surface-2 border border-border px-2 py-0.5 rounded-md mb-1">
                         {app.state}
                       </span>
-                      <div className="text-[11px] text-text-muted leading-snug truncate" title={app.category}>
+                      <div className="text-xs text-text-muted leading-snug truncate" title={app.category}>
                         {app.category}
                       </div>
                     </div>
 
-                    {/* 3. Risk Rank (Score + Compact Bar) */}
+                    {/* 3. Risk Rank (Score + Compact Bar + Level) */}
                     <div className="min-w-0 pr-2">
                       <div className="flex items-center space-x-1.5">
-                        <span className="text-[11px] font-bold px-1.5 py-0.5 rounded-md border border-border bg-surface-2 font-mono text-text">
+                        <span className="text-xs font-bold font-mono text-text">
                           {app.risk_score}/100
                         </span>
-                        <span className="text-[11px] font-semibold text-text-muted whitespace-nowrap">
+                        <span className="text-xs font-medium text-text-muted whitespace-nowrap">
                           {app.risk_level}
                         </span>
                       </div>
                       <div className="w-20 bg-surface-2 rounded-full h-1 mt-1.5 overflow-hidden">
                         <div 
                           className={`h-full rounded-full ${
-                            isHighRisk ? 'bg-rose-500' : isMedRisk ? 'bg-amber-500' : 'bg-emerald-500'
+                            isHighRisk ? 'bg-danger' : isMedRisk ? 'bg-warning' : 'bg-success'
                           }`}
                           style={{ width: `${app.risk_score}%` }}
                         />
                       </div>
                     </div>
 
-                    {/* 4. Primary Anomaly (One Line + "+N more" Popover, No Stacked Chips) */}
+                    {/* 4. Primary Anomaly (2-line clamp, "+N more" plain text link) */}
                     <div className="min-w-0 pr-3 relative">
-                      <div className="flex items-center gap-1.5 text-xs text-text truncate">
-                        <span className="truncate" title={app.primary_issue || app.flags?.[0]}>
+                      <div className="text-xs text-text leading-relaxed">
+                        <span className="line-clamp-2" title={app.primary_issue || app.flags?.[0]}>
                           {app.primary_issue || app.flags?.[0] || 'No adverse indicators'}
                         </span>
                         {app.flags && app.flags.length > 1 && (
-                          <div className="relative shrink-0">
+                          <div className="relative inline-block mt-0.5">
                             <button
                               type="button"
                               onClick={() => setActiveAnomalyPopoverId(isAnomalyOpen ? null : app.id)}
-                              className="text-[10px] text-primary font-bold hover:underline cursor-pointer"
+                              className="text-xs text-accent font-semibold hover:underline cursor-pointer"
                             >
                               +{app.flags.length - 1} more
                             </button>
                             {isAnomalyOpen && (
-                              <div className="absolute left-0 bottom-full mb-1 z-30 w-64 p-3 bg-surface border border-border rounded-xl shadow-2xl space-y-1.5 animate-fadeIn">
+                              <div className="absolute left-0 bottom-full mb-1 z-30 w-64 p-3 bg-surface border border-border rounded-lg shadow-xl space-y-1.5 animate-fadeIn">
                                 <div className="text-[10px] font-bold text-text uppercase tracking-wider mb-1 flex items-center justify-between">
-                                  <span>Flagged Anomalies</span>
+                                  <span>Flagged Indicators</span>
                                   <button 
                                     type="button"
                                     onClick={() => setActiveAnomalyPopoverId(null)}
@@ -642,7 +641,7 @@ export default function Dashboard({
                                   </button>
                                 </div>
                                 {app.flags.map((fl, i) => (
-                                  <div key={i} className="text-xs text-text-muted p-1.5 rounded-lg bg-surface-2 border border-border/50">
+                                  <div key={i} className="text-xs text-text-muted p-1.5 rounded bg-surface-2 border border-border">
                                     • {fl}
                                   </div>
                                 ))}
@@ -658,7 +657,7 @@ export default function Dashboard({
                       <StatusChip status={app.status} />
                     </div>
 
-                    {/* 6. Officer Actions (180px Fixed Column, Both Buttons Fully Visible) */}
+                    {/* 6. Officer Actions: Evidence Lens Outline Button + Comment Ghost Icon Button */}
                     <div className="min-w-0 flex items-center justify-end space-x-2">
                       {!isInstitutionUser ? (
                         <>
@@ -668,11 +667,11 @@ export default function Dashboard({
                               onSelectApplication(app);
                               onNavigateTab('evidence-lens');
                             }}
-                            className="h-10 px-3.5 rounded-xl bg-gradient-to-r from-[#14396B] to-[#1F4BFF] hover:from-[#1F4BFF] hover:to-[#4D74FF] text-white text-xs font-bold transition-all shadow-xs inline-flex items-center justify-center space-x-1.5 cursor-pointer whitespace-nowrap shrink-0"
+                            className="h-9 px-3.5 rounded-lg border border-[#0B3D91] text-[#0B3D91] dark:border-border-strong dark:text-white hover:bg-[#0B3D91]/10 dark:hover:bg-surface-2 text-xs font-semibold transition-colors inline-flex items-center justify-center space-x-1.5 cursor-pointer whitespace-nowrap shrink-0"
                             title="Inspect application dossier in Evidence Lens"
                           >
-                            <span className="text-white">Evidence Lens</span>
-                            <ChevronRight className="w-3.5 h-3.5 text-white shrink-0" />
+                            <span>Evidence Lens</span>
+                            <ChevronRight className="w-3.5 h-3.5 shrink-0" />
                           </button>
 
                           {!isAuditor && (
@@ -682,7 +681,7 @@ export default function Dashboard({
                                 setActionModalApp(app);
                                 setOfficerComment('');
                               }}
-                              className="w-10 h-10 rounded-xl bg-surface-2 hover:bg-surface text-text-muted hover:text-text border border-border flex items-center justify-center cursor-pointer transition-colors shadow-2xs shrink-0"
+                              className="w-9 h-9 rounded-lg text-text-muted hover:text-text hover:bg-surface-2 flex items-center justify-center cursor-pointer transition-colors shrink-0"
                               title="Record signed officer determination"
                             >
                               <MessageSquare className="w-4 h-4 shrink-0" />
@@ -696,10 +695,10 @@ export default function Dashboard({
                             onSelectApplication(app);
                             onNavigateTab('preflight');
                           }}
-                          className="h-10 px-4 rounded-xl bg-primary hover:bg-primary/90 text-white text-xs font-bold transition-all shadow-xs inline-flex items-center justify-center space-x-1.5 cursor-pointer whitespace-nowrap"
+                          className="h-9 px-4 rounded-lg bg-primary hover:bg-primary-hover text-white text-xs font-semibold transition-colors inline-flex items-center justify-center space-x-1.5 cursor-pointer whitespace-nowrap"
                           title="Run pre-flight self-assessment check"
                         >
-                          <span className="text-white">Self-Audit</span>
+                          <span>Self-Audit</span>
                           <ChevronRight className="w-3.5 h-3.5 text-white shrink-0" />
                         </button>
                       )}
@@ -735,12 +734,12 @@ export default function Dashboard({
                   <div className="flex items-start justify-between gap-2">
                     <div>
                       <div className="flex items-center space-x-2">
-                        <span className="font-mono text-xs font-bold text-primary dark:text-cyan-300 bg-primary/10 px-2 py-0.5 rounded border border-primary/20">
+                        <span className="font-mono text-xs font-semibold text-text bg-surface-2 px-2 py-0.5 rounded border border-border">
                           {app.application_no}
                         </span>
                         <span className="text-[10px] text-text-muted">AY {app.academic_year}</span>
                       </div>
-                      <h3 className="text-xs font-bold text-text mt-1 leading-snug">
+                      <h3 className="text-xs font-semibold text-text mt-1 leading-snug">
                         {app.institution_name}
                       </h3>
                       <div className="text-[11px] text-text-muted flex items-center space-x-2 mt-0.5">
@@ -773,10 +772,10 @@ export default function Dashboard({
                               onSelectApplication(app);
                               onNavigateTab('evidence-lens');
                             }}
-                            className="h-9 px-3 rounded-xl bg-gradient-to-r from-[#14396B] to-[#1F4BFF] text-white text-xs font-bold flex items-center space-x-1 cursor-pointer"
+                            className="h-9 px-3 rounded-lg border border-[#0B3D91] text-[#0B3D91] dark:border-border-strong dark:text-white hover:bg-[#0B3D91]/10 dark:hover:bg-surface-2 text-xs font-semibold flex items-center space-x-1 cursor-pointer"
                           >
-                            <span className="text-white">Evidence Lens</span>
-                            <ChevronRight className="w-3.5 h-3.5 text-white" />
+                            <span>Evidence Lens</span>
+                            <ChevronRight className="w-3.5 h-3.5" />
                           </button>
                           {!isAuditor && (
                             <button
@@ -785,7 +784,7 @@ export default function Dashboard({
                                 setActionModalApp(app);
                                 setOfficerComment('');
                               }}
-                              className="w-9 h-9 rounded-xl bg-surface-2 border border-border text-text flex items-center justify-center cursor-pointer"
+                              className="w-9 h-9 rounded-lg text-text-muted hover:text-text hover:bg-surface-2 flex items-center justify-center cursor-pointer transition-colors shrink-0"
                             >
                               <MessageSquare className="w-3.5 h-3.5" />
                             </button>
@@ -798,7 +797,7 @@ export default function Dashboard({
                             onSelectApplication(app);
                             onNavigateTab('preflight');
                           }}
-                          className="h-9 px-3 rounded-xl bg-primary text-white text-xs font-bold flex items-center space-x-1 cursor-pointer"
+                          className="h-9 px-3 rounded-lg bg-primary hover:bg-primary-hover text-white text-xs font-semibold flex items-center space-x-1 cursor-pointer"
                         >
                           <span className="text-white">Self-Audit</span>
                           <ChevronRight className="w-3.5 h-3.5 text-white" />
@@ -904,48 +903,48 @@ export default function Dashboard({
 
       {/* 5. Officer Action Determination Modal (Mandatory Comment Enforced) */}
       {actionModalApp && (
-        <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-surface rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-border space-y-4 animate-in zoom-in-95">
+        <div className="fixed inset-0 z-50 bg-black/55 dark:bg-black/70 flex items-center justify-center p-4">
+          <div className="bg-surface rounded-xl max-w-lg w-full p-6 shadow-xl border border-border space-y-4 animate-in zoom-in-95">
             <div className="flex items-center justify-between pb-3 border-b border-border">
               <div>
-                <h3 className="text-base font-bold text-text">
+                <h3 className="text-base font-semibold text-text">
                   Officer Scrutiny Determination
                 </h3>
-                <p className="text-xs text-text-muted">
+                <p className="text-xs text-text-muted mt-0.5">
                   {actionModalApp.application_no} • {actionModalApp.institution_name}
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => setActionModalApp(null)}
-                className="text-text-muted hover:text-text p-1 cursor-pointer"
+                className="text-text-muted hover:text-text p-1 rounded-md cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {actionSuccessMsg ? (
-              <div className="p-4 bg-emerald-500/10 rounded-xl border border-emerald-500/30 text-xs text-emerald-700 dark:text-emerald-300 flex items-center space-x-2 font-medium">
-                <Check className="w-5 h-5 text-emerald-500 shrink-0" />
+              <div className="p-4 bg-success-bg rounded-lg border border-success-border text-xs text-success-text flex items-center space-x-2 font-medium">
+                <Check className="w-5 h-5 text-success shrink-0" />
                 <span>{actionSuccessMsg}</span>
               </div>
             ) : (
               <form onSubmit={handleSubmitOfficerAction} className="space-y-4">
                 <div>
-                  <label className="text-xs font-bold text-text block mb-1">
+                  <label className="text-xs font-semibold text-text block mb-1">
                     Select Determination Action:
                   </label>
                   <div className="relative">
                     <select
                       value={officerDecision}
                       onChange={(e) => setOfficerDecision(e.target.value)}
-                      className="appearance-none w-full bg-surface-2 border border-border rounded-xl pl-3 pr-8 py-2 text-xs text-text font-semibold outline-none focus:border-primary cursor-pointer"
+                      className="appearance-none w-full bg-surface-2 border border-border rounded-lg pl-3 pr-8 py-2 text-xs text-text font-semibold outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent cursor-pointer"
                     >
-                      <option value="ACCEPT">ACCEPT (Waive / Clear Deficiency with Note)</option>
-                      <option value="REQUEST_MORE_EVIDENCE">REQUEST MORE EVIDENCE (Issue Clarification / Upload Order)</option>
-                      <option value="RECOMMEND_INSPECTION">RECOMMEND PHYSICAL INSPECTION (Expert Visit Committee)</option>
-                      <option value="ESCALATE">ESCALATE (Refer to Standing Appellate Committee)</option>
-                      <option value="DISMISS">DISMISS (Dismiss Finding as Advisory False Positive)</option>
+                      <option value="ACCEPT" className="bg-surface text-text">ACCEPT (Waive / Clear Deficiency with Note)</option>
+                      <option value="REQUEST_MORE_EVIDENCE" className="bg-surface text-text">REQUEST MORE EVIDENCE (Issue Clarification / Upload Order)</option>
+                      <option value="RECOMMEND_INSPECTION" className="bg-surface text-text">RECOMMEND PHYSICAL INSPECTION (Expert Visit Committee)</option>
+                      <option value="ESCALATE" className="bg-surface text-text">ESCALATE (Refer to Standing Appellate Committee)</option>
+                      <option value="DISMISS" className="bg-surface text-text">DISMISS (Dismiss Finding as Advisory False Positive)</option>
                     </select>
                     <ChevronDown className="w-3.5 h-3.5 text-text-muted absolute right-2.5 top-3 pointer-events-none" />
                   </div>
@@ -953,8 +952,8 @@ export default function Dashboard({
 
                 <div>
                   <div className="flex items-center justify-between mb-1">
-                    <label className="text-xs font-bold text-text">
-                      Officer Explanatory Comment <span className="text-rose-500">* (Mandatory)</span>:
+                    <label className="text-xs font-semibold text-text">
+                      Officer Explanatory Comment <span className="text-danger">* (Mandatory)</span>:
                     </label>
                     <span className="text-[10px] text-text-muted">Strictly required under guidelines</span>
                   </div>
@@ -964,28 +963,28 @@ export default function Dashboard({
                     value={officerComment}
                     onChange={(e) => setOfficerComment(e.target.value)}
                     placeholder="Provide reasoned statutory explanation for this action. This comment will be digitally signed with your officer credentials and appended to the immutable audit trail."
-                    className="w-full bg-surface-2 border border-border rounded-xl p-3 text-xs text-text outline-none focus:border-primary resize-none"
+                    className="w-full bg-surface-2 border border-border rounded-lg p-3 text-xs text-text outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent resize-none placeholder-text-subtle"
                   />
                 </div>
 
-                <div className="bg-surface-2 p-3 rounded-xl border border-border text-[11px] text-text-muted">
-                  <span className="text-amber-500 font-bold mr-1">⚠️ Statutory Governance:</span> Direct automated rejection is strictly disabled. Any adverse determination must proceed via an authorized officer action with a signed comment.
+                <div className="bg-surface-2 p-3 rounded-lg border border-border text-xs text-text-muted">
+                  <span className="text-warning font-semibold mr-1">⚠️ Statutory Governance:</span> Direct automated rejection is strictly disabled. Any adverse determination must proceed via an authorized officer action with a signed comment.
                 </div>
 
                 <div className="flex items-center justify-end space-x-2 pt-2">
                   <button
                     type="button"
                     onClick={() => setActionModalApp(null)}
-                    className="px-4 py-2 rounded-xl border border-border text-xs text-text-muted font-semibold hover:bg-surface-2 cursor-pointer"
+                    className="h-10 px-4 rounded-lg border border-border text-xs text-text-muted font-semibold hover:bg-surface-2 hover:text-text cursor-pointer transition-colors"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={submittingAction || !officerComment.trim()}
-                    className="px-5 py-2 rounded-xl bg-gradient-to-r from-[#4D74FF] to-[#1F4BFF] hover:from-[#3B66FF] hover:to-[#0A2FD6] text-white text-xs font-bold transition-all shadow-sm disabled:opacity-50 cursor-pointer"
+                    className="h-10 px-5 rounded-lg bg-primary hover:bg-primary-hover text-white text-xs font-semibold transition-colors shadow-xs disabled:opacity-45 disabled:cursor-not-allowed cursor-pointer"
                   >
-                    <span className="text-white">{submittingAction ? 'Signing Action...' : 'Sign & Record Determination'}</span>
+                    <span>{submittingAction ? 'Signing Action...' : 'Sign & Record Determination'}</span>
                   </button>
                 </div>
               </form>
