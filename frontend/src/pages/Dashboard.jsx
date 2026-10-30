@@ -13,8 +13,6 @@ import {
   FileSearch,
   CheckCircle2,
   AlertTriangle,
-  Lock,
-  Layers,
   ChevronDown
 } from 'lucide-react';
 import OfficerKpiCards from '../components/OfficerKpiCards';
@@ -45,7 +43,6 @@ export default function Dashboard({
   currentRole = 'scrutiny_officer',
   currentUser = null
 }) {
-  // Master data state
   const [dataList, setDataList] = useState(MOCK_TRIAGE_APPLICATIONS);
   const [kpis, setKpis] = useState(MOCK_KPIS);
   const [loading, setLoading] = useState(false);
@@ -56,9 +53,9 @@ export default function Dashboard({
   const [selectedCategory, setSelectedCategory] = useState('ALL');
   const [selectedStatus, setSelectedStatus] = useState('ALL');
   const [selectedSeverity, setSelectedSeverity] = useState('ALL');
-  const [sortBy, setSortBy] = useState('risk_desc'); // 'risk_desc', 'risk_asc', 'readiness', 'name'
+  const [sortBy, setSortBy] = useState('risk_desc');
 
-  // Anomaly Popover State
+  // Popover State
   const [activeAnomalyPopoverId, setActiveAnomalyPopoverId] = useState(null);
 
   // Officer Action Modal State
@@ -80,19 +77,17 @@ export default function Dashboard({
     const userInstId = currentUser?.institution_id;
 
     if (applications && applications.length > 0) {
-      // Filter for institution user if applicable
       let sourceApps = applications;
       if (isInstitutionUser && userInstId) {
         sourceApps = sourceApps.filter((a) => a.institution_id === userInstId);
       }
 
-      // FIX for Report Item 1 & 2: Match mock fallback by id or application_no instead of array index
+      // Exact key matching for Report Item 1 & 2
       const merged = sourceApps.map((app, idx) => {
         const mockFallback = MOCK_TRIAGE_APPLICATIONS.find(
           (m) => m.id === app.id || m.application_no === app.application_no
         ) || MOCK_TRIAGE_APPLICATIONS[idx % MOCK_TRIAGE_APPLICATIONS.length];
         
-        // Map backend status to exact statutory chip status
         let mappedStatus = STATUTORY_STATUSES.VERIFICATION_PENDING;
         const rawStatus = (app.status || '').toLowerCase();
         if (rawStatus.includes('mismatch')) mappedStatus = STATUTORY_STATUSES.MISMATCH_DETECTED;
@@ -123,7 +118,6 @@ export default function Dashboard({
 
       setDataList(merged);
 
-      // Recompute dynamic live KPIs truthfully
       const total = merged.length;
       const verified = merged.filter((a) => a.status === STATUTORY_STATUSES.VERIFIED).length;
       const expired = merged.filter((a) => a.status === STATUTORY_STATUSES.EXPIRED).length;
@@ -154,7 +148,6 @@ export default function Dashboard({
     }
   }, [applications, currentRole, currentUser]);
 
-  // Extract unique filter options
   const stateOptions = useMemo(() => {
     const set = new Set(dataList.map((a) => a.state).filter(Boolean));
     return ['ALL', ...Array.from(set)];
@@ -177,7 +170,6 @@ export default function Dashboard({
 
   const severityOptions = ['ALL', 'CRITICAL', 'WARNING', 'INFO'];
 
-  // Active filter count
   const activeFilterCount = useMemo(() => {
     let count = 0;
     if (searchQuery.trim()) count++;
@@ -188,7 +180,6 @@ export default function Dashboard({
     return count;
   }, [searchQuery, selectedState, selectedCategory, selectedStatus, selectedSeverity]);
 
-  // Filter & Sort Logic
   const filteredAndSortedApplications = useMemo(() => {
     return dataList
       .filter((app) => {
@@ -233,7 +224,6 @@ export default function Dashboard({
     setSortBy('risk_desc');
   };
 
-  // Submit Officer Action with Mandatory Comment
   const handleSubmitOfficerAction = async (e) => {
     e.preventDefault();
     if (!officerComment.trim()) {
@@ -269,7 +259,6 @@ export default function Dashboard({
     }
   };
 
-  // Document Upload Handler
   const handleDocumentUpload = async (e) => {
     e.preventDefault();
     const activeApp = dataList[0];
@@ -299,116 +288,134 @@ export default function Dashboard({
 
   const isInstitutionUser = currentRole === 'institution_user';
   const isAuditor = currentRole === 'auditor';
+  const isAdmin = currentRole === 'admin';
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-6">
 
-      {/* 1. Role-Aware Scrutiny Command Center Header Card */}
-      <div className="bg-surface border border-border rounded-2xl p-5 sm:p-6 shadow-card relative overflow-hidden">
-        {/* Subtle decorative gradient top line */}
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-emerald-500" />
+      {/* 1. Signature Hero Card with Travelling Gold Comet & Neon Cyan Streak (B5) */}
+      <div className="hero-card-comet-wrap">
+        <div className="relative rounded-[1.2rem] p-6 sm:p-8 overflow-hidden text-white bg-gradient-to-br from-[#0A1F3D] via-[#14396B] to-[#0B1B45] shadow-2xl">
+          
+          {/* Neon Cyan Streak Sliding Along Top Edge */}
+          <div className="hero-neon-streak" aria-hidden="true" />
 
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 relative z-10">
-          <div>
-            {/* Eyebrow */}
-            <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-primary dark:text-cobalt-light uppercase tracking-wider mb-1.5">
-              <span>
-                {isInstitutionUser 
-                  ? 'INSTITUTION SCRUTINY PORTAL' 
-                  : 'AICTE CENTRAL SCRUTINY DIVISION'}
-              </span>
-              <span>•</span>
-              <span>EXTENSION OF APPROVAL (EOA) 2025-26</span>
-              
-              {isAuditor && (
-                <span className="bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/30 px-2 py-0.5 rounded-full text-[10px] font-bold">
-                  Read-Only Auditor
+          {/* Two Soft Aurora Refraction Blobs Inside Hero */}
+          <div 
+            className="absolute -top-24 -left-20 w-96 h-96 rounded-full bg-[#1F4BFF]/25 blur-3xl pointer-events-none" 
+            aria-hidden="true" 
+          />
+          <div 
+            className="absolute -bottom-24 -right-20 w-96 h-96 rounded-full bg-[#8B5CF6]/20 blur-3xl pointer-events-none" 
+            aria-hidden="true" 
+          />
+
+          {/* Hero Content Grid */}
+          <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <div className="max-w-3xl">
+              {/* Eyebrow in Cyan */}
+              <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-[#22D3EE] uppercase tracking-wider mb-2">
+                <span>
+                  {isInstitutionUser 
+                    ? 'INSTITUTION SCRUTINY PORTAL' 
+                    : 'AICTE CENTRAL SCRUTINY DIVISION'}
                 </span>
-              )}
+                <span>•</span>
+                <span>EXTENSION OF APPROVAL (EOA) 2025-26</span>
+                
+                {isAuditor && (
+                  <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-full text-[10px] font-bold">
+                    Read-Only Auditor
+                  </span>
+                )}
 
-              {!isLiveMode && <DemoDataBadge />}
+                {!isLiveMode && <DemoDataBadge />}
+              </div>
+
+              {/* Title in Crisp White Inter 700 */}
+              <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-tight">
+                {isInstitutionUser 
+                  ? 'My Institution Dossier & Self-Assessment Status' 
+                  : isAuditor
+                  ? 'Independent Audit Overview & Cryptographic Verification'
+                  : isAdmin
+                  ? 'Administration & Regulatory Governance Overview'
+                  : 'Officer Scrutiny & Regulatory Triage Command Center'}
+              </h1>
+
+              {/* Subtitle in Soft Slate */}
+              <p className="text-xs sm:text-sm text-[#C7D2FE] mt-2 leading-relaxed max-w-2xl">
+                {isInstitutionUser
+                  ? 'Track statutory compliance verification, pre-flight readiness score, and pending documents for your registered institution prior to formal review.'
+                  : 'Risk-prioritized regulatory decision support system. Automated determinations prohibited; all findings are indicators for committee inquiry.'}
+              </p>
             </div>
 
-            {/* Title */}
-            <h1 className="text-xl sm:text-2xl font-black text-text tracking-tight flex items-center gap-2">
-              <span>
-                {isInstitutionUser 
-                  ? 'Institutional Compliance Dossier & Self-Audit' 
-                  : isAuditor
-                  ? 'Regulatory Verification & Audit Command Center'
-                  : 'Officer Scrutiny & Regulatory Triage Command Center'}
-              </span>
-            </h1>
-
-            {/* Subtitle */}
-            <p className="text-xs sm:text-sm text-text-muted mt-1 max-w-3xl leading-relaxed">
-              {isInstitutionUser
-                ? 'Review statutory compliance verification, pre-flight readiness score, and document findings for your institution prior to formal review.'
-                : 'Risk-prioritized regulatory decision support system. Automated determinations prohibited; all findings are indicators for committee inquiry.'}
-            </p>
-          </div>
-
-          {/* Role-Aware Action Buttons */}
-          <div className="flex flex-wrap items-center gap-2.5 shrink-0">
-            {isInstitutionUser ? (
-              <button
-                id="launch-preflight-btn"
-                onClick={() => onNavigateTab('preflight')}
-                className="px-4 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-white text-xs font-bold transition-all shadow-sm flex items-center space-x-2 cursor-pointer"
-              >
-                <SearchCode className="w-4 h-4" />
-                <span>Pre-Flight Self-Check</span>
-              </button>
-            ) : (
-              <button
-                id="launch-evidence-lens-btn"
-                onClick={() => onNavigateTab('evidence-lens')}
-                className="px-4 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-white text-xs font-bold transition-all shadow-sm flex items-center space-x-2 cursor-pointer"
-              >
-                <SearchCode className="w-4 h-4" />
-                <span>Launch Evidence Lens</span>
-              </button>
-            )}
-
-            <button
-              id="launch-audit-ledger-btn"
-              onClick={() => onNavigateTab('audit-ledger')}
-              className="px-4 py-2.5 rounded-xl bg-surface-2 hover:bg-surface text-text border border-border text-xs font-semibold transition-all shadow-xs flex items-center space-x-2 cursor-pointer"
-            >
-              <History className="w-4 h-4 text-emerald-500" />
-              <span>Audit History Ledger</span>
-            </button>
-          </div>
-        </div>
-
-        {/* Thin Animated Hash-Chain Line */}
-        <div className="mt-5 pt-4 border-t border-border flex flex-col md:flex-row md:items-center justify-between text-xs text-text-muted select-none gap-2">
-          <div className="flex items-center space-x-2 text-[10px] font-mono uppercase tracking-wider text-primary font-bold shrink-0">
-            <span className="w-2 h-2 rounded-full bg-primary animate-ping" />
-            <span>Verification Hash-Chain:</span>
-          </div>
-
-          <div className="flex items-center flex-1 min-w-[500px] justify-between relative px-2 py-1 overflow-x-auto scrollbar-slim">
-            <div className="absolute left-6 right-6 top-1/2 -translate-y-1/2 h-0.5 bg-border -z-0" />
-            <div className="absolute left-6 right-6 top-1/2 -translate-y-1/2 h-0.5 bg-gradient-to-r from-primary via-accent to-emerald-500 opacity-60 -z-0" />
-            {HASH_CHAIN_NODES.map((node, i) => (
-              <div key={node.id} className="relative z-10 flex flex-col items-center group cursor-default">
-                <div 
-                  className="w-3.5 h-3.5 rounded-full bg-surface border-2 border-primary group-hover:scale-125 transition-transform flex items-center justify-center shadow-xs"
-                  style={{ animation: `hash-node-pulse 3s infinite ${i * 0.5}s ease-in-out` }}
+            {/* Hero Action Buttons: Cobalt Gradient Primary with White Text & Glass Secondary */}
+            <div className="flex flex-wrap items-center gap-3 shrink-0">
+              {isInstitutionUser ? (
+                <button
+                  type="button"
+                  id="launch-preflight-btn"
+                  onClick={() => onNavigateTab('preflight')}
+                  className="h-11 px-5 rounded-xl bg-gradient-to-r from-[#4D74FF] to-[#1F4BFF] hover:from-[#3B66FF] hover:to-[#0A2FD6] text-white text-xs font-bold transition-all shadow-[0_4px_16px_rgba(31,75,255,0.45)] flex items-center space-x-2 cursor-pointer"
                 >
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                </div>
-                <span className="text-[10px] font-mono text-text-muted mt-1 whitespace-nowrap group-hover:text-primary transition-colors">
-                  {node.label}
-                </span>
-              </div>
-            ))}
+                  <SearchCode className="w-4 h-4 text-white" />
+                  <span className="text-white">Pre-Flight Self-Check</span>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  id="launch-evidence-lens-btn"
+                  onClick={() => onNavigateTab('evidence-lens')}
+                  className="h-11 px-5 rounded-xl bg-gradient-to-r from-[#4D74FF] to-[#1F4BFF] hover:from-[#3B66FF] hover:to-[#0A2FD6] text-white text-xs font-bold transition-all shadow-[0_4px_16px_rgba(31,75,255,0.45)] flex items-center space-x-2 cursor-pointer"
+                >
+                  <SearchCode className="w-4 h-4 text-white" />
+                  <span className="text-white">Launch Evidence Lens</span>
+                </button>
+              )}
+
+              <button
+                type="button"
+                id="launch-audit-ledger-btn"
+                onClick={() => onNavigateTab('audit-ledger')}
+                className="h-11 px-5 rounded-xl bg-white/10 hover:bg-white/15 text-white border border-white/20 text-xs font-semibold transition-all backdrop-blur-md flex items-center space-x-2 cursor-pointer shadow-xs"
+              >
+                <History className="w-4 h-4 text-[#22D3EE]" />
+                <span className="text-white">Audit History Ledger</span>
+              </button>
+            </div>
           </div>
+
+          {/* Verification Hash-Chain Strip (The Signature Motif) */}
+          <div className="mt-6 pt-5 border-t border-white/10 flex flex-col md:flex-row md:items-center justify-between text-xs text-[#C7D2FE] select-none gap-3">
+            <div className="flex items-center space-x-2 text-[10px] font-mono uppercase tracking-wider text-[#22D3EE] font-bold shrink-0">
+              <span className="w-2 h-2 rounded-full bg-[#22D3EE] animate-ping" />
+              <span>Verification Hash-Chain:</span>
+            </div>
+
+            <div className="flex items-center flex-1 min-w-[500px] justify-between relative px-2 py-1 overflow-x-auto scrollbar-slim">
+              <div className="absolute left-6 right-6 top-1/2 -translate-y-1/2 h-[1px] bg-white/15 -z-0" />
+              <div className="absolute left-6 right-6 top-1/2 -translate-y-1/2 h-[1px] bg-gradient-to-r from-[#22D3EE] via-[#1F4BFF] to-[#10B981] opacity-75 -z-0" />
+              {HASH_CHAIN_NODES.map((node, i) => (
+                <div key={node.id} className="relative z-10 flex flex-col items-center group cursor-default">
+                  <div 
+                    className={`w-3.5 h-3.5 rounded-full bg-[#0A1F3D] border-2 border-[#22D3EE] group-hover:scale-125 transition-transform flex items-center justify-center shadow-xs hash-chain-node-${i + 1}`}
+                  >
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#22D3EE]" />
+                  </div>
+                  <span className="text-[10px] font-mono text-[#C7D2FE] mt-1 whitespace-nowrap group-hover:text-white transition-colors">
+                    {node.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
         </div>
       </div>
 
-      {/* 2. 5 KPI Cards */}
+      {/* 2. 5 Operational KPI Cards (B6) */}
       <OfficerKpiCards 
         kpis={kpis} 
         selectedStatusFilter={selectedStatus}
@@ -416,8 +423,8 @@ export default function Dashboard({
         loading={loading}
       />
 
-      {/* 3. Risk-Ranked Triage Table Container */}
-      <div className="bg-surface border border-border rounded-2xl shadow-card overflow-hidden">
+      {/* 3. Triage Table Card: Rebuilt with CSS Grid Layout (A3, A6, A7, B7, B8) */}
+      <div className="triage-table-card overflow-hidden">
         
         {/* Table Header & Controls Bar */}
         <div className="px-5 py-4 border-b border-border bg-surface-2/40">
@@ -425,9 +432,9 @@ export default function Dashboard({
             <div>
               <h2 className="text-base font-bold text-text flex items-center space-x-2">
                 <Building2 className="w-5 h-5 text-primary" />
+                {/* Fixed space before parenthesis (A7) */}
                 <span>
-                  {isInstitutionUser ? 'My Institution Applications' : 'Risk-Ranked Triage Queue'} 
-                  ({filteredAndSortedApplications.length} Applications)
+                  {`${isInstitutionUser ? 'My Institution Applications' : 'Risk-Ranked Triage Queue'} (${filteredAndSortedApplications.length} Applications)`}
                 </span>
                 {!isLiveMode && <DemoDataBadge />}
               </h2>
@@ -445,109 +452,109 @@ export default function Dashboard({
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="appearance-none bg-surface border border-border rounded-xl pl-3 pr-8 py-1.5 text-xs text-text font-medium outline-none focus:border-primary shadow-xs h-9 cursor-pointer"
+                  className="appearance-none bg-surface border border-border rounded-xl pl-3 pr-8 py-1.5 text-xs text-text font-medium outline-none focus:border-primary shadow-xs h-11 cursor-pointer"
                 >
                   <option value="risk_desc">Risk Score (Highest First) 🔥</option>
                   <option value="risk_asc">Risk Score (Lowest First)</option>
                   <option value="readiness">Pre-Flight Readiness (%)</option>
                   <option value="name">Institution Name (A-Z)</option>
                 </select>
-                <ChevronDown className="w-3.5 h-3.5 text-text-muted absolute right-2.5 top-3 pointer-events-none" />
+                <ChevronDown className="w-3.5 h-3.5 text-text-muted absolute right-2.5 top-4 pointer-events-none" />
               </div>
             </div>
           </div>
 
-          {/* Filter Bar with Chevron Icons, Search pl-10, and Active Filter Badge */}
-          <div className="flex flex-wrap items-center gap-2.5">
+          {/* Filters Bar: 44px Controls, pl-10 Search, All on One Row (A6, B8) */}
+          <div className="flex flex-wrap lg:flex-nowrap items-center gap-2.5">
             
-            {/* Search Input */}
-            <div className="flex-1 min-w-[240px] relative">
-              <Search className="w-4 h-4 text-text-muted absolute left-3.5 top-3 pointer-events-none" />
+            {/* Search Input with pl-10 and Absolute Icon at left-3.5 */}
+            <div className="flex-1 min-w-[220px] relative">
+              <Search className="w-4 h-4 text-text-muted absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 type="text"
                 placeholder="Search by college, app #, AICTE ID, city..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full h-10 bg-surface border border-border rounded-xl pl-10 pr-8 py-2 text-xs text-text placeholder-text-muted/60 outline-none focus:border-primary shadow-xs transition-colors"
+                className="w-full h-11 bg-surface border border-border rounded-xl pl-10 pr-8 text-xs text-text placeholder-text-muted outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary shadow-xs transition-colors"
               />
               {searchQuery && (
                 <button
                   type="button"
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-2.5 top-2.5 p-1 rounded-md text-text-muted hover:text-text text-xs"
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 rounded-md text-text-muted hover:text-text text-xs cursor-pointer"
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
               )}
             </div>
 
-            {/* State Filter */}
-            <div className="relative min-w-[150px] flex-1 sm:flex-initial">
+            {/* State Filter (44px) */}
+            <div className="relative w-full sm:w-44 shrink-0">
               <select
                 value={selectedState}
                 onChange={(e) => setSelectedState(e.target.value)}
-                className="appearance-none w-full h-10 bg-surface border border-border rounded-xl pl-3 pr-8 py-2 text-xs text-text font-medium outline-none focus:border-primary shadow-xs cursor-pointer"
+                className="appearance-none w-full h-11 bg-surface border border-border rounded-xl pl-3 pr-8 text-xs text-text font-medium outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary shadow-xs cursor-pointer"
               >
                 <option value="ALL">All States ({stateOptions.length - 1})</option>
                 {stateOptions.filter((s) => s !== 'ALL').map((s) => (
                   <option key={s} value={s}>{s}</option>
                 ))}
               </select>
-              <ChevronDown className="w-3.5 h-3.5 text-text-muted absolute right-2.5 top-3.5 pointer-events-none" />
+              <ChevronDown className="w-3.5 h-3.5 text-text-muted absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             </div>
 
-            {/* Category Filter */}
-            <div className="relative min-w-[150px] flex-1 sm:flex-initial">
+            {/* Category Filter (44px) */}
+            <div className="relative w-full sm:w-44 shrink-0">
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="appearance-none w-full h-10 bg-surface border border-border rounded-xl pl-3 pr-8 py-2 text-xs text-text font-medium outline-none focus:border-primary shadow-xs cursor-pointer"
+                className="appearance-none w-full h-11 bg-surface border border-border rounded-xl pl-3 pr-8 text-xs text-text font-medium outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary shadow-xs cursor-pointer"
               >
                 <option value="ALL">All Categories</option>
                 {categoryOptions.filter((c) => c !== 'ALL').map((c) => (
                   <option key={c} value={c}>{c}</option>
                 ))}
               </select>
-              <ChevronDown className="w-3.5 h-3.5 text-text-muted absolute right-2.5 top-3.5 pointer-events-none" />
+              <ChevronDown className="w-3.5 h-3.5 text-text-muted absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             </div>
 
-            {/* Status Filter */}
-            <div className="relative min-w-[160px] flex-1 sm:flex-initial">
+            {/* Status Filter (44px) */}
+            <div className="relative w-full sm:w-48 shrink-0">
               <select
                 value={selectedStatus}
                 onChange={(e) => setSelectedStatus(e.target.value)}
-                className="appearance-none w-full h-10 bg-surface border border-border rounded-xl pl-3 pr-8 py-2 text-xs text-text font-medium outline-none focus:border-primary shadow-xs cursor-pointer"
+                className="appearance-none w-full h-11 bg-surface border border-border rounded-xl pl-3 pr-8 text-xs text-text font-medium outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary shadow-xs cursor-pointer"
               >
                 <option value="ALL">All Statuses ({statusOptions.length - 1})</option>
                 {statusOptions.filter((st) => st !== 'ALL').map((st) => (
                   <option key={st} value={st}>{st}</option>
                 ))}
               </select>
-              <ChevronDown className="w-3.5 h-3.5 text-text-muted absolute right-2.5 top-3.5 pointer-events-none" />
+              <ChevronDown className="w-3.5 h-3.5 text-text-muted absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             </div>
 
-            {/* Severity Filter */}
-            <div className="relative min-w-[130px] flex-1 sm:flex-initial">
+            {/* Severity Filter (44px) */}
+            <div className="relative w-full sm:w-36 shrink-0">
               <select
                 value={selectedSeverity}
                 onChange={(e) => setSelectedSeverity(e.target.value)}
-                className="appearance-none w-full h-10 bg-surface border border-border rounded-xl pl-3 pr-8 py-2 text-xs text-text font-medium outline-none focus:border-primary shadow-xs cursor-pointer"
+                className="appearance-none w-full h-11 bg-surface border border-border rounded-xl pl-3 pr-8 text-xs text-text font-medium outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary shadow-xs cursor-pointer"
               >
                 <option value="ALL">All Severity</option>
                 {severityOptions.filter((sev) => sev !== 'ALL').map((sev) => (
                   <option key={sev} value={sev}>{sev}</option>
                 ))}
               </select>
-              <ChevronDown className="w-3.5 h-3.5 text-text-muted absolute right-2.5 top-3.5 pointer-events-none" />
+              <ChevronDown className="w-3.5 h-3.5 text-text-muted absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             </div>
 
-            {/* Reset Filters Ghost Button with Active Filter Count Badge */}
+            {/* Reset Filters (44px) */}
             <button
               type="button"
               onClick={handleResetFilters}
-              className={`h-10 px-3 rounded-xl border text-xs font-semibold flex items-center justify-center space-x-1.5 transition-colors cursor-pointer ${
+              className={`h-11 px-4 rounded-xl border text-xs font-semibold flex items-center justify-center space-x-1.5 transition-colors cursor-pointer shrink-0 ${
                 activeFilterCount > 0 
-                  ? 'border-primary/40 bg-primary/10 text-primary dark:text-cobalt-light hover:bg-primary/20' 
+                  ? 'border-primary/50 bg-primary/10 text-primary dark:text-cyan-300 hover:bg-primary/20' 
                   : 'border-border bg-surface-2 text-text-muted hover:text-text'
               }`}
               title="Reset all search filters"
@@ -555,7 +562,7 @@ export default function Dashboard({
               <RotateCcw className="w-3.5 h-3.5 shrink-0" />
               <span>Reset</span>
               {activeFilterCount > 0 && (
-                <span className="ml-1 bg-primary text-white text-[9px] font-bold px-1.5 py-0.2 rounded-full">
+                <span className="ml-1 bg-primary text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full">
                   {activeFilterCount}
                 </span>
               )}
@@ -564,208 +571,211 @@ export default function Dashboard({
           </div>
         </div>
 
-        {/* Desktop Table View (>= 1024px: No horizontal scroll at 1280px) */}
+        {/* Desktop CSS Grid Triage Table (>=1024px: No horizontal scroll at 1280px or 1366px, No Overlap) */}
         <div className="hidden lg:block w-full">
-          <table className="w-full text-left text-xs table-fixed">
-            <thead className="bg-surface-2/60 text-text-muted uppercase tracking-wider text-[10px] font-bold border-b border-border">
-              <tr>
-                <th className="py-3 px-4 w-[28%]">Application & Institution</th>
-                <th className="py-3 px-4 w-[14%]">State & Category</th>
-                <th className="py-3 px-4 w-[13%]">Risk Rank</th>
-                <th className="py-3 px-4 w-[21%]">Primary Anomaly / Discrepancy</th>
-                <th className="py-3 px-4 w-[13%]">Statutory Status</th>
-                <th className="py-3 px-4 w-[11%] text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border text-text">
-              {filteredAndSortedApplications.length === 0 ? (
-                <tr>
-                  <td colSpan="6" className="py-12 text-center text-text-muted">
-                    <AlertTriangle className="w-8 h-8 mx-auto text-amber-500 mb-2 opacity-60" />
-                    <p className="text-xs font-medium">No applications match your active filter criteria.</p>
-                    <button
-                      type="button"
-                      onClick={handleResetFilters}
-                      className="mt-2 text-xs text-primary hover:underline font-semibold cursor-pointer"
-                    >
-                      Reset all filters
-                    </button>
-                  </td>
-                </tr>
-              ) : (
-                filteredAndSortedApplications.map((app) => {
-                  const isHighRisk = app.risk_score >= 80;
-                  const isMedRisk = app.risk_score >= 50 && app.risk_score < 80;
-                  const isAnomalyOpen = activeAnomalyPopoverId === app.id;
+          {/* Header Row */}
+          <div className="grid xl:grid-cols-[minmax(260px,2fr)_150px_120px_minmax(220px,2fr)_200px_180px] grid-cols-[minmax(260px,2.5fr)_120px_minmax(220px,2.5fr)_200px_180px] px-5 py-3 bg-surface-2/60 text-text-muted uppercase tracking-wider text-[11px] font-bold border-b border-border items-center">
+            <div>Application & Institution</div>
+            <div className="hidden xl:block">State & Category</div>
+            <div>Risk Rank</div>
+            <div>Primary Anomaly</div>
+            <div>Statutory Status</div>
+            <div className="text-right">Actions</div>
+          </div>
 
-                  return (
-                    <tr 
-                      key={app.id}
-                      className="hover:bg-surface-2/40 transition-colors group"
-                    >
-                      {/* Application & Institution (Plain text, no blue highlight box) */}
-                      <td className="py-3 px-4 align-top">
-                        <div className="flex items-center space-x-2">
-                          <span className="font-mono text-[11px] font-bold text-primary dark:text-cobalt-light bg-primary/10 px-2 py-0.5 rounded-md border border-primary/20 shrink-0">
-                            {app.application_no}
-                          </span>
-                          <span className="text-[10px] text-text-muted font-medium">AY {app.academic_year}</span>
-                        </div>
-                        <h3 
-                          className="text-xs font-bold text-text mt-1 leading-snug truncate group-hover:text-primary transition-colors"
-                          title={app.institution_name}
-                        >
-                          {app.institution_name}
-                        </h3>
-                        <div className="text-[11px] text-text-muted flex flex-wrap items-center gap-1.5 mt-0.5">
-                          <span>AICTE ID: {app.aicte_id}</span>
-                          <span>•</span>
-                          <span>{app.city}</span>
-                        </div>
-                      </td>
+          {/* Table Rows */}
+          <div className="divide-y divide-border">
+            {filteredAndSortedApplications.length === 0 ? (
+              <div className="py-12 text-center text-text-muted">
+                <AlertTriangle className="w-8 h-8 mx-auto text-amber-500 mb-2 opacity-60" />
+                <p className="text-xs font-medium">No applications match your active filter criteria.</p>
+                <button
+                  type="button"
+                  onClick={handleResetFilters}
+                  className="mt-2 text-xs text-primary hover:underline font-semibold cursor-pointer"
+                >
+                  Reset all filters
+                </button>
+              </div>
+            ) : (
+              filteredAndSortedApplications.map((app) => {
+                const isHighRisk = app.risk_score >= 80;
+                const isMedRisk = app.risk_score >= 50 && app.risk_score < 80;
+                const isAnomalyOpen = activeAnomalyPopoverId === app.id;
 
-                      {/* State & Category */}
-                      <td className="py-3 px-4 align-top">
-                        <span className="inline-block text-[11px] font-semibold text-text bg-surface-2 border border-border px-2 py-0.5 rounded-full mb-1">
-                          {app.state}
+                return (
+                  <div 
+                    key={app.id}
+                    className="triage-grid-row grid xl:grid-cols-[minmax(260px,2fr)_150px_120px_minmax(220px,2fr)_200px_180px] grid-cols-[minmax(260px,2.5fr)_120px_minmax(220px,2.5fr)_200px_180px] px-5 py-3.5 items-center gap-2"
+                  >
+                    {/* 1. Application & Institution */}
+                    <div className="min-w-0 pr-3">
+                      <div className="flex items-center space-x-2">
+                        <span className="font-mono text-[11px] font-bold text-primary dark:text-cyan-300 bg-primary/10 px-2 py-0.5 rounded border border-primary/20 shrink-0">
+                          {app.application_no}
                         </span>
-                        <div className="text-[11px] text-text-muted leading-snug truncate" title={app.category}>
-                          {app.category}
-                        </div>
-                      </td>
+                        <span className="text-[10px] text-text-muted font-medium">AY {app.academic_year}</span>
+                      </div>
+                      <h3 
+                        className="text-xs font-bold text-text mt-1 leading-snug truncate group-hover:text-primary transition-colors"
+                        title={app.institution_name}
+                      >
+                        {app.institution_name}
+                      </h3>
+                      <div className="text-[11px] text-text-muted flex flex-wrap items-center gap-1.5 mt-0.5">
+                        <span>AICTE ID: {app.aicte_id}</span>
+                        <span>•</span>
+                        <span>{app.city}</span>
+                        {/* On 1024-1279px, show State & Category on second line */}
+                        <span className="xl:hidden">•</span>
+                        <span className="xl:hidden font-semibold text-text">{app.state}</span>
+                        <span className="xl:hidden">•</span>
+                        <span className="xl:hidden text-text-muted truncate max-w-[140px]">{app.category}</span>
+                      </div>
+                    </div>
 
-                      {/* Risk Score Pill & Bar */}
-                      <td className="py-3 px-4 align-top">
-                        <div className="flex items-center space-x-1.5">
-                          <span className={`text-[11px] font-black px-1.5 py-0.5 rounded-md border font-mono ${
-                            isHighRisk
-                              ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/30'
-                              : isMedRisk
-                              ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30'
-                              : 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30'
-                          }`}>
-                            {app.risk_score}/100
-                          </span>
-                          <span className="text-[11px] font-semibold text-text-muted whitespace-nowrap">
-                            {app.risk_level}
-                          </span>
-                        </div>
-                        {/* Progress Bar */}
-                        <div className="w-20 bg-surface-2 rounded-full h-1 mt-1.5 overflow-hidden">
-                          <div 
-                            className={`h-full rounded-full ${
-                              isHighRisk ? 'bg-rose-500' : isMedRisk ? 'bg-amber-500' : 'bg-emerald-500'
-                            }`}
-                            style={{ width: `${app.risk_score}%` }}
-                          />
-                        </div>
-                      </td>
+                    {/* 2. State & Category (Hidden on 1024-1279px, shown on >= 1280px) */}
+                    <div className="hidden xl:block min-w-0 pr-3">
+                      <span className="inline-block text-[11px] font-semibold text-text bg-surface-2 border border-border px-2 py-0.5 rounded-full mb-1">
+                        {app.state}
+                      </span>
+                      <div className="text-[11px] text-text-muted leading-snug truncate" title={app.category}>
+                        {app.category}
+                      </div>
+                    </div>
 
-                      {/* Primary Anomaly Findings with Popover */}
-                      <td className="py-3 px-4 align-top relative">
-                        <p className="text-[11px] text-text leading-snug truncate" title={app.primary_issue}>
-                          {app.primary_issue}
-                        </p>
-                        {app.flags && app.flags.length > 0 && (
-                          <div className="flex flex-wrap items-center gap-1 mt-1.5">
-                            {app.flags.slice(0, 2).map((fl, fi) => (
-                              <span key={fi} className="text-[9px] bg-surface-2 text-text-muted px-2 py-0.5 rounded border border-border truncate max-w-[130px]" title={fl}>
-                                {fl}
-                              </span>
-                            ))}
-                            {app.flags.length > 2 && (
-                              <div className="relative">
-                                <button
-                                  type="button"
-                                  onClick={() => setActiveAnomalyPopoverId(isAnomalyOpen ? null : app.id)}
-                                  className="text-[9px] text-primary dark:text-cobalt-light font-bold hover:underline cursor-pointer"
-                                >
-                                  +{app.flags.length - 2} more
-                                </button>
-                                {isAnomalyOpen && (
-                                  <div className="absolute left-0 top-full mt-1 z-30 w-56 p-2.5 bg-surface border border-border rounded-xl shadow-xl space-y-1 animate-in fade-in">
-                                    <div className="text-[10px] font-bold text-text uppercase tracking-wider mb-1 flex items-center justify-between">
-                                      <span>All Flagged Anomalies</span>
-                                      <button 
-                                        type="button"
-                                        onClick={() => setActiveAnomalyPopoverId(null)}
-                                        className="text-text-muted hover:text-text"
-                                      >
-                                        <X className="w-3 h-3" />
-                                      </button>
-                                    </div>
-                                    {app.flags.map((fl, i) => (
-                                      <div key={i} className="text-[10px] text-text-muted p-1 rounded bg-surface-2">
-                                        • {fl}
-                                      </div>
-                                    ))}
-                                  </div>
-                                )}
-                              </div>
-                            )}
-                          </div>
-                        )}
-                      </td>
+                    {/* 3. Risk Rank (Score + Compact Bar) */}
+                    <div className="min-w-0 pr-2">
+                      <div className="flex items-center space-x-1.5">
+                        <span className={`text-[11px] font-black px-1.5 py-0.5 rounded-md border font-mono ${
+                          isHighRisk
+                            ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/30'
+                            : isMedRisk
+                            ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30'
+                            : 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30'
+                        }`}>
+                          {app.risk_score}/100
+                        </span>
+                        <span className="text-[11px] font-semibold text-text-muted whitespace-nowrap">
+                          {app.risk_level}
+                        </span>
+                      </div>
+                      <div className="w-20 bg-surface-2 rounded-full h-1 mt-1.5 overflow-hidden">
+                        <div 
+                          className={`h-full rounded-full ${
+                            isHighRisk ? 'bg-rose-500' : isMedRisk ? 'bg-amber-500' : 'bg-emerald-500'
+                          }`}
+                          style={{ width: `${app.risk_score}%` }}
+                        />
+                      </div>
+                    </div>
 
-                      {/* Exact Statutory Status Chip */}
-                      <td className="py-3 px-4 align-top">
-                        <StatusChip status={app.status} />
-                      </td>
-
-                      {/* Action Buttons (Always fully visible Evidence Lens) */}
-                      <td className="py-3 px-4 text-right align-top">
-                        <div className="flex items-center justify-end gap-1">
-                          {!isInstitutionUser ? (
-                            <>
+                    {/* 4. Primary Anomaly (2-Line Clamp + Max 2 Chips with Wrap + Popover) */}
+                    <div className="min-w-0 pr-3 relative">
+                      <p className="text-[11px] text-text leading-snug line-clamp-2" title={app.primary_issue}>
+                        {app.primary_issue}
+                      </p>
+                      {app.flags && app.flags.length > 0 && (
+                        <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
+                          {app.flags.slice(0, 2).map((fl, fi) => (
+                            <span 
+                              key={fi} 
+                              className="text-[10px] bg-surface-2 text-text-muted px-2 py-0.5 rounded border border-border whitespace-normal leading-tight max-w-[150px] truncate" 
+                              title={fl}
+                            >
+                              {fl}
+                            </span>
+                          ))}
+                          {app.flags.length > 2 && (
+                            <div className="relative">
                               <button
                                 type="button"
-                                onClick={() => {
-                                  onSelectApplication(app);
-                                  onNavigateTab('evidence-lens');
-                                }}
-                                className="px-2.5 py-1.5 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary dark:text-cobalt-light border border-primary/20 text-xs font-bold transition-all shadow-2xs inline-flex items-center justify-center space-x-1 whitespace-nowrap cursor-pointer"
-                                title="Inspect application dossier in Evidence Lens"
+                                onClick={() => setActiveAnomalyPopoverId(isAnomalyOpen ? null : app.id)}
+                                className="text-[10px] text-primary dark:text-cyan-300 font-bold hover:underline cursor-pointer"
                               >
-                                <span>Evidence Lens</span>
-                                <ChevronRight className="w-3.5 h-3.5 shrink-0" />
+                                +{app.flags.length - 2} more
                               </button>
-
-                              {!isAuditor && (
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    setActionModalApp(app);
-                                    setOfficerComment('');
-                                  }}
-                                  className="p-1.5 rounded-lg bg-surface-2 hover:bg-surface text-text border border-border text-xs transition-all shadow-2xs inline-flex items-center justify-center cursor-pointer"
-                                  title="Record signed officer determination"
-                                >
-                                  <MessageSquare className="w-3.5 h-3.5" />
-                                </button>
+                              {isAnomalyOpen && (
+                                <div className="absolute left-0 bottom-full mb-1 z-30 w-64 p-3 bg-surface border border-border rounded-xl shadow-2xl space-y-1.5 animate-fadeIn">
+                                  <div className="text-[10px] font-bold text-text uppercase tracking-wider mb-1 flex items-center justify-between">
+                                    <span>All Flagged Anomalies</span>
+                                    <button 
+                                      type="button"
+                                      onClick={() => setActiveAnomalyPopoverId(null)}
+                                      className="text-text-muted hover:text-text cursor-pointer"
+                                    >
+                                      <X className="w-3.5 h-3.5" />
+                                    </button>
+                                  </div>
+                                  {app.flags.map((fl, i) => (
+                                    <div key={i} className="text-[11px] text-text-muted p-1.5 rounded-lg bg-surface-2 border border-border/50">
+                                      • {fl}
+                                    </div>
+                                  ))}
+                                </div>
                               )}
-                            </>
-                          ) : (
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* 5. Statutory Status (200px Fixed Column, Guaranteed Zero Overlap) */}
+                    <div className="min-w-0 pr-2 flex items-center">
+                      <StatusChip status={app.status} />
+                    </div>
+
+                    {/* 6. Officer Actions (180px Fixed Column, Both Buttons Fully Visible) */}
+                    <div className="min-w-0 flex items-center justify-end space-x-2">
+                      {!isInstitutionUser ? (
+                        <>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              onSelectApplication(app);
+                              onNavigateTab('evidence-lens');
+                            }}
+                            className="h-10 px-3.5 rounded-xl bg-gradient-to-r from-[#14396B] to-[#1F4BFF] hover:from-[#1F4BFF] hover:to-[#4D74FF] text-white text-xs font-bold transition-all shadow-xs inline-flex items-center justify-center space-x-1.5 cursor-pointer whitespace-nowrap shrink-0"
+                            title="Inspect application dossier in Evidence Lens"
+                          >
+                            <span className="text-white">Evidence Lens</span>
+                            <ChevronRight className="w-3.5 h-3.5 text-white shrink-0" />
+                          </button>
+
+                          {!isAuditor && (
                             <button
                               type="button"
                               onClick={() => {
-                                onSelectApplication(app);
-                                onNavigateTab('preflight');
+                                setActionModalApp(app);
+                                setOfficerComment('');
                               }}
-                              className="px-2.5 py-1.5 rounded-lg bg-primary hover:bg-primary/90 text-white text-xs font-bold transition-all shadow-2xs inline-flex items-center justify-center space-x-1 whitespace-nowrap cursor-pointer"
-                              title="Run pre-flight self-assessment check"
+                              className="w-10 h-10 rounded-xl bg-surface-2 hover:bg-surface text-text-muted hover:text-text border border-border flex items-center justify-center cursor-pointer transition-colors shadow-2xs shrink-0"
+                              title="Record signed officer determination"
                             >
-                              <span>Self-Audit</span>
-                              <ChevronRight className="w-3.5 h-3.5 shrink-0" />
+                              <MessageSquare className="w-4 h-4 shrink-0" />
                             </button>
                           )}
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })
-              )}
-            </tbody>
-          </table>
+                        </>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            onSelectApplication(app);
+                            onNavigateTab('preflight');
+                          }}
+                          className="h-10 px-4 rounded-xl bg-primary hover:bg-primary/90 text-white text-xs font-bold transition-all shadow-xs inline-flex items-center justify-center space-x-1.5 cursor-pointer whitespace-nowrap"
+                          title="Run pre-flight self-assessment check"
+                        >
+                          <span className="text-white">Self-Audit</span>
+                          <ChevronRight className="w-3.5 h-3.5 text-white shrink-0" />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                );
+              })
+            )}
+          </div>
         </div>
 
         {/* Mobile / Tablet Stacked Cards View (<1024px) */}
@@ -792,7 +802,7 @@ export default function Dashboard({
                   <div className="flex items-start justify-between gap-2">
                     <div>
                       <div className="flex items-center space-x-2">
-                        <span className="font-mono text-xs font-bold text-primary dark:text-cobalt-light bg-primary/10 px-2 py-0.5 rounded border border-primary/20">
+                        <span className="font-mono text-xs font-bold text-primary dark:text-cyan-300 bg-primary/10 px-2 py-0.5 rounded border border-primary/20">
                           {app.application_no}
                         </span>
                         <span className="text-[10px] text-text-muted">AY {app.academic_year}</span>
@@ -809,6 +819,10 @@ export default function Dashboard({
 
                     <StatusChip status={app.status} />
                   </div>
+
+                  <p className="text-xs text-text leading-snug">
+                    {app.primary_issue}
+                  </p>
 
                   <div className="flex items-center justify-between pt-1">
                     <div className="flex items-center space-x-2">
@@ -832,10 +846,10 @@ export default function Dashboard({
                               onSelectApplication(app);
                               onNavigateTab('evidence-lens');
                             }}
-                            className="px-3 py-1.5 rounded-lg bg-primary/10 text-primary dark:text-cobalt-light border border-primary/20 text-xs font-bold flex items-center space-x-1 cursor-pointer"
+                            className="h-9 px-3 rounded-xl bg-gradient-to-r from-[#14396B] to-[#1F4BFF] text-white text-xs font-bold flex items-center space-x-1 cursor-pointer"
                           >
-                            <span>Evidence Lens</span>
-                            <ChevronRight className="w-3.5 h-3.5" />
+                            <span className="text-white">Evidence Lens</span>
+                            <ChevronRight className="w-3.5 h-3.5 text-white" />
                           </button>
                           {!isAuditor && (
                             <button
@@ -844,7 +858,7 @@ export default function Dashboard({
                                 setActionModalApp(app);
                                 setOfficerComment('');
                               }}
-                              className="p-1.5 rounded-lg bg-surface-2 border border-border text-xs text-text cursor-pointer"
+                              className="w-9 h-9 rounded-xl bg-surface-2 border border-border text-text flex items-center justify-center cursor-pointer"
                             >
                               <MessageSquare className="w-3.5 h-3.5" />
                             </button>
@@ -857,10 +871,10 @@ export default function Dashboard({
                             onSelectApplication(app);
                             onNavigateTab('preflight');
                           }}
-                          className="px-3 py-1.5 rounded-lg bg-primary text-white text-xs font-bold flex items-center space-x-1 cursor-pointer"
+                          className="h-9 px-3 rounded-xl bg-primary text-white text-xs font-bold flex items-center space-x-1 cursor-pointer"
                         >
-                          <span>Self-Audit</span>
-                          <ChevronRight className="w-3.5 h-3.5" />
+                          <span className="text-white">Self-Audit</span>
+                          <ChevronRight className="w-3.5 h-3.5 text-white" />
                         </button>
                       )}
                     </div>
@@ -873,7 +887,7 @@ export default function Dashboard({
 
       </div>
 
-      {/* 4. Live Document Ingestion & Forensics Card */}
+      {/* 4. Live Document Ingestion & Forensics Card (B9) */}
       <div className="bg-surface border border-border rounded-2xl p-5 sm:p-6 shadow-card">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
           <div>
@@ -899,7 +913,7 @@ export default function Dashboard({
               <select
                 value={docType}
                 onChange={(e) => setDocType(e.target.value)}
-                className="appearance-none w-full h-10 bg-surface-2 border border-border rounded-xl pl-3 pr-8 py-2 text-xs text-text outline-none focus:border-primary cursor-pointer"
+                className="appearance-none w-full h-11 bg-surface-2 border border-border rounded-xl pl-3 pr-8 py-2 text-xs text-text outline-none focus:border-primary cursor-pointer"
               >
                 <option value="Auto-Detect">Auto-Detect via ML Classifier</option>
                 <option value="Fire Safety Certificate">Fire Safety Certificate / NOC</option>
@@ -909,13 +923,13 @@ export default function Dashboard({
                 <option value="University Affiliation Order">University Affiliation Order</option>
                 <option value="Campus/Lab Geo-tagged Photo">Campus/Lab Geo-tagged Photo</option>
               </select>
-              <ChevronDown className="w-3.5 h-3.5 text-text-muted absolute right-2.5 top-3.5 pointer-events-none" />
+              <ChevronDown className="w-3.5 h-3.5 text-text-muted absolute right-2.5 top-4 pointer-events-none" />
             </div>
           </div>
 
           <div className="md:col-span-5">
             <label className="text-xs font-semibold text-text block mb-1.5">Select Dossier File:</label>
-            <div className="border border-dashed border-border hover:border-primary rounded-xl px-3 py-2 bg-surface-2/50 relative cursor-pointer flex items-center justify-between h-10 transition-colors">
+            <div className="border border-dashed border-border hover:border-primary rounded-xl px-3 py-2 bg-surface-2/50 relative cursor-pointer flex items-center justify-between h-11 transition-colors group">
               <input
                 type="file"
                 required
@@ -925,7 +939,7 @@ export default function Dashboard({
               <span className="text-xs text-text font-medium truncate flex-1">
                 {uploadFile ? uploadFile.name : 'Choose PDF, Scan or Image (Max 25MB)'}
               </span>
-              <FileSearch className="w-4 h-4 text-primary shrink-0 ml-2" />
+              <FileSearch className="w-4 h-4 text-primary shrink-0 ml-2 group-hover:scale-110 transition-transform" />
             </div>
           </div>
 
@@ -933,20 +947,22 @@ export default function Dashboard({
             <button
               type="submit"
               disabled={uploading || !uploadFile}
-              className={`w-full h-10 rounded-xl text-xs font-bold transition-all shadow-sm flex items-center justify-center space-x-2 cursor-pointer ${
+              className={`w-full h-11 rounded-xl text-xs font-bold transition-all shadow-sm flex items-center justify-center space-x-2 cursor-pointer ${
                 uploading || !uploadFile
                   ? 'bg-surface-2 text-text-muted border border-border cursor-not-allowed opacity-60'
-                  : 'bg-primary hover:bg-primary/90 text-white'
+                  : 'bg-gradient-to-r from-[#4D74FF] to-[#1F4BFF] hover:from-[#3B66FF] hover:to-[#0A2FD6] text-white shadow-primary/30'
               }`}
             >
-              <span>{uploading ? 'Processing OCR & ELA...' : 'Upload & Analyze Document'}</span>
+              <span className={uploading || !uploadFile ? 'text-text-muted' : 'text-white'}>
+                {uploading ? 'Processing OCR & ELA...' : 'Upload & Analyze Document'}
+              </span>
             </button>
           </div>
         </form>
 
         {uploadSuccess && (
           <div className="mt-4 p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-xs space-y-1 animate-in fade-in">
-            <div className="text-emerald-700 dark:text-emerald-400 font-bold flex items-center space-x-1.5">
+            <div className="text-emerald-700 dark:text-emerald-300 font-bold flex items-center space-x-1.5">
               <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
               <span>Document Analyzed & Cryptographic Receipt Appended!</span>
             </div>
@@ -961,7 +977,7 @@ export default function Dashboard({
 
       {/* 5. Officer Action Determination Modal (Mandatory Comment Enforced) */}
       {actionModalApp && (
-        <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-surface rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-border space-y-4 animate-in zoom-in-95">
             <div className="flex items-center justify-between pb-3 border-b border-border">
               <div>
@@ -1040,9 +1056,9 @@ export default function Dashboard({
                   <button
                     type="submit"
                     disabled={submittingAction || !officerComment.trim()}
-                    className="px-5 py-2 rounded-xl bg-primary hover:bg-primary/90 text-white text-xs font-bold transition-all shadow-sm disabled:opacity-50 cursor-pointer"
+                    className="px-5 py-2 rounded-xl bg-gradient-to-r from-[#4D74FF] to-[#1F4BFF] hover:from-[#3B66FF] hover:to-[#0A2FD6] text-white text-xs font-bold transition-all shadow-sm disabled:opacity-50 cursor-pointer"
                   >
-                    {submittingAction ? 'Signing Action...' : 'Sign & Record Determination'}
+                    <span className="text-white">{submittingAction ? 'Signing Action...' : 'Sign & Record Determination'}</span>
                   </button>
                 </div>
               </form>
