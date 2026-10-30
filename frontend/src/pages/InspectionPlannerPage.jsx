@@ -299,55 +299,55 @@ export default function InspectionPlannerPage() {
 
       {/* 2. Key Metrics Ribbon */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white border border-slate-200/90 rounded-2xl p-4 shadow-2xs">
-          <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider flex items-center justify-between">
+        <div className="bg-surface border border-border rounded-xl p-4 shadow-2xs">
+          <div className="text-[11px] font-semibold text-muted uppercase tracking-wider flex items-center justify-between">
             <span>Flagged Institutions</span>
             <Building2 className="w-4 h-4 text-sky-600" />
           </div>
-          <div className="text-2xl font-black text-slate-900 mt-2">
+          <div className="text-2xl font-bold text-text mt-2">
             {plannerData.total_flagged_institutions || 0}
           </div>
-          <div className="text-[11px] text-slate-500 mt-0.5">Across {plannerData.total_states || 0} States</div>
+          <div className="text-[11px] text-muted mt-0.5">Across {plannerData.total_states || 0} States</div>
         </div>
 
-        <div className="bg-white border border-slate-200/90 rounded-2xl p-4 shadow-2xs">
-          <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider flex items-center justify-between">
+        <div className="bg-surface border border-border rounded-xl p-4 shadow-2xs">
+          <div className="text-[11px] font-semibold text-muted uppercase tracking-wider flex items-center justify-between">
             <span>District Clusters</span>
             <MapPin className="w-4 h-4 text-emerald-600" />
           </div>
-          <div className="text-2xl font-black text-slate-900 mt-2">
+          <div className="text-2xl font-bold text-text mt-2">
             {plannerData.total_clusters || 0}
           </div>
-          <div className="text-[11px] text-slate-500 mt-0.5">Optimal Itinerary Routes</div>
+          <div className="text-[11px] text-muted mt-0.5">Optimal Itinerary Routes</div>
         </div>
 
-        <div className="bg-white border border-slate-200/90 rounded-2xl p-4 shadow-2xs">
-          <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider flex items-center justify-between">
+        <div className="bg-surface border border-border rounded-xl p-4 shadow-2xs">
+          <div className="text-[11px] font-semibold text-muted uppercase tracking-wider flex items-center justify-between">
             <span>Critical Urgency</span>
             <ShieldAlert className="w-4 h-4 text-rose-600" />
           </div>
           <div className="text-2xl font-black text-rose-600 mt-2">
             3
           </div>
-          <div className="text-[11px] text-slate-500 mt-0.5">Mandatory Physical Audits</div>
+          <div className="text-[11px] text-muted mt-0.5">Mandatory Physical Audits</div>
         </div>
 
-        <div className="bg-white border border-slate-200/90 rounded-2xl p-4 shadow-2xs">
-          <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider flex items-center justify-between">
+        <div className="bg-surface border border-border rounded-xl p-4 shadow-2xs">
+          <div className="text-[11px] font-semibold text-muted uppercase tracking-wider flex items-center justify-between">
             <span>AI Sequencing Engine</span>
             <Route className="w-4 h-4 text-indigo-600" />
           </div>
-          <div className="text-2xl font-black text-slate-900 mt-2">
+          <div className="text-2xl font-bold text-text mt-2">
             Active
           </div>
-          <div className="text-[11px] text-slate-500 mt-0.5">Prioritized by Risk & Proximity</div>
+          <div className="text-[11px] text-muted mt-0.5">Prioritized by Risk & Proximity</div>
         </div>
       </div>
 
       {/* 3. Filter Controls Deck */}
-      <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-2xs flex flex-wrap items-center justify-between gap-4">
+      <div className="bg-surface border border-border rounded-xl p-4 shadow-2xs flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-wrap items-center gap-3">
-          <div className="flex items-center space-x-2 text-xs font-bold text-slate-700">
+          <div className="flex items-center space-x-2 text-xs font-semibold text-text">
             <Filter className="w-3.5 h-3.5 text-sky-600" />
             <span>State Cluster:</span>
           </div>
@@ -358,8 +358,8 @@ export default function InspectionPlannerPage() {
                 onClick={() => setSelectedState(st)}
                 className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                   selectedState === st
-                    ? 'bg-slate-900 text-white shadow-2xs'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                    ? 'bg-primary text-white shadow-2xs font-semibold'
+                    : 'bg-surface-2 text-muted hover:text-text'
                 }`}
               >
                 {st}
@@ -369,11 +369,11 @@ export default function InspectionPlannerPage() {
         </div>
 
         <div className="flex items-center space-x-3 text-xs">
-          <span className="font-bold text-slate-600">Min Risk Priority:</span>
+          <span className="font-semibold text-muted">Min Risk Priority:</span>
           <select
             value={minPriority}
             onChange={(e) => setMinPriority(Number(e.target.value))}
-            className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-800"
+            className="bg-surface border border-border rounded-lg px-3 py-1.5 text-xs font-medium text-text"
           >
             <option value="0">All Priorities</option>
             <option value="40">Moderate+ (≥ 40)</option>
@@ -386,20 +386,20 @@ export default function InspectionPlannerPage() {
       {/* 4. State & District Clusters Accordions */}
       <div className="space-y-6">
         {(plannerData.state_clusters || []).map((stateCluster, stIdx) => (
-          <div key={stateCluster.state || stIdx} className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-5">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+          <div key={stateCluster.state || stIdx} className="bg-surface border border-border rounded-xl p-5 shadow-xs space-y-4">
+            <div className="flex items-center justify-between border-b border-border pb-3">
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 rounded-2xl bg-sky-50 text-sky-700 border border-sky-200 flex items-center justify-center font-black text-sm">
                   {stateCluster.state.substring(0, 2).toUpperCase()}
                 </div>
                 <div>
-                  <h2 className="text-lg font-black text-slate-900">{stateCluster.state} Region</h2>
-                  <p className="text-xs text-slate-500">
+                  <h2 className="text-base font-bold text-text">{stateCluster.state} Region</h2>
+                  <p className="text-xs text-muted">
                     {stateCluster.total_institutions} Flagged Institutions across {stateCluster.districts_count} District Clusters
                   </p>
                 </div>
               </div>
-              <span className="text-xs font-mono font-bold bg-slate-100 text-slate-700 px-3 py-1 rounded-full border border-slate-200">
+              <span className="text-xs font-mono font-bold bg-surface-2 text-muted px-3 py-1 rounded-full border border-border">
                 {stateCluster.total_institutions} Inspections Pending
               </span>
             </div>
@@ -411,21 +411,21 @@ export default function InspectionPlannerPage() {
                 const isExpanded = expandedDistricts[distKey] !== false; // expanded by default
 
                 return (
-                  <div key={dist.district || dIdx} className="border border-slate-200 rounded-2xl overflow-hidden shadow-2xs">
+                  <div key={dist.district || dIdx} className="border border-border rounded-xl overflow-hidden shadow-2xs">
                     {/* District Header Bar */}
                     <div 
                       onClick={() => toggleDistrict(distKey)}
-                      className="bg-slate-50/80 hover:bg-slate-100/80 p-4 flex items-center justify-between cursor-pointer transition-colors"
+                      className="bg-surface-2 hover:bg-surface-2/80 p-3.5 flex items-center justify-between cursor-pointer transition-colors"
                     >
                       <div className="flex items-center space-x-3">
                         <MapPin className="w-4 h-4 text-sky-600" />
-                        <span className="font-bold text-sm text-slate-900">{dist.district} Cluster</span>
+                        <span className="font-semibold text-sm text-text">{dist.district} Cluster</span>
                         <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-sky-100 text-sky-800 border border-sky-200">
                           {dist.institution_count} Stops in Route
                         </span>
                       </div>
 
-                      <div className="flex items-center space-x-3 text-xs text-slate-500">
+                      <div className="flex items-center space-x-3 text-xs text-muted">
                         <span>Highest Urgency: <strong>{dist.highest_priority}/100</strong></span>
                         {isExpanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
                       </div>
@@ -433,7 +433,7 @@ export default function InspectionPlannerPage() {
 
                     {/* Institutions Itinerary Sequence */}
                     {isExpanded && (
-                      <div className="p-4 bg-white divide-y divide-slate-100">
+                      <div className="p-4 bg-surface divide-y divide-border">
                         {(dist.institutions || []).map((inst) => {
                           const isCritical = inst.risk_tier === 'CRITICAL_URGENCY';
                           const isHigh = inst.risk_tier === 'HIGH_PRIORITY';
@@ -453,7 +453,7 @@ export default function InspectionPlannerPage() {
 
                                 <div className="space-y-1">
                                   <div className="flex flex-wrap items-center gap-2">
-                                    <h3 className="font-bold text-sm text-slate-900">{inst.name}</h3>
+                                    <h3 className="font-semibold text-sm text-text">{inst.name}</h3>
                                     <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">
                                       AICTE: {inst.aicte_id}
                                     </span>
@@ -466,7 +466,7 @@ export default function InspectionPlannerPage() {
                                     </span>
                                   </div>
 
-                                  <div className="text-xs text-slate-500 flex flex-wrap items-center gap-2">
+                                  <div className="text-xs text-muted flex flex-wrap items-center gap-2">
                                     <span>{inst.category}</span>
                                     <span>•</span>
                                     <span>Intake: {inst.approved_intake}</span>
@@ -491,7 +491,7 @@ export default function InspectionPlannerPage() {
                               {/* Right: Scores & Actions */}
                               <div className="flex flex-wrap items-center gap-4 lg:self-center shrink-0">
                                 <div className="text-right">
-                                  <div className="text-xs font-bold text-slate-700">Urgency Score</div>
+                                  <div className="text-xs font-semibold text-text">Urgency Score</div>
                                   <div className={`text-base font-black ${
                                     inst.priority_score >= 80 ? 'text-rose-600' :
                                     inst.priority_score >= 50 ? 'text-amber-600' : 'text-slate-700'

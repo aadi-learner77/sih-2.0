@@ -95,19 +95,19 @@ export default function PhotoComparisonPanel({
   };
 
   return (
-    <div className="flex flex-col bg-white border border-slate-200 rounded-2xl shadow-xs overflow-hidden max-h-[calc(100vh-140px)] min-h-[600px]">
+    <div className="flex flex-col bg-surface border border-border rounded-xl shadow-xs overflow-hidden max-h-[calc(100vh-140px)] min-h-[600px]">
       {/* Side Panel Header */}
-      <div className="p-4 bg-[#F4F6F8] text-[#000000] border-b border-[#D5D9DE] flex items-center justify-between gap-3">
+      <div className="p-4 bg-surface-2 text-text border-b border-border flex items-center justify-between gap-3">
         <div className="min-w-0">
-          <div className="inline-flex items-center space-x-2 text-[10px] bg-[#E8F1FB] text-[#000000] border border-[#BBD4F0] px-2 py-0.5 rounded uppercase font-bold tracking-wider mb-1">
+          <div className="inline-flex items-center space-x-2 text-[10px] bg-[#E8F1FB] text-text border border-[#BBD4F0] px-2 py-0.5 rounded uppercase font-bold tracking-wider mb-1">
             <span>Photo Reuse Inspection</span>
             <span>•</span>
             <span className="font-mono">{pairData.id}</span>
           </div>
-          <h2 className="text-sm font-bold text-[#000000] leading-snug" title={pairData.title}>
+          <h2 className="text-sm font-bold text-text leading-snug" title={pairData.title}>
             {pairData.title}
           </h2>
-          <div className="text-[11px] text-[#333333] leading-snug">
+          <div className="text-[11px] text-muted leading-snug">
             {pairData.category}
           </div>
         </div>
@@ -121,7 +121,7 @@ export default function PhotoComparisonPanel({
           }`}>
             {pairData.similarity_score}% Match
           </span>
-          <div className="text-[10px] text-[#333333] mt-0.5 font-mono font-bold">
+          <div className="text-[10px] text-muted mt-0.5 font-mono font-bold">
             d={pairData.hamming_distance} / 64
           </div>
         </div>
@@ -138,16 +138,16 @@ export default function PhotoComparisonPanel({
       <div className="flex-1 p-4 overflow-y-auto space-y-4">
         
         {/* View Mode Switcher Toolbar */}
-        <div className="flex flex-wrap items-center justify-between gap-2 bg-slate-100 p-1.5 rounded-xl border border-slate-200 text-xs">
-          <span className="text-[11px] font-bold text-slate-700 px-1 shrink-0">Comparison View:</span>
+        <div className="flex flex-wrap items-center justify-between gap-2 bg-surface-2 p-1.5 rounded-xl border border-border text-xs">
+          <span className="text-[11px] font-bold text-text px-1 shrink-0">Comparison View:</span>
           <div className="flex flex-wrap gap-1 items-center">
             <button
               id="view-mode-side-by-side"
               onClick={() => setViewMode('side_by_side')}
               className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all flex items-center space-x-1 ${
                 viewMode === 'side_by_side'
-                  ? 'bg-white text-slate-900 shadow-2xs border border-slate-200'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-surface text-text shadow-2xs border border-border'
+                  : 'text-muted hover:text-text'
               }`}
             >
               <Split className="w-3 h-3" />
@@ -159,8 +159,8 @@ export default function PhotoComparisonPanel({
               onClick={() => setViewMode('difference_overlay')}
               className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all flex items-center space-x-1 ${
                 viewMode === 'difference_overlay'
-                  ? 'bg-white text-slate-900 shadow-2xs border border-slate-200'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-surface text-text shadow-2xs border border-border'
+                  : 'text-muted hover:text-text'
               }`}
             >
               <Layers className="w-3 h-3 text-rose-600" />
@@ -172,8 +172,8 @@ export default function PhotoComparisonPanel({
               onClick={() => setViewMode('wipe_slider')}
               className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all flex items-center space-x-1 ${
                 viewMode === 'wipe_slider'
-                  ? 'bg-white text-slate-900 shadow-2xs border border-slate-200'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-surface text-text shadow-2xs border border-border'
+                  : 'text-muted hover:text-text'
               }`}
             >
               <Sliders className="w-3 h-3 text-sky-600" />
@@ -188,8 +188,8 @@ export default function PhotoComparisonPanel({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
               
               {/* Original Photo Card */}
-              <div className="bg-slate-50 border border-slate-200 rounded-xl overflow-hidden shadow-2xs flex flex-col">
-                <div className="bg-slate-200/80 px-3 py-1.5 text-[10px] font-bold text-slate-700 uppercase flex items-center justify-between border-b border-slate-200">
+              <div className="bg-surface border border-border rounded-xl overflow-hidden shadow-2xs flex flex-col">
+                <div className="bg-surface-2 px-3 py-1.5 text-[10px] font-bold text-muted uppercase flex items-center justify-between border-b border-border">
                   <span className="flex items-center space-x-1">
                     <span className="w-2 h-2 rounded-full bg-slate-500" />
                     <span>Original Submission</span>
@@ -208,7 +208,7 @@ export default function PhotoComparisonPanel({
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   )}
-                  <div className="absolute bottom-2 left-2 bg-white/95 text-[#000000] border border-[#D5D9DE] text-[9px] font-mono px-2 py-0.5 rounded shadow-xs max-w-[80%] truncate">
+                  <div className="absolute bottom-2 left-2 bg-white/95 text-text border border-[#D5D9DE] text-[9px] font-mono px-2 py-0.5 rounded shadow-xs max-w-[80%] truncate">
                     {original_photo.file_name || original_photo.filename || 'original_image.jpg'}
                   </div>
                 </div>
@@ -254,7 +254,7 @@ export default function PhotoComparisonPanel({
                   <div className="absolute top-2 right-2 bg-rose-600 text-white text-[9px] font-bold px-2 py-0.5 rounded shadow-sm">
                     {pairData.similarity_score}% RE-USE
                   </div>
-                  <div className="absolute bottom-2 left-2 bg-white/95 text-[#000000] border border-[#D5D9DE] text-[9px] font-mono px-2 py-0.5 rounded shadow-xs max-w-[80%] truncate">
+                  <div className="absolute bottom-2 left-2 bg-white/95 text-text border border-[#D5D9DE] text-[9px] font-mono px-2 py-0.5 rounded shadow-xs max-w-[80%] truncate">
                     {duplicate_photo.file_name || duplicate_photo.filename || 'reused_image.jpg'}
                   </div>
                 </div>
@@ -283,13 +283,13 @@ export default function PhotoComparisonPanel({
         {/* 2. DIFFERENCE OVERLAY / ELA HEATMAP VIEW */}
         {viewMode === 'difference_overlay' && (
           <div className="space-y-3">
-            <div className="bg-[#F4F6F8] border border-[#D5D9DE] rounded-xl p-3 text-[#000000] text-xs">
+            <div className="bg-[#F4F6F8] border border-[#D5D9DE] rounded-xl p-3 text-text text-xs">
               <div className="flex items-center justify-between mb-2">
-                <span className="font-bold text-[#000000] flex items-center space-x-1.5">
+                <span className="font-bold text-text flex items-center space-x-1.5">
                   <Layers className="w-3.5 h-3.5" />
                   <span>Pixel Difference & Forensic ELA Divergence Heatmap</span>
                 </span>
-                <span className="text-[10px] font-mono bg-white border border-[#D5D9DE] px-2 py-0.5 rounded text-[#333333]">
+                <span className="text-[10px] font-mono bg-white border border-[#D5D9DE] px-2 py-0.5 rounded text-muted">
                   Opacity: {overlayOpacity}%
                 </span>
               </div>
@@ -332,14 +332,14 @@ export default function PhotoComparisonPanel({
                   </span>
                 </div>
 
-                <div className="absolute bottom-2 right-2 bg-white/95 text-[#000000] border border-[#D5D9DE] text-[9px] font-mono px-2 py-1 rounded shadow-xs">
+                <div className="absolute bottom-2 right-2 bg-white/95 text-text border border-[#D5D9DE] text-[9px] font-mono px-2 py-1 rounded shadow-xs">
                   Difference Blend Mode • Inverted Pixel Channel
                 </div>
               </div>
 
               {/* Opacity Slider */}
               <div className="mt-3 flex items-center space-x-3 text-[11px]">
-                <span className="text-[#333333]">Blend Slider:</span>
+                <span className="text-muted">Blend Slider:</span>
                 <input 
                   type="range" 
                   min="10" 
@@ -348,7 +348,7 @@ export default function PhotoComparisonPanel({
                   onChange={(e) => setOverlayOpacity(Number(e.target.value))}
                   className="flex-1 accent-amber-500 cursor-pointer"
                 />
-                <span className="font-mono text-[#000000] w-10 text-right">{overlayOpacity}%</span>
+                <span className="font-mono text-text w-10 text-right">{overlayOpacity}%</span>
               </div>
             </div>
 
@@ -361,13 +361,13 @@ export default function PhotoComparisonPanel({
         {/* 3. WIPE SLIDER COMPARISON VIEW */}
         {viewMode === 'wipe_slider' && (
           <div className="space-y-3">
-            <div className="bg-[#F4F6F8] border border-[#D5D9DE] rounded-xl p-3 text-[#000000] text-xs">
+            <div className="bg-[#F4F6F8] border border-[#D5D9DE] rounded-xl p-3 text-text text-xs">
               <div className="flex items-center justify-between mb-2">
-                <span className="font-bold text-[#000000] flex items-center space-x-1.5">
+                <span className="font-bold text-text flex items-center space-x-1.5">
                   <Sliders className="w-3.5 h-3.5" />
                   <span>Interactive Split Wipe Slider (Original ⟷ Reused)</span>
                 </span>
-                <span className="text-[10px] font-mono text-[#333333]">
+                <span className="text-[10px] font-mono text-muted">
                   Drag slider to wipe
                 </span>
               </div>
@@ -394,7 +394,7 @@ export default function PhotoComparisonPanel({
                     className="absolute inset-0 w-full h-full object-cover max-w-none"
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />
-                  <div className="absolute top-2 left-2 bg-white/95 text-[#000000] border border-[#D5D9DE] text-[9px] font-bold px-2 py-0.5 rounded shadow-xs">
+                  <div className="absolute top-2 left-2 bg-white/95 text-text border border-[#D5D9DE] text-[9px] font-bold px-2 py-0.5 rounded shadow-xs">
                     Original (Royal College)
                   </div>
                 </div>
@@ -416,7 +416,7 @@ export default function PhotoComparisonPanel({
 
               {/* Slider Control */}
               <div className="mt-3 flex items-center space-x-3 text-[11px]">
-                <span className="text-[#333333]">Position:</span>
+                <span className="text-muted">Position:</span>
                 <input 
                   type="range" 
                   min="5" 
@@ -425,7 +425,7 @@ export default function PhotoComparisonPanel({
                   onChange={(e) => setWipePosition(Number(e.target.value))}
                   className="flex-1 accent-sky-500 cursor-pointer"
                 />
-                <span className="font-mono text-[#000000] w-10 text-right">{wipePosition}%</span>
+                <span className="font-mono text-text w-10 text-right">{wipePosition}%</span>
               </div>
             </div>
           </div>
@@ -506,9 +506,9 @@ export default function PhotoComparisonPanel({
           <button
             onClick={() => onOpenEvidenceLens && onOpenEvidenceLens(pairData)}
             id="jump-to-evidence-lens-btn"
-            className="w-full py-2.5 px-4 rounded-xl bg-[#CFE3FA] hover:bg-[#B9D6F5] text-[#000000] border border-[#8DB6E6] text-xs font-bold transition-all shadow-xs flex items-center justify-center space-x-2 cursor-pointer"
+            className="w-full py-2.5 px-4 rounded-xl bg-[#CFE3FA] hover:bg-[#B9D6F5] text-text border border-[#8DB6E6] text-xs font-bold transition-all shadow-xs flex items-center justify-center space-x-2 cursor-pointer"
           >
-            <FileText className="w-4 h-4 text-[#000000]" />
+            <FileText className="w-4 h-4 text-text" />
             <span>Open Finding in Evidence Lens Regulatory Strip</span>
             <ChevronRight className="w-3.5 h-3.5" />
           </button>
