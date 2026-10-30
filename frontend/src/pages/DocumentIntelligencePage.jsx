@@ -19,7 +19,8 @@ import {
   Eye, 
   EyeOff,
   Sparkles,
-  ArrowRight
+  ArrowRight,
+  X
 } from 'lucide-react';
 import StatusChip from '../components/StatusChip';
 import DemoDataBadge from '../components/DemoDataBadge';
@@ -28,40 +29,41 @@ import { api } from '../services/api';
 const PRESET_INTELLIGENCE_DOCS = [
   {
     id: 'doc_fire_noc',
-    name: 'Fire Safety Certificate',
+    name: 'Fire Safety NOC',
     filename: 'gt_font_inconsistency.pdf',
     type: 'Fire Safety Certificate',
     filePath: 'generated_data/forensic_samples/gt_font_inconsistency.pdf',
     desc: 'State emergency services clearance with validity date and reference number.'
   },
   {
-    id: 'doc_affiliation_order',
-    name: 'University Affiliation Order',
-    filename: 'gt_qr_reference_mismatch.pdf',
-    type: 'University Affiliation Order',
-    filePath: 'generated_data/forensic_samples/gt_qr_reference_mismatch.pdf',
-    desc: 'Annual statutory university affiliation notification for academic year 2025-26.'
-  },
-  {
-    id: 'doc_authentic_affidavit',
-    name: 'Authentic Registered Affidavit',
-    filename: 'gt_clean_authentic_affidavit.pdf',
-    type: 'Supporting Document / Affidavit',
-    filePath: 'generated_data/forensic_samples/gt_clean_authentic_affidavit.pdf',
-    desc: 'Clean legal affidavit with uniform typography, notarized seal, and matching QR.'
-  },
-  {
-    id: 'doc_tampered_scan',
-    name: 'Building Plan Approval Scan',
+    id: 'doc_building_plan',
+    name: 'Building Plan',
     filename: 'gt_ela_tampered.jpg',
     type: 'Building Plan Approval',
     filePath: 'generated_data/forensic_samples/gt_ela_tampered.jpg',
     desc: 'Sanctioned master floor plan with declared instructional and carpet areas.'
+  },
+  {
+    id: 'doc_faculty_list',
+    name: 'Faculty List',
+    filename: 'gt_clean_authentic_affidavit.pdf',
+    type: 'Faculty Cadre & Ratio Record',
+    filePath: 'generated_data/forensic_samples/gt_clean_authentic_affidavit.pdf',
+    desc: 'Clean legal affidavit with uniform typography, notarized seal, and matching QR.'
+  },
+  {
+    id: 'doc_land_deed',
+    name: 'Land Deed',
+    filename: 'gt_qr_reference_mismatch.pdf',
+    type: 'Land Ownership / Encumbrance Certificate',
+    filePath: 'generated_data/forensic_samples/gt_qr_reference_mismatch.pdf',
+    desc: 'State revenue department registered title deed for contiguous land parcel.'
   }
 ];
 
 export default function DocumentIntelligencePage({ onNavigateTab, onSelectApplication }) {
   const [selectedPreset, setSelectedPreset] = useState(PRESET_INTELLIGENCE_DOCS[0]);
+  const [uploadedFile, setUploadedFile] = useState(null);
   const [documentResult, setDocumentResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -103,14 +105,12 @@ export default function DocumentIntelligencePage({ onNavigateTab, onSelectApplic
         const formData = new FormData();
         formData.append('file_path', filePath);
         
-        // Call backend document forensics or ingest
         try {
           forensicRes = await api.analyzeDocumentForensics(formData);
         } catch (_fe) {
           // ignore
         }
 
-        // Try hitting ingest with mock payload fallback
         ingestRes = {
           filename: fileOrPreset.filename,
           doc_type: fileOrPreset.type,
@@ -200,7 +200,9 @@ export default function DocumentIntelligencePage({ onNavigateTab, onSelectApplic
   };
 
   useEffect(() => {
-    processDocument(selectedPreset);
+    if (!uploadedFile) {
+      processDocument(selectedPreset);
+    }
   }, [selectedPreset]);
 
   // Handle Drag & Drop
@@ -208,6 +210,7 @@ export default function DocumentIntelligencePage({ onNavigateTab, onSelectApplic
     e.preventDefault();
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       const file = e.dataTransfer.files[0];
+      setUploadedFile(file);
       processDocument(file);
     }
   };
@@ -234,194 +237,218 @@ export default function DocumentIntelligencePage({ onNavigateTab, onSelectApplic
   const pageHeight = activePage?.height || 1754;
 
   const hasFindings = (documentResult?.forensic_findings && documentResult.forensic_findings.length > 0) || 
-                      (documentResult?.doc_type?.toLowerCase().includes('fire') && selectedPreset.id === 'doc_fire_noc');
+                      (documentResult?.doc_type?.toLowerCase().includes('fire') && selectedPreset.id === 'doc_fire_noc') ||
+                      (documentResult?.doc_type?.toLowerCase().includes('building') && selectedPreset.id === 'doc_building_plan');
 
   return (
-    <div className="space-y-6 max-w-[1720px] mx-auto">
-      {/* 1. Header Banner */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center space-x-2.5">
-            <div className="p-2.5 bg-indigo-50 border border-indigo-200 rounded-xl text-indigo-700">
-              <FileSearch className="w-5 h-5" />
-            </div>
-            <div>
-              <div className="flex items-center space-x-2">
-                <h1 className="text-xl font-bold text-slate-900 tracking-tight">Document Intelligence & Schema Extraction</h1>
-                {isDemoData && <DemoDataBadge reason="OCR Fallback Simulation" />}
-              </div>
-              <p className="text-xs text-slate-500 mt-0.5">
-                PaddleOCR & PyMuPDF structural intelligence pipeline with dynamic bounding-box overlays, document classification & field schema extraction.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Action Buttons: Drag-Drop Trigger & Send to Evidence Lens */}
-        <div className="flex flex-wrap items-center gap-2.5">
-          <input
-            type="file"
-            ref={fileInputRef}
-            onChange={(e) => e.target.files?.[0] && processDocument(e.target.files[0])}
-            accept=".pdf,.png,.jpg,.jpeg"
-            className="hidden"
-          />
-          <button
+    <div className="space-y-6 max-w-[1720px] mx-auto text-text">
+      {/* 1. Top Section: Compact Upload Bar & Preset Sample Pills */}
+      <div className="bg-surface border border-border rounded-xl p-4 shadow-xs space-y-3">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+          {/* Upload Bar / Dropzone */}
+          <div 
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
             onClick={() => fileInputRef.current?.click()}
-            className="py-2.5 px-4 rounded-xl bg-white border border-slate-200 hover:border-slate-300 text-slate-800 text-xs font-bold shadow-2xs transition-all flex items-center space-x-2 cursor-pointer"
+            className="flex-1 flex items-center justify-between px-3.5 py-2 rounded-lg border border-dashed border-border bg-surface-2 hover:border-primary/50 transition-colors cursor-pointer text-xs"
           >
-            <Upload className="w-4 h-4 text-indigo-600" />
-            <span>Upload Document</span>
-          </button>
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={(e) => {
+                if (e.target.files?.[0]) {
+                  setUploadedFile(e.target.files[0]);
+                  processDocument(e.target.files[0]);
+                }
+              }}
+              accept=".pdf,.png,.jpg,.jpeg"
+              className="hidden"
+            />
+            <div className="flex items-center space-x-2.5 min-w-0">
+              <Upload className="w-4 h-4 text-primary shrink-0" />
+              {uploadedFile ? (
+                <div className="flex items-center space-x-2 truncate">
+                  <span className="font-semibold text-text truncate max-w-[240px]">{uploadedFile.name}</span>
+                  <span className="text-[11px] font-mono text-muted">({(uploadedFile.size / 1024).toFixed(0)} KB)</span>
+                </div>
+              ) : (
+                <span className="text-muted">
+                  <strong className="text-text font-medium">Drop file or browse</strong> (PDF, PNG, JPG)
+                </span>
+              )}
+            </div>
 
-          {hasFindings && onNavigateTab && (
-            <button
-              id="send-to-evidence-lens-btn"
-              onClick={() => onNavigateTab('evidence-lens')}
-              className="py-2.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-xs transition-all flex items-center space-x-2 cursor-pointer"
-            >
-              <span>Send to Evidence Lens</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          )}
-        </div>
-      </div>
+            <div className="flex items-center space-x-2 shrink-0">
+              {uploadedFile && (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setUploadedFile(null);
+                    processDocument(selectedPreset);
+                  }}
+                  className="p-1 text-muted hover:text-text rounded"
+                  title="Clear uploaded file"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (uploadedFile) {
+                    processDocument(uploadedFile);
+                  } else {
+                    fileInputRef.current?.click();
+                  }
+                }}
+                className="h-8 px-3 rounded-lg bg-primary hover:bg-primary/90 text-white font-semibold text-xs flex items-center space-x-1.5 transition-colors cursor-pointer shadow-xs"
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>{uploadedFile ? 'Analyze' : 'Browse'}</span>
+              </button>
+            </div>
+          </div>
 
-      {/* Advisory Section 6 Banner */}
-      <div className="bg-sky-50/70 border border-sky-200/80 rounded-2xl p-4 flex items-start space-x-3 text-xs text-sky-950">
-        <Info className="w-4 h-4 text-sky-600 shrink-0 mt-0.5" />
-        <div className="leading-relaxed">
-          <strong>Regulatory Mandate (AICTE APH 2025-26):</strong> Automated OCR text and field extractions represent 
-          <em> "Indicators for review"</em>. Document classifications are verified against statutory issuer registries 
-          (State Fire Services, Revenue Portals, and Examining Universities) prior to formal approval committee determination.
-        </div>
-      </div>
-
-      {/* 2. Drag-and-Drop Zone & Quick Presets Bar */}
-      <div 
-        onDrop={handleDrop}
-        onDragOver={handleDragOver}
-        className="bg-slate-50 border-2 border-dashed border-slate-300 hover:border-indigo-400 rounded-2xl p-5 text-center transition-colors space-y-3"
-      >
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 text-xs text-slate-600">
-          <div className="flex items-center space-x-2 text-indigo-700 font-bold">
-            <Upload className="w-4 h-4" />
-            <span>Drag & drop regulatory PDF or image here, or select from curated benchmark files:</span>
+          {/* Sample Document Pills */}
+          <div className="flex items-center space-x-1.5 flex-wrap gap-y-1.5">
+            <span className="text-[11px] font-medium text-muted mr-1">Samples:</span>
+            {PRESET_INTELLIGENCE_DOCS.map((doc) => {
+              const isSelected = !uploadedFile && selectedPreset.id === doc.id;
+              return (
+                <button
+                  key={doc.id}
+                  type="button"
+                  onClick={() => {
+                    setUploadedFile(null);
+                    setSelectedPreset(doc);
+                  }}
+                  className={`h-8 px-3 rounded-lg text-xs font-medium border transition-colors cursor-pointer ${
+                    isSelected
+                      ? 'bg-primary/10 border-primary text-primary font-semibold'
+                      : 'bg-surface border-border text-muted hover:text-text hover:bg-surface-2'
+                  }`}
+                >
+                  {doc.name}
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        {/* Quick Presets */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 max-w-4xl mx-auto">
-          {PRESET_INTELLIGENCE_DOCS.map((doc) => {
-            const isSelected = selectedPreset.id === doc.id;
-            return (
-              <button
-                key={doc.id}
-                onClick={() => setSelectedPreset(doc)}
-                className={`p-2.5 rounded-xl text-left border transition-all cursor-pointer ${
-                  isSelected
-                    ? 'bg-white border-indigo-500 ring-2 ring-indigo-500/20 shadow-xs'
-                    : 'bg-white/80 hover:bg-white border-slate-200 text-slate-700'
-                }`}
-              >
-                <div className="text-xs font-bold text-slate-900 truncate">{doc.name}</div>
-                <div className="text-[10px] text-slate-500 font-mono truncate">{doc.filename}</div>
-              </button>
-            );
-          })}
+        {/* Advisory / Indicator Notice (Compact) */}
+        <div className="flex items-center space-x-2 text-[11px] text-muted pt-2 border-t border-border/60">
+          <Info className="w-3.5 h-3.5 text-primary shrink-0" />
+          <span className="truncate">
+            <strong className="text-text font-medium">Indicator for review:</strong> Automated OCR extractions are advisory. Extractions are verified against statutory issuer registries prior to formal committee review.
+          </span>
+          {isDemoData && <DemoDataBadge reason="OCR Fallback Simulation" />}
         </div>
       </div>
 
-      {/* 3. Main Workspace: Rendered Page Canvas (Left 7 cols) & Extracted Schema Table (Right 5 cols) */}
+      {/* 2. Main Workspace: 2-Column Layout (60% Preview Left / 40% Results Right at >= 1280px) */}
       {loading ? (
-        <div className="bg-white border border-slate-200 rounded-2xl p-16 text-center text-slate-400 space-y-3">
-          <RefreshCw className="w-8 h-8 animate-spin mx-auto text-indigo-600" />
-          <p className="text-sm font-semibold text-slate-700">Executing Deep OCR & Schema Extraction...</p>
-          <p className="text-xs text-slate-400">Rendering high-resolution vector blocks and classifying regulatory document type.</p>
+        <div className="bg-surface border border-border rounded-xl p-16 text-center text-muted space-y-3">
+          <RefreshCw className="w-8 h-8 animate-spin mx-auto text-primary" />
+          <p className="text-sm font-semibold text-text">Executing Document Intelligence & Schema Extraction...</p>
+          <p className="text-xs text-muted">Extracting dynamic vector bounding boxes and mapping structured schema fields.</p>
         </div>
       ) : documentResult && (
-        <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
+        <div className="grid grid-cols-1 xl:grid-cols-5 gap-6 items-start">
           
-          {/* Left Column (7 cols): Document Page Viewer with Real Dynamic Bounding Boxes */}
-          <div className="xl:col-span-7 space-y-4">
-            <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs space-y-3">
-              {/* Canvas Controls Bar */}
-              <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-100 text-xs">
-                <div className="flex items-center space-x-2">
-                  <span className="font-bold text-slate-800 flex items-center space-x-1.5">
-                    <FileText className="w-4 h-4 text-indigo-600" />
-                    <span>Rendered Document Page</span>
-                  </span>
-                  <span className="text-[11px] font-mono text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
+          {/* LEFT Card (60% / xl:col-span-3): Document Preview */}
+          <div className="xl:col-span-3 space-y-4">
+            <div className="bg-surface rounded-xl border border-border p-4 shadow-xs space-y-3">
+              {/* Toolbar */}
+              <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-border text-xs">
+                {/* Left: Page indicator & Tabs */}
+                <div className="flex items-center space-x-4">
+                  <span className="text-xs font-mono font-medium text-muted bg-surface-2 px-2 py-0.5 rounded border border-border">
                     Page {activePageIndex + 1} of {documentResult.total_pages || 1}
                   </span>
+
+                  {/* Underline Tabs: Preview | Extracted text */}
+                  <div className="flex items-center space-x-3">
+                    <button
+                      onClick={() => setActiveViewMode('visual')}
+                      className={`pb-1 text-xs font-semibold border-b-2 transition-colors cursor-pointer ${
+                        activeViewMode === 'visual'
+                          ? 'border-primary text-primary'
+                          : 'border-transparent text-muted hover:text-text'
+                      }`}
+                    >
+                      Preview
+                    </button>
+                    <button
+                      onClick={() => setActiveViewMode('text')}
+                      className={`pb-1 text-xs font-semibold border-b-2 transition-colors cursor-pointer ${
+                        activeViewMode === 'text'
+                          ? 'border-primary text-primary'
+                          : 'border-transparent text-muted hover:text-text'
+                      }`}
+                    >
+                      Extracted text
+                    </button>
+                  </div>
                 </div>
 
+                {/* Right: Show/Hide Boxes & Zoom Controls */}
                 <div className="flex items-center space-x-1.5">
                   <button
                     onClick={() => setShowBoxes(!showBoxes)}
-                    className={`px-2.5 py-1 rounded-lg text-xs font-semibold border flex items-center space-x-1 transition-colors cursor-pointer ${
+                    className={`h-8 px-2.5 rounded-lg text-xs font-medium border flex items-center space-x-1 transition-colors cursor-pointer ${
                       showBoxes
-                        ? 'bg-indigo-50 border-indigo-200 text-indigo-700'
-                        : 'bg-slate-50 border-slate-200 text-slate-600'
+                        ? 'bg-primary/10 border-primary text-primary'
+                        : 'bg-surface border-border text-muted hover:text-text'
                     }`}
-                    title="Toggle OCR Bounding Boxes"
+                    title="Toggle bounding boxes"
                   >
                     {showBoxes ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
-                    <span>{showBoxes ? 'Hide BBoxes' : 'Show BBoxes'}</span>
+                    <span>{showBoxes ? 'Hide boxes' : 'Show boxes'}</span>
                   </button>
 
-                  <div className="h-4 w-px bg-slate-200 mx-1" />
+                  <div className="h-4 w-px bg-border mx-1" />
 
-                  <button onClick={handleZoomOut} className="p-1 rounded-lg border border-slate-200 hover:bg-slate-100 text-slate-700 cursor-pointer" title="Zoom Out">
+                  <button 
+                    onClick={handleZoomOut} 
+                    className="w-8 h-8 rounded-lg border border-border hover:bg-surface-2 text-text flex items-center justify-center cursor-pointer transition-colors" 
+                    title="Zoom Out"
+                  >
                     <ZoomOut className="w-3.5 h-3.5" />
                   </button>
-                  <span className="text-xs font-mono font-bold text-slate-700 px-1">{Math.round(zoomLevel * 100)}%</span>
-                  <button onClick={handleZoomIn} className="p-1 rounded-lg border border-slate-200 hover:bg-slate-100 text-slate-700 cursor-pointer" title="Zoom In">
+                  <span className="text-xs font-mono font-semibold text-text px-1">
+                    {Math.round(zoomLevel * 100)}%
+                  </span>
+                  <button 
+                    onClick={handleZoomIn} 
+                    className="w-8 h-8 rounded-lg border border-border hover:bg-surface-2 text-text flex items-center justify-center cursor-pointer transition-colors" 
+                    title="Zoom In"
+                  >
                     <ZoomIn className="w-3.5 h-3.5" />
                   </button>
-                  <button onClick={handleResetZoom} className="p-1 rounded-lg border border-slate-200 hover:bg-slate-100 text-slate-700 cursor-pointer" title="Reset Zoom">
+                  <button 
+                    onClick={handleResetZoom} 
+                    className="w-8 h-8 rounded-lg border border-border hover:bg-surface-2 text-text flex items-center justify-center cursor-pointer transition-colors" 
+                    title="Reset Zoom"
+                  >
                     <RotateCcw className="w-3.5 h-3.5" />
                   </button>
                 </div>
               </div>
 
-              {/* View Mode Switcher: Canvas vs Full OCR Text */}
-              <div className="flex items-center space-x-2 text-xs">
-                <button
-                  onClick={() => setActiveViewMode('visual')}
-                  className={`px-3 py-1.5 rounded-xl font-bold cursor-pointer transition-colors ${
-                    activeViewMode === 'visual'
-                      ? 'bg-slate-900 text-white'
-                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                  }`}
-                >
-                  Visual Canvas & BBoxes
-                </button>
-                <button
-                  onClick={() => setActiveViewMode('text')}
-                  className={`px-3 py-1.5 rounded-xl font-bold cursor-pointer transition-colors ${
-                    activeViewMode === 'text'
-                      ? 'bg-slate-900 text-white'
-                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                  }`}
-                >
-                  Full Extracted OCR Text
-                </button>
-              </div>
-
-              {/* Mode A: Real Rendered Canvas with Bounding Boxes */}
+              {/* Mode A: Preview Canvas (Light Paper Background #FFFFFF in BOTH themes) */}
               {activeViewMode === 'visual' && (
-                <div className="relative bg-slate-900 rounded-xl overflow-auto max-h-[680px] p-4 flex items-center justify-center">
+                <div className="relative bg-surface-2 rounded-xl overflow-auto max-h-[640px] p-4 flex items-center justify-center border border-border">
                   <div 
                     style={{ 
                       width: `${pageWidth * zoomLevel * 0.45}px`, 
                       minHeight: `${pageHeight * zoomLevel * 0.45}px`,
                       transformOrigin: 'top center'
                     }}
-                    className="relative bg-white shadow-2xl rounded-sm border border-slate-300 p-8 select-text font-serif text-slate-900 transition-transform"
+                    className="relative bg-white shadow-md rounded-sm border border-slate-300 p-8 select-text font-serif text-slate-900 transition-transform"
                   >
-                    {/* Real Rendered Document Typography */}
+                    {/* Rendered Document Typography */}
                     <div className="space-y-6 text-center border-b-2 border-slate-800 pb-5">
                       <div className="text-[11px] tracking-widest font-sans font-black text-slate-700 uppercase">
                         Government Regulatory & Higher Education Compliance
@@ -455,18 +482,18 @@ export default function DocumentIntelligencePage({ onNavigateTab, onSelectApplic
                       </div>
                     </div>
 
-                    {/* Footer Notarization & Stamp */}
+                    {/* Footer Seal */}
                     <div className="pt-8 flex justify-between items-end text-[10px] font-sans border-t border-slate-200 text-slate-500">
                       <div>
-                        <div>Issued by Authorized Scrutiny Officer</div>
-                        <div className="font-mono text-slate-800 font-bold mt-0.5">SHA-256 Digest: 98f1c...82b4</div>
+                        <div>Issued by Competent Scrutiny Officer</div>
+                        <div className="font-mono text-slate-800 font-bold mt-0.5">SHA-256: 98f1c...82b4</div>
                       </div>
-                      <div className="w-16 h-16 rounded-full border-2 border-dashed border-indigo-400 flex items-center justify-center text-[9px] font-bold text-indigo-700 text-center uppercase">
+                      <div className="w-16 h-16 rounded-full border-2 border-dashed border-[#1F4BFF]/50 flex items-center justify-center text-[9px] font-bold text-[#1F4BFF] text-center uppercase">
                         AICTE Verified Seal
                       </div>
                     </div>
 
-                    {/* Dynamic Bounding Boxes Overlay */}
+                    {/* Extracted Bounding Boxes Overlay: 1.5px cobalt outline with 0.08 cobalt fill */}
                     {showBoxes && activePage?.lines && (
                       <div className="absolute inset-0 pointer-events-none">
                         {activePage.lines.map((line, idx) => {
@@ -487,17 +514,16 @@ export default function DocumentIntelligencePage({ onNavigateTab, onSelectApplic
                                 height: `${Math.max(heightPct, 3)}%`,
                                 width: `${Math.max(widthPct, 10)}%`
                               }}
-                              className={`absolute border rounded pointer-events-auto transition-all cursor-pointer ${
+                              className={`absolute border-[1.5px] rounded-xs pointer-events-auto transition-all cursor-pointer ${
                                 isHovered
-                                  ? 'border-indigo-600 bg-indigo-500/20 ring-2 ring-indigo-400 shadow-md z-30'
-                                  : 'border-sky-500/60 bg-sky-500/5 hover:border-indigo-500 hover:bg-indigo-500/10 z-10'
+                                  ? 'border-[#1F4BFF] bg-[#1F4BFF]/20 ring-2 ring-[#1F4BFF]/30 shadow-md z-30'
+                                  : 'border-[#1F4BFF] bg-[#1F4BFF]/[0.08] hover:bg-[#1F4BFF]/[0.18] z-10'
                               }`}
                               onMouseEnter={() => setHoveredBoxIndex(idx)}
                               onMouseLeave={() => setHoveredBoxIndex(null)}
-                              title={`${line.text} (${Math.round((line.confidence || 0.95) * 100)}% conf)`}
                             >
                               {isHovered && (
-                                <div className="absolute -top-7 left-0 bg-slate-900 text-white text-[10px] font-sans px-2 py-0.5 rounded shadow-lg whitespace-nowrap z-40">
+                                <div className="absolute -top-7 left-0 bg-[#0F1B33] text-white text-[10px] font-sans px-2 py-0.5 rounded shadow-lg whitespace-nowrap z-40 pointer-events-none">
                                   {line.text} • {Math.round((line.confidence || 0.95) * 100)}%
                                 </div>
                               )}
@@ -510,30 +536,30 @@ export default function DocumentIntelligencePage({ onNavigateTab, onSelectApplic
                 </div>
               )}
 
-              {/* Mode B: Full OCR Text View */}
+              {/* Mode B: Extracted Text View */}
               {activeViewMode === 'text' && (
-                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
-                  <div className="flex items-center justify-between">
+                <div className="bg-surface-2 border border-border rounded-xl p-4 space-y-3">
+                  <div className="flex items-center justify-between gap-3">
                     <div className="relative flex-1 max-w-sm">
-                      <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
+                      <Search className="w-3.5 h-3.5 text-muted absolute left-3 top-1/2 -translate-y-1/2" />
                       <input
                         type="text"
                         placeholder="Search OCR text..."
                         value={ocrSearchQuery}
                         onChange={(e) => setOcrSearchQuery(e.target.value)}
-                        className="w-full bg-white border border-slate-200 rounded-lg pl-9 pr-3 py-1.5 text-xs text-slate-800"
+                        className="w-full h-10 bg-surface border border-border rounded-lg pl-9 pr-3 text-xs text-text placeholder-muted focus:outline-none focus:ring-1 focus:ring-primary"
                       />
                     </div>
                     <button
                       onClick={handleCopyText}
-                      className="px-3 py-1.5 bg-white border border-slate-200 hover:bg-slate-100 rounded-lg text-xs font-semibold text-slate-700 flex items-center space-x-1.5 cursor-pointer shadow-2xs"
+                      className="h-10 px-3.5 bg-surface border border-border hover:bg-surface-2 rounded-lg text-xs font-semibold text-text flex items-center space-x-1.5 cursor-pointer shadow-2xs transition-colors"
                     >
                       {copiedText ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
                       <span>{copiedText ? 'Copied' : 'Copy Text'}</span>
                     </button>
                   </div>
 
-                  <pre className="p-4 bg-white border border-slate-200 rounded-lg text-xs font-mono text-slate-800 whitespace-pre-wrap max-h-[500px] overflow-y-auto leading-relaxed">
+                  <pre className="p-4 bg-surface border border-border rounded-lg text-xs font-mono text-text whitespace-pre-wrap max-h-[500px] overflow-y-auto leading-relaxed">
                     {ocrSearchQuery
                       ? documentResult.full_extracted_text
                           .split('\n')
@@ -546,87 +572,105 @@ export default function DocumentIntelligencePage({ onNavigateTab, onSelectApplic
             </div>
           </div>
 
-          {/* Right Column (5 cols): Extracted Schema Table & Document Classification */}
-          <div className="xl:col-span-5 space-y-4">
+          {/* RIGHT Card (40% / xl:col-span-2): Extraction Results */}
+          <div className="xl:col-span-2 space-y-4">
             
-            {/* Classification Summary Card */}
-            <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs space-y-3">
-              <div className="flex items-center justify-between">
+            {/* Top Block: Document Type & Confidence */}
+            <div className="bg-surface rounded-xl border border-border p-4 shadow-xs space-y-3">
+              <div className="flex items-center justify-between gap-2">
                 <div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Classified Document Type</span>
-                  <h3 className="text-lg font-bold text-slate-900 mt-0.5">{documentResult.doc_type}</h3>
+                  <span className="text-[10px] font-semibold uppercase tracking-wider text-muted">Classified Document Type</span>
+                  <h3 className="text-base font-semibold text-text mt-0.5">{documentResult.doc_type}</h3>
                 </div>
-                <div className="text-right">
-                  <span className="inline-flex items-center px-2.5 py-1 rounded-xl text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
-                    {Math.round((documentResult.classifier_confidence || 0.95) * 100)}% Confidence
-                  </span>
-                  <div className="text-[10px] font-mono text-slate-400 mt-0.5">
-                    {documentResult.classifier_method || 'Tier 1 Regex + TF-IDF'}
-                  </div>
-                </div>
+                <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold font-mono bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 shrink-0">
+                  {Math.round((documentResult.classifier_confidence || 0.95) * 100)}% Conf.
+                </span>
               </div>
 
-              <div className="pt-3 border-t border-slate-100 grid grid-cols-2 gap-3 text-xs">
+              {/* Two short meta rows */}
+              <div className="pt-3 border-t border-border grid grid-cols-2 gap-3 text-xs">
                 <div>
-                  <span className="text-slate-400 text-[10px] block uppercase font-semibold">Filename</span>
-                  <span className="font-mono text-slate-800 truncate block" title={documentResult.filename}>
+                  <span className="text-muted text-[11px] block font-medium">File</span>
+                  <span className="font-mono text-text truncate block mt-0.5" title={documentResult.filename}>
                     {documentResult.filename}
                   </span>
                 </div>
                 <div>
-                  <span className="text-slate-400 text-[10px] block uppercase font-semibold">OCR Engine</span>
-                  <span className="font-semibold text-slate-800">PyMuPDF + PaddleOCR</span>
+                  <span className="text-muted text-[11px] block font-medium">Engine</span>
+                  <span className="font-medium text-text block mt-0.5">
+                    PyMuPDF + PaddleOCR
+                  </span>
                 </div>
               </div>
+
+              {/* Technical Details Collapsible */}
+              <details className="text-xs group border border-border rounded-lg bg-surface-2/50 px-3 py-2 mt-2">
+                <summary className="cursor-pointer font-medium text-muted hover:text-text flex items-center justify-between select-none">
+                  <span>Technical Details</span>
+                  <span className="text-[11px] text-muted font-mono">Classifier & OCR Engine</span>
+                </summary>
+                <div className="pt-2 mt-2 border-t border-border space-y-1.5 font-mono text-[11px] text-muted">
+                  <div className="flex justify-between">
+                    <span>Method:</span>
+                    <span className="text-text">{documentResult.classifier_method || 'tf_idf_logistic_regression'}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Internal Key:</span>
+                    <span className="text-text">{documentResult.doc_type?.toLowerCase().replace(/\s+/g, '_') || 'doc_type'}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Total Pages:</span>
+                    <span className="text-text">{documentResult.total_pages || 1}</span>
+                  </div>
+                </div>
+              </details>
             </div>
 
-            {/* Extracted Fields Table */}
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
-              <div className="p-4 bg-slate-50/70 border-b border-slate-200 flex items-center justify-between">
-                <span className="text-xs font-bold text-slate-900 flex items-center space-x-1.5">
-                  <Crosshair className="w-4 h-4 text-indigo-600" />
-                  <span>Structured Fields Extracted</span>
+            {/* Extracted Fields Clean Table: Fixed columns Field (40%) | Value (40%) | Conf. (20%) */}
+            <div className="bg-surface rounded-xl border border-border shadow-xs overflow-hidden">
+              <div className="px-3.5 py-2.5 bg-surface-2 border-b border-border flex items-center justify-between">
+                <span className="text-xs font-semibold text-text flex items-center space-x-1.5">
+                  <Crosshair className="w-3.5 h-3.5 text-primary" />
+                  <span>Extracted Fields</span>
                 </span>
-                <span className="text-[10px] font-mono text-slate-500">
-                  {documentResult.extracted_fields?.length || 0} Key Fields
+                <span className="text-[11px] font-mono text-muted">
+                  {documentResult.extracted_fields?.length || 0} fields
                 </span>
               </div>
 
               <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs">
-                  <thead className="bg-slate-50/50 text-[10px] font-bold text-slate-500 uppercase border-b border-slate-200">
+                <table className="w-full text-left text-xs table-fixed">
+                  <thead className="bg-surface-2/70 text-[11px] font-semibold text-muted uppercase border-b border-border">
                     <tr>
-                      <th className="py-2.5 px-3">Field Label</th>
-                      <th className="py-2.5 px-3">Extracted Value</th>
-                      <th className="py-2.5 px-3">Confidence</th>
-                      <th className="py-2.5 px-3">Page</th>
+                      <th className="w-[40%] py-2.5 px-3">Field</th>
+                      <th className="w-[40%] py-2.5 px-3">Value</th>
+                      <th className="w-[20%] py-2.5 px-3 text-right">Conf.</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100 text-slate-700">
+                  <tbody className="divide-y divide-border text-text">
                     {documentResult.extracted_fields?.map((f) => (
                       <tr 
                         key={f.key}
                         onClick={() => setSelectedFieldKey(f.key)}
-                        className={`transition-colors cursor-pointer ${
-                          selectedFieldKey === f.key ? 'bg-indigo-50/60 font-semibold' : 'hover:bg-slate-50/60'
+                        className={`h-12 transition-colors cursor-pointer ${
+                          selectedFieldKey === f.key ? 'bg-primary/10 font-semibold' : 'hover:bg-surface-2/50'
                         }`}
                       >
-                        <td className="py-3 px-3">
-                          <div className="font-bold text-slate-900">{f.label}</div>
-                          <div className="text-[10px] font-mono text-slate-400">{f.key}</div>
+                        <td className="py-2.5 px-3 align-middle">
+                          <div className="font-semibold text-text truncate" title={f.label}>{f.label}</div>
+                          <div className="text-[10px] font-mono text-muted truncate">{f.key}</div>
                         </td>
-                        <td className="py-3 px-3 font-medium text-slate-800">
-                          {f.value}
+                        <td className="py-2.5 px-3 font-medium text-text align-middle">
+                          <div className="line-clamp-2 break-words" title={f.value}>{f.value}</div>
                         </td>
-                        <td className="py-3 px-3">
-                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold font-mono ${
-                            f.confidence >= 95 ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-amber-50 text-amber-700 border border-amber-200'
+                        <td className="py-2.5 px-3 align-middle text-right">
+                          <span className={`inline-block px-1.5 py-0.5 rounded text-[11px] font-semibold font-mono ${
+                            f.confidence >= 95 
+                              ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' 
+                              : 'bg-amber-500/10 text-amber-600 dark:text-amber-400'
                           }`}>
                             {f.confidence}%
                           </span>
-                        </td>
-                        <td className="py-3 px-3 font-mono text-slate-500 text-center">
-                          #{f.page}
                         </td>
                       </tr>
                     ))}
@@ -635,16 +679,16 @@ export default function DocumentIntelligencePage({ onNavigateTab, onSelectApplic
               </div>
             </div>
 
-            {/* Findings & Evidence Lens Action Callout */}
+            {/* Findings / Review Indicator Callout */}
             {hasFindings && (
-              <div className="bg-gradient-to-r from-amber-50 to-indigo-50 border border-amber-300 rounded-2xl p-4 shadow-xs space-y-3 animate-fade-in">
+              <div className="border-l-4 border-l-amber-500 bg-surface-2 border border-border border-l-0 rounded-r-xl p-3.5 space-y-2.5">
                 <div className="flex items-start space-x-2.5">
-                  <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                  <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="text-xs font-bold text-amber-950">Discrepancy / Indicator Detected</h4>
-                    <p className="text-[11px] text-amber-900 mt-0.5 leading-relaxed">
+                    <h4 className="text-xs font-semibold text-text">Indicator for review detected</h4>
+                    <p className="text-[11px] text-muted mt-0.5 leading-relaxed">
                       Extracted fields indicate statutory review required under AICTE Handbook regulations. 
-                      Route this document to Evidence Lens for 6-stage officer determination and cryptographically signed audit receipt.
+                      Route this document to Evidence Lens for multi-stage determination.
                     </p>
                   </div>
                 </div>
@@ -652,7 +696,7 @@ export default function DocumentIntelligencePage({ onNavigateTab, onSelectApplic
                 {onNavigateTab && (
                   <button
                     onClick={() => onNavigateTab('evidence-lens')}
-                    className="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center justify-center space-x-1.5 cursor-pointer"
+                    className="w-full h-9 bg-primary hover:bg-primary/90 text-white rounded-lg text-xs font-semibold transition-colors shadow-xs flex items-center justify-center space-x-1.5 cursor-pointer"
                   >
                     <span>Send to Evidence Lens</span>
                     <ArrowRight className="w-3.5 h-3.5" />
