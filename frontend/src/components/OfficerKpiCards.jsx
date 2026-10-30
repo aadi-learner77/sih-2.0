@@ -17,7 +17,6 @@ function useCountUp(target, duration = 700) {
 
   useEffect(() => {
     let start = 0;
-    // Check if percentage string like '72.5%'
     const isPercent = typeof target === 'string' && target.endsWith('%');
     const numericTarget = isPercent ? parseFloat(target) : Number(target);
 
@@ -32,7 +31,6 @@ function useCountUp(target, duration = 700) {
     const step = (timestamp) => {
       if (!startTime) startTime = timestamp;
       const progress = Math.min((timestamp - startTime) / duration, 1);
-      // Ease out cubic
       const eased = 1 - Math.pow(1 - progress, 3);
       const current = start + (numericTarget - start) * eased;
 
@@ -55,9 +53,9 @@ function useCountUp(target, duration = 700) {
 }
 
 /**
- * Circular Progress Ring for Verified %
+ * Circular Progress Ring for Verified % (Cyan to Cobalt Gradient Stroke)
  */
-function CircularProgressRing({ percentage, size = 36, strokeWidth = 3 }) {
+function CircularProgressRing({ percentage, size = 38, strokeWidth = 3.5 }) {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const val = Math.min(Math.max(parseFloat(percentage) || 0, 0), 100);
@@ -66,29 +64,35 @@ function CircularProgressRing({ percentage, size = 36, strokeWidth = 3 }) {
   return (
     <div className="relative inline-flex items-center justify-center shrink-0" style={{ width: size, height: size }}>
       <svg width={size} height={size} className="transform -rotate-90">
+        <defs>
+          <linearGradient id="kpiProgressGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#22D3EE" />
+            <stop offset="100%" stopColor="#1F4BFF" />
+          </linearGradient>
+        </defs>
         <circle
           cx={size / 2}
           cy={size / 2}
           r={radius}
           stroke="currentColor"
           strokeWidth={strokeWidth}
-          className="text-border"
+          className="text-border/40"
           fill="transparent"
         />
         <circle
           cx={size / 2}
           cy={size / 2}
           r={radius}
-          stroke="currentColor"
+          stroke="url(#kpiProgressGrad)"
           strokeWidth={strokeWidth}
           strokeDasharray={circumference}
           strokeDashoffset={strokeDashoffset}
           strokeLinecap="round"
-          className="text-emerald-500 transition-all duration-700 ease-out"
+          className="transition-all duration-700 ease-out"
           fill="transparent"
         />
       </svg>
-      <span className="absolute text-[9px] font-mono font-bold text-emerald-600 dark:text-emerald-400">
+      <span className="absolute text-[9px] font-mono font-bold text-primary dark:text-cyan-300">
         {Math.round(val)}%
       </span>
     </div>
@@ -96,7 +100,7 @@ function CircularProgressRing({ percentage, size = 36, strokeWidth = 3 }) {
 }
 
 /**
- * Metric Card Inner with Count-Up
+ * Metric Card Inner with Count-Up and Single Gold Sweep on Hover
  */
 function KpiCardItem({ card, isSelected, onClick, loading }) {
   const Icon = card.icon;
@@ -104,7 +108,7 @@ function KpiCardItem({ card, isSelected, onClick, loading }) {
 
   if (loading) {
     return (
-      <div className="bg-surface rounded-2xl p-5 border border-border animate-pulse flex flex-col justify-between h-36">
+      <div className="kpi-glass-card rounded-2xl p-5 border border-border animate-pulse flex flex-col justify-between h-36">
         <div className="flex justify-between items-center">
           <div className="w-9 h-9 rounded-xl bg-surface-2" />
           <div className="w-16 h-5 rounded-full bg-surface-2" />
@@ -124,16 +128,19 @@ function KpiCardItem({ card, isSelected, onClick, loading }) {
       role="button"
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick(); } }}
-      className={`bg-surface rounded-2xl p-5 border transition-all duration-200 cursor-pointer group hover:-translate-y-1 hover:shadow-card-hover relative overflow-hidden flex flex-col justify-between h-full border-t-2 ${
+      className={`kpi-glass-card rounded-2xl p-5 border cursor-pointer group flex flex-col justify-between h-full border-t-[3px] ${
         card.topAccent
       } ${
         isSelected
-          ? 'border-primary ring-2 ring-primary/20 shadow-card'
+          ? 'ring-2 ring-primary/40 border-primary shadow-card'
           : 'border-border shadow-card'
       }`}
     >
-      {/* Top Row: Icon Chip & Trend / Ring */}
-      <div className="flex items-center justify-between">
+      {/* Single Gold Sweep on Hover */}
+      <div className="gold-hover-sweep" aria-hidden="true" />
+
+      {/* Top Row: Icon Chip & Trend / Circular Ring */}
+      <div className="flex items-center justify-between relative z-10">
         <div className={`w-9 h-9 rounded-xl flex items-center justify-center transition-transform group-hover:scale-105 shadow-xs ${card.iconBg}`}>
           <Icon className="w-4 h-4 shrink-0" />
         </div>
@@ -149,12 +156,12 @@ function KpiCardItem({ card, isSelected, onClick, loading }) {
         )}
       </div>
 
-      {/* Metric Value: label, value, and caption */}
-      <div className="flex flex-col gap-1.5 mt-3">
+      {/* Metric Value: label, tabular-nums value, and caption */}
+      <div className="flex flex-col gap-1.5 mt-3 relative z-10">
         <div className="text-[11px] font-semibold text-text-muted tracking-wide uppercase">
           {card.title}
         </div>
-        <div className="text-2xl font-black text-text tracking-tight flex items-baseline gap-1 font-mono">
+        <div className="text-2xl font-black text-text tracking-tight flex items-baseline gap-1 font-mono tabular-nums">
           <span>{animatedValue}</span>
           {card.unit && <span className="text-xs font-normal text-text-muted">{card.unit}</span>}
         </div>
@@ -162,24 +169,12 @@ function KpiCardItem({ card, isSelected, onClick, loading }) {
           {card.subtitle}
         </p>
       </div>
-
-      {/* Bottom subtle accent line on hover */}
-      <div className={`h-0.5 w-full absolute bottom-0 left-0 transition-opacity ${
-        isSelected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
-      } ${card.bottomLine}`} />
     </div>
   );
 }
 
 /**
- * KPI Cards Component for Officer Dashboard:
- * Visualizes the 5 core operational metrics with:
- * - Top accent line
- * - Icon chips
- * - 700ms count-up animation
- * - Circular progress ring on Verified %
- * - Hover lift
- * - Skeleton loaders
+ * KPI Cards Component for Officer Dashboard
  */
 export default function OfficerKpiCards({ 
   kpis,
@@ -198,9 +193,8 @@ export default function OfficerKpiCards({
       subtitle: 'EoA & New Inst Triage',
       icon: Inbox,
       topAccent: 'border-t-primary',
-      bottomLine: 'bg-primary',
-      iconBg: 'bg-primary text-white shadow-primary/20',
-      trendBadge: 'bg-primary/10 text-primary dark:text-cobalt-light border-primary/20',
+      iconBg: 'bg-primary/20 text-primary dark:text-cyan-300 border border-primary/30',
+      trendBadge: 'bg-primary/10 text-primary dark:text-cobalt-light border-primary/30',
       filterTarget: 'ALL',
     },
     {
@@ -213,9 +207,8 @@ export default function OfficerKpiCards({
       subtitle: 'Authoritative Gateway Checked',
       icon: CheckCircle2,
       topAccent: 'border-t-emerald-500',
-      bottomLine: 'bg-emerald-500',
-      iconBg: 'bg-emerald-600 text-white shadow-emerald-500/20',
-      trendBadge: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20',
+      iconBg: 'bg-emerald-500/20 text-emerald-600 dark:text-emerald-300 border border-emerald-500/30',
+      trendBadge: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/30',
       filterTarget: 'Verified',
     },
     {
@@ -228,9 +221,8 @@ export default function OfficerKpiCards({
       subtitle: 'Fire, Land & PWD NOCs',
       icon: Clock,
       topAccent: 'border-t-amber-500',
-      bottomLine: 'bg-amber-500',
-      iconBg: 'bg-amber-600 text-white shadow-amber-500/20',
-      trendBadge: 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/20',
+      iconBg: 'bg-amber-500/20 text-amber-600 dark:text-amber-300 border border-amber-500/30',
+      trendBadge: 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/30',
       filterTarget: 'Expired',
     },
     {
@@ -243,9 +235,8 @@ export default function OfficerKpiCards({
       subtitle: 'Bhoomi / AISHE / CBDT',
       icon: AlertTriangle,
       topAccent: 'border-t-rose-500',
-      bottomLine: 'bg-rose-500',
-      iconBg: 'bg-rose-600 text-white shadow-rose-500/20',
-      trendBadge: 'bg-rose-500/10 text-rose-700 dark:text-rose-400 border-rose-500/20',
+      iconBg: 'bg-rose-500/20 text-rose-600 dark:text-rose-300 border border-rose-500/30',
+      trendBadge: 'bg-rose-500/10 text-rose-700 dark:text-rose-400 border-rose-500/30',
       filterTarget: 'Mismatch Detected',
     },
     {
@@ -258,9 +249,8 @@ export default function OfficerKpiCards({
       subtitle: 'Queued with Backoff Retry',
       icon: RefreshCw,
       topAccent: 'border-t-indigo-500',
-      bottomLine: 'bg-indigo-500',
-      iconBg: 'bg-indigo-600 text-white shadow-indigo-500/20',
-      trendBadge: 'bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 border-indigo-500/20',
+      iconBg: 'bg-indigo-500/20 text-indigo-600 dark:text-indigo-300 border border-indigo-500/30',
+      trendBadge: 'bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 border-indigo-500/30',
       filterTarget: 'Verification Pending',
     },
   ];
