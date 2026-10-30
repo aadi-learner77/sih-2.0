@@ -2551,3 +2551,221 @@ body:has(#login-root),
 .hash-chain-node-4 { animation: hash-node-pulse 2.8s ease-in-out 1.2s infinite; }
 .hash-chain-node-5 { animation: hash-node-pulse 2.8s ease-in-out 1.6s infinite; }
 .hash-chain-node-6 { animation: hash-node-pulse 2.8s ease-in-out 2.0s infinite; }
+
+/* ==========================================================================
+   COMMAND CHROME & LUMINOUS MORPHISM STYLES (POST-LOGIN REDESIGN)
+   ========================================================================== */
+
+/* Hero Travelling Gold Comet Border */
+@property --hero-comet-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes hero-comet-spin {
+  to {
+    --hero-comet-angle: 360deg;
+  }
+}
+
+.hero-card-comet-wrap {
+  position: relative;
+  border-radius: 1.25rem;
+  padding: 2px;
+  background: conic-gradient(from var(--hero-comet-angle, 0deg), transparent 0%, transparent 68%, #FF9933 78%, #FFB020 90%, #FFD36B 98%, #FFFFFF 100%);
+  animation: hero-comet-spin 9s linear infinite;
+}
+
+/* Fallback for browsers without @property support */
+@supports not (background: conic-gradient(from var(--hero-comet-angle, 0deg), red, blue)) {
+  .hero-card-comet-wrap {
+    background: linear-gradient(135deg, rgba(255, 176, 32, 0.45) 0%, rgba(31, 75, 255, 0.25) 50%, rgba(34, 211, 238, 0.45) 100%);
+  }
+}
+
+/* Hero Neon Cyan Streak on Top Edge */
+@keyframes hero-neon-sweep {
+  0% { transform: translateX(-100%); opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { transform: translateX(250%); opacity: 0; }
+}
+
+.hero-neon-streak {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 32%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #22D3EE 50%, #4D74FF 80%, transparent);
+  box-shadow: 0 0 12px rgba(34, 211, 238, 0.9), 0 0 20px rgba(77, 116, 255, 0.7);
+  animation: hero-neon-sweep 8s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 25;
+}
+
+/* KPI Glass Cards */
+.kpi-glass-card {
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  position: relative;
+  overflow: hidden;
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+
+[data-theme="dark"] .kpi-glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="light"] .kpi-glass-card {
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(10, 31, 61, 0.08);
+  box-shadow: 0 10px 25px -8px rgba(10, 31, 61, 0.07);
+}
+
+.kpi-glass-card:hover {
+  transform: translateY(-2px);
+}
+
+[data-theme="dark"] .kpi-glass-card:hover {
+  border-color: rgba(77, 116, 255, 0.35);
+  box-shadow: 0 14px 35px -10px rgba(31, 75, 255, 0.25);
+}
+
+[data-theme="light"] .kpi-glass-card:hover {
+  border-color: rgba(31, 75, 255, 0.25);
+  box-shadow: 0 14px 30px -8px rgba(31, 75, 255, 0.15);
+}
+
+/* Single Pass Gold Sweep on KPI Hover */
+@keyframes kpi-hover-sweep {
+  0% { transform: translateX(-150%) skewX(-20deg); opacity: 0; }
+  50% { opacity: 0.6; }
+  100% { transform: translateX(250%) skewX(-20deg); opacity: 0; }
+}
+
+.kpi-glass-card .gold-hover-sweep {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 211, 107, 0.35), transparent);
+  pointer-events: none;
+  opacity: 0;
+}
+
+.kpi-glass-card:hover .gold-hover-sweep {
+  animation: kpi-hover-sweep 600ms ease-out 1 forwards;
+}
+
+/* Triage Table Surface & Thin Gradient Border */
+.triage-table-card {
+  position: relative;
+  border-radius: 1rem;
+}
+
+[data-theme="dark"] .triage-table-card {
+  background: #080D1A;
+  border: 1px solid rgba(34, 211, 238, 0.25);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="light"] .triage-table-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(10, 31, 61, 0.10);
+  box-shadow: 0 10px 25px -8px rgba(10, 31, 61, 0.06);
+}
+
+/* Triage Table Row: 76px Minimum Height with Left Accent Bar on Hover */
+.triage-grid-row {
+  min-height: 76px;
+  position: relative;
+  transition: background-color 160ms ease, border-color 160ms ease;
+}
+
+.triage-grid-row::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: #1F4BFF;
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+
+.triage-grid-row:hover::before {
+  opacity: 1;
+}
+
+[data-theme="dark"] .triage-grid-row:hover {
+  background-color: rgba(31, 75, 255, 0.08);
+}
+
+[data-theme="light"] .triage-grid-row:hover {
+  background-color: rgba(31, 75, 255, 0.04);
+}
+
+/* Sidebar Liquid-Pill Active Highlight */
+.sidebar-liquid-active {
+  background: linear-gradient(90deg, rgba(31, 75, 255, 0.22) 0%, rgba(139, 92, 246, 0.12) 100%) !important;
+  border: 1px solid rgba(77, 116, 255, 0.40) !important;
+  border-left: 4px solid #FFB020 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 0 16px rgba(31, 75, 255, 0.35) !important;
+}
+
+/* Background Aurora Blobs (Slow Drift) */
+@keyframes aurora-drift-1 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(50px, -30px, 0) scale(1.12); }
+}
+
+@keyframes aurora-drift-2 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(-40px, 40px, 0) scale(1.08); }
+}
+
+@keyframes aurora-drift-3 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(30px, 30px, 0) scale(0.95); }
+}
+
+.aurora-blob-1 {
+  animation: aurora-drift-1 50s ease-in-out infinite;
+}
+
+.aurora-blob-2 {
+  animation: aurora-drift-2 60s ease-in-out infinite;
+}
+
+.aurora-blob-3 {
+  animation: aurora-drift-3 45s ease-in-out infinite;
+}
+
+/* Prefers Reduced Motion Guardrail */
+@media (prefers-reduced-motion: reduce) {
+  .hero-card-comet-wrap,
+  .hero-neon-streak,
+  .aurora-blob-1,
+  .aurora-blob-2,
+  .aurora-blob-3,
+  .kpi-glass-card .gold-hover-sweep,
+  .hash-chain-node-1,
+  .hash-chain-node-2,
+  .hash-chain-node-3,
+  .hash-chain-node-4,
+  .hash-chain-node-5,
+  .hash-chain-node-6 {
+    animation: none !important;
+    transform: none !important;
+  }
+  .kpi-glass-card:hover {
+    transform: none !important;
+  }
+}
