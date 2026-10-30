@@ -273,8 +273,8 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
         </div>
       </div>
 
-      {/* Advisory Notice */}
-      <div className="bg-surface-2/70 backdrop-blur-md border border-border/80 rounded-2xl p-3.5 flex items-start space-x-2.5 text-xs text-text-muted shadow-xs">
+      {/* Advisory Notice (Clean Official Strip) */}
+      <div className="bg-surface-2 border border-border rounded-lg p-3.5 flex items-start space-x-2.5 text-xs text-text-muted shadow-xs">
         <Info className="w-4 h-4 text-primary shrink-0 mt-0.5" />
         <div className="leading-relaxed">
           <strong>Statutory Protocol:</strong> Every automated flag represents an <em>"Indicator for review"</em>. Autonomous rejections are prohibited under AICTE guidelines.
@@ -283,13 +283,13 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
 
       {/* Success Notification */}
       {resolveSuccessMsg && (
-        <div className="bg-emerald-500/10 border border-emerald-500/25 text-emerald-700 dark:text-emerald-300 px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center space-x-2">
-          <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+        <div className="bg-success-bg border border-success-border text-success-text px-4 py-2.5 rounded-lg text-xs font-semibold flex items-center space-x-2">
+          <CheckCircle2 className="w-4 h-4 text-success shrink-0" />
           <span>{resolveSuccessMsg}</span>
         </div>
       )}
 
-      {/* 2. Search & Filters (40px Controls) */}
+      {/* 2. Search & Filters (40px Controls, 8px Radius, 2px Focus) */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         <div className="relative flex-1 max-w-md">
           <Search className="w-4 h-4 text-text-muted absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -298,7 +298,7 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
             placeholder="Search queue ID, institution, document, or reason..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full h-10 bg-surface/80 backdrop-blur-md border border-border rounded-xl pl-10 pr-4 text-xs text-text placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary/40 shadow-xs transition-colors"
+            className="w-full h-10 bg-surface border border-border rounded-lg pl-10 pr-4 text-xs text-text placeholder-text-subtle focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent shadow-xs transition-colors"
           />
         </div>
 
@@ -306,23 +306,23 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
           <select
             value={priorityFilter}
             onChange={(e) => setPriorityFilter(e.target.value)}
-            className="h-10 bg-surface/80 backdrop-blur-md text-text border border-border rounded-xl px-3 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-primary/40 shadow-xs cursor-pointer"
+            className="h-10 bg-surface text-text border border-border rounded-lg px-3 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent shadow-xs cursor-pointer"
           >
-            <option value="ALL">All Priorities</option>
-            <option value="HIGH">High Priority</option>
-            <option value="MEDIUM">Medium Priority</option>
-            <option value="LOW">Low Priority</option>
+            <option value="ALL" className="bg-surface text-text">All Priorities</option>
+            <option value="HIGH" className="bg-surface text-text">High Priority</option>
+            <option value="MEDIUM" className="bg-surface text-text">Medium Priority</option>
+            <option value="LOW" className="bg-surface text-text">Low Priority</option>
           </select>
 
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="h-10 bg-surface/80 backdrop-blur-md text-text border border-border rounded-xl px-3 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-primary/40 shadow-xs cursor-pointer"
+            className="h-10 bg-surface text-text border border-border rounded-lg px-3 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent shadow-xs cursor-pointer"
           >
-            <option value="ALL">All Statuses</option>
-            <option value="PENDING_REVIEW">Pending Review</option>
-            <option value="IN_REVIEW">In Review</option>
-            <option value="RESOLVED">Resolved</option>
+            <option value="ALL" className="bg-surface text-text">All Statuses</option>
+            <option value="PENDING_REVIEW" className="bg-surface text-text">Pending Review</option>
+            <option value="IN_REVIEW" className="bg-surface text-text">In Review</option>
+            <option value="RESOLVED" className="bg-surface text-text">Resolved</option>
           </select>
         </div>
       </div>
@@ -349,7 +349,7 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
             return (
               <div 
                 key={item.queue_id || idx} 
-                className="bg-surface border border-border rounded-xl p-4 sm:p-5 shadow-xs transition-colors"
+                className="bg-surface border border-border rounded-lg p-4 sm:p-5 shadow-card transition-colors"
               >
                 {/* Card Top Row */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3 border-b border-border">
@@ -479,12 +479,12 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
       {/* 4. Fix 7: Robust Resolve Ticket Dialog (Backdrop-blur, 560px, Solid Surface, Focus Trap) */}
       {resolveItem && (
         <div 
-          className="fixed inset-0 z-50 bg-[#020617]/75 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn"
+          className="fixed inset-0 z-50 bg-black/55 dark:bg-black/70 flex items-center justify-center p-4 animate-fadeIn"
           role="dialog"
           aria-modal="true"
           aria-labelledby="resolve-ticket-title"
         >
-          <div className="bg-surface border border-border rounded-2xl w-[560px] max-w-[95vw] max-h-[90vh] overflow-y-auto p-6 shadow-2xl space-y-4 animate-scale-up">
+          <div className="bg-surface border border-border rounded-xl w-[560px] max-w-[95vw] max-h-[90vh] overflow-y-auto p-6 shadow-xl space-y-4 animate-scale-up">
             
             {/* Modal Title Row */}
             <div className="flex items-center justify-between border-b border-border pb-3">
@@ -511,7 +511,7 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
             <div className="space-y-3.5 text-xs">
               
               {/* Summary Row: 3 Key/Value Pairs */}
-              <div className="grid grid-cols-3 gap-2.5 p-3 bg-surface-2 rounded-xl border border-border">
+              <div className="grid grid-cols-3 gap-2.5 p-3 bg-surface-2 rounded-lg border border-border">
                 <div>
                   <div className="text-[10px] text-text-muted uppercase font-semibold">Institution</div>
                   <div className="font-semibold text-text truncate mt-0.5" title={resolveItem.institution_name}>
@@ -533,7 +533,7 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
               </div>
 
               {/* Flag Reason (Clean Surface, No Highlighter) */}
-              <div className="bg-surface-2 border border-border p-3.5 rounded-xl text-xs space-y-1">
+              <div className="bg-surface-2 border border-border p-3.5 rounded-lg text-xs space-y-1">
                 <div className="text-[11px] font-semibold text-text flex items-center space-x-1.5">
                   <AlertTriangle className="w-3.5 h-3.5 text-amber-500 shrink-0" />
                   <span>Flag Reason</span>
@@ -552,7 +552,7 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
                   id="resolve-status-select"
                   value={resolveStatus}
                   onChange={(e) => setResolveStatus(e.target.value)}
-                  className="w-full h-10 bg-surface-2 border border-border rounded-xl px-3 text-xs font-medium text-text outline-none focus:ring-2 focus:ring-primary/30 cursor-pointer"
+                  className="w-full h-10 bg-surface-2 border border-border rounded-lg px-3 text-xs font-medium text-text outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent cursor-pointer"
                 >
                   <option value="RESOLVED" className="bg-surface text-text">Verified (Discrepancy Explained / Cleared)</option>
                   <option value="IN_REVIEW" className="bg-surface text-text">Request More Evidence / Clarification</option>
@@ -579,7 +579,7 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
                   onChange={(e) => setResolveNotes(e.target.value)}
                   placeholder="State factual grounds, authoritative portal verification result, or terms..."
                   rows={3}
-                  className="w-full bg-surface-2 border border-border rounded-xl p-3 text-xs text-text placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary/30"
+                  className="w-full bg-surface-2 border border-border rounded-lg p-3 text-xs text-text placeholder-text-subtle focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent resize-none"
                 />
               </div>
 
@@ -593,7 +593,7 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
               <button
                 type="button"
                 onClick={() => setResolveItem(null)}
-                className="h-10 px-4 text-xs font-semibold text-text-muted hover:text-text rounded-xl transition-colors cursor-pointer"
+                className="h-10 px-4 text-xs font-semibold text-text-muted hover:text-text rounded-lg hover:bg-surface-2 transition-colors cursor-pointer"
               >
                 Cancel
               </button>
