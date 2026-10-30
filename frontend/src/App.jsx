@@ -263,7 +263,22 @@ export default function App() {
   const isTabAllowed = permittedTabs.includes(activeTab);
 
   return (
-    <div className="h-screen w-full max-w-full app-shell-bg text-text flex flex-col font-sans selection:bg-primary selection:text-white overflow-hidden">
+    <div className="h-screen w-full max-w-full app-shell-bg text-text flex flex-col font-sans selection:bg-primary selection:text-white overflow-hidden relative">
+      
+      {/* Background Aurora Blobs & Dot Grid (B4) */}
+      <div className="fixed inset-0 pointer-events-none -z-0 overflow-hidden" aria-hidden="true">
+        <div className="aurora-blob-1 absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full bg-[#1F4BFF]/15 dark:bg-[#1F4BFF]/22 blur-[120px]" />
+        <div className="aurora-blob-2 absolute top-1/3 -right-40 w-[550px] h-[550px] rounded-full bg-[#8B5CF6]/12 dark:bg-[#8B5CF6]/18 blur-[120px]" />
+        <div className="aurora-blob-3 absolute -bottom-40 left-1/3 w-[500px] h-[500px] rounded-full bg-[#22D3EE]/10 dark:bg-[#22D3EE]/15 blur-[120px]" />
+        <div 
+          className="absolute inset-0 opacity-[0.05] dark:opacity-[0.04]"
+          style={{
+            backgroundImage: 'radial-gradient(circle, currentColor 1px, transparent 1px)',
+            backgroundSize: '24px 24px'
+          }}
+        />
+      </div>
+
       {/* Top AICTE Navigation */}
       <Navbar 
         currentUser={currentUser}
@@ -282,7 +297,7 @@ export default function App() {
         onToggleSidebarCollapse={handleToggleSidebarCollapse}
       />
 
-      <div className="flex-1 min-h-0 flex overflow-hidden relative">
+      <div className="flex-1 min-h-0 flex overflow-hidden relative z-10">
         {/* Left Navigation Sidebar */}
         <Sidebar 
           activeTab={activeTab} 
@@ -401,14 +416,14 @@ export default function App() {
         </main>
       </div>
 
-      {/* Statutory Footer (compact 36px) */}
-      <footer className="h-9 shrink-0 bg-surface border-t border-border px-4 sm:px-6 flex items-center justify-between text-xs text-text-muted z-30 select-none">
+      {/* Statutory Footer (compact 36px, Navy Glass B10) */}
+      <footer className="h-9 shrink-0 bg-[#060B1B]/95 backdrop-blur-md border-t border-white/10 px-4 sm:px-6 flex items-center justify-between text-xs text-slate-400 z-30 select-none">
         <div className="flex items-center space-x-2">
-          <span className="font-bold text-text">PRAMAAN-X v1.0.0</span>
+          <span className="font-bold text-white">PRAMAAN-X v1.0.0</span>
           <span>•</span>
           <span>Regulatory Decision-Support System for AICTE India</span>
         </div>
-        <div className="text-[11px] text-text-muted hidden sm:block">
+        <div className="text-[11px] text-slate-400 hidden sm:block">
           Statutory Constraint: AI outputs are advisory indicators for committee inquiry. Automated rejections are prohibited under regulatory guidelines.
         </div>
       </footer>
