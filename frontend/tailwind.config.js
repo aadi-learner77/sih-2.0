@@ -8,10 +8,10 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', '"Noto Sans Devanagari"', 'system-ui', 'sans-serif'],
-        serif: ['Fraunces', 'Playfair Display', 'Georgia', 'serif'],
-        devanagari: ['"Noto Sans Devanagari"', '"Noto Serif Devanagari"', 'sans-serif'],
+        sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
+        body: ['Inter', 'system-ui', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'ui-monospace', '"SF Mono"', 'Menlo', 'Consolas', 'monospace'],
+        devanagari: ['"Noto Sans Devanagari"', 'sans-serif'],
       },
       borderRadius: {
         sm: 'var(--radius-sm)',

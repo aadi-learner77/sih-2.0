@@ -18,13 +18,13 @@
   --radius-pill: 999px;
 
   /* 2. LIGHT THEME TOKENS */
-  --bg: #F4F7FC;
+  --bg: #F5F7FB;
   --surface: #FFFFFF;
   --surface-2: #F8FAFD;
   --surface-muted: #EEF3FA;
-  --border: #E2E8F4;
-  --text: #0A1F3D;
-  --text-muted: #51607F;
+  --border: #E2E8F3;
+  --text: #0F1B33;
+  --text-muted: #5B6B88;
   --primary: #1F4BFF;
   --primary-hover: #14396B;
   --accent: #FF9933;
@@ -84,12 +84,12 @@
   --radius-pill: 999px;
 
   /* 3. DARK THEME TOKENS */
-  --bg: #060914;
-  --surface: rgba(14, 21, 41, 0.75);
-  --surface-2: rgba(22, 33, 62, 0.65);
-  --surface-muted: rgba(255, 255, 255, 0.05);
-  --border: rgba(255, 255, 255, 0.10);
-  --text: #E6ECFF;
+  --bg: #070D1F;
+  --surface: #0E1730;
+  --surface-2: #162142;
+  --surface-muted: #1A284F;
+  --border: #1E2A4A;
+  --text: #E8EEFF;
   --text-muted: #9AA8CF;
   --primary: #3B6BFF;
   --primary-hover: #5A84FF;
