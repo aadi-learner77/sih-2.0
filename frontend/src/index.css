@@ -486,13 +486,12 @@ button.bg-indigo-600,
 button.bg-amber-600,
 button.bg-slate-900,
 button.primary,
-#launch-evidence-lens-btn,
 button[class*="from-sky-600"],
 button[class*="from-purple-700"],
 button[class*="from-amber-600"] {
-  background-color: var(--primary) !important; /* #CFE3FA */
+  background-color: var(--primary) !important;
   background-image: none !important;
-  color: var(--text) !important; /* #000000 */
+  color: #FFFFFF !important;
   border: 1px solid var(--primary-border) !important; /* #8DB6E6 */
   border-radius: var(--radius-md) !important;
   min-height: 40px !important;
@@ -518,13 +517,12 @@ button.bg-indigo-600:hover,
 button.bg-amber-600:hover,
 button.bg-slate-900:hover,
 button.primary:hover,
-#launch-evidence-lens-btn:hover,
 button[class*="from-sky-600"]:hover,
 button[class*="from-purple-700"]:hover,
 button[class*="from-amber-600"]:hover {
   background-color: var(--primary-hover) !important; /* #B9D6F5 */
   border-color: var(--primary-border) !important;
-  color: var(--text) !important;
+  color: #FFFFFF !important;
 }
 
 /* Dedicated Verify Chain Button: Emerald green with crisp white text in light and dark mode */
@@ -589,7 +587,7 @@ button:not(#login-root button):not(.login-root button):not(#login-root *):not(.l
   background-color: var(--surface) !important; /* #FFFFFF */
   background-image: none !important;
   border: 1px solid var(--border-secondary-btn) !important; /* #BFC5CC */
-  color: var(--text) !important; /* #000000 */
+  color: #FFFFFF !important;
   border-radius: var(--radius-md) !important;
   min-height: 40px !important;
   height: auto !important;
@@ -639,7 +637,7 @@ textarea:not(#login-root textarea):not(.login-root textarea) {
   min-height: 40px !important;
   height: auto !important;
   padding: 10px 14px !important;
-  color: var(--text) !important; /* #000000 */
+  color: #FFFFFF !important;
   font-size: 13px !important;
   font-weight: 400 !important;
   box-shadow: none !important;
@@ -933,7 +931,7 @@ tbody tr:hover {
 
 tbody td {
   padding: 14px 16px !important;
-  color: var(--text) !important; /* #000000 */
+  color: #FFFFFF !important;
   border-bottom: 1px solid var(--border) !important;
   border-left: none !important;
   border-right: none !important;
@@ -981,7 +979,7 @@ aside button[id^="sidebar-tab-"][class*="bg-sky-50"],
 aside button[id^="sidebar-tab-"].active {
   background-color: var(--nav-active-bg) !important; /* #E8F1FB */
   border: 1px solid var(--info-border) !important; /* #BBD4F0 */
-  color: var(--text) !important; /* #000000 */
+  color: #FFFFFF !important;
   font-weight: 600 !important;
 }
 
@@ -1033,9 +1031,9 @@ header.bg-white\/95 {
 
 /* PX Brand Logo Box: soft blue #CFE3FA with black text and #8DB6E6 border (No black/purple box!) */
 header div.w-10.h-10 {
-  background-color: var(--primary) !important; /* #CFE3FA */
+  background-color: var(--primary) !important;
   background-image: none !important;
-  color: var(--text) !important; /* #000000 */
+  color: #FFFFFF !important;
   border: 1px solid var(--primary-border) !important; /* #8DB6E6 */
   border-radius: var(--radius-md) !important;
   box-shadow: none !important;
@@ -1099,7 +1097,7 @@ div.w-9.h-9[class*="rounded"] svg {
 .text-gray-800,
 .text-gray-900,
 .text-black {
-  color: var(--text) !important; /* #000000 */
+  color: #FFFFFF !important;
 }
 
 /* Labels and captions never smaller than 12px */
@@ -1221,7 +1219,7 @@ section.bg-slate-900,
 footer.bg-slate-900 {
   background-color: var(--surface-muted) !important; /* #F4F6F8 */
   border-color: var(--border) !important; /* #D5D9DE */
-  color: var(--text) !important; /* #000000 */
+  color: #FFFFFF !important;
 }
 
 /* All panel and card headers */
@@ -1464,13 +1462,24 @@ button {
 }
 
 /* Badges, chips, and pills: padding 4px 10px; 6px gap between them when stacked or in a row */
-span[class*="rounded-full"],
+span[class*="rounded-full"]:not([class*="w-"]):not([class*="h-"]):not(.status-dot):not([data-dot]),
 span[class*="rounded-md"][class*="font-semibold"],
 span[class*="rounded"][class*="font-mono"],
 .badge,
 .chip,
 .pill {
   padding: 4px 10px !important;
+}
+
+.status-dot,
+span.status-dot,
+span[class*="w-1"][class*="rounded-full"],
+span[class*="w-1.5"][class*="rounded-full"],
+span[class*="w-2"][class*="rounded-full"],
+span[class*="w-2.5"][class*="rounded-full"] {
+  padding: 0 !important;
+  min-width: unset !important;
+  min-height: unset !important;
 }
 
 div:has(> span[class*="rounded-full"]),
