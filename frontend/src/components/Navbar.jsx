@@ -331,11 +331,11 @@ export default function Navbar({
                   {userInitial}
                 </div>
 
-                <div className="text-left hidden sm:flex flex-col items-start min-w-0 max-w-[130px]">
+                <div className="text-left hidden sm:flex flex-col items-start min-w-0 max-w-[160px]">
                   <span className="text-xs font-bold text-text leading-tight truncate w-full">
                     {userName}
                   </span>
-                  <span className={`text-[9px] font-semibold px-1.5 py-0 rounded-md border truncate max-w-full ${
+                  <span className={`text-[9px] font-semibold px-2 py-0.5 rounded-md border truncate max-w-full leading-none mt-0.5 ${
                     roleColors[currentRole] || 'bg-surface text-text-muted border-border'
                   }`}>
                     {roleLabels[currentRole] || currentRole}
