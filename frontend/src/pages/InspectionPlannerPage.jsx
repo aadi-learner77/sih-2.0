@@ -194,7 +194,7 @@ const MOCK_PLANNER_DATA = {
               risk_tier: 'CRITICAL_URGENCY',
               critical_findings_count: 2,
               flagged_issues: [
-                'Unrectified Non-Judicial Stamp Paper Fraud Indicator',
+                'Unrectified Non-Judicial Stamp Paper Discrepancy Indicator',
                 'Architectural Built-Up Deficit'
               ],
               recommended_inspection_type: 'SURPRISE_PHYSICAL_INSPECTION',

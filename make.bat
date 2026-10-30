@@ -1,5 +1,7 @@
 @echo off
-set PYTHON=.venv\Scripts\python.exe
+set PYTHON=python
+if exist .venv\Scripts\python.exe set PYTHON=.venv\Scripts\python.exe
+if exist venv\Scripts\python.exe set PYTHON=venv\Scripts\python.exe
 
 if "%1"=="demo-reset" (
     echo Restoring database, issuer registry, and audit receipt ledger to deterministic demo state...

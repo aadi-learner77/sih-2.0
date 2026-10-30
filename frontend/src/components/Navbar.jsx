@@ -8,6 +8,7 @@ import {
   Layers,
   Sun,
   Moon,
+  LogOut,
   Menu,
   X
 } from 'lucide-react';
@@ -261,7 +262,8 @@ export default function Navbar({
                 className="px-2 py-1 rounded-lg text-slate-600 hover:text-rose-700 hover:bg-rose-50 transition cursor-pointer text-xs font-semibold flex items-center space-x-1 shrink-0 border border-transparent hover:border-rose-200"
                 title="Sign out of PRAMAAN-X session"
               >
-                <span>Sign Out</span>
+                <LogOut className="w-4 h-4" />
+                <span className="text-[11px] font-medium hidden md:inline">Sign Out</span>
               </button>
             )}
           </div>

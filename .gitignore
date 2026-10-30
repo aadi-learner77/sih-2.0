@@ -61,3 +61,10 @@ Thumbs.db
 
 # Synthetic test output
 test_generated_data/
+
+audit_screenshots/
+dist/
+.env
+venv/
+node_modules/
+generated_data/keys/
