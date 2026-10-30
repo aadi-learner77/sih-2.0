@@ -318,13 +318,13 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
       {/* 2. Search & Filters */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         <div className="relative flex-1 max-w-md">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-2.5" />
+          <Search className="w-4 h-4 text-text-muted absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
             type="text"
             placeholder="Search queue ID, institution, document, or reason..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-4 py-2 text-xs text-slate-800 placeholder-slate-400 focus:outline-hidden focus:border-indigo-500 shadow-2xs"
+            className="w-full h-10 bg-surface border border-border rounded-xl pl-10 pr-4 text-xs text-text placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary/30 shadow-xs"
           />
         </div>
 
@@ -333,7 +333,7 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
           <select
             value={priorityFilter}
             onChange={(e) => setPriorityFilter(e.target.value)}
-            className="bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-medium text-slate-700 focus:outline-hidden focus:border-indigo-500 shadow-2xs cursor-pointer"
+            className="h-10 bg-surface text-text border border-border rounded-xl px-3 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-primary/30 shadow-xs cursor-pointer"
           >
             <option value="ALL">All Priorities</option>
             <option value="HIGH">High Priority</option>
@@ -345,7 +345,7 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-medium text-slate-700 focus:outline-hidden focus:border-indigo-500 shadow-2xs cursor-pointer"
+            className="h-10 bg-surface text-text border border-border rounded-xl px-3 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-primary/30 shadow-xs cursor-pointer"
           >
             <option value="ALL">All Statuses</option>
             <option value="PENDING_REVIEW">Pending Review</option>

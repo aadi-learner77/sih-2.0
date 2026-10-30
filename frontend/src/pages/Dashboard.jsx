@@ -414,18 +414,18 @@ export default function Dashboard({
             </div>
           </div>
 
-          {/* Filters Bar: 44px Controls, pl-10 Search, All on One Row (A6, B8) */}
+          {/* Filters Bar: 40px Controls, pl-10 Search, Aligned Row (Fix 4) */}
           <div className="flex flex-wrap lg:flex-nowrap items-center gap-2.5">
             
-            {/* Search Input with pl-10 and Absolute Icon at left-3.5 */}
+            {/* Search Input with pl-10 and Absolute Icon at left-3 */}
             <div className="flex-1 min-w-[220px] relative">
-              <Search className="w-4 h-4 text-text-muted absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <Search className="w-4 h-4 text-text-muted absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 type="text"
                 placeholder="Search by college, app #, AICTE ID, city..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full h-11 bg-surface border border-border rounded-xl pl-10 pr-8 text-xs text-text placeholder-text-muted outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary shadow-xs transition-colors"
+                className="w-full h-10 bg-surface border border-border rounded-xl pl-10 pr-8 text-xs text-text placeholder-text-muted outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary shadow-xs transition-colors"
               />
               {searchQuery && (
                 <button
@@ -438,71 +438,71 @@ export default function Dashboard({
               )}
             </div>
 
-            {/* State Filter (44px) */}
+            {/* State Filter (40px) */}
             <div className="relative w-full sm:w-44 shrink-0">
               <select
                 value={selectedState}
                 onChange={(e) => setSelectedState(e.target.value)}
-                className="appearance-none w-full h-11 bg-surface border border-border rounded-xl pl-3 pr-8 text-xs text-text font-medium outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary shadow-xs cursor-pointer"
+                className="appearance-none w-full h-10 bg-surface border border-border rounded-xl pl-3 pr-8 text-xs text-text font-medium outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary shadow-xs cursor-pointer"
               >
-                <option value="ALL">All States ({stateOptions.length - 1})</option>
+                <option value="ALL" className="bg-surface text-text">All States ({stateOptions.length - 1})</option>
                 {stateOptions.filter((s) => s !== 'ALL').map((s) => (
-                  <option key={s} value={s}>{s}</option>
+                  <option key={s} value={s} className="bg-surface text-text">{s}</option>
                 ))}
               </select>
               <ChevronDown className="w-3.5 h-3.5 text-text-muted absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             </div>
 
-            {/* Category Filter (44px) */}
+            {/* Category Filter (40px) */}
             <div className="relative w-full sm:w-44 shrink-0">
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="appearance-none w-full h-11 bg-surface border border-border rounded-xl pl-3 pr-8 text-xs text-text font-medium outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary shadow-xs cursor-pointer"
+                className="appearance-none w-full h-10 bg-surface border border-border rounded-xl pl-3 pr-8 text-xs text-text font-medium outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary shadow-xs cursor-pointer"
               >
-                <option value="ALL">All Categories</option>
+                <option value="ALL" className="bg-surface text-text">All Categories</option>
                 {categoryOptions.filter((c) => c !== 'ALL').map((c) => (
-                  <option key={c} value={c}>{c}</option>
+                  <option key={c} value={c} className="bg-surface text-text">{c}</option>
                 ))}
               </select>
               <ChevronDown className="w-3.5 h-3.5 text-text-muted absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             </div>
 
-            {/* Status Filter (44px) */}
+            {/* Status Filter (40px) */}
             <div className="relative w-full sm:w-48 shrink-0">
               <select
                 value={selectedStatus}
                 onChange={(e) => setSelectedStatus(e.target.value)}
-                className="appearance-none w-full h-11 bg-surface border border-border rounded-xl pl-3 pr-8 text-xs text-text font-medium outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary shadow-xs cursor-pointer"
+                className="appearance-none w-full h-10 bg-surface border border-border rounded-xl pl-3 pr-8 text-xs text-text font-medium outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary shadow-xs cursor-pointer"
               >
-                <option value="ALL">All Statuses ({statusOptions.length - 1})</option>
+                <option value="ALL" className="bg-surface text-text">All Statuses ({statusOptions.length - 1})</option>
                 {statusOptions.filter((st) => st !== 'ALL').map((st) => (
-                  <option key={st} value={st}>{st}</option>
+                  <option key={st} value={st} className="bg-surface text-text">{st}</option>
                 ))}
               </select>
               <ChevronDown className="w-3.5 h-3.5 text-text-muted absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             </div>
 
-            {/* Severity Filter (44px) */}
+            {/* Severity Filter (40px) */}
             <div className="relative w-full sm:w-36 shrink-0">
               <select
                 value={selectedSeverity}
                 onChange={(e) => setSelectedSeverity(e.target.value)}
-                className="appearance-none w-full h-11 bg-surface border border-border rounded-xl pl-3 pr-8 text-xs text-text font-medium outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary shadow-xs cursor-pointer"
+                className="appearance-none w-full h-10 bg-surface border border-border rounded-xl pl-3 pr-8 text-xs text-text font-medium outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary shadow-xs cursor-pointer"
               >
-                <option value="ALL">All Severity</option>
+                <option value="ALL" className="bg-surface text-text">All Severity</option>
                 {severityOptions.filter((sev) => sev !== 'ALL').map((sev) => (
-                  <option key={sev} value={sev}>{sev}</option>
+                  <option key={sev} value={sev} className="bg-surface text-text">{sev}</option>
                 ))}
               </select>
               <ChevronDown className="w-3.5 h-3.5 text-text-muted absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             </div>
 
-            {/* Reset Filters (44px) */}
+            {/* Reset Filters (40px) */}
             <button
               type="button"
               onClick={handleResetFilters}
-              className={`h-11 px-4 rounded-xl border text-xs font-semibold flex items-center justify-center space-x-1.5 transition-colors cursor-pointer shrink-0 ${
+              className={`h-10 px-4 rounded-xl border text-xs font-semibold flex items-center justify-center space-x-1.5 transition-colors cursor-pointer shrink-0 ${
                 activeFilterCount > 0 
                   ? 'border-primary/50 bg-primary/10 text-primary dark:text-cyan-300 hover:bg-primary/20' 
                   : 'border-border bg-surface-2 text-text-muted hover:text-text'
@@ -620,54 +620,43 @@ export default function Dashboard({
                       </div>
                     </div>
 
-                    {/* 4. Primary Anomaly (2-Line Clamp + Max 2 Chips with Wrap + Popover) */}
+                    {/* 4. Primary Anomaly (One Line + "+N more" Popover, No Stacked Chips) */}
                     <div className="min-w-0 pr-3 relative">
-                      <p className="text-[11px] text-text leading-snug line-clamp-2" title={app.primary_issue}>
-                        {app.primary_issue}
-                      </p>
-                      {app.flags && app.flags.length > 0 && (
-                        <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
-                          {app.flags.slice(0, 2).map((fl, fi) => (
-                            <span 
-                              key={fi} 
-                              className="text-[10px] bg-surface-2 text-text-muted px-2 py-0.5 rounded border border-border whitespace-normal leading-tight max-w-[150px] truncate" 
-                              title={fl}
+                      <div className="flex items-center gap-1.5 text-xs text-text truncate">
+                        <span className="truncate" title={app.primary_issue || app.flags?.[0]}>
+                          {app.primary_issue || app.flags?.[0] || 'No adverse indicators'}
+                        </span>
+                        {app.flags && app.flags.length > 1 && (
+                          <div className="relative shrink-0">
+                            <button
+                              type="button"
+                              onClick={() => setActiveAnomalyPopoverId(isAnomalyOpen ? null : app.id)}
+                              className="text-[10px] text-primary font-bold hover:underline cursor-pointer"
                             >
-                              {fl}
-                            </span>
-                          ))}
-                          {app.flags.length > 2 && (
-                            <div className="relative">
-                              <button
-                                type="button"
-                                onClick={() => setActiveAnomalyPopoverId(isAnomalyOpen ? null : app.id)}
-                                className="text-[10px] text-primary dark:text-cyan-300 font-bold hover:underline cursor-pointer"
-                              >
-                                +{app.flags.length - 2} more
-                              </button>
-                              {isAnomalyOpen && (
-                                <div className="absolute left-0 bottom-full mb-1 z-30 w-64 p-3 bg-surface border border-border rounded-xl shadow-2xl space-y-1.5 animate-fadeIn">
-                                  <div className="text-[10px] font-bold text-text uppercase tracking-wider mb-1 flex items-center justify-between">
-                                    <span>All Flagged Anomalies</span>
-                                    <button 
-                                      type="button"
-                                      onClick={() => setActiveAnomalyPopoverId(null)}
-                                      className="text-text-muted hover:text-text cursor-pointer"
-                                    >
-                                      <X className="w-3.5 h-3.5" />
-                                    </button>
-                                  </div>
-                                  {app.flags.map((fl, i) => (
-                                    <div key={i} className="text-[11px] text-text-muted p-1.5 rounded-lg bg-surface-2 border border-border/50">
-                                      • {fl}
-                                    </div>
-                                  ))}
+                              +{app.flags.length - 1} more
+                            </button>
+                            {isAnomalyOpen && (
+                              <div className="absolute left-0 bottom-full mb-1 z-30 w-64 p-3 bg-surface border border-border rounded-xl shadow-2xl space-y-1.5 animate-fadeIn">
+                                <div className="text-[10px] font-bold text-text uppercase tracking-wider mb-1 flex items-center justify-between">
+                                  <span>Flagged Anomalies</span>
+                                  <button 
+                                    type="button"
+                                    onClick={() => setActiveAnomalyPopoverId(null)}
+                                    className="text-text-muted hover:text-text cursor-pointer"
+                                  >
+                                    <X className="w-3.5 h-3.5" />
+                                  </button>
                                 </div>
-                              )}
-                            </div>
-                          )}
-                        </div>
-                      )}
+                                {app.flags.map((fl, i) => (
+                                  <div key={i} className="text-xs text-text-muted p-1.5 rounded-lg bg-surface-2 border border-border/50">
+                                    • {fl}
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
                     </div>
 
                     {/* 5. Statutory Status (200px Fixed Column, Guaranteed Zero Overlap) */}

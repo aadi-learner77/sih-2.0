@@ -564,13 +564,13 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
 
         {/* Search Filter */}
         <div className="relative w-full sm:w-72">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-2.5" />
+          <Search className="w-4 h-4 text-text-muted absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
             type="text"
             placeholder="Search hash, issuer, status..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full bg-white border border-slate-200 rounded-xl pl-11 pr-3 py-2 text-xs text-slate-800 placeholder-slate-400 focus:outline-hidden focus:border-sky-500 shadow-2xs"
+            className="w-full h-10 bg-surface border border-border rounded-xl pl-10 pr-3 text-xs text-text placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary/30 shadow-xs"
           />
         </div>
       </div>
