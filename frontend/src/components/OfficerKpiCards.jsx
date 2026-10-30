@@ -4,9 +4,7 @@ import {
   CheckCircle2, 
   Clock, 
   AlertTriangle, 
-  RefreshCw, 
-  TrendingUp, 
-  ShieldAlert
+  RefreshCw 
 } from 'lucide-react';
 
 /**
@@ -53,9 +51,9 @@ function useCountUp(target, duration = 700) {
 }
 
 /**
- * Circular Progress Ring for Verified % (Cyan to Cobalt Gradient Stroke)
+ * Circular Progress Ring for Verified % (Clean, Legible Text)
  */
-function CircularProgressRing({ percentage, size = 38, strokeWidth = 3.5 }) {
+function CircularProgressRing({ percentage, size = 36, strokeWidth = 3 }) {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const val = Math.min(Math.max(parseFloat(percentage) || 0, 0), 100);
@@ -64,35 +62,29 @@ function CircularProgressRing({ percentage, size = 38, strokeWidth = 3.5 }) {
   return (
     <div className="relative inline-flex items-center justify-center shrink-0" style={{ width: size, height: size }}>
       <svg width={size} height={size} className="transform -rotate-90">
-        <defs>
-          <linearGradient id="kpiProgressGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#22D3EE" />
-            <stop offset="100%" stopColor="#1F4BFF" />
-          </linearGradient>
-        </defs>
         <circle
           cx={size / 2}
           cy={size / 2}
           r={radius}
           stroke="currentColor"
           strokeWidth={strokeWidth}
-          className="text-border/40"
+          className="text-border"
           fill="transparent"
         />
         <circle
           cx={size / 2}
           cy={size / 2}
           r={radius}
-          stroke="url(#kpiProgressGrad)"
+          stroke="currentColor"
           strokeWidth={strokeWidth}
           strokeDasharray={circumference}
           strokeDashoffset={strokeDashoffset}
           strokeLinecap="round"
-          className="transition-all duration-700 ease-out"
+          className="text-success transition-all duration-700 ease-out"
           fill="transparent"
         />
       </svg>
-      <span className="absolute text-[9px] font-mono font-bold text-primary dark:text-cyan-300">
+      <span className="absolute text-[10px] font-mono font-bold text-text">
         {Math.round(val)}%
       </span>
     </div>
@@ -100,7 +92,13 @@ function CircularProgressRing({ percentage, size = 38, strokeWidth = 3.5 }) {
 }
 
 /**
- * Metric Card Inner with Count-Up and Single Gold Sweep on Hover
+ * Government Portal Metric Card:
+ * - Solid surface card, 10px radius, 1px border, soft shadow in light
+ * - Small icon in a tinted square
+ * - Label: 14px muted
+ * - Big number: 28px text color tabular-nums
+ * - One caption line: 12px muted
+ * - Equal heights
  */
 function KpiCardItem({ card, isSelected, onClick, loading }) {
   const Icon = card.icon;
@@ -108,11 +106,8 @@ function KpiCardItem({ card, isSelected, onClick, loading }) {
 
   if (loading) {
     return (
-      <div className="kpi-glass-card rounded-2xl p-5 border border-border animate-pulse flex flex-col justify-between h-36">
-        <div className="flex justify-between items-center">
-          <div className="w-9 h-9 rounded-xl bg-surface-2" />
-          <div className="w-16 h-5 rounded-full bg-surface-2" />
-        </div>
+      <div className="bg-surface rounded-lg p-5 border border-border animate-pulse flex flex-col justify-between h-36">
+        <div className="w-8 h-8 rounded-md bg-surface-2" />
         <div className="space-y-2 mt-4">
           <div className="w-24 h-3 bg-surface-2 rounded" />
           <div className="w-16 h-7 bg-surface-2 rounded" />
@@ -128,39 +123,32 @@ function KpiCardItem({ card, isSelected, onClick, loading }) {
       role="button"
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick(); } }}
-      className={`backdrop-blur-xl bg-surface/80 rounded-2xl p-4 border cursor-pointer group flex flex-col justify-between h-full shadow-md hover:shadow-xl transition-all duration-300 ${
+      className={`bg-surface rounded-lg p-4 sm:p-5 border cursor-pointer group flex flex-col justify-between h-full transition-colors select-none ${
         isSelected
-          ? 'ring-2 ring-primary/40 border-primary shadow-xs'
-          : 'border-border hover:border-primary/30 shadow-xs'
+          ? 'ring-2 ring-primary border-primary shadow-xs'
+          : 'border-border hover:border-border-strong shadow-card'
       }`}
     >
-      {/* Top Row: Icon Chip & Trend / Circular Ring */}
+      {/* Top Row: Icon in a Tinted Square + Verified Progress Ring (if verified card) */}
       <div className="flex items-center justify-between">
-        <div className={`w-8 h-8 rounded-lg flex items-center justify-center bg-surface-2 border border-border ${card.iconColor || 'text-primary'}`}>
+        <div className={`w-8 h-8 rounded-md flex items-center justify-center border ${card.iconSquare}`}>
           <Icon className="w-4 h-4 shrink-0" />
         </div>
 
-        {card.id === 'verified' ? (
+        {card.id === 'verified' && (
           <CircularProgressRing percentage={card.value} />
-        ) : (
-          <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border flex items-center gap-1 shrink-0 ${card.trendBadge}`}>
-            {card.trendPositive === true && <TrendingUp className="w-2.5 h-2.5 shrink-0" />}
-            {card.trendPositive === false && <ShieldAlert className="w-2.5 h-2.5 shrink-0" />}
-            <span>{card.trend}</span>
-          </span>
         )}
       </div>
 
-      {/* Metric Value */}
+      {/* Metric Content */}
       <div className="flex flex-col gap-1 mt-3">
-        <div className="text-xs font-medium text-text-muted">
+        <div className="text-sm font-medium text-text-muted">
           {card.title}
         </div>
-        <div className="text-2xl font-bold text-text tracking-tight flex items-baseline gap-1 font-sans tabular-nums">
-          <span>{animatedValue}</span>
-          {card.unit && <span className="text-xs font-normal text-text-muted">{card.unit}</span>}
+        <div className="text-[28px] leading-tight font-bold text-text tracking-tight font-sans tabular-nums">
+          {animatedValue}{card.unit}
         </div>
-        <p className="text-[11px] text-text-muted truncate" title={card.subtitle}>
+        <p className="text-xs text-text-muted truncate mt-0.5" title={card.subtitle}>
           {card.subtitle}
         </p>
       </div>
@@ -183,12 +171,9 @@ export default function OfficerKpiCards({
       title: 'Applications in Queue',
       value: kpis?.applicationsInQueue ?? 48,
       unit: '',
-      trend: kpis?.trends?.queue || '+4 today',
-      trendPositive: true,
       subtitle: 'EoA & New Inst Triage',
       icon: Inbox,
-      iconColor: 'text-primary',
-      trendBadge: 'bg-surface-2 text-text border-border',
+      iconSquare: 'bg-primary/10 border-primary/20 text-primary',
       filterTarget: 'ALL',
     },
     {
@@ -196,12 +181,9 @@ export default function OfficerKpiCards({
       title: 'Verified %',
       value: kpis?.verifiedPercentage !== undefined ? `${kpis.verifiedPercentage}%` : '72.5%',
       unit: '',
-      trend: kpis?.trends?.verified || '+5.2% this week',
-      trendPositive: true,
       subtitle: 'Authoritative Gateway Checked',
       icon: CheckCircle2,
-      iconColor: 'text-emerald-500',
-      trendBadge: 'bg-surface-2 text-text border-border',
+      iconSquare: 'bg-success-bg border-success-border text-success-text',
       filterTarget: 'Verified',
     },
     {
@@ -209,12 +191,9 @@ export default function OfficerKpiCards({
       title: 'Expired Documents',
       value: kpis?.expiredCount ?? 9,
       unit: '',
-      trend: kpis?.trends?.expired || '3 urgent renewals',
-      trendPositive: false,
       subtitle: 'Fire, Land & PWD NOCs',
       icon: Clock,
-      iconColor: 'text-amber-500',
-      trendBadge: 'bg-surface-2 text-text border-border',
+      iconSquare: 'bg-warning-bg border-warning-border text-warning-text',
       filterTarget: 'Expired',
     },
     {
@@ -222,12 +201,9 @@ export default function OfficerKpiCards({
       title: 'Mismatches Detected',
       value: kpis?.mismatchCount ?? 6,
       unit: '',
-      trend: kpis?.trends?.mismatches || '2 high critical',
-      trendPositive: false,
       subtitle: 'Bhoomi / AISHE / CBDT',
       icon: AlertTriangle,
-      iconColor: 'text-rose-500',
-      trendBadge: 'bg-surface-2 text-text border-border',
+      iconSquare: 'bg-danger-bg border-danger-border text-danger-text',
       filterTarget: 'Mismatch Detected',
     },
     {
@@ -235,18 +211,15 @@ export default function OfficerKpiCards({
       title: 'Pending Verification',
       value: kpis?.pendingVerificationCount ?? 14,
       unit: '',
-      trend: kpis?.trends?.pending || 'Awaiting state gateway',
-      trendPositive: null,
       subtitle: 'Queued with Backoff Retry',
       icon: RefreshCw,
-      iconColor: 'text-primary',
-      trendBadge: 'bg-surface-2 text-text border-border',
+      iconSquare: 'bg-info-bg border-info-border text-info-text',
       filterTarget: 'Verification Pending',
     },
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5 items-stretch">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5 sm:gap-4 items-stretch">
       {cards.map((card) => {
         const isSelected = selectedStatusFilter === card.filterTarget;
 

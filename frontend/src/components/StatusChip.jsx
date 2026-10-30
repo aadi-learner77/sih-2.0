@@ -18,9 +18,11 @@ import {
  * - Source Unavailable
  * - Manual Review Required
  * 
- * Clean, modern glassmorphism design: NO marker-highlighter backgrounds.
- * High-contrast text (black in light mode, white in dark mode), 
- * subtle neutral surface, and a precise status dot.
+ * Government Portal Design:
+ * - 24px fixed height
+ * - 12px / 600 font weight
+ * - Tinted background + 1px tinted border + colored dot + label
+ * - High contrast & readable in both light and dark themes
  */
 export default function StatusChip({ status, size = 'md' }) {
   const normStatus = (status || '').trim();
@@ -28,7 +30,8 @@ export default function StatusChip({ status, size = 'md' }) {
   let config = {
     label: normStatus || 'Verification Pending',
     icon: RefreshCw,
-    dot: 'bg-sky-500',
+    dot: 'bg-[#486581]',
+    themeClasses: 'bg-[#EBF1F7] dark:bg-[#1E2530] border-[#C8D6E5] dark:border-[#2D3949] text-[#2C4866] dark:text-[#93AEC9]',
   };
 
   switch (normStatus) {
@@ -36,7 +39,8 @@ export default function StatusChip({ status, size = 'md' }) {
       config = {
         label: 'Verified',
         icon: CheckCircle2,
-        dot: 'bg-emerald-500',
+        dot: 'bg-success',
+        themeClasses: 'bg-success-bg border-success-border text-success-text',
       };
       break;
 
@@ -44,7 +48,8 @@ export default function StatusChip({ status, size = 'md' }) {
       config = {
         label: 'Mismatch Detected',
         icon: AlertTriangle,
-        dot: 'bg-rose-500',
+        dot: 'bg-danger',
+        themeClasses: 'bg-danger-bg border-danger-border text-danger-text',
       };
       break;
 
@@ -52,7 +57,8 @@ export default function StatusChip({ status, size = 'md' }) {
       config = {
         label: 'Expired',
         icon: Clock,
-        dot: 'bg-amber-500',
+        dot: 'bg-warning',
+        themeClasses: 'bg-warning-bg border-warning-border text-warning-text',
       };
       break;
 
@@ -60,7 +66,8 @@ export default function StatusChip({ status, size = 'md' }) {
       config = {
         label: 'Verification Pending',
         icon: RefreshCw,
-        dot: 'bg-sky-500',
+        dot: 'bg-[#486581]',
+        themeClasses: 'bg-[#EBF1F7] dark:bg-[#1E2530] border-[#C8D6E5] dark:border-[#2D3949] text-[#2C4866] dark:text-[#93AEC9]',
       };
       break;
 
@@ -68,7 +75,8 @@ export default function StatusChip({ status, size = 'md' }) {
       config = {
         label: 'Source Unavailable',
         icon: ServerOff,
-        dot: 'bg-slate-400',
+        dot: 'bg-[#627D98]',
+        themeClasses: 'bg-surface-2 border-border text-text-muted',
       };
       break;
 
@@ -76,7 +84,8 @@ export default function StatusChip({ status, size = 'md' }) {
       config = {
         label: 'Manual Review Required',
         icon: UserCog,
-        dot: 'bg-primary',
+        dot: 'bg-info',
+        themeClasses: 'bg-info-bg border-info-border text-info-text',
       };
       break;
 
@@ -85,31 +94,36 @@ export default function StatusChip({ status, size = 'md' }) {
         config = {
           label: 'Mismatch Detected',
           icon: AlertTriangle,
-          dot: 'bg-rose-500',
+          dot: 'bg-danger',
+          themeClasses: 'bg-danger-bg border-danger-border text-danger-text',
         };
       } else if (/expired/i.test(normStatus)) {
         config = {
           label: 'Expired',
           icon: Clock,
-          dot: 'bg-amber-500',
+          dot: 'bg-warning',
+          themeClasses: 'bg-warning-bg border-warning-border text-warning-text',
         };
       } else if (/unavailable|timeout/i.test(normStatus)) {
         config = {
           label: 'Source Unavailable',
           icon: ServerOff,
-          dot: 'bg-slate-400',
+          dot: 'bg-[#627D98]',
+          themeClasses: 'bg-surface-2 border-border text-text-muted',
         };
       } else if (/manual|review/i.test(normStatus)) {
         config = {
           label: 'Manual Review Required',
           icon: UserCog,
-          dot: 'bg-primary',
+          dot: 'bg-info',
+          themeClasses: 'bg-info-bg border-info-border text-info-text',
         };
       } else if (/verif/i.test(normStatus)) {
         config = {
           label: 'Verified',
           icon: CheckCircle2,
-          dot: 'bg-emerald-500',
+          dot: 'bg-success',
+          themeClasses: 'bg-success-bg border-success-border text-success-text',
         };
       }
       break;
@@ -120,17 +134,17 @@ export default function StatusChip({ status, size = 'md' }) {
 
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-2/90 backdrop-blur-md text-text font-medium shadow-2xs transition-all ${
-        isSm ? 'px-2 py-0.5 text-[11px]' : 'px-2.5 py-1 text-xs'
-      }`}
+      className={`inline-flex items-center gap-1.5 rounded-full border h-6 select-none font-semibold transition-all ${
+        isSm ? 'px-2 text-[11px]' : 'px-2.5 text-[12px]'
+      } ${config.themeClasses}`}
     >
       <span 
         className={`status-dot w-2 h-2 rounded-full shrink-0 ${config.dot}`} 
         style={{ padding: 0, minWidth: '8px', minHeight: '8px' }}
         aria-hidden="true"
       />
-      <Icon className={`shrink-0 text-text-muted ${isSm ? 'w-3 h-3' : 'w-3.5 h-3.5'}`} />
-      <span className="font-semibold tracking-tight whitespace-nowrap text-text">{config.label}</span>
+      <Icon className={`shrink-0 opacity-80 ${isSm ? 'w-3 h-3' : 'w-3.5 h-3.5'}`} />
+      <span className="font-semibold tracking-tight whitespace-nowrap leading-none">{config.label}</span>
     </span>
   );
 }
