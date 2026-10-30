@@ -27,6 +27,7 @@ export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [currentRole, setCurrentRole] = useState('scrutiny_officer');
+  const [adminPreviewRole, setAdminPreviewRole] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
 
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -46,6 +47,11 @@ export default function App() {
     }
   });
 
+  // Calculate actual authenticated role vs active preview role
+  const actualUserRole = currentUser?.role || currentRole;
+  const isAdmin = actualUserRole === 'admin';
+  const effectiveRole = adminPreviewRole || actualUserRole;
+
   const handleToggleSidebarCollapse = () => {
     setIsSidebarCollapsed(prev => {
       const next = !prev;
@@ -62,6 +68,7 @@ export default function App() {
     setIsAuthenticated(false);
     setCurrentUser(null);
     setCurrentRole('scrutiny_officer');
+    setAdminPreviewRole(null);
     setApplications([]);
     setActiveApplication(null);
     setEvidenceLensData(null);
@@ -69,19 +76,28 @@ export default function App() {
     setSidebarCounts({ impossibilities: 0, advisoryFlags: 0 });
   };
 
-  const handleRoleChange = (newRole) => {
-    setCurrentRole(newRole);
-    if (currentUser) {
-      setCurrentUser(prev => ({ ...prev, role: newRole }));
+  // Only Admin can switch demo preview roles (A1)
+  const handleAdminSwitchRole = (newRole) => {
+    if (isAdmin) {
+      setAdminPreviewRole(newRole);
+      const allowed = ROLE_PERMITTED_TABS[newRole] || ROLE_PERMITTED_TABS.scrutiny_officer;
+      if (!allowed.includes(activeTab)) {
+        setActiveTab('dashboard');
+      }
+      loadData(newRole);
     }
-    const allowed = ROLE_PERMITTED_TABS[newRole] || ROLE_PERMITTED_TABS.scrutiny_officer;
+  };
+
+  const handleReturnToAdmin = () => {
+    setAdminPreviewRole(null);
+    const allowed = ROLE_PERMITTED_TABS.admin;
     if (!allowed.includes(activeTab)) {
       setActiveTab('dashboard');
     }
-    loadData(newRole);
+    loadData('admin');
   };
 
-  const loadData = async (role = currentRole) => {
+  const loadData = async (role = effectiveRole) => {
     setLoading(true);
     try {
       const apps = await api.getApplications();
@@ -89,16 +105,15 @@ export default function App() {
         setApplications(apps);
         setIsLiveMode(true);
 
-        // Select the application with the most findings or the highest regulatory risk
         const sortedApps = [...apps].sort((a, b) => {
           const findingsA = (a.advisory_flags_count || 0) + (a.impossibility_flags_count || 0) + (a.forensic_flags_count || 0);
           const findingsB = (b.advisory_flags_count || 0) + (b.impossibility_flags_count || 0) + (b.forensic_flags_count || 0);
           if (findingsB !== findingsA) {
-            return findingsB - findingsA; // Most findings first
+            return findingsB - findingsA;
           }
           const scoreA = a.preflight_readiness_score !== undefined ? a.preflight_readiness_score : 100;
           const scoreB = b.preflight_readiness_score !== undefined ? b.preflight_readiness_score : 100;
-          return scoreA - scoreB; // Lowest readiness first (highest risk)
+          return scoreA - scoreB;
         });
 
         const primary = sortedApps[0] || apps[0];
@@ -114,7 +129,6 @@ export default function App() {
           setEvidenceLensData(null);
         }
 
-        // Fetch dynamic counts from API for sidebar badges
         try {
           const [impRes, findingsRes, queueRes] = await Promise.allSettled([
             api.getImpossibilities(),
@@ -131,9 +145,7 @@ export default function App() {
             advisoryFlags: advCount,
             manualReview: queueCount
           });
-        } catch (_cntErr) {
-          // ignore count fetch error
-        }
+        } catch (_cntErr) {}
       } else {
         setApplications([]);
         setIsLiveMode(false);
@@ -160,7 +172,6 @@ export default function App() {
         setCurrentUser(user);
         setCurrentRole(user.role);
         setIsAuthenticated(true);
-        // Switch tab if not permitted for role
         const allowed = ROLE_PERMITTED_TABS[user.role] || ROLE_PERMITTED_TABS.scrutiny_officer;
         if (!allowed.includes(activeTab)) {
           setActiveTab('dashboard');
@@ -180,14 +191,12 @@ export default function App() {
   useEffect(() => {
     checkAuth();
 
-    // Listen for 401 unauthorized events from Axios interceptor
     const handleUnauthorized = () => {
       console.warn('Session expired or unauthorized: redirecting to login');
       handleLogout();
     };
     window.addEventListener('pramaan_unauthorized', handleUnauthorized);
 
-    // Periodic health check to keep Live Backend API status truthful
     let isMounted = true;
     const checkBackendHealth = async () => {
       try {
@@ -210,6 +219,7 @@ export default function App() {
   const handleLoginSuccess = async (userProfile) => {
     setCurrentUser(userProfile);
     setCurrentRole(userProfile.role);
+    setAdminPreviewRole(null);
     setIsAuthenticated(true);
 
     const allowed = ROLE_PERMITTED_TABS[userProfile.role] || ROLE_PERMITTED_TABS.scrutiny_officer;
@@ -234,7 +244,6 @@ export default function App() {
     }
   };
 
-  // If verifying authentication on startup, show elegant loading screen
   if (authLoading) {
     return (
       <div className="min-h-screen app-shell-bg flex flex-col items-center justify-center text-text">
@@ -246,12 +255,11 @@ export default function App() {
     );
   }
 
-  // If not authenticated, render Login Page
   if (!isAuthenticated) {
     return <LoginPage onLoginSuccess={handleLoginSuccess} />;
   }
 
-  const permittedTabs = ROLE_PERMITTED_TABS[currentUser?.role || currentRole] || ROLE_PERMITTED_TABS.scrutiny_officer;
+  const permittedTabs = ROLE_PERMITTED_TABS[effectiveRole] || ROLE_PERMITTED_TABS.scrutiny_officer;
   const isTabAllowed = permittedTabs.includes(activeTab);
 
   return (
@@ -259,8 +267,11 @@ export default function App() {
       {/* Top AICTE Navigation */}
       <Navbar 
         currentUser={currentUser}
-        currentRole={currentRole}
-        onRoleChange={handleRoleChange}
+        currentRole={effectiveRole}
+        isAdmin={isAdmin}
+        adminPreviewRole={adminPreviewRole}
+        onAdminSwitchRole={handleAdminSwitchRole}
+        onReturnToAdmin={handleReturnToAdmin}
         onLogout={handleLogout}
         activeApplication={activeApplication}
         isLiveMode={isLiveMode}
@@ -272,14 +283,14 @@ export default function App() {
       />
 
       <div className="flex-1 min-h-0 flex overflow-hidden relative">
-        {/* Left Navigation Sidebar (Role-Aware, Collapsible to Icon Rail, Responsive Mobile Drawer) */}
+        {/* Left Navigation Sidebar */}
         <Sidebar 
           activeTab={activeTab} 
           setActiveTab={(tab) => {
             setActiveTab(tab);
             setIsMobileMenuOpen(false);
           }}
-          currentRole={currentRole}
+          currentRole={effectiveRole}
           counts={sidebarCounts}
           isOpen={isMobileMenuOpen}
           onClose={() => setIsMobileMenuOpen(false)}
@@ -288,7 +299,7 @@ export default function App() {
         />
 
         {/* Main Content Workspace */}
-        <main className="flex-1 overflow-y-auto min-h-0 bg-transparent p-3 sm:p-5 lg:p-6 pb-12 w-full min-w-0 scrollbar-slim">
+        <main className="flex-1 overflow-y-auto min-h-0 bg-transparent p-3 sm:p-5 lg:p-6 pb-12 w-full min-w-0 scrollbar-slim relative z-10">
           <div className="w-full max-w-[1600px] mx-auto flex flex-col gap-4 sm:gap-6 min-w-0">
             {!isTabAllowed ? (
               <div 
@@ -300,7 +311,7 @@ export default function App() {
                 </div>
                 <h2 className="text-xl font-bold text-text">Access Restricted</h2>
                 <p className="text-sm text-text-muted max-w-md">
-                  Your active role (<span className="font-semibold text-rose-500 capitalize">{currentRole?.replace('_', ' ')}</span>) is not authorized to access the <strong>{activeTab}</strong> regulatory module directly.
+                  Your active role (<span className="font-semibold text-rose-500 capitalize">{effectiveRole?.replace('_', ' ')}</span>) is not authorized to access the <strong>{activeTab}</strong> regulatory module directly.
                 </p>
                 <button
                   id="return-to-dashboard-btn"
@@ -317,9 +328,9 @@ export default function App() {
                     applications={isLiveMode ? applications : []}
                     onSelectApplication={handleSelectApplication}
                     onNavigateTab={setActiveTab}
-                    onRefresh={() => loadData(currentRole)}
+                    onRefresh={() => loadData(effectiveRole)}
                     isLiveMode={isLiveMode}
-                    currentRole={currentRole}
+                    currentRole={effectiveRole}
                     currentUser={currentUser}
                   />
                 )}
@@ -335,7 +346,7 @@ export default function App() {
                       if (activeApplication) {
                         handleSelectApplication(activeApplication);
                       } else {
-                        loadData(currentRole);
+                        loadData(effectiveRole);
                       }
                     }}
                   />
