@@ -151,16 +151,16 @@ export default function Sidebar({
 
       {/* Main Aside Component */}
       <aside className={`
-        fixed inset-y-0 left-0 z-50 bg-surface/85 backdrop-blur-xl border-r border-border text-text
-        flex flex-col justify-between h-full overflow-y-auto p-3 pb-6 gap-3 scrollbar-slim shadow-xl transition-[width] duration-200 ease-in-out
+        fixed inset-y-0 left-0 z-50 bg-sidebar-bg border-r border-border text-text
+        flex flex-col justify-between h-full overflow-y-auto p-3 pb-6 gap-4 scrollbar-slim transition-[width] duration-200 ease-in-out select-none
         lg:relative lg:z-0 lg:shrink-0 lg:shadow-none lg:translate-x-0 lg:flex
         ${isOpen ? 'translate-x-0 w-[260px]' : '-translate-x-full lg:translate-x-0'}
         ${isCollapsed ? 'lg:w-[72px] lg:px-2' : 'lg:w-[260px]'}
       `}>
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-4">
           
           {/* Top Role Identity: Expanded = Name + Dot; Collapsed = Dot only */}
-          <div className={`px-2.5 py-2 bg-surface-2 rounded-xl border border-border flex items-center shrink-0 transition-all ${
+          <div className={`px-2.5 py-2 bg-surface-2 rounded-lg border border-border flex items-center shrink-0 transition-all ${
             isCollapsed ? 'lg:justify-center lg:px-1' : 'justify-between'
           }`}>
             {isCollapsed ? (
@@ -173,7 +173,7 @@ export default function Sidebar({
             ) : null}
 
             <div className={`min-w-0 ${isCollapsed ? 'lg:hidden' : 'block'}`}>
-              <div className="text-[10px] uppercase font-bold tracking-wider text-text-muted">
+              <div className="text-[10px] uppercase font-bold tracking-wider text-text-subtle">
                 Role Context
               </div>
               <div className="text-xs font-bold text-text truncate">
@@ -195,25 +195,26 @@ export default function Sidebar({
             </div>
           </div>
 
-          {/* Grouped Navigation Sections */}
-          <nav className="flex flex-col gap-3">
+          {/* Grouped Navigation Sections (20px group spacing, 4px item gap, 40px item height) */}
+          <nav className="flex flex-col space-y-5">
             {navSections.map((section) => {
               const permittedItems = section.items.filter(item => item.roles.includes(currentRole));
               if (permittedItems.length === 0) return null;
 
               return (
-                <div key={section.title} className="space-y-0.5">
-                  {/* Group Title (Hidden on collapsed desktop rail) */}
-                  <div className={`text-[10px] font-bold tracking-wider text-text-muted uppercase px-2 mb-1 ${
+                <div key={section.title} className="space-y-1">
+                  {/* Group Title (11-12px, 600, uppercase with slight tracking, text-subtle) */}
+                  <div className={`text-[11px] font-semibold tracking-wider text-text-subtle uppercase px-3 mb-1.5 ${
                     isCollapsed ? 'lg:hidden' : 'block'
                   }`}>
                     {section.title}
                   </div>
 
-                  <div className="flex flex-col gap-0.5">
+                  <div className="flex flex-col gap-1">
                     {permittedItems.map((item) => {
                       const Icon = item.icon;
                       const isActive = activeTab === item.id;
+                      const isAlertBadge = item.id === 'evidence-lens' || item.id === 'manual-review-queue';
 
                       return (
                         <button
@@ -221,32 +222,36 @@ export default function Sidebar({
                           id={`sidebar-tab-${item.id}`}
                           onClick={() => handleItemClick(item.id)}
                           title={item.label}
-                          className={`w-full flex items-center rounded-xl text-left transition-colors group cursor-pointer relative ${
+                          className={`w-full flex items-center rounded-lg text-left transition-colors group cursor-pointer relative h-10 ${
                             isCollapsed 
-                              ? 'lg:justify-center lg:p-2.5 lg:h-10' 
-                              : 'px-3 py-2 justify-between gap-2 h-10'
+                              ? 'lg:justify-center lg:p-2' 
+                              : 'px-3 py-2 justify-between gap-2'
                           } ${
                             isActive
-                              ? 'bg-primary/10 border-l-[3px] border-l-primary text-primary font-bold'
-                              : 'text-text-muted hover:text-text hover:bg-surface-2 border-l-[3px] border-l-transparent'
+                              ? 'bg-primary/10 border-l-[3px] border-l-primary text-primary dark:text-white font-semibold'
+                              : 'text-text-muted hover:text-text hover:bg-surface-2 border-l-[3px] border-l-transparent font-medium'
                           }`}
                         >
                           <div className={`flex items-center min-w-0 ${isCollapsed ? 'lg:justify-center' : 'space-x-2.5 flex-1'}`}>
                             <Icon className={`w-4 h-4 shrink-0 transition-colors ${
-                              isActive ? 'text-primary' : 'text-text-muted group-hover:text-text'
+                              isActive ? 'text-primary dark:text-white' : 'text-text-muted group-hover:text-text'
                             }`} />
                             
-                            {/* Label for expanded mode */}
-                            <span className={`text-xs truncate ${
+                            {/* Label for expanded mode (14px/400-500) */}
+                            <span className={`text-[13px] truncate ${
                               isCollapsed ? 'lg:hidden' : 'block'
                             }`}>
                               {item.label}
                             </span>
                           </div>
 
-                          {/* Badge for expanded mode only */}
+                          {/* Badge for expanded mode: small neutral pill (surface-2 background, text-muted), except alerts which use danger tint */}
                           {item.badge && !isCollapsed && (
-                            <span className="text-[10px] px-2 py-0.5 rounded-full border border-border bg-surface-2 text-text font-mono font-medium shrink-0 shadow-2xs">
+                            <span className={`text-[10px] px-2 py-0.5 rounded-full border font-mono font-medium shrink-0 shadow-2xs ${
+                              isAlertBadge
+                                ? 'bg-danger/10 text-danger border-danger/25'
+                                : 'bg-surface-2 text-text-muted border-border'
+                            }`}>
                               {item.badge}
                             </span>
                           )}
