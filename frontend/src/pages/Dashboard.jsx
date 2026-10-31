@@ -18,6 +18,8 @@ import {
 import OfficerKpiCards from '../components/OfficerKpiCards';
 import StatusChip from '../components/StatusChip';
 import DemoDataBadge from '../components/DemoDataBadge';
+import ExpandableFaq from '../components/ui/ExpandableFaq';
+import LastUpdated from '../components/ui/LastUpdated';
 import { api } from '../services/api';
 import { 
   MOCK_TRIAGE_APPLICATIONS, 
@@ -1048,6 +1050,15 @@ export default function Dashboard({
           </div>
         </div>
       )}
+
+      {/* Accessible System Architecture & Regulatory Defense FAQ (Item 11) */}
+      <ExpandableFaq className="mt-8" />
+
+      {/* Dashboard Footer with LastUpdated (Item 12) */}
+      <div className="flex flex-col sm:flex-row justify-between items-center py-4 text-xs text-text-muted border-t border-border mt-6 gap-2 select-none">
+        <span>AICTE Regulatory Decision Support • Approved Process Handbook (APH 2025-26)</span>
+        <LastUpdated />
+      </div>
 
     </div>
   );

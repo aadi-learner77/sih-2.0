@@ -754,18 +754,14 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
                             <Fingerprint className="w-3.5 h-3.5 text-primary" />
                             <span>Payload Hash (SHA-256)</span>
                           </span>
-                          <button
-                            onClick={() => handleCopy(receipt.payload_hash, `payload_${receipt.receipt_index}`)}
-                            className="text-text-subtle hover:text-text-muted flex items-center space-x-1 text-[10px] cursor-pointer"
+                          <CopyButton
+                            text={receipt.payload_hash || ''}
                             title="Copy full 64-char hex hash"
-                          >
-                            {copiedHash === `payload_${receipt.receipt_index}` ? (
-                              <Check className="w-3 h-3 text-emerald-600" />
-                            ) : (
-                              <Copy className="w-3 h-3" />
-                            )}
-                            <span>{copiedHash === `payload_${receipt.receipt_index}` ? 'Copied' : 'Copy'}</span>
-                          </button>
+                            label="Copy"
+                            copiedLabel="Copied"
+                            className="text-text-subtle hover:text-text-muted text-[10px] cursor-pointer"
+                            iconClassName="w-3 h-3"
+                          />
                         </div>
                         <div className="break-all font-mono text-[11px] leading-relaxed">
                           {receipt.payload_hash}
@@ -1073,17 +1069,13 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
                             {action.receipt_hash ? `${action.receipt_hash.substring(0, 10)}...${action.receipt_hash.substring(action.receipt_hash.length - 4)}` : 'N/A'}
                           </span>
                           {action.receipt_hash && (
-                            <button
-                              onClick={() => handleCopy(action.receipt_hash, `act-${action.id || idx}`)}
-                              className="text-text-subtle hover:text-primary transition-colors p-1"
+                            <CopyButton
+                              text={action.receipt_hash}
                               title="Copy receipt hash"
-                            >
-                              {copiedHash === `act-${action.id || idx}` ? (
-                                <Check className="w-3.5 h-3.5 text-emerald-600" />
-                              ) : (
-                                <Copy className="w-3.5 h-3.5" />
-                              )}
-                            </button>
+                              showLabel={false}
+                              className="text-text-subtle hover:text-primary transition-colors p-1"
+                              iconClassName="w-3.5 h-3.5"
+                            />
                           )}
                         </div>
                       </td>
@@ -1167,17 +1159,13 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
                             {item.response_hash ? `${item.response_hash.substring(0, 10)}...${item.response_hash.substring(item.response_hash.length - 4)}` : 'N/A'}
                           </span>
                           {item.response_hash && (
-                            <button
-                              onClick={() => handleCopy(item.response_hash, `rev-${item.id || idx}`)}
-                              className="text-text-subtle hover:text-primary transition-colors p-1"
+                            <CopyButton
+                              text={item.response_hash}
                               title="Copy response hash"
-                            >
-                              {copiedHash === `rev-${item.id || idx}` ? (
-                                <Check className="w-3.5 h-3.5 text-emerald-600" />
-                              ) : (
-                                <Copy className="w-3.5 h-3.5" />
-                              )}
-                            </button>
+                              showLabel={false}
+                              className="text-text-subtle hover:text-primary transition-colors p-1"
+                              iconClassName="w-3.5 h-3.5"
+                            />
                           )}
                         </div>
                       </td>

@@ -8,9 +8,12 @@ import {
   X,
   ChevronDown,
   UserCheck,
-  Monitor
+  Monitor,
+  Search
 } from 'lucide-react';
 import AlertBellDrawer from './AlertBellDrawer';
+import ConfirmModal from './ui/ConfirmModal';
+import SiteSearchModal from './ui/SiteSearchModal';
 import { api } from '../services/api';
 
 /**
@@ -68,14 +71,19 @@ export default function Navbar({
   onLogout, 
   activeApplication, 
   isLiveMode = false,
+  isMobileMenuOpen = false,
   onToggleMobileMenu,
   onToggleSidebarCollapse,
   isScrolled = false,
-  scrollProgress = 0
+  scrollProgress = 0,
+  onSelectTab
 }) {
   const [theme, setTheme] = useState(() => {
     if (typeof window !== 'undefined') {
-      return document.documentElement.getAttribute('data-theme') || localStorage.getItem('theme') || 'light';
+      const saved = localStorage.getItem('theme');
+      if (saved === 'dark' || saved === 'light') return saved;
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      return prefersDark ? 'dark' : 'light';
     }
     return 'light';
   });
@@ -89,11 +97,25 @@ export default function Navbar({
 
   const [ledgerStatus, setLedgerStatus] = useState({ intact: true, blocks: 7 });
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isAdvisoryDismissed, setIsAdvisoryDismissed] = useState(() => {
     return typeof window !== 'undefined' && sessionStorage.getItem('pramaan_advisory_dismissed') === 'true';
   });
 
   const userMenuRef = useRef(null);
+
+  // Global Ctrl/Cmd + K shortcut for Site Search palette
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setIsSearchOpen(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   const applyTheme = (targetTheme) => {
     setTheme(targetTheme);
@@ -243,6 +265,8 @@ export default function Navbar({
                 }
               }}
               aria-label="Toggle navigation sidebar"
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="sidebar-nav"
               title="Toggle sidebar"
               className="p-2 rounded-lg text-text-muted hover:text-text hover:bg-surface-2 transition-colors cursor-pointer"
             >
@@ -323,6 +347,18 @@ export default function Navbar({
 
             {/* Operational Alert Bell with Drawer */}
             <AlertBellDrawer currentRole={currentRole} />
+
+            {/* Quick Site Search Button (Ctrl+K) */}
+            <button
+              type="button"
+              id="site-search-btn"
+              onClick={() => setIsSearchOpen(true)}
+              aria-label="Search navigation modules (Ctrl+K)"
+              title="Search modules (Ctrl+K)"
+              className="w-9 h-9 rounded-lg border border-border bg-surface-2 hover:bg-surface text-text flex items-center justify-center transition-colors cursor-pointer shrink-0 shadow-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            >
+              <Search className="w-4 h-4 text-text-muted hover:text-text" />
+            </button>
 
             {/* Compact 36px Icon Theme Toggle with Sun/Moon 18px morph */}
             <button
@@ -469,7 +505,7 @@ export default function Navbar({
                         id="user-menu-signout-btn"
                         onClick={() => {
                           setIsUserMenuOpen(false);
-                          onLogout();
+                          setShowLogoutConfirm(true);
                         }}
                         className="w-full flex items-center space-x-2 px-3 py-2 rounded-lg text-danger hover:bg-danger/10 transition-colors font-semibold cursor-pointer"
                       >
@@ -485,6 +521,28 @@ export default function Navbar({
           </div>
         </div>
       </header>
+
+      {/* Reusable Accessible Confirmation Modal for Sign Out */}
+      <ConfirmModal
+        isOpen={showLogoutConfirm}
+        onClose={() => setShowLogoutConfirm(false)}
+        onConfirm={() => {
+          setShowLogoutConfirm(false);
+          onLogout && onLogout();
+        }}
+        title="Sign Out of PRAMAAN-X"
+        description="Are you sure you wish to end your active AICTE scrutiny session? Any unsaved edits will be discarded."
+        confirmText="Sign Out"
+        variant="danger"
+      />
+
+      {/* Accessible Command Palette Site Search (Ctrl+K) */}
+      <SiteSearchModal
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+        onSelectTab={onSelectTab}
+        currentRole={currentRole}
+      />
 
       {/* Single Line Advisory Notice (Clean, No Highlighter) */}
       {!isAdvisoryDismissed && (

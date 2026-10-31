@@ -33,10 +33,32 @@ export default function Sidebar({
   const [pillStyle, setPillStyle] = useState({ top: 0, height: 40, opacity: 0 });
   const navRef = useRef(null);
 
+  const asideRef = useRef(null);
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape' && isOpen) {
         onClose();
+        return;
+      }
+
+      // Focus trap when mobile drawer is open
+      if (isOpen && e.key === 'Tab' && asideRef.current && window.innerWidth < 1024) {
+        const focusable = asideRef.current.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length === 0) return;
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -171,7 +193,11 @@ export default function Sidebar({
 
       {/* Main Aside Component (Glass Surface + Smooth Rail Transitions) */}
       <aside 
+        ref={asideRef}
         id="sidebar-nav"
+        role={isOpen ? 'dialog' : undefined}
+        aria-modal={isOpen ? 'true' : undefined}
+        aria-label="Navigation sidebar"
         className={`
         fixed inset-y-0 left-0 z-50 glass-surface border-r border-border text-text
         flex flex-col justify-between h-full overflow-y-auto p-3 pb-6 gap-4 scrollbar-slim sidebar-scroll-mask transition-[width] duration-200 ease-in-out select-none

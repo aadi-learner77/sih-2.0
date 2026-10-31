@@ -187,6 +187,8 @@ export default function LoginPage({ onLoginSuccess }) {
   const [inputHighlight, setInputHighlight] = useState(false);
 
   const typingTimerRef = useRef(null);
+  const emailInputRef = useRef(null);
+  const passwordInputRef = useRef(null);
   const t = TRANSLATIONS[lang] || TRANSLATIONS.en;
 
   useEffect(() => {
@@ -251,6 +253,11 @@ export default function LoginPage({ onLoginSuccess }) {
           : 'Please enter both email and password.'
       );
       triggerCardShake();
+      if (!submitEmail) {
+        emailInputRef.current?.focus();
+      } else {
+        passwordInputRef.current?.focus();
+      }
       return;
     }
 
@@ -418,6 +425,7 @@ export default function LoginPage({ onLoginSuccess }) {
               {/* Inline Error Message */}
               {errorMessage && (
                 <div 
+                  id="login-error-alert"
                   role="alert" 
                   aria-live="polite"
                   className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-start space-x-2 animate-shake"
@@ -456,11 +464,14 @@ export default function LoginPage({ onLoginSuccess }) {
                       }`} 
                     />
                     <input
+                      ref={emailInputRef}
                       id="login-email"
                       name="email"
                       type="email"
                       autoComplete="email"
                       required
+                      aria-invalid={!!errorMessage}
+                      aria-describedby={errorMessage ? "login-error-alert" : undefined}
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       onFocus={() => setFocusedInput('email')}
@@ -496,11 +507,14 @@ export default function LoginPage({ onLoginSuccess }) {
                       }`} 
                     />
                     <input
+                      ref={passwordInputRef}
                       id="login-password"
                       name="password"
                       type={showPassword ? 'text' : 'password'}
                       autoComplete="current-password"
                       required
+                      aria-invalid={!!errorMessage}
+                      aria-describedby={errorMessage ? "login-error-alert" : undefined}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       onKeyDown={handleKeyModifier}
@@ -519,6 +533,7 @@ export default function LoginPage({ onLoginSuccess }) {
                       onClick={() => setShowPassword(!showPassword)}
                       className="login-eye-toggle-btn"
                       aria-label={showPassword ? 'Hide password' : 'Show password'}
+                      aria-pressed={showPassword}
                     >
                       <div className="transition-transform duration-200 hover:scale-110">
                         {showPassword ? (

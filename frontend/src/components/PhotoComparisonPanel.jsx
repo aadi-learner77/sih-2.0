@@ -204,6 +204,10 @@ export default function PhotoComparisonPanel({
                     <img 
                       src={origUrl} 
                       alt={original_photo.facility_name} 
+                      width="400"
+                      height="300"
+                      loading="lazy"
+                      decoding="async"
                       onError={() => setOrigImgError(true)}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
@@ -247,6 +251,10 @@ export default function PhotoComparisonPanel({
                     <img 
                       src={dupUrl} 
                       alt={duplicate_photo.facility_name} 
+                      width="400"
+                      height="300"
+                      loading="lazy"
+                      decoding="async"
                       onError={() => setDupImgError(true)}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
@@ -300,6 +308,10 @@ export default function PhotoComparisonPanel({
                 <img 
                   src={origUrl} 
                   alt="Original" 
+                  width="400"
+                  height="300"
+                  loading="lazy"
+                  decoding="async"
                   onError={() => setOrigImgError(true)}
                   className="absolute inset-0 w-full h-full object-cover"
                 />
@@ -308,6 +320,10 @@ export default function PhotoComparisonPanel({
                 <img 
                   src={dupUrl} 
                   alt="Duplicate" 
+                  width="400"
+                  height="300"
+                  loading="lazy"
+                  decoding="async"
                   onError={() => setDupImgError(true)}
                   className="absolute inset-0 w-full h-full object-cover mix-blend-difference"
                   style={{ opacity: overlayOpacity / 100 }}
@@ -378,6 +394,10 @@ export default function PhotoComparisonPanel({
                 <img 
                   src={dupUrl} 
                   alt="Duplicate Photo" 
+                  width="400"
+                  height="300"
+                  loading="lazy"
+                  decoding="async"
                   onError={() => setDupImgError(true)}
                   className="absolute inset-0 w-full h-full object-cover"
                 />
@@ -390,6 +410,10 @@ export default function PhotoComparisonPanel({
                   <img 
                     src={origUrl} 
                     alt="Original Photo" 
+                    width="400"
+                    height="300"
+                    loading="lazy"
+                    decoding="async"
                     onError={() => setOrigImgError(true)}
                     className="absolute inset-0 w-full h-full object-cover max-w-none"
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}

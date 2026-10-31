@@ -203,19 +203,24 @@ export default function RulesCatalogView({ onSelectForSimulation }) {
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-border">
                   <div className="flex flex-wrap items-center gap-2">
                     {/* Official Clause Citation Badge */}
-                    <span 
-                      onClick={() => handleCopyCitation(citation, rule.id)}
-                      className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-xl text-xs font-mono font-bold bg-purple-50 text-purple-800 border border-purple-200 hover:bg-purple-100 cursor-pointer transition-colors"
+                    <CopyButton
+                      text={citation}
                       title="Click to copy statutory citation"
+                      showLabel={false}
+                      className="px-3 py-1 rounded-xl text-xs font-mono font-bold bg-purple-50 text-purple-800 border border-purple-200 hover:bg-purple-100 cursor-pointer transition-colors"
                     >
-                      <Scale className="w-3.5 h-3.5 text-purple-600" />
-                      <span>[{citation}]</span>
-                      {copiedCitation === rule.id ? (
-                        <Check className="w-3 h-3 text-emerald-600 ml-1" />
-                      ) : (
-                        <Copy className="w-3 h-3 text-purple-400 ml-1" />
+                      {(copied) => (
+                        <>
+                          <Scale className="w-3.5 h-3.5 text-purple-600" />
+                          <span>[{citation}]</span>
+                          {copied ? (
+                            <Check className="w-3 h-3 text-emerald-600 ml-1" />
+                          ) : (
+                            <Copy className="w-3 h-3 text-purple-400 ml-1" />
+                          )}
+                        </>
                       )}
-                    </span>
+                    </CopyButton>
 
                     <span className="text-[10px] font-mono text-text-subtle bg-surface-2 px-2 py-0.5 rounded">
                       {rule.rule_code}

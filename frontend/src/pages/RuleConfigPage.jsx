@@ -799,8 +799,19 @@ export default function RuleConfigPage() {
                 value={confirmInput}
                 onChange={(e) => setConfirmInput(e.target.value)}
                 placeholder="CONFIRM"
-                className="w-full text-xs font-mono font-bold p-2.5 rounded-xl border border-border focus:outline-none focus:ring-2 focus:ring-purple-500"
+                aria-invalid={confirmInput.length > 0 && confirmInput.trim().toUpperCase() !== 'CONFIRM'}
+                aria-describedby={confirmInput.length > 0 && confirmInput.trim().toUpperCase() !== 'CONFIRM' ? "publish-confirm-error" : undefined}
+                className={`w-full text-xs font-mono font-bold p-2.5 rounded-xl border focus:outline-none focus:ring-2 ${
+                  confirmInput.length > 0 && confirmInput.trim().toUpperCase() !== 'CONFIRM'
+                    ? 'border-rose-500 ring-rose-500/20 text-rose-900 bg-rose-50/30'
+                    : 'border-border focus:ring-purple-500'
+                }`}
               />
+              {confirmInput.length > 0 && confirmInput.trim().toUpperCase() !== 'CONFIRM' && (
+                <p id="publish-confirm-error" className="text-[11px] text-rose-600 font-medium">
+                  Please type CONFIRM exactly to authorize rule deployment.
+                </p>
+              )}
             </div>
 
             {/* Modal Actions */}

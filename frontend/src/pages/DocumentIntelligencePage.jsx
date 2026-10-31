@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react';
+import CopyButton from '../components/ui/CopyButton';
 import { 
   Upload, 
   AlertTriangle, 
   ZoomIn, 
   ZoomOut, 
   RotateCcw, 
-  Copy, 
-  Check, 
   Search, 
   RefreshCw, 
   Info, 
@@ -95,7 +94,6 @@ export default function DocumentIntelligencePage({ onNavigateTab, onSelectApplic
   const [selectedFieldKey, setSelectedFieldKey] = useState(null);
   const [hoveredFieldKey, setHoveredFieldKey] = useState(null);
   const [pulsingFieldKey, setPulsingFieldKey] = useState(null);
-  const [copiedText, setCopiedText] = useState(false);
   const [ocrSearchQuery, setOcrSearchQuery] = useState('');
   const [activeViewMode, setActiveViewMode] = useState('visual'); // 'visual' | 'text'
 
@@ -321,14 +319,6 @@ export default function DocumentIntelligencePage({ onNavigateTab, onSelectApplic
 
   const handleDragOver = (e) => {
     e.preventDefault();
-  };
-
-  // Copy full OCR text
-  const handleCopyText = () => {
-    if (!documentResult?.full_extracted_text) return;
-    navigator.clipboard.writeText(documentResult.full_extracted_text);
-    setCopiedText(true);
-    setTimeout(() => setCopiedText(false), 2000);
   };
 
   // Zoom controls (CSS transform scale)
@@ -804,14 +794,12 @@ export default function DocumentIntelligencePage({ onNavigateTab, onSelectApplic
                         className="w-full h-10 bg-surface border border-border rounded-lg pl-9 pr-3 text-xs text-text placeholder-muted focus:outline-none focus:ring-1 focus:ring-primary"
                       />
                     </div>
-                    <button
-                      type="button"
-                      onClick={handleCopyText}
-                      className="h-10 px-3.5 bg-surface border border-border hover:bg-surface-2 rounded-lg text-xs font-semibold text-text flex items-center space-x-1.5 cursor-pointer shadow-2xs transition-colors"
-                    >
-                      {copiedText ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
-                      <span>{copiedText ? 'Copied' : 'Copy Text'}</span>
-                    </button>
+                    <CopyButton
+                      text={documentResult?.full_extracted_text || ''}
+                      label="Copy Text"
+                      copiedLabel="Copied"
+                      className="h-10 px-3.5 bg-surface border border-border hover:bg-surface-2 rounded-lg text-xs font-semibold text-text shadow-2xs transition-colors"
+                    />
                   </div>
 
                   <pre className="p-4 bg-surface border border-border rounded-lg text-xs font-mono text-text whitespace-pre-wrap max-h-[500px] overflow-y-auto leading-relaxed">

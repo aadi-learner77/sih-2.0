@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { 
   Clock, 
   ShieldAlert, 
@@ -44,6 +44,8 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
   const [resolveNotes, setResolveNotes] = useState('');
   const [resolving, setResolving] = useState(false);
   const [resolveSuccessMsg, setResolveSuccessMsg] = useState(null);
+  const [resolveErrorMsg, setResolveErrorMsg] = useState('');
+  const resolveNoteRef = useRef(null);
 
   // Close modal on Esc
   useEffect(() => {
@@ -171,6 +173,12 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
 
   const handleResolveSubmit = async () => {
     if (!resolveItem) return;
+    if (!resolveNotes.trim() || resolveNotes.trim().length < 10) {
+      setResolveErrorMsg('A factual officer explanatory note (minimum 10 characters) is mandatory.');
+      resolveNoteRef.current?.focus();
+      return;
+    }
+    setResolveErrorMsg('');
     setResolving(true);
     try {
       await api.resolveQueueItem(resolveItem.queue_id, {
@@ -330,9 +338,17 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
       {/* 3. Ticket Cards List */}
       <div className="space-y-3.5">
         {loading ? (
-          <div className="bg-surface border border-border rounded-xl p-10 text-center text-text-muted space-y-2">
-            <RefreshCw className="w-6 h-6 animate-spin mx-auto text-primary" />
-            <p className="text-xs font-semibold">Synchronizing with review queue...</p>
+          <div className="space-y-3" role="status" aria-label="Loading verification tickets">
+            {[1, 2, 3].map((n) => (
+              <div key={n} className="bg-surface border border-border rounded-xl p-5 space-y-3 shadow-xs">
+                <div className="flex justify-between items-center">
+                  <Skeleton width="180px" height="18px" />
+                  <Skeleton width="90px" height="22px" variant="rectangular" />
+                </div>
+                <Skeleton width="75%" height="14px" />
+                <Skeleton width="45%" height="14px" />
+              </div>
+            ))}
           </div>
         ) : filteredItems.length === 0 ? (
           <div className="bg-surface border border-border rounded-xl p-10 text-center text-text-muted space-y-2">
@@ -413,9 +429,13 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
                           <span className="bg-surface px-1.5 py-0.5 rounded border border-border text-text">
                             {item.request_hash ? `${item.request_hash.substring(0, 8)}...` : 'N/A'}
                           </span>
-                          <button onClick={() => handleCopy(item.request_hash, `req-${item.queue_id}`)} className="text-text-muted hover:text-text p-0.5 cursor-pointer" title="Copy Hash">
-                            {copiedHash === `req-${item.queue_id}` ? <Check className="w-3 h-3 text-emerald-500" /> : <Copy className="w-3 h-3" />}
-                          </button>
+                          <CopyButton
+                            text={item.request_hash || ''}
+                            title="Copy Hash"
+                            showLabel={false}
+                            className="text-text-muted hover:text-text p-0.5 cursor-pointer"
+                            iconClassName="w-3 h-3"
+                          />
                         </div>
                       </div>
                     </div>
@@ -577,13 +597,30 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
                   </span>
                 </div>
                 <textarea
+                  ref={resolveNoteRef}
                   id="resolve-officer-note"
                   value={resolveNotes}
-                  onChange={(e) => setResolveNotes(e.target.value)}
+                  onChange={(e) => {
+                    setResolveNotes(e.target.value);
+                    if (resolveErrorMsg && e.target.value.trim().length >= 10) {
+                      setResolveErrorMsg('');
+                    }
+                  }}
+                  aria-invalid={!!resolveErrorMsg}
+                  aria-describedby={resolveErrorMsg ? "resolve-note-error" : undefined}
                   placeholder="State factual grounds, authoritative portal verification result, or terms..."
                   rows={3}
-                  className="w-full bg-surface-2 border border-border rounded-lg p-3 text-xs text-text placeholder-text-subtle focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent resize-none"
+                  className={`w-full bg-surface-2 border rounded-lg p-3 text-xs text-text placeholder-text-subtle outline-none focus:ring-2 resize-none ${
+                    resolveErrorMsg 
+                      ? 'border-rose-500 ring-2 ring-rose-500/20' 
+                      : 'border-border focus:ring-accent/40 focus:border-accent'
+                  }`}
                 />
+                {resolveErrorMsg && (
+                  <p id="resolve-note-error" className="text-[11px] text-rose-600 font-medium pt-1">
+                    {resolveErrorMsg}
+                  </p>
+                )}
               </div>
 
               <div className="text-[11px] text-text-muted italic">

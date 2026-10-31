@@ -1,0 +1,72 @@
+/* ============================================================
+   PRAMAAN-X Print Stylesheet (@media print)
+   Optimized for physical regulatory audit reports and filings
+   ============================================================ */
+
+@media print {
+  /* Hide interactive shell chrome and floating elements */
+  #app-header-bar,
+  #sidebar-nav,
+  #back-to-top-btn,
+  #floating-contact-btn,
+  #storage-consent-banner,
+  .modal-backdrop-overlay,
+  .ambient-background,
+  button,
+  .no-print {
+    display: none !important;
+  }
+
+  /* Override fixed screen constraints so document flows across physical pages */
+  html,
+  body,
+  #root,
+  .h-screen,
+  .overflow-hidden,
+  .overflow-y-auto {
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    position: static !important;
+  }
+
+  /* Main content container flows naturally */
+  main,
+  #main-content,
+  #main-content-scroll {
+    height: auto !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Page break rules: avoid breaks inside cards, tables, charts */
+  .shadow-card,
+  .rounded-2xl,
+  .rounded-xl,
+  table,
+  tr,
+  figure,
+  .kpi-glass-card,
+  .glass-surface {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Clean high-contrast typography on paper */
+  body {
+    background: #FFFFFF !important;
+    color: #111827 !important;
+    font-size: 11pt !important;
+    line-height: 1.4 !important;
+  }
+
+  /* Ensure text and borders are crisp */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+    color: #000000 !important;
+    background-color: transparent !important;
+    border-color: #D1D5DB !important;
+  }
+}

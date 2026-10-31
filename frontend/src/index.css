@@ -3102,3 +3102,53 @@ button#theme-toggle-btn:not(#login-root button):not(.login-root button),
   outline-style: none !important;
   outline-width: 0 !important;
 }
+
+
+/* ============================================================
+   SHARED HOVER & FOCUS INTERACTION LAYER (Item 6)
+   Consistent transitions (transform, opacity, color only)
+   and visible focus-visible rings on interactive controls.
+   ============================================================ */
+
+/* Mouse click outline suppression: clicks must never leave a stuck ring */
+button:focus:not(:focus-visible),
+a:focus:not(:focus-visible),
+[role="button"]:focus:not(:focus-visible),
+[role="tab"]:focus:not(:focus-visible),
+[tabindex]:focus:not(:focus-visible) {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Keyboard navigation: high-contrast visible focus ring */
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible,
+[role="tab"]:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--accent, #1F4BFF) !important;
+  outline-offset: 2px !important;
+}
+
+/* Interactive elements consistent transition */
+button:not(.no-hover-transition),
+a:not(.no-hover-transition),
+.interactive-card {
+  transition-property: transform, opacity, color, background-color, border-color, box-shadow;
+  transition-duration: 180ms;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Accessible reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,19 +1,25 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
-import Dashboard from './pages/Dashboard';
-import EvidenceLens from './components/EvidenceLens';
-import ImpossibilityGraph from './components/ImpossibilityGraph';
-import PhotoReuseRadar from './components/PhotoReuseRadar';
-import RuleConfigPage from './pages/RuleConfigPage';
-import PreFlightScorecard from './components/PreFlightScorecard';
-import AuditAndReceiptsPage from './pages/AuditAndReceiptsPage';
-import InspectionPlannerPage from './pages/InspectionPlannerPage';
-import ManualReviewQueuePage from './pages/ManualReviewQueuePage';
-import DocumentIntelligencePage from './pages/DocumentIntelligencePage';
 import LoginPage from './pages/LoginPage';
+import Spinner from './components/ui/Spinner';
+import FloatingContactButton from './components/ui/FloatingContactButton';
+import StorageConsentBanner from './components/ui/StorageConsentBanner';
+import { useUtm } from './hooks/useUtm';
 import { ShieldAlert, ArrowUp } from 'lucide-react';
 import { api } from './services/api';
+
+// Code-split dynamic page imports for optimal bundle size
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const EvidenceLens = lazy(() => import('./components/EvidenceLens'));
+const ImpossibilityGraph = lazy(() => import('./components/ImpossibilityGraph'));
+const PhotoReuseRadar = lazy(() => import('./components/PhotoReuseRadar'));
+const RuleConfigPage = lazy(() => import('./pages/RuleConfigPage'));
+const PreFlightScorecard = lazy(() => import('./components/PreFlightScorecard'));
+const AuditAndReceiptsPage = lazy(() => import('./pages/AuditAndReceiptsPage'));
+const InspectionPlannerPage = lazy(() => import('./pages/InspectionPlannerPage'));
+const ManualReviewQueuePage = lazy(() => import('./pages/ManualReviewQueuePage'));
+const DocumentIntelligencePage = lazy(() => import('./pages/DocumentIntelligencePage'));
 
 const ROLE_PERMITTED_TABS = {
   institution_user: ['dashboard', 'preflight', 'audit-ledger'],
@@ -24,46 +30,14 @@ const ROLE_PERMITTED_TABS = {
 };
 
 export default function App() {
+  useUtm();
+
+  // All state declarations first to avoid temporal dead zone
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [currentRole, setCurrentRole] = useState('scrutiny_officer');
   const [adminPreviewRole, setAdminPreviewRole] = useState(null);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [showBackToTop, setShowBackToTop] = useState(false);
-  const mainScrollRef = useRef(null);
-
-  const handleMainScroll = (e) => {
-    const el = e.currentTarget;
-    const scrollTop = el.scrollTop;
-    const scrollHeight = el.scrollHeight - el.clientHeight;
-    
-    setIsScrolled(scrollTop > 4);
-    setShowBackToTop(scrollTop > 100 || (scrollHeight > 40 && scrollTop >= scrollHeight * 0.5));
-    setScrollProgress(scrollHeight > 0 ? Math.min(Math.max(scrollTop / scrollHeight, 0), 1) : 0);
-  };
-
-  const scrollToTop = () => {
-    if (mainScrollRef.current) {
-      mainScrollRef.current.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  };
-
-  // Liquid hover effect coordinate tracker (Part 2.2 & Part 3.1)
-  useEffect(() => {
-    const handlePointerMove = (e) => {
-      const el = e.target?.closest?.('.btn-liquid, .kpi-glass-card, button.bg-primary');
-      if (el) {
-        const rect = el.getBoundingClientRect();
-        el.style.setProperty('--mx', `${e.clientX - rect.left}px`);
-        el.style.setProperty('--my', `${e.clientY - rect.top}px`);
-      }
-    };
-    window.addEventListener('pointermove', handlePointerMove, { passive: true });
-    return () => window.removeEventListener('pointermove', handlePointerMove);
-  }, []);
   const [authLoading, setAuthLoading] = useState(true);
-
   const [activeTab, setActiveTab] = useState('dashboard');
   const [applications, setApplications] = useState([]);
   const [activeApplication, setActiveApplication] = useState(null);
@@ -80,6 +54,60 @@ export default function App() {
       return false;
     }
   });
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [showBackToTop, setShowBackToTop] = useState(false);
+  const mainScrollRef = useRef(null);
+
+  // Passive rAF-throttled scroll listener on <main> container (Item 4 & 5)
+  useEffect(() => {
+    const el = mainScrollRef.current;
+    if (!el) return;
+
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          if (!el) return;
+          const scrollTop = el.scrollTop;
+          const scrollHeight = el.scrollHeight - el.clientHeight;
+
+          setIsScrolled(scrollTop > 8);
+          setShowBackToTop(scrollTop > 400);
+          setScrollProgress(scrollHeight > 0 ? Math.min(Math.max(scrollTop / scrollHeight, 0), 1) : 0);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    el.addEventListener('scroll', handleScroll, { passive: true });
+    return () => el.removeEventListener('scroll', handleScroll);
+  }, [isAuthenticated, activeTab]);
+
+  const scrollToTop = () => {
+    if (mainScrollRef.current) {
+      const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      mainScrollRef.current.scrollTo({ 
+        top: 0, 
+        behavior: prefersReducedMotion ? 'auto' : 'smooth' 
+      });
+    }
+  };
+
+  // Liquid hover effect coordinate tracker (Part 2.2 & Part 3.1)
+  useEffect(() => {
+    const handlePointerMove = (e) => {
+      const el = e.target?.closest?.('.btn-liquid, .kpi-glass-card, button.bg-primary');
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        el.style.setProperty('--mx', `${e.clientX - rect.left}px`);
+        el.style.setProperty('--my', `${e.clientY - rect.top}px`);
+      }
+    };
+    window.addEventListener('pointermove', handlePointerMove, { passive: true });
+    return () => window.removeEventListener('pointermove', handlePointerMove);
+  }, []);
 
   // Calculate actual authenticated role vs active preview role
   const actualUserRole = currentUser?.role || currentRole;
@@ -302,6 +330,14 @@ export default function App() {
       {/* Ambient background layer (Part 1) */}
       <div className="ambient-background" aria-hidden="true" />
 
+      {/* Skip-to-content accessible link (Item 10) */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded-lg focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-accent font-semibold text-xs transition"
+      >
+        Skip to main content
+      </a>
+
       {/* Top AICTE Navigation */}
       <Navbar 
         currentUser={currentUser}
@@ -320,6 +356,7 @@ export default function App() {
         onToggleSidebarCollapse={handleToggleSidebarCollapse}
         isScrolled={isScrolled}
         scrollProgress={scrollProgress}
+        onSelectTab={setActiveTab}
       />
 
       <div className="flex-1 min-h-0 flex overflow-hidden relative z-10">
@@ -341,9 +378,9 @@ export default function App() {
         {/* Main Content Workspace */}
         <main 
           ref={mainScrollRef}
-          onScroll={handleMainScroll}
-          id="main-content-scroll"
-          className="flex-1 overflow-y-auto min-h-0 bg-transparent p-3 sm:p-5 lg:p-6 pb-12 w-full min-w-0 scrollbar-slim relative z-10"
+          id="main-content"
+          tabIndex={-1}
+          className="flex-1 overflow-y-auto min-h-0 bg-transparent p-3 sm:p-5 lg:p-6 pb-12 w-full min-w-0 scrollbar-slim relative z-10 focus:outline-none"
         >
           <div className="w-full max-w-[1600px] mx-auto flex flex-col gap-4 sm:gap-6 min-w-0">
             {!isTabAllowed ? (
@@ -367,7 +404,12 @@ export default function App() {
                 </button>
               </div>
             ) : (
-              <>
+              <Suspense fallback={
+                <div className="p-12 flex flex-col items-center justify-center gap-3">
+                  <Spinner size="lg" label="Loading regulatory module..." />
+                  <span className="text-xs font-semibold text-text-muted">Loading scrutiny module...</span>
+                </div>
+              }>
                 {activeTab === 'dashboard' && (
                   <Dashboard 
                     applications={isLiveMode ? applications : []}
@@ -440,20 +482,20 @@ export default function App() {
                 {activeTab === 'audit-ledger' && (
                   <AuditAndReceiptsPage activeApplicationId={activeApplication?.id || 1} />
                 )}
-              </>
+              </Suspense>
             )}
           </div>
         </main>
       </div>
 
-      {/* Back-to-Top Floating Glass Button (Part 4.6) */}
+      {/* Back-to-Top Floating Glass Button (Item 4) */}
       <button
         type="button"
         id="back-to-top-btn"
         onClick={scrollToTop}
         aria-label="Back to top"
         title="Back to top"
-        className={`fixed bottom-12 right-6 z-40 w-10 h-10 rounded-full glass-surface flex items-center justify-center text-text hover:text-primary transition-all duration-200 cursor-pointer shadow-lg outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+        className={`fixed bottom-16 right-4 sm:right-6 z-40 w-10 h-10 rounded-full glass-surface flex items-center justify-center text-text hover:text-primary transition-all duration-200 cursor-pointer shadow-lg outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
           showBackToTop 
             ? 'opacity-100 translate-y-0 pointer-events-auto' 
             : 'opacity-0 translate-y-2 pointer-events-none'
@@ -461,6 +503,12 @@ export default function App() {
       >
         <ArrowUp className="w-4 h-4" />
       </button>
+
+      {/* Floating Regulatory Support Contact Button (Item 20) */}
+      <FloatingContactButton />
+
+      {/* Dismissible Local Storage / Session Consent Notice (Item 13) */}
+      <StorageConsentBanner />
 
       {/* Clean Single Line Footer */}
       <footer className="h-8 shrink-0 bg-surface border-t border-border px-4 sm:px-6 flex items-center justify-between text-xs text-text-muted z-30 select-none">
