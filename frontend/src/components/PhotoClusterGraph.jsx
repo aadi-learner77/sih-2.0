@@ -230,7 +230,7 @@ export default function PhotoClusterGraph({
   };
 
   return (
-    <div className="flex flex-col h-full bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+    <div className="flex flex-col h-full bg-surface rounded-xl border border-border shadow-xs overflow-hidden">
       {/* Graph Toolbar Header */}
       <div className="px-4 py-3 bg-[#F4F6F8] text-[#000000] border-b border-[#D5D9DE] flex items-center justify-between gap-3">
         <div className="flex items-center space-x-2.5">
@@ -251,7 +251,7 @@ export default function PhotoClusterGraph({
         </div>
 
         {/* Zoom Controls */}
-        <div className="flex items-center space-x-1 bg-white rounded-[8px] p-1 border border-[#BFC5CC]">
+        <div className="flex items-center space-x-1 bg-surface rounded-[8px] p-1 border border-[#BFC5CC]">
           <button
             onClick={handleZoomIn}
             className="p-1 rounded-[8px] text-[#000000] hover:bg-[#F1F3F5] transition-colors"
@@ -280,36 +280,36 @@ export default function PhotoClusterGraph({
       <div 
         ref={containerRef} 
         id="photo-cluster-graph-canvas"
-        className="w-full h-[540px] min-h-[520px] bg-white cursor-grab active:cursor-grabbing relative"
+        className="w-full h-[540px] min-h-[520px] bg-surface cursor-grab active:cursor-grabbing relative"
       />
 
       {/* Interactive Legend & Stats Footer */}
-      <div className="px-4 py-3 bg-white border-t border-slate-200 text-xs flex flex-wrap items-center justify-between gap-3">
+      <div className="px-4 py-3 bg-surface border-t border-border text-xs flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-3 text-[11px]">
-          <span className="text-slate-400 uppercase font-bold text-[10px]">Legend:</span>
+          <span className="text-text-subtle uppercase font-bold text-[10px]">Legend:</span>
           
           <span className="flex items-center space-x-1.5">
-            <span className="w-2.5 h-2.5 rounded-sm bg-sky-600 inline-block" />
-            <span className="text-slate-700 font-medium">Applicant Institution</span>
+            <span className="w-2.5 h-2.5 rounded-sm bg-primary inline-block" />
+            <span className="text-text-muted font-medium">Applicant Institution</span>
           </span>
 
           <span className="flex items-center space-x-1.5">
             <span className="w-2.5 h-2.5 rounded-sm bg-rose-600 inline-block" />
-            <span className="text-slate-700 font-medium">Re-use Counterpart</span>
+            <span className="text-text-muted font-medium">Re-use Counterpart</span>
           </span>
 
           <span className="flex items-center space-x-1.5">
             <span className="w-2.5 h-2.5 rounded-sm bg-purple-600 inline-block" />
-            <span className="text-slate-700 font-medium">Cluster B Colleges</span>
+            <span className="text-text-muted font-medium">Cluster B Colleges</span>
           </span>
 
           <span className="flex items-center space-x-1.5">
             <span className="w-2.5 h-2.5 rounded-sm bg-emerald-600 inline-block" />
-            <span className="text-slate-700 font-medium">Clean / Verified</span>
+            <span className="text-text-muted font-medium">Clean / Verified</span>
           </span>
         </div>
 
-        <div className="flex items-center space-x-2 text-[11px] font-mono text-slate-500">
+        <div className="flex items-center space-x-2 text-[11px] font-mono text-text-subtle">
           <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
           <span>Edge = Shared Infrastructure Photo</span>
         </div>

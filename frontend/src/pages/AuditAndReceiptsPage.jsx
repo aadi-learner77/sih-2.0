@@ -23,6 +23,8 @@ import {
 } from 'lucide-react';
 import StatusChip from '../components/StatusChip';
 import DemoDataBadge from '../components/DemoDataBadge';
+import CopyButton from '../components/ui/CopyButton';
+import ConfirmModal from '../components/ui/ConfirmModal';
 import { api } from '../services/api';
 import { 
   MOCK_AUDIT_RECEIPTS, 
@@ -77,12 +79,14 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
   const [resolveModalItem, setResolveModalItem] = useState(null);
   const [resolveNotes, setResolveNotes] = useState('');
   const [resolveAction, setResolveAction] = useState('VERIFIED');
+  const [showTamperConfirmModal, setShowTamperConfirmModal] = useState(false);
 
   // Load live audit receipts if backend available
   const loadData = async () => {
     // Detect database engine from backend health check
     try {
-      const healthRes = await fetch('http://localhost:8000/health').catch(() => null);
+      const h = (typeof window !== 'undefined' && window.location.hostname === '127.0.0.1') ? '127.0.0.1' : 'localhost';
+      const healthRes = await fetch(`http://${h}:8000/health`).catch(() => fetch('http://127.0.0.1:8000/health').catch(() => null));
       if (healthRes && healthRes.ok) {
         const healthData = await healthRes.json();
         if (healthData.database_engine) {
@@ -371,17 +375,17 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-12">
       {/* 1. Header Banner & Verification Integrity Deck */}
-      <div className={`rounded-2xl p-6 sm:p-7 border transition-all duration-300 ${
+      <div className={`rounded-xl p-6 sm:p-7 border transition-all duration-300 ${
         isIntact
           ? isGreenChainAnimating 
-            ? 'bg-gradient-to-r from-emerald-50 via-teal-50/70 to-emerald-50 border-emerald-400 shadow-lg ring-4 ring-emerald-500/20 animate-chain-green'
-            : 'bg-gradient-to-r from-emerald-50/90 via-teal-50/40 to-slate-50 border-emerald-200/90 shadow-xs'
-          : 'bg-gradient-to-r from-rose-50/95 via-orange-50/50 to-rose-50/40 border-2 border-rose-400 shadow-xl ring-4 ring-rose-500/20 animate-chain-red'
+            ? 'bg-emerald-500/15 border-emerald-500/40 text-text shadow-lg ring-4 ring-emerald-500/20 animate-chain-green'
+            : 'bg-emerald-500/10 border-emerald-500/30 text-text shadow-xs'
+          : 'bg-rose-500/10 border-2 border-rose-500/50 text-text shadow-xl ring-4 ring-rose-500/20 animate-chain-red'
       }`}>
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           {/* Status Title & Proof Details */}
           <div className="flex items-start space-x-4">
-            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 shadow-sm transition-transform duration-300 ${
+            <div className={`w-14 h-14 rounded-xl flex items-center justify-center shrink-0 shadow-sm transition-transform duration-300 ${
               isIntact 
                 ? isGreenChainAnimating 
                   ? 'bg-emerald-600 text-white scale-105 shadow-emerald-500/30' 
@@ -397,7 +401,7 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
 
             <div className="space-y-1">
               <div className="flex flex-wrap items-center gap-2.5">
-                <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                <h1 className="text-xl sm:text-2xl font-black text-text tracking-tight">
                   {isIntact ? 'Audit Ledger: Cryptographically INTACT' : 'TAMPERING DETECTED: INVALID BLOCK PINPOINTED'}
                 </h1>
                 
@@ -411,7 +415,7 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
                   {isIntact ? `✓ ${receipts.length} Blocks Verified Intact` : '❌ Hash Mismatch Broken Link'}
                 </span>
 
-                <span className="text-[10px] uppercase font-bold tracking-wider text-slate-500 bg-white/80 border border-slate-200 px-2 py-0.5 rounded-md">
+                <span className="text-[10px] uppercase font-bold tracking-wider text-text-subtle bg-surface-2 border border-border px-2 py-0.5 rounded-md">
                   SHA-256 + Ed25519
                 </span>
 
@@ -420,7 +424,7 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
                 )}
               </div>
 
-              <p className="text-xs sm:text-sm text-slate-700 max-w-3xl leading-relaxed">
+              <p className="text-xs sm:text-sm text-text-muted max-w-3xl leading-relaxed">
                 {verificationResult.message}
               </p>
 
@@ -431,10 +435,10 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
                     <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
                     <span>Cryptographic Link Breach Pinpointed at Block #{tamperDetails.blockIndex} ({tamperDetails.blockName}):</span>
                   </div>
-                  <div className="font-mono text-[11px] bg-white/80 p-2 rounded-lg border border-rose-200 space-y-0.5 overflow-x-auto">
-                    <div>Original Hash: <span className="text-slate-600">{tamperDetails.originalHash}</span></div>
+                  <div className="font-mono text-[11px] bg-surface-2 p-2 rounded-lg border border-rose-200 space-y-0.5 overflow-x-auto">
+                    <div>Original Hash: <span className="text-text-muted">{tamperDetails.originalHash}</span></div>
                     <div>Tampered Hash: <span className="text-rose-700 font-bold">{tamperDetails.tamperedHash}</span> <span className="bg-rose-200 text-rose-800 px-1 py-0.2 rounded font-sans text-[10px]">Modified</span></div>
-                    <div className="text-slate-600 font-sans text-[11px] pt-1">
+                    <div className="text-text-muted font-sans text-[11px] pt-1">
                       Rule Check: <code className="text-rose-700 font-bold">Block #3.previous_hash !== Block #2.payload_hash</code>. The mathematical link is permanently broken.
                     </div>
                   </div>
@@ -464,16 +468,16 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
             {/* 2. Demo: Tamper Toggle (Demo Mode Only) */}
             <div 
               id="demo-tamper-container"
-              className="flex items-center space-x-3 bg-white/95 border border-slate-200/90 rounded-xl px-4 py-2.5 shadow-xs"
+              className="flex items-center space-x-3 bg-surface border border-border rounded-xl px-4 py-2.5 shadow-xs"
             >
               <div className="flex flex-col">
                 <div className="flex items-center space-x-1.5">
-                  <span className="text-xs font-bold text-slate-800">Demo: tamper</span>
+                  <span className="text-xs font-bold text-text">Demo: tamper</span>
                   <span className="text-[9px] uppercase font-black tracking-wider bg-amber-100 text-amber-800 border border-amber-200 px-1.5 py-0.2 rounded">
                     Demo Mode
                   </span>
                 </div>
-                <span className="text-[10px] text-slate-500">Breaks Block #2 link</span>
+                <span className="text-[10px] text-text-subtle">Breaks Block #2 link</span>
               </div>
 
               {/* Interactive Toggle Switch */}
@@ -482,10 +486,16 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
                   id="demo-tamper-toggle"
                   type="checkbox"
                   checked={isTamperDemoOn}
-                  onChange={(e) => handleToggleTamperDemo(e.target.checked)}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setShowTamperConfirmModal(true);
+                    } else {
+                      handleToggleTamperDemo(false);
+                    }
+                  }}
                   className="sr-only peer"
                 />
-                <div className="w-11 h-6 bg-slate-200 peer-focus:outline-hidden rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-rose-600"></div>
+                <div className="w-11 h-6 bg-surface-2 peer-focus:outline-hidden rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-surface after:border-border after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-rose-600"></div>
               </label>
             </div>
           </div>
@@ -493,16 +503,18 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
       </div>
 
       {/* 2. Top Metric Ribbon & View Switcher */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-2 border-b border-slate-200">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-2 border-b border-border">
         {/* Navigation Tabs */}
         <div className="flex flex-wrap items-center gap-1.5">
           <button
             id="tab-receipts-timeline"
+            role="tab"
+            aria-selected={viewMode === 'timeline'}
             onClick={() => setViewMode('timeline')}
-            className={`px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer ${
+            className={`tab px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer ${
               viewMode === 'timeline'
-                ? 'bg-sky-600 text-white shadow-sm'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                ? 'is-active btn-solid shadow-sm'
+                : 'text-text-muted hover:text-text hover:bg-surface-2'
             }`}
           >
             <Link2 className="w-3.5 h-3.5" />
@@ -511,11 +523,13 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
 
           <button
             id="tab-verification-statuses"
+            role="tab"
+            aria-selected={viewMode === 'table'}
             onClick={() => setViewMode('table')}
-            className={`px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer ${
+            className={`tab px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer ${
               viewMode === 'table'
-                ? 'bg-sky-600 text-white shadow-sm'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                ? 'is-active btn-solid shadow-sm'
+                : 'text-text-muted hover:text-text hover:bg-surface-2'
             }`}
           >
             <FileCheck2 className="w-3.5 h-3.5" />
@@ -524,11 +538,13 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
 
           <button
             id="tab-officer-decisions"
+            role="tab"
+            aria-selected={viewMode === 'officer-decisions'}
             onClick={() => setViewMode('officer-decisions')}
-            className={`px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer ${
+            className={`tab px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer ${
               viewMode === 'officer-decisions'
-                ? 'bg-sky-600 text-white shadow-sm'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                ? 'is-active btn-solid shadow-sm'
+                : 'text-text-muted hover:text-text hover:bg-surface-2'
             }`}
           >
             <ShieldCheck className="w-3.5 h-3.5" />
@@ -537,11 +553,13 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
 
           <button
             id="tab-manual-review-queue"
+            role="tab"
+            aria-selected={viewMode === 'manual-review-queue'}
             onClick={() => setViewMode('manual-review-queue')}
-            className={`px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer ${
+            className={`tab px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer ${
               viewMode === 'manual-review-queue'
-                ? 'bg-sky-600 text-white shadow-sm'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                ? 'is-active btn-solid shadow-sm'
+                : 'text-text-muted hover:text-text hover:bg-surface-2'
             }`}
           >
             <Clock className="w-3.5 h-3.5" />
@@ -550,11 +568,13 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
 
           <button
             id="tab-access-logs"
+            role="tab"
+            aria-selected={viewMode === 'access-logs'}
             onClick={() => setViewMode('access-logs')}
-            className={`px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer ${
+            className={`tab px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer ${
               viewMode === 'access-logs'
-                ? 'bg-sky-600 text-white shadow-sm'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                ? 'is-active btn-solid shadow-sm'
+                : 'text-text-muted hover:text-text hover:bg-surface-2'
             }`}
           >
             <History className="w-3.5 h-3.5" />
@@ -564,13 +584,13 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
 
         {/* Search Filter */}
         <div className="relative w-full sm:w-72">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-2.5" />
+          <Search className="w-4 h-4 text-text-muted absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
             type="text"
             placeholder="Search hash, issuer, status..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full bg-white border border-slate-200 rounded-xl pl-11 pr-3 py-2 text-xs text-slate-800 placeholder-slate-400 focus:outline-hidden focus:border-sky-500 shadow-2xs"
+            className="w-full h-10 bg-surface border border-border rounded-xl pl-10 pr-3 text-xs text-text placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary/30 shadow-xs"
           />
         </div>
       </div>
@@ -579,14 +599,14 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
       {viewMode === 'timeline' && (
         <div className="space-y-4">
           {/* Statutory Verification Architecture Notice */}
-          <div className="bg-white border border-slate-200/90 rounded-2xl p-4 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-slate-600 min-w-0">
+          <div className="bg-surface border border-border rounded-xl p-4 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-text-muted min-w-0">
             <div className="flex items-start sm:items-center space-x-2.5 min-w-0 flex-1">
-              <Lock className="w-4 h-4 text-sky-600 shrink-0 mt-0.5 sm:mt-0" />
+              <Lock className="w-4 h-4 text-primary shrink-0 mt-0.5 sm:mt-0" />
               <span className="leading-relaxed break-words min-w-0">
                 <strong>Append-Only Merkle Timeline:</strong> Each block hashes the exact canonical JSON of its predecessor. Modifying any character breaks the mathematical relationship across all subsequent blocks.
               </span>
             </div>
-            <div className="flex items-center space-x-3 text-[11px] font-mono text-slate-500 shrink-0 self-end sm:self-auto pt-1 sm:pt-0">
+            <div className="flex items-center space-x-3 text-[11px] font-mono text-text-subtle shrink-0 self-end sm:self-auto pt-1 sm:pt-0">
               <span>Genesis Root: 0000...0000</span>
               <span>•</span>
               <span className="font-semibold">{dbEngineName} Append-Only</span>
@@ -642,7 +662,7 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
                           ? 'bg-amber-50 text-amber-700 border-amber-200'
                           : isBlockAnimatingGreen
                           ? 'bg-emerald-100 text-emerald-800 border-emerald-300 font-semibold'
-                          : 'bg-slate-100 text-slate-600 border-slate-200'
+                          : 'bg-surface-2 text-text-muted border-border'
                       }`}>
                         {isInvalidBlock ? (
                           <>
@@ -651,7 +671,7 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
                           </>
                         ) : (
                           <>
-                            <Link2 className={`w-3 h-3 ${isBlockAnimatingGreen ? 'text-emerald-600' : 'text-slate-400'}`} />
+                            <Link2 className={`w-3 h-3 ${isBlockAnimatingGreen ? 'text-emerald-600' : 'text-text-subtle'}`} />
                             <span>Linked to Block #{blockIndex - 1} • SHA-256 Verified ✓</span>
                           </>
                         )}
@@ -660,14 +680,14 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
                   )}
 
                   {/* The Receipt Block Card */}
-                  <div className={`bg-white rounded-2xl border transition-all duration-300 p-5 sm:p-6 shadow-2xs ${
+                  <div className={`bg-surface rounded-xl border transition-all duration-300 p-5 sm:p-6 shadow-2xs ${
                     isInvalidBlock
                       ? 'border-2 border-rose-500 bg-rose-50/90 shadow-xl ring-4 ring-rose-500/20 animate-chain-red'
                       : isDownstreamCompromised
                       ? 'border-amber-300/80 bg-amber-50/20'
                       : isBlockAnimatingGreen
                       ? 'border-emerald-400 shadow-md ring-2 ring-emerald-400/30'
-                      : 'border-slate-200 hover:border-slate-300 hover:shadow-sm'
+                      : 'border-border hover:border-border-strong hover:shadow-sm'
                   }`}>
                     {/* Invalid Block Header Banner */}
                     {isInvalidBlock && (
@@ -691,20 +711,20 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
                     )}
 
                     {/* Card Top Row: Block Meta & Status */}
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-border">
                       <div className="flex items-center space-x-3">
                         <span className={`text-xs font-mono font-black px-2.5 py-1 rounded-lg border ${
                           isInvalidBlock
                             ? 'bg-rose-100 text-rose-800 border-rose-300 font-extrabold'
                             : isGenesis
                             ? 'bg-purple-100 text-purple-800 border-purple-200'
-                            : 'bg-slate-100 text-slate-800 border-slate-200'
+                            : 'bg-surface-2 text-text border-border'
                         }`}>
                           Block #{receipt.receipt_index}
                         </span>
 
                         <div>
-                          <div className="text-sm font-bold text-slate-900 flex items-center space-x-2">
+                          <div className="text-sm font-bold text-text flex items-center space-x-2">
                             <span>{receipt.issuer || receipt.source}</span>
                             {isGenesis && (
                               <span className="text-[10px] bg-purple-50 text-purple-700 border border-purple-200 px-2 py-0.2 rounded-full font-bold">
@@ -712,7 +732,7 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
                               </span>
                             )}
                           </div>
-                          <div className="text-[11px] font-mono text-slate-500">
+                          <div className="text-[11px] font-mono text-text-subtle">
                             Source Gateway: {receipt.source}
                           </div>
                         </div>
@@ -721,9 +741,9 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
                       <div className="flex items-center space-x-3">
                         <StatusChip status={receipt.status} size="sm" />
                         
-                        <div className="text-right text-[11px] text-slate-500 font-mono">
-                          <div className="flex items-center space-x-1 text-slate-600">
-                            <Clock className="w-3 h-3 text-slate-400" />
+                        <div className="text-right text-[11px] text-text-subtle font-mono">
+                          <div className="flex items-center space-x-1 text-text-muted">
+                            <Clock className="w-3 h-3 text-text-subtle" />
                             <span>{receipt.timestamp ? new Date(receipt.timestamp).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }) : 'Recent'}</span>
                           </div>
                         </div>
@@ -735,26 +755,22 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
                       {/* Payload Hash */}
                       <div className={`p-3 rounded-xl border ${
                         isInvalidBlock
-                          ? 'bg-white border-rose-300 text-rose-900'
-                          : 'bg-slate-50 border-slate-200/80 text-slate-800'
+                          ? 'bg-surface border-rose-300 text-rose-900'
+                          : 'bg-surface-2 border-border/80 text-text'
                       }`}>
-                        <div className="flex items-center justify-between text-[11px] font-sans font-bold text-slate-600 mb-1">
+                        <div className="flex items-center justify-between text-[11px] font-sans font-bold text-text-muted mb-1">
                           <span className="flex items-center space-x-1">
-                            <Fingerprint className="w-3.5 h-3.5 text-sky-600" />
+                            <Fingerprint className="w-3.5 h-3.5 text-primary" />
                             <span>Payload Hash (SHA-256)</span>
                           </span>
-                          <button
-                            onClick={() => handleCopy(receipt.payload_hash, `payload_${receipt.receipt_index}`)}
-                            className="text-slate-400 hover:text-slate-700 flex items-center space-x-1 text-[10px] cursor-pointer"
+                          <CopyButton
+                            text={receipt.payload_hash || ''}
                             title="Copy full 64-char hex hash"
-                          >
-                            {copiedHash === `payload_${receipt.receipt_index}` ? (
-                              <Check className="w-3 h-3 text-emerald-600" />
-                            ) : (
-                              <Copy className="w-3 h-3" />
-                            )}
-                            <span>{copiedHash === `payload_${receipt.receipt_index}` ? 'Copied' : 'Copy'}</span>
-                          </button>
+                            label="Copy"
+                            copiedLabel="Copied"
+                            className="text-text-subtle hover:text-text-muted text-[10px] cursor-pointer"
+                            iconClassName="w-3 h-3"
+                          />
                         </div>
                         <div className="break-all font-mono text-[11px] leading-relaxed">
                           {receipt.payload_hash}
@@ -762,17 +778,17 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
                       </div>
 
                       {/* Parent Previous Hash Link */}
-                      <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80 text-slate-800">
-                        <div className="flex items-center justify-between text-[11px] font-sans font-bold text-slate-600 mb-1">
+                      <div className="p-3 rounded-xl bg-surface-2 border border-border/80 text-text">
+                        <div className="flex items-center justify-between text-[11px] font-sans font-bold text-text-muted mb-1">
                           <span className="flex items-center space-x-1">
                             <Link2 className="w-3.5 h-3.5 text-indigo-600" />
                             <span>Parent Previous Hash</span>
                           </span>
-                          <span className="text-[10px] text-slate-500 font-sans">
+                          <span className="text-[10px] text-text-subtle font-sans">
                             {isGenesis ? 'Root Hash' : `Expected = Block #${blockIndex - 1}`}
                           </span>
                         </div>
-                        <div className="break-all font-mono text-[11px] leading-relaxed text-slate-600">
+                        <div className="break-all font-mono text-[11px] leading-relaxed text-text-muted">
                           {(() => {
                             if (isGenesis || blockIndex === 0) {
                               return receipt.previous_hash || '0000000000000000000000000000000000000000000000000000000000000000';
@@ -788,7 +804,7 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
                     </div>
 
                     {/* Card Bottom Row: Security Badges & Expandable Payload */}
-                    <div className="mt-4 pt-3 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                    <div className="mt-4 pt-3 border-t border-border flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
                       <div className="flex flex-wrap items-center gap-2">
                         {/* Digital Signature */}
                         <div className="inline-flex items-center space-x-1 bg-indigo-50 border border-indigo-200 text-indigo-800 text-[10px] px-2.5 py-1 rounded-md font-mono">
@@ -797,7 +813,7 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
                         </div>
 
                         {/* Rule Version Set */}
-                        <div className="inline-flex items-center space-x-1 bg-slate-100 border border-slate-200 text-slate-700 text-[10px] px-2.5 py-1 rounded-md font-mono">
+                        <div className="inline-flex items-center space-x-1 bg-surface-2 border border-border text-text-muted text-[10px] px-2.5 py-1 rounded-md font-mono">
                           <span>Rule Set: {receipt.rule_version_set || 'AICTE-APH-2025-26-V1.0'}</span>
                         </div>
 
@@ -811,7 +827,7 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
                       {/* Expand Canonical Payload Button */}
                       <button
                         onClick={() => togglePayload(receipt.id || index)}
-                        className="text-sky-600 hover:text-sky-800 font-bold text-xs flex items-center space-x-1 cursor-pointer self-start sm:self-auto"
+                        className="text-primary hover:text-sky-800 font-bold text-xs flex items-center space-x-1 cursor-pointer self-start sm:self-auto"
                       >
                         <FileCode className="w-3.5 h-3.5" />
                         <span>{expandedPayloads[receipt.id || index] ? 'Hide Canonical Payload' : 'Inspect Canonical Payload'}</span>
@@ -857,18 +873,18 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
 
       {/* 4. SECONDARY VIEW: STRUCTURED TABLE */}
       {viewMode === 'table' && (
-        <div className="bg-white border border-slate-200 rounded-2xl shadow-2xs overflow-hidden">
-          <div className="p-4 border-b border-slate-200 bg-slate-50/60 flex items-center justify-between text-xs">
-            <div className="font-bold text-slate-800 flex items-center space-x-2">
-              <Link2 className="w-4 h-4 text-sky-600" />
+        <div className="bg-surface border border-border rounded-xl shadow-2xs overflow-hidden">
+          <div className="p-4 border-b border-border bg-surface-2 flex items-center justify-between text-xs">
+            <div className="font-bold text-text flex items-center space-x-2">
+              <Link2 className="w-4 h-4 text-primary" />
               <span>Immutable Ledger Grid View (SHA-256 Parent Chaining)</span>
             </div>
-            <span className="text-slate-500 text-[11px] font-semibold">{dbEngineName} Append-Only Trigger Enforced</span>
+            <span className="text-text-subtle text-[11px] font-semibold">{dbEngineName} Append-Only Trigger Enforced</span>
           </div>
 
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-50/80 text-slate-500 uppercase tracking-wider text-[10px] font-bold border-b border-slate-200">
+              <thead className="bg-surface-2 text-text-subtle uppercase tracking-wider text-[10px] font-bold border-b border-border">
                 <tr>
                   <th className="py-3 px-4">Block #</th>
                   <th className="py-3 px-4">Authoritative Source</th>
@@ -879,28 +895,28 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
                   <th className="py-3 px-4">Timestamp (UTC)</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-200 text-slate-700">
+              <tbody className="divide-y divide-border text-text-muted">
                 {filteredReceipts.map((r, idx) => {
                   const isTamperedBlock = !isIntact && (verificationResult.broken_link_index === r.receipt_index);
 
                   return (
                     <tr
                       key={r.id || idx}
-                      className={`hover:bg-slate-50/80 transition-colors ${
+                      className={`hover:bg-surface-2 transition-colors ${
                         isTamperedBlock ? 'bg-rose-50/80 font-semibold' : ''
                       }`}
                     >
                       <td className="py-3 px-4 font-mono font-bold">
                         <span className={`px-2 py-0.5 rounded text-xs ${
-                          isTamperedBlock ? 'bg-rose-600 text-white font-extrabold' : 'bg-slate-100 text-slate-800'
+                          isTamperedBlock ? 'bg-rose-600 text-white font-extrabold' : 'bg-surface-2 text-text'
                         }`}>
                           #{r.receipt_index ?? idx}
                         </span>
                       </td>
 
                       <td className="py-3 px-4">
-                        <div className="font-bold text-slate-900">{r.issuer || r.source}</div>
-                        <div className="text-[10px] font-mono text-slate-500">{r.source}</div>
+                        <div className="font-bold text-text">{r.issuer || r.source}</div>
+                        <div className="text-[10px] font-mono text-text-subtle">{r.source}</div>
                       </td>
 
                       <td className="py-3 px-4">
@@ -909,13 +925,13 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
 
                       <td className="py-3 px-4 font-mono text-[11px]">
                         <span className={`px-2 py-0.5 rounded ${
-                          isTamperedBlock ? 'bg-rose-100 text-rose-800 font-bold' : 'text-slate-800 bg-slate-50'
+                          isTamperedBlock ? 'bg-rose-100 text-rose-800 font-bold' : 'text-text bg-surface-2'
                         }`} title={r.payload_hash}>
                           {r.payload_hash ? `${r.payload_hash.substring(0, 12)}...${r.payload_hash.substring(r.payload_hash.length - 6)}` : 'N/A'}
                         </span>
                       </td>
 
-                      <td className="py-3 px-4 font-mono text-[11px] text-slate-500">
+                      <td className="py-3 px-4 font-mono text-[11px] text-text-subtle">
                         <span title={r.previous_hash}>
                           {r.previous_hash ? `${r.previous_hash.substring(0, 10)}...` : 'ROOT'}
                         </span>
@@ -928,7 +944,7 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
                         </span>
                       </td>
 
-                      <td className="py-3 px-4 text-slate-500 text-[11px] whitespace-nowrap">
+                      <td className="py-3 px-4 text-text-subtle text-[11px] whitespace-nowrap">
                         {r.timestamp ? new Date(r.timestamp).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }) : 'Recent'}
                       </td>
                     </tr>
@@ -942,18 +958,18 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
 
       {/* 5. SECONDARY VIEW: OFFICER ACCESS & DETERMINATION TRAIL */}
       {viewMode === 'access-logs' && (
-        <div className="bg-white border border-slate-200 rounded-2xl shadow-2xs overflow-hidden">
-          <div className="p-4 border-b border-slate-200 bg-slate-50/60 flex items-center justify-between text-xs">
-            <div className="font-bold text-slate-800 flex items-center space-x-2">
-              <History className="w-4 h-4 text-sky-600" />
+        <div className="bg-surface border border-border rounded-xl shadow-2xs overflow-hidden">
+          <div className="p-4 border-b border-border bg-surface-2 flex items-center justify-between text-xs">
+            <div className="font-bold text-text flex items-center space-x-2">
+              <History className="w-4 h-4 text-primary" />
               <span>Immutable Officer Access & Action Trail (Section 6 Compliance)</span>
             </div>
-            <span className="text-slate-500 text-[11px]">Every Dossier Read Stored with Actor & IP</span>
+            <span className="text-text-subtle text-[11px]">Every Dossier Read Stored with Actor & IP</span>
           </div>
 
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-50/80 text-slate-500 uppercase tracking-wider text-[10px] font-bold border-b border-slate-200">
+              <thead className="bg-surface-2 text-text-subtle uppercase tracking-wider text-[10px] font-bold border-b border-border">
                 <tr>
                   <th className="py-3 px-4">Timestamp (UTC)</th>
                   <th className="py-3 px-4">Officer Actor</th>
@@ -963,21 +979,21 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
                   <th className="py-3 px-4">IP Address</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-200 text-slate-700">
+              <tbody className="divide-y divide-border text-text-muted">
                 {accessLogs.map((log) => (
-                  <tr key={log.id} className="hover:bg-slate-50/80 transition-colors">
-                    <td className="py-3 px-4 text-slate-500 font-mono text-[11px] whitespace-nowrap">
+                  <tr key={log.id} className="hover:bg-surface-2 transition-colors">
+                    <td className="py-3 px-4 text-text-subtle font-mono text-[11px] whitespace-nowrap">
                       {log.timestamp ? new Date(log.timestamp).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }) : 'Just now'}
                     </td>
-                    <td className="py-3 px-4 font-bold text-slate-900">{log.actor_email}</td>
+                    <td className="py-3 px-4 font-bold text-text">{log.actor_email}</td>
                     <td className="py-3 px-4">
-                      <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-slate-100 text-slate-700 border border-slate-200">
+                      <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-surface-2 text-text-muted border border-border">
                         {log.actor_role}
                       </span>
                     </td>
-                    <td className="py-3 px-4 font-mono font-bold text-sky-700">{log.action}</td>
-                    <td className="py-3 px-4 font-mono text-[11px] text-slate-600">{log.resource}</td>
-                    <td className="py-3 px-4 font-mono text-[11px] text-slate-500">{log.ip_address || '127.0.0.1'}</td>
+                    <td className="py-3 px-4 font-mono font-bold text-primary">{log.action}</td>
+                    <td className="py-3 px-4 font-mono text-[11px] text-text-muted">{log.resource}</td>
+                    <td className="py-3 px-4 font-mono text-[11px] text-text-subtle">{log.ip_address || '127.0.0.1'}</td>
                   </tr>
                 ))}
               </tbody>
@@ -988,21 +1004,21 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
 
       {/* 6. OFFICER DECISIONS VIEW */}
       {viewMode === 'officer-decisions' && (
-        <div className="bg-white border border-slate-200 rounded-2xl shadow-2xs overflow-hidden">
-          <div className="p-4 border-b border-slate-200 bg-slate-50/60 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
-            <div className="font-bold text-slate-800 flex items-center space-x-2">
+        <div className="bg-surface border border-border rounded-xl shadow-2xs overflow-hidden">
+          <div className="p-4 border-b border-border bg-surface-2 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+            <div className="font-bold text-text flex items-center space-x-2">
               <ShieldCheck className="w-4 h-4 text-emerald-600" />
               <span>Officer Decisions Log (Human-in-the-Loop Signed Determinations)</span>
               {isOfficerDemoData && <DemoDataBadge reason="Fallback Mock Data" />}
             </div>
-            <span className="text-slate-500 text-[11px]">
+            <span className="text-text-subtle text-[11px]">
               Mandatory Comment & Hash-Chained Verification Receipt Recorded
             </span>
           </div>
 
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-50/80 text-slate-500 uppercase tracking-wider text-[10px] font-bold border-b border-slate-200">
+              <thead className="bg-surface-2 text-text-subtle uppercase tracking-wider text-[10px] font-bold border-b border-border">
                 <tr>
                   <th className="py-3 px-4">Action</th>
                   <th className="py-3 px-4">Officer Remarks / Comment</th>
@@ -1012,7 +1028,7 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
                   <th className="py-3 px-4">Timestamp (UTC)</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-200 text-slate-700">
+              <tbody className="divide-y divide-border text-text-muted">
                 {officerActions.map((action, idx) => {
                   const actType = (action.action_type || '').toUpperCase();
                   const isReject = actType === 'REJECT' || actType === 'REJECTED';
@@ -1022,29 +1038,29 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
                   const isEscalate = actType === 'ESCALATE' || actType === 'ESCALATED_TO_SENIOR';
 
                   return (
-                    <tr key={action.id || idx} className="hover:bg-slate-50/80 transition-colors">
+                    <tr key={action.id || idx} className="hover:bg-surface-2 transition-colors">
                       <td className="py-3 px-4 whitespace-nowrap">
                         <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-[11px] font-bold border ${
                           isReject ? 'bg-rose-50 text-rose-800 border-rose-300' :
                           isAccept ? 'bg-emerald-50 text-emerald-800 border-emerald-300' :
                           isInspect ? 'bg-amber-50 text-amber-800 border-amber-300' :
-                          isEvidence ? 'bg-sky-50 text-sky-800 border-sky-300' :
+                          isEvidence ? 'bg-primary/10 text-sky-800 border-sky-300' :
                           isEscalate ? 'bg-purple-50 text-purple-800 border-purple-300' :
-                          'bg-slate-100 text-slate-800 border-slate-300'
+                          'bg-surface-2 text-text border-border'
                         }`}>
                           {action.action_type}
                         </span>
                       </td>
 
                       <td className="py-3 px-4 max-w-md">
-                        <div className="text-slate-900 font-medium leading-relaxed">
+                        <div className="text-text font-medium leading-relaxed">
                           {action.comment}
                         </div>
                       </td>
 
                       <td className="py-3 px-4">
-                        <div className="font-bold text-slate-900">{action.officer_name || action.officer_email}</div>
-                        <div className="text-[10px] text-slate-500 font-mono flex items-center space-x-1">
+                        <div className="font-bold text-text">{action.officer_name || action.officer_email}</div>
+                        <div className="text-[10px] text-text-subtle font-mono flex items-center space-x-1">
                           <span className="uppercase">{action.officer_role || 'scrutiny_officer'}</span>
                           <span>•</span>
                           <span>{action.officer_email}</span>
@@ -1052,32 +1068,28 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
                       </td>
 
                       <td className="py-3 px-4 whitespace-nowrap">
-                        <div className="font-mono text-slate-900 font-bold">{action.application_no || `APP-${action.application_id}`}</div>
-                        <div className="text-[10px] text-slate-500 truncate max-w-[140px]">{action.institution_name}</div>
+                        <div className="font-mono text-text font-bold">{action.application_no || `APP-${action.application_id}`}</div>
+                        <div className="text-[10px] text-text-subtle truncate max-w-[140px]">{action.institution_name}</div>
                       </td>
 
                       <td className="py-3 px-4 font-mono text-[11px]">
                         <div className="flex items-center space-x-1.5">
-                          <span className="bg-slate-50 border border-slate-200 px-2 py-0.5 rounded text-slate-700" title={action.receipt_hash}>
+                          <span className="bg-surface-2 border border-border px-2 py-0.5 rounded text-text-muted" title={action.receipt_hash}>
                             {action.receipt_hash ? `${action.receipt_hash.substring(0, 10)}...${action.receipt_hash.substring(action.receipt_hash.length - 4)}` : 'N/A'}
                           </span>
                           {action.receipt_hash && (
-                            <button
-                              onClick={() => handleCopy(action.receipt_hash, `act-${action.id || idx}`)}
-                              className="text-slate-400 hover:text-sky-600 transition-colors p-1"
+                            <CopyButton
+                              text={action.receipt_hash}
                               title="Copy receipt hash"
-                            >
-                              {copiedHash === `act-${action.id || idx}` ? (
-                                <Check className="w-3.5 h-3.5 text-emerald-600" />
-                              ) : (
-                                <Copy className="w-3.5 h-3.5" />
-                              )}
-                            </button>
+                              showLabel={false}
+                              className="text-text-subtle hover:text-primary transition-colors p-1"
+                              iconClassName="w-3.5 h-3.5"
+                            />
                           )}
                         </div>
                       </td>
 
-                      <td className="py-3 px-4 text-slate-500 text-[11px] whitespace-nowrap">
+                      <td className="py-3 px-4 text-text-subtle text-[11px] whitespace-nowrap">
                         {action.timestamp ? new Date(action.timestamp).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }) : 'Recent'}
                       </td>
                     </tr>
@@ -1092,15 +1104,15 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
       {/* 7. MANUAL REVIEW QUEUE VIEW */}
       {viewMode === 'manual-review-queue' && (
         <div className="space-y-4">
-          <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+          <div className="bg-surface border border-border rounded-xl p-4 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
             <div className="flex items-center space-x-2.5">
               <Clock className="w-5 h-5 text-indigo-600 shrink-0" />
               <div>
-                <div className="font-bold text-slate-900 flex items-center space-x-2">
+                <div className="font-bold text-text flex items-center space-x-2">
                   <span>Authoritative Verification & Manual Review Queue</span>
                   {isReviewDemoData && <DemoDataBadge reason="Fallback Mock Queue" />}
                 </div>
-                <div className="text-[11px] text-slate-500">
+                <div className="text-[11px] text-text-subtle">
                   Covers all six statutory verification states: Verified, Mismatch Detected, Expired, Verification Pending, Source Unavailable, Manual Review Required.
                 </div>
               </div>
@@ -1112,10 +1124,10 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
             </div>
           </div>
 
-          <div className="bg-white border border-slate-200 rounded-2xl shadow-2xs overflow-hidden">
+          <div className="bg-surface border border-border rounded-xl shadow-2xs overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="bg-slate-50/80 text-slate-500 uppercase tracking-wider text-[10px] font-bold border-b border-slate-200">
+                <thead className="bg-surface-2 text-text-subtle uppercase tracking-wider text-[10px] font-bold border-b border-border">
                   <tr>
                     <th className="py-3 px-4">Queue ID</th>
                     <th className="py-3 px-4">Statutory Status</th>
@@ -1126,11 +1138,11 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
                     <th className="py-3 px-4 text-right">Action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-200 text-slate-700">
+                <tbody className="divide-y divide-border text-text-muted">
                   {manualReviewQueue.map((item, idx) => (
-                    <tr key={item.id || idx} className="hover:bg-slate-50/80 transition-colors">
+                    <tr key={item.id || idx} className="hover:bg-surface-2 transition-colors">
                       <td className="py-3 px-4 font-mono font-bold whitespace-nowrap">
-                        <span className="bg-slate-100 text-slate-800 px-2 py-0.5 rounded text-[11px]">
+                        <span className="bg-surface-2 text-text px-2 py-0.5 rounded text-[11px]">
                           {item.id}
                         </span>
                       </td>
@@ -1140,38 +1152,34 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
                       </td>
 
                       <td className="py-3 px-4">
-                        <div className="font-bold text-slate-900">{item.source}</div>
-                        <div className="text-[10px] font-mono text-slate-500">{item.document_id || item.application_no}</div>
+                        <div className="font-bold text-text">{item.source}</div>
+                        <div className="text-[10px] font-mono text-text-subtle">{item.document_id || item.application_no}</div>
                       </td>
 
                       <td className="py-3 px-4 max-w-sm">
-                        <div className="text-slate-800 font-medium text-[11px] leading-relaxed">
+                        <div className="text-text font-medium text-[11px] leading-relaxed">
                           {item.reason}
                         </div>
                       </td>
 
                       <td className="py-3 px-4 font-mono text-[11px]">
                         <div className="flex items-center space-x-1.5">
-                          <span className="bg-slate-50 border border-slate-200 px-2 py-0.5 rounded text-slate-700" title={item.response_hash}>
+                          <span className="bg-surface-2 border border-border px-2 py-0.5 rounded text-text-muted" title={item.response_hash}>
                             {item.response_hash ? `${item.response_hash.substring(0, 10)}...${item.response_hash.substring(item.response_hash.length - 4)}` : 'N/A'}
                           </span>
                           {item.response_hash && (
-                            <button
-                              onClick={() => handleCopy(item.response_hash, `rev-${item.id || idx}`)}
-                              className="text-slate-400 hover:text-sky-600 transition-colors p-1"
+                            <CopyButton
+                              text={item.response_hash}
                               title="Copy response hash"
-                            >
-                              {copiedHash === `rev-${item.id || idx}` ? (
-                                <Check className="w-3.5 h-3.5 text-emerald-600" />
-                              ) : (
-                                <Copy className="w-3.5 h-3.5" />
-                              )}
-                            </button>
+                              showLabel={false}
+                              className="text-text-subtle hover:text-primary transition-colors p-1"
+                              iconClassName="w-3.5 h-3.5"
+                            />
                           )}
                         </div>
                       </td>
 
-                      <td className="py-3 px-4 text-slate-500 text-[11px] whitespace-nowrap">
+                      <td className="py-3 px-4 text-text-subtle text-[11px] whitespace-nowrap">
                         {item.timestamp ? new Date(item.timestamp).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }) : 'Recent'}
                       </td>
 
@@ -1194,16 +1202,16 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
 
       {/* RESOLVE MANUAL REVIEW MODAL */}
       {resolveModalItem && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4 animate-scale-up">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <h3 className="text-sm font-bold text-slate-900 flex items-center space-x-2">
+        <div className="fixed inset-0 z-50 bg-black/55 dark:bg-black/70 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-surface rounded-xl max-w-md w-full p-6 shadow-2xl border border-border space-y-4 animate-scale-up">
+            <div className="flex items-center justify-between border-b border-border pb-3">
+              <h3 className="text-sm font-bold text-text flex items-center space-x-2">
                 <Clock className="w-4 h-4 text-indigo-600" />
                 <span>Resolve Manual Review: {resolveModalItem.id}</span>
               </h3>
               <button
                 onClick={() => setResolveModalItem(null)}
-                className="text-slate-400 hover:text-slate-600 text-sm font-bold cursor-pointer"
+                className="text-text-subtle hover:text-text-muted text-sm font-bold cursor-pointer"
               >
                 ✕
               </button>
@@ -1211,22 +1219,22 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
 
             <div className="space-y-3 text-xs">
               <div>
-                <span className="font-bold text-slate-700">Source Authority:</span>
-                <p className="text-slate-600">{resolveModalItem.source}</p>
+                <span className="font-bold text-text-muted">Source Authority:</span>
+                <p className="text-text-muted">{resolveModalItem.source}</p>
               </div>
               <div>
-                <span className="font-bold text-slate-700">Flag Reason:</span>
-                <p className="text-slate-600 bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+                <span className="font-bold text-text-muted">Flag Reason:</span>
+                <p className="text-text-muted bg-surface-2 p-2.5 rounded-xl border border-border">
                   {resolveModalItem.reason}
                 </p>
               </div>
 
               <div>
-                <label className="font-bold text-slate-700 block mb-1">Determination Resolution:</label>
+                <label className="font-bold text-text-muted block mb-1">Determination Resolution:</label>
                 <select
                   value={resolveAction}
                   onChange={(e) => setResolveAction(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-800"
+                  className="w-full bg-surface-2 border border-border rounded-xl px-3 py-2 text-xs font-bold text-text"
                 >
                   <option value="VERIFIED">Verified (Clear Discrepancy)</option>
                   <option value="MISMATCH_DETECTED">Confirm Mismatch (Issue Show-Cause)</option>
@@ -1236,21 +1244,21 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
               </div>
 
               <div>
-                <label className="font-bold text-slate-700 block mb-1">Officer Substantiation Note:</label>
+                <label className="font-bold text-text-muted block mb-1">Officer Substantiation Note:</label>
                 <textarea
                   value={resolveNotes}
                   onChange={(e) => setResolveNotes(e.target.value)}
                   placeholder="Detail grounds for manual override or confirmation..."
                   rows={3}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs text-slate-800 focus:outline-hidden focus:border-indigo-500"
+                  className="w-full bg-surface-2 border border-border rounded-xl p-2.5 text-xs text-text focus:outline-hidden focus:border-indigo-500"
                 />
               </div>
             </div>
 
-            <div className="flex items-center justify-end space-x-2 pt-2 border-t border-slate-100">
+            <div className="flex items-center justify-end space-x-2 pt-2 border-t border-border">
               <button
                 onClick={() => setResolveModalItem(null)}
-                className="px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-xl cursor-pointer"
+                className="px-4 py-2 text-xs font-bold text-text-muted hover:bg-surface-2 rounded-xl cursor-pointer"
               >
                 Cancel
               </button>
@@ -1276,15 +1284,28 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
       )}
 
       {/* Audit Database Engine Footer */}
-      <footer id="audit-database-footer" className="mt-8 pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500">
+      <footer id="audit-database-footer" className="mt-8 pt-4 border-t border-border flex flex-col sm:flex-row items-center justify-between text-xs text-text-subtle">
         <div className="flex items-center space-x-2">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span>Active Immutable Ledger Storage: <strong className="text-slate-700 font-semibold">{dbEngineName} Engine</strong> (PostgreSQL production parity / SQLite runtime)</span>
+          <span>Active Immutable Ledger Storage: <strong className="text-text-muted font-semibold">{dbEngineName} Engine</strong> (PostgreSQL production parity / SQLite runtime)</span>
         </div>
-        <div className="text-[11px] font-mono text-slate-400 mt-2 sm:mt-0">
+        <div className="text-[11px] font-mono text-text-subtle mt-2 sm:mt-0">
           SHA-256 Hash Chain • Ed25519 Elliptic-Curve Signatures • Canonical JSON Payloads
         </div>
       </footer>
+      {/* Tamper Simulation Confirmation Modal (Item 17) */}
+      <ConfirmModal
+        isOpen={showTamperConfirmModal}
+        title="Simulate Ledger Tampering?"
+        message="This action will deliberately inject an altered payload hash into Block #2 (Bhoomi Land Registry) to simulate adversarial tampering and demonstrate cryptographic hash-chain break detection."
+        confirmText="Inject Tampering"
+        confirmVariant="danger"
+        onConfirm={() => {
+          setShowTamperConfirmModal(false);
+          handleToggleTamperDemo(true);
+        }}
+        onCancel={() => setShowTamperConfirmModal(false)}
+      />
     </div>
   );
 }

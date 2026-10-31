@@ -312,20 +312,20 @@ export default function PreFlightScorecard({ currentUser }) {
     <div className="space-y-6 max-w-[1720px] mx-auto">
       
       {/* Header Banner */}
-      <div className="bg-gradient-to-r from-sky-50 via-white to-slate-50 border border-sky-200/90 rounded-2xl p-6 shadow-xs relative">
+      <div className="bg-surface border border-border rounded-xl p-5 shadow-xs relative">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
-            <div className="flex items-center space-x-2 text-xs font-semibold text-sky-700 uppercase tracking-widest mb-1">
+            <div className="flex items-center space-x-2 text-xs font-semibold text-primary uppercase tracking-wider mb-1">
               <span>Institution Self-Assessment Engine</span>
               <span>•</span>
               <span>AICTE EoA Scrutiny Readiness</span>
               {isFallback && <DemoDataBadge />}
             </div>
-            <h1 className="text-xl md:text-2xl font-black text-slate-900 tracking-tight flex items-center space-x-2">
-              <PlaneTakeoff className="w-6 h-6 text-sky-600 shrink-0" />
+            <h1 className="text-xl md:text-2xl font-bold text-text tracking-tight flex items-center space-x-2">
+              <PlaneTakeoff className="w-6 h-6 text-primary shrink-0" />
               <span>Pre-Flight Scrutiny Readiness & Self-Audit</span>
             </h1>
-            <p className="text-xs text-slate-600 mt-1 max-w-3xl">
+            <p className="text-xs text-muted mt-1 max-w-3xl">
               Simulates official scrutiny prior to submission via backend AICTE rules & graph analysis. Upload documents to the real ingestion pipeline, monitor your traffic-light readiness score, 
               and follow plain-language instructions to fix deficiencies before formal committee evaluation.
             </p>
@@ -337,7 +337,7 @@ export default function PreFlightScorecard({ currentUser }) {
               onClick={handleReCheck}
               disabled={isAuditing}
               id="recheck-preflight-btn"
-              className="py-2.5 px-5 rounded-xl bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-700 hover:to-indigo-700 text-white text-xs font-bold shadow-md shadow-sky-500/20 transition-all flex items-center space-x-2 active:scale-95 cursor-pointer disabled:opacity-60"
+              className="h-10 px-4 rounded-xl bg-primary hover:bg-primary/90 text-white text-xs font-semibold shadow-xs transition-all flex items-center space-x-2 active:scale-95 cursor-pointer disabled:opacity-60"
             >
               <RotateCcw className={`w-4 h-4 ${isAuditing ? 'animate-spin' : ''}`} />
               <span>{isAuditing ? 'Scanning Backend Engine...' : 'Re-Check Compliance Audit'}</span>
@@ -363,13 +363,13 @@ export default function PreFlightScorecard({ currentUser }) {
           - Circular gauge
           - Executive status
         */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 mt-6 pt-6 border-t border-slate-200 dark:border-slate-800 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 mt-6 pt-6 border-t border-border items-start">
           
           {/* Traffic Light Signal Card */}
-          <div className="lg:col-span-7 bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-2xs flex flex-col sm:flex-row items-center gap-5 min-w-0">
+          <div className="lg:col-span-7 bg-surface rounded-xl p-5 border border-border shadow-2xs flex flex-col sm:flex-row items-center gap-5 min-w-0">
             
             {/* Physical 3-Lens Traffic Light Housing */}
-            <div className="bg-[#F4F6F8] dark:bg-slate-800 border border-[#D5D9DE] dark:border-slate-700 rounded-2xl p-2.5 flex sm:flex-col items-center justify-center gap-2 shrink-0">
+            <div className="bg-surface-2 border border-border rounded-xl p-2.5 flex sm:flex-col items-center justify-center gap-2 shrink-0">
               {/* Red Light */}
               <div 
                 className={`w-7 h-7 rounded-full border-2 transition-all duration-300 flex items-center justify-center ${
@@ -412,7 +412,7 @@ export default function PreFlightScorecard({ currentUser }) {
               <div className="relative w-[200px] h-[200px] shrink-0 flex items-center justify-center">
                 <svg className="w-[200px] h-[200px] transform -rotate-90" viewBox="0 0 36 36">
                   <path
-                    className="text-slate-100 dark:text-slate-800"
+                    className="text-border"
                     strokeWidth="3.5"
                     stroke="currentColor"
                     fill="none"
@@ -435,13 +435,13 @@ export default function PreFlightScorecard({ currentUser }) {
                   />
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-                  <span className="text-3xl font-black text-slate-900 dark:text-white font-mono">{readinessScore}</span>
-                  <span className="text-xs text-slate-400 dark:text-slate-500 font-bold block -mt-0.5">/ 100</span>
+                  <span className="text-3xl font-bold text-text font-mono">{readinessScore}</span>
+                  <span className="text-xs text-muted font-bold block -mt-0.5">/ 100</span>
                 </div>
               </div>
 
               <div className="min-w-0 flex-1 w-full text-center sm:text-left">
-                <div className="text-[10px] uppercase font-bold tracking-wider text-slate-400 dark:text-slate-500">
+                <div className="text-[10px] uppercase font-bold tracking-wider text-muted">
                   Traffic-Light Status
                 </div>
                 <div className={`text-base font-black mt-0.5 ${
@@ -457,7 +457,7 @@ export default function PreFlightScorecard({ currentUser }) {
                     ? 'Scrutiny Inquiry Likely' 
                     : 'Critical Deficiencies Found'}
                 </div>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed whitespace-normal break-words">
+                <p className="text-xs text-muted mt-1.5 leading-relaxed whitespace-normal break-words">
                   {trafficLightState === 'GREEN'
                     ? 'All mandatory AICTE handbook clauses satisfied with high OCR confidence.'
                     : `${checklist.filter(c => !c.resolved).length} compliance shortfalls detected. Review fix instructions below.`}
@@ -469,12 +469,12 @@ export default function PreFlightScorecard({ currentUser }) {
 
           {/* Quick Metrics Cards */}
           <div className="lg:col-span-5 grid grid-cols-3 gap-2.5 items-start">
-            <div className="bg-white dark:bg-slate-900 rounded-2xl p-3.5 border border-slate-200 dark:border-slate-800 shadow-2xs h-auto min-w-0">
-              <div className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-semibold leading-tight">Checklist Complete</div>
+            <div className="bg-surface rounded-xl p-3.5 border border-border shadow-2xs h-auto min-w-0">
+              <div className="text-[10px] text-muted uppercase font-semibold leading-tight">Checklist Complete</div>
               <div className="text-xl font-black text-emerald-600 dark:text-emerald-400 mt-1">
                 {checklist.filter((c) => c.resolved).length} of {checklist.length}
               </div>
-              <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-1 font-mono truncate">
+              <div className="text-[10px] text-muted mt-1 font-mono truncate">
                 {((checklist.filter((c) => c.resolved).length / Math.max(1, checklist.length)) * 100).toFixed(0)}% Satisfied
               </div>
             </div>
@@ -482,12 +482,12 @@ export default function PreFlightScorecard({ currentUser }) {
             {(() => {
               const expiringCount = checklist.filter((c) => c.status === 'EXPIRING' && !c.resolved).length;
               return (
-                <div className="bg-white dark:bg-slate-900 rounded-2xl p-3.5 border border-slate-200 dark:border-slate-800 shadow-2xs h-auto min-w-0">
-                  <div className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-semibold leading-tight">Expiring Certs</div>
+                <div className="bg-surface rounded-xl p-3.5 border border-border shadow-2xs h-auto min-w-0">
+                  <div className="text-[10px] text-muted uppercase font-semibold leading-tight">Expiring Certs</div>
                   <div className="text-xl font-black text-amber-600 dark:text-amber-400 mt-1">
                     {expiringCount} {expiringCount === 1 ? 'Notice' : 'Notices'}
                   </div>
-                  <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-1 truncate">
+                  <div className="text-[10px] text-muted mt-1 truncate">
                     {expiringCount > 0 ? 'Renewal Due' : 'All Valid'}
                   </div>
                 </div>
@@ -497,8 +497,8 @@ export default function PreFlightScorecard({ currentUser }) {
             {(() => {
               const indicatorCount = checklist.filter((c) => (c.status === 'FLAGGED' || c.status === 'MISSING') && !c.resolved).length;
               return (
-                <div className="bg-white dark:bg-slate-900 rounded-2xl p-3.5 border border-slate-200 dark:border-slate-800 shadow-2xs h-auto min-w-0">
-                  <div className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-semibold leading-tight">Regulatory Items</div>
+                <div className="bg-surface rounded-xl p-3.5 border border-border shadow-2xs h-auto min-w-0">
+                  <div className="text-[10px] text-muted uppercase font-semibold leading-tight">Regulatory Items</div>
                   <div className="text-xl font-black text-rose-600 dark:text-rose-400 mt-1">
                     {indicatorCount} Items
                   </div>
@@ -515,13 +515,13 @@ export default function PreFlightScorecard({ currentUser }) {
 
       {/* Real Fix Instructions & Recommendations Roadmap */}
       {recommendations.length > 0 && (
-        <div className="bg-white border border-indigo-200 rounded-2xl p-5 shadow-xs space-y-3">
+        <div className="bg-surface border border-border rounded-xl p-5 shadow-xs space-y-3">
           <div className="flex items-center justify-between">
-            <h3 className="text-xs font-bold text-indigo-950 flex items-center space-x-2 uppercase tracking-wider">
+            <h3 className="text-xs font-bold text-text flex items-center space-x-2 uppercase tracking-wider">
               <Sparkles className="w-4 h-4 text-indigo-600" />
               <span>AICTE Pre-Flight Fix Instructions & Action Items ({recommendations.length})</span>
             </h3>
-            <span className="text-[10px] text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded font-medium border border-indigo-200">
+            <span className="text-[10px] text-primary bg-primary/10 px-2 py-0.5 rounded font-medium border border-primary/20">
               Generated by Regulation-as-Code Engine
             </span>
           </div>
@@ -530,12 +530,12 @@ export default function PreFlightScorecard({ currentUser }) {
             {recommendations.map((rec, idx) => (
               <div 
                 key={idx} 
-                className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs flex items-start space-x-2.5 hover:border-indigo-300 transition-colors"
+                className="p-3 rounded-xl bg-surface-2 border border-border text-xs flex items-start space-x-2.5 hover:border-primary/40 transition-colors"
               >
                 <div className="w-5 h-5 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center shrink-0 font-bold text-[10px] mt-0.5">
                   {idx + 1}
                 </div>
-                <div className="text-slate-800 leading-relaxed text-[11px]">
+                <div className="text-text leading-relaxed text-[11px]">
                   {rec}
                 </div>
               </div>
@@ -549,30 +549,30 @@ export default function PreFlightScorecard({ currentUser }) {
         
         {/* Left Column (5 cols): Upload Documents Section */}
         <div className="xl:col-span-5 space-y-4">
-          <div className="flex items-center justify-between text-xs font-bold text-slate-800 px-1">
+          <div className="flex items-center justify-between text-xs font-bold text-text px-1">
             <span className="flex items-center space-x-1.5">
               <Upload className="w-4 h-4 text-sky-600" />
               <span>Real Document Upload & Ingestion Center</span>
             </span>
-            <span className="text-[11px] font-normal text-slate-500">
+            <span className="text-[11px] font-normal text-muted">
               POST /documents/ingest
             </span>
           </div>
 
           {/* Primary Upload Dropzone */}
-          <div className="bg-white border-2 border-dashed border-sky-300 rounded-2xl p-6 text-center hover:bg-sky-50/30 transition-all group shadow-2xs relative">
+          <div className="bg-surface border-2 border-dashed border-border rounded-xl p-6 text-center hover:border-primary/40 transition-all group shadow-2xs relative">
             <div className="w-12 h-12 mx-auto rounded-2xl bg-sky-100 text-sky-700 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
               <Upload className="w-6 h-6" />
             </div>
-            <h3 className="text-xs font-bold text-slate-900">
+            <h3 className="text-xs font-bold text-text">
               Upload Compliance Documents or Certificates
             </h3>
-            <p className="text-[11px] text-slate-500 mt-1 max-w-xs mx-auto">
+            <p className="text-[11px] text-muted mt-1 max-w-xs mx-auto">
               PDF, JPG, or PNG (Max 25MB). Directly processed by backend multi-modal OCR pipeline with SHA-256 integrity verification.
             </p>
 
             <label className="mt-3 inline-block">
-              <span className="px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold transition-all shadow-xs cursor-pointer">
+              <span className="px-4 py-2 rounded-xl bg-primary hover:bg-primary/90 text-white text-xs font-semibold transition-all shadow-xs cursor-pointer">
                 Select Document to Upload
               </span>
               <input
@@ -585,43 +585,43 @@ export default function PreFlightScorecard({ currentUser }) {
           </div>
 
           {/* Uploaded Documents List */}
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-xs space-y-3">
-            <div className="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center justify-between">
+          <div className="bg-surface border border-border rounded-xl p-4 shadow-xs space-y-3">
+            <div className="text-xs font-bold text-text flex items-center justify-between">
               <span>Ingested Institutional Files ({Object.keys(uploadedFiles).length})</span>
               <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold">✓ SHA-256 Ledger Verified</span>
             </div>
 
             <div className="space-y-2">
               {Object.keys(uploadedFiles).length === 0 ? (
-                <div className="text-xs text-slate-400 dark:text-slate-500 text-center py-5 border border-dashed border-slate-200 dark:border-slate-800 rounded-xl">
+                <div className="text-xs text-text-subtle text-center py-5 border border-dashed border-border rounded-xl">
                   No institutional files ingested yet. Select a document above to upload.
                 </div>
               ) : (
                 Object.entries(uploadedFiles).map(([docType, file]) => (
                   <div 
                     key={docType}
-                    className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 flex items-center justify-between text-xs hover:border-slate-300 dark:hover:border-slate-600 transition-colors"
+                    className="p-2.5 rounded-xl bg-surface-2 border border-border flex items-center justify-between text-xs hover:border-border-strong transition-colors"
                   >
                     <div className="flex items-center space-x-2.5 min-w-0">
-                      <div className="w-7 h-7 rounded-lg bg-sky-100 dark:bg-sky-950 text-sky-700 dark:text-sky-300 flex items-center justify-center shrink-0">
+                      <div className="w-7 h-7 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
                         <FileText className="w-3.5 h-3.5" />
                       </div>
                       <div className="min-w-0">
-                        <div className="font-bold text-slate-900 dark:text-slate-100 text-xs truncate">{docType}</div>
-                        <div className="text-[10px] text-slate-500 dark:text-slate-400 flex flex-wrap items-center gap-1.5 font-mono">
+                        <div className="font-bold text-text text-xs truncate">{docType}</div>
+                        <div className="text-[10px] text-muted flex flex-wrap items-center gap-1.5 font-mono">
                           <span className="break-all">{file.name}</span>
                           <span>•</span>
                           <span>{file.size}</span>
                         </div>
                         {file.hash && (
-                          <div className="text-[9px] text-slate-400 dark:text-slate-500 font-mono truncate">
+                          <div className="text-[9px] text-text-subtle font-mono truncate">
                             SHA: {file.hash.slice(0, 20)}...
                           </div>
                         )}
                       </div>
                     </div>
 
-                    <label className="text-[10px] font-bold text-sky-700 dark:text-sky-400 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-2 py-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer shrink-0 ml-2">
+                    <label className="text-[10px] font-bold text-primary bg-surface border border-border px-2 py-1 rounded-lg hover:bg-surface-2 cursor-pointer shrink-0 ml-2">
                       <span>Replace</span>
                       <input
                         type="file"
@@ -650,12 +650,12 @@ export default function PreFlightScorecard({ currentUser }) {
 
         {/* Right Column (7 cols): Checklist with Plain-Language Fix Instructions */}
         <div className="xl:col-span-7 space-y-4">
-          <div className="flex items-center justify-between text-xs font-bold text-slate-800 px-1">
+          <div className="flex items-center justify-between text-xs font-bold text-text px-1">
             <span className="flex items-center space-x-1.5">
               <CheckCircle2 className="w-4 h-4 text-emerald-600" />
               <span>Category Checklist & Plain-Language Fix Guide</span>
             </span>
-            <span className="text-[11px] font-mono text-slate-500">
+            <span className="text-[11px] font-mono text-text-subtle">
               AICTE APH 2025-26 Specifications
             </span>
           </div>
@@ -668,7 +668,7 @@ export default function PreFlightScorecard({ currentUser }) {
               return (
                 <div
                   key={item.id}
-                  className={`bg-white border rounded-2xl p-4 transition-all shadow-2xs ${
+                  className={`bg-surface border border-border rounded-xl p-4 transition-all shadow-2xs ${
                     isResolved
                       ? 'border-emerald-200 bg-emerald-50/15'
                       : item.status === 'EXPIRING'
@@ -679,16 +679,16 @@ export default function PreFlightScorecard({ currentUser }) {
                   }`}
                 >
                   {/* Card Header */}
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2.5 border-b border-slate-100">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2.5 border-b border-border">
                     <div className="min-w-0">
                       <div className="flex items-center space-x-2">
-                        <span className="text-xs font-bold text-slate-900">{item.docType}</span>
+                        <span className="text-xs font-bold text-text">{item.docType}</span>
                         <span className="text-[10px] font-mono text-sky-700 bg-sky-50 px-2 py-0.5 rounded border border-sky-200">
                           {item.clauseRef}
                         </span>
                       </div>
-                      <div className="text-[11px] text-slate-500 mt-0.5">
-                        Recorded Status: <strong className="text-slate-800">{item.validity}</strong>
+                      <div className="text-[11px] text-muted mt-0.5">
+                        Recorded Status: <strong className="text-text">{item.validity}</strong>
                       </div>
                     </div>
 
@@ -719,12 +719,12 @@ export default function PreFlightScorecard({ currentUser }) {
                   )}
 
                   {/* PLAIN-LANGUAGE FIX INSTRUCTION BOX */}
-                  <div className="mt-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs space-y-1">
-                    <div className="font-bold text-slate-900 flex items-center space-x-1.5 text-[11px]">
+                  <div className="mt-2.5 p-3 rounded-xl bg-surface-2 border border-border text-xs space-y-1">
+                    <div className="font-bold text-text flex items-center space-x-1.5 text-[11px]">
                       <Sparkles className="w-3.5 h-3.5 text-sky-600" />
                       <span>Plain-Language Fix Guidance:</span>
                     </div>
-                    <p className="text-[11px] text-slate-700 leading-relaxed">
+                    <p className="text-[11px] text-muted leading-relaxed">
                       {item.fixInstruction}
                     </p>
                   </div>
@@ -736,7 +736,7 @@ export default function PreFlightScorecard({ currentUser }) {
                       className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer ${
                         isResolved
                           ? 'bg-emerald-600 text-white'
-                          : 'bg-white border border-slate-300 text-slate-700 hover:bg-slate-50'
+                          : 'bg-surface border border-border text-text hover:bg-surface-2'
                       }`}
                     >
                       <Check className="w-3 h-3" />
