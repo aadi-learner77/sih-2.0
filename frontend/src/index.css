@@ -3030,6 +3030,49 @@ html.dark .kpi-glass-card,
   .dark .kpi-glass-card:hover {
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6), 0 14px 28px -6px rgba(0, 0, 0, 0.7);
   }
+
+  /* Cursor-follow spotlight */
+  .kpi-glass-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    background: radial-gradient(200px circle at var(--mx, -500px) var(--my, -500px), rgba(31, 75, 255, 0.22), transparent 70%);
+    opacity: 0;
+    transition: opacity 200ms ease-out;
+    z-index: 1;
+  }
+  html.dark .kpi-glass-card::before,
+  .dark .kpi-glass-card::before {
+    background: radial-gradient(200px circle at var(--mx, -500px) var(--my, -500px), rgba(59, 108, 255, 0.26), transparent 70%);
+  }
+  .kpi-glass-card:hover::before {
+    opacity: 1;
+  }
+
+  /* Organic Hover Blob that glides toward cursor */
+  .kpi-glass-card::after {
+    content: '';
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    filter: blur(24px);
+    background: rgba(31, 75, 255, 0.18);
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(calc(var(--mx, 50%) - 70px), calc(var(--my, 50%) - 70px));
+    transition: opacity 200ms ease-out, transform 300ms ease-out;
+    z-index: 0;
+  }
+  html.dark .kpi-glass-card::after,
+  .dark .kpi-glass-card::after {
+    background: rgba(59, 108, 255, 0.18);
+  }
+  .kpi-glass-card:hover::after {
+    opacity: 1;
+  }
 }
 
 /* Liquid Primary Buttons: Radial Highlight expanding from cursor (Step 4.3) */
@@ -3126,12 +3169,16 @@ body, #root, header, aside, main {
     transform: none !important;
     transition: none !important;
   }
+  .kpi-glass-card::before,
+  .kpi-glass-card::after,
   .btn-liquid::after {
     display: none !important;
   }
 }
 
 @media (hover: none) {
+  .kpi-glass-card::before,
+  .kpi-glass-card::after,
   .btn-liquid::after {
     display: none !important;
   }
