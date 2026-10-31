@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import Dashboard from './pages/Dashboard';
@@ -12,7 +12,7 @@ import InspectionPlannerPage from './pages/InspectionPlannerPage';
 import ManualReviewQueuePage from './pages/ManualReviewQueuePage';
 import DocumentIntelligencePage from './pages/DocumentIntelligencePage';
 import LoginPage from './pages/LoginPage';
-import { ShieldAlert } from 'lucide-react';
+import { ShieldAlert, ArrowUp } from 'lucide-react';
 import { api } from './services/api';
 
 const ROLE_PERMITTED_TABS = {
@@ -28,6 +28,40 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [currentRole, setCurrentRole] = useState('scrutiny_officer');
   const [adminPreviewRole, setAdminPreviewRole] = useState(null);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [showBackToTop, setShowBackToTop] = useState(false);
+  const mainScrollRef = useRef(null);
+
+  const handleMainScroll = (e) => {
+    const el = e.currentTarget;
+    const scrollTop = el.scrollTop;
+    const scrollHeight = el.scrollHeight - el.clientHeight;
+    
+    setIsScrolled(scrollTop > 8);
+    setShowBackToTop(scrollTop > 400);
+    setScrollProgress(scrollHeight > 0 ? Math.min(Math.max(scrollTop / scrollHeight, 0), 1) : 0);
+  };
+
+  const scrollToTop = () => {
+    if (mainScrollRef.current) {
+      mainScrollRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  // Liquid hover effect coordinate tracker (Part 2.2 & Part 3.1)
+  useEffect(() => {
+    const handlePointerMove = (e) => {
+      const el = e.target?.closest?.('.btn-liquid, .kpi-glass-card, button.bg-primary');
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        el.style.setProperty('--mx', `${e.clientX - rect.left}px`);
+        el.style.setProperty('--my', `${e.clientY - rect.top}px`);
+      }
+    };
+    window.addEventListener('pointermove', handlePointerMove, { passive: true });
+    return () => window.removeEventListener('pointermove', handlePointerMove);
+  }, []);
   const [authLoading, setAuthLoading] = useState(true);
 
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -265,6 +299,8 @@ export default function App() {
 
   return (
     <div className="h-screen w-full max-w-full bg-bg text-text flex flex-col font-sans selection:bg-primary selection:text-white overflow-hidden relative">
+      {/* Ambient background layer (Part 1) */}
+      <div className="ambient-background" aria-hidden="true" />
 
       {/* Top AICTE Navigation */}
       <Navbar 
@@ -282,6 +318,8 @@ export default function App() {
         onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         isSidebarCollapsed={isSidebarCollapsed}
         onToggleSidebarCollapse={handleToggleSidebarCollapse}
+        isScrolled={isScrolled}
+        scrollProgress={scrollProgress}
       />
 
       <div className="flex-1 min-h-0 flex overflow-hidden relative z-10">
@@ -301,7 +339,12 @@ export default function App() {
         />
 
         {/* Main Content Workspace */}
-        <main className="flex-1 overflow-y-auto min-h-0 bg-transparent p-3 sm:p-5 lg:p-6 pb-12 w-full min-w-0 scrollbar-slim relative z-10">
+        <main 
+          ref={mainScrollRef}
+          onScroll={handleMainScroll}
+          id="main-content-scroll"
+          className="flex-1 overflow-y-auto min-h-0 bg-transparent p-3 sm:p-5 lg:p-6 pb-12 w-full min-w-0 scrollbar-slim relative z-10"
+        >
           <div className="w-full max-w-[1600px] mx-auto flex flex-col gap-4 sm:gap-6 min-w-0">
             {!isTabAllowed ? (
               <div 
@@ -402,6 +445,22 @@ export default function App() {
           </div>
         </main>
       </div>
+
+      {/* Back-to-Top Floating Glass Button (Part 4.6) */}
+      <button
+        type="button"
+        id="back-to-top-btn"
+        onClick={scrollToTop}
+        aria-label="Back to top"
+        title="Back to top"
+        className={`fixed bottom-12 right-6 z-40 w-10 h-10 rounded-full glass-surface flex items-center justify-center text-text hover:text-primary transition-all duration-200 cursor-pointer shadow-lg outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+          showBackToTop 
+            ? 'opacity-100 translate-y-0 pointer-events-auto' 
+            : 'opacity-0 translate-y-2 pointer-events-none'
+        }`}
+      >
+        <ArrowUp className="w-4 h-4" />
+      </button>
 
       {/* Clean Single Line Footer */}
       <footer className="h-8 shrink-0 bg-surface border-t border-border px-4 sm:px-6 flex items-center justify-between text-xs text-text-muted z-30 select-none">

@@ -69,7 +69,9 @@ export default function Navbar({
   activeApplication, 
   isLiveMode = false,
   onToggleMobileMenu,
-  onToggleSidebarCollapse
+  onToggleSidebarCollapse,
+  isScrolled = false,
+  scrollProgress = 0
 }) {
   const [theme, setTheme] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -210,8 +212,21 @@ export default function Navbar({
         <div className="bg-[#138808] h-full" />
       </div>
 
-      {/* 64px Fixed Height Semantic Token Header */}
-      <header className="h-16 shrink-0 z-40 relative select-none bg-header-bg border-b border-border text-text shadow-xs">
+      {/* Dynamic Glass / Sticky Header (64px shrinks to 56px when scrolled) */}
+      <header 
+        id="app-header-bar"
+        className={`shrink-0 z-40 relative select-none border-b border-border text-text transition-all duration-200 ${
+          isScrolled 
+            ? 'h-14 glass-surface shadow-md border-border/80' 
+            : 'h-16 bg-header-bg shadow-xs border-border'
+        }`}
+      >
+        {/* 2px Cobalt Scroll Progress Line */}
+        <div 
+          className="absolute bottom-0 left-0 right-0 h-[2px] bg-primary origin-left pointer-events-none transition-transform duration-75 z-50"
+          style={{ transform: `scaleX(${scrollProgress})` }}
+          aria-hidden="true"
+        />
         <div className="h-full px-4 sm:px-6 flex items-center justify-between gap-3">
           
           {/* LEFT: Single Hamburger Toggle + PRAMAAN-X Wordmark + AICTE EoA Chip */}
@@ -309,20 +324,29 @@ export default function Navbar({
             {/* Operational Alert Bell with Drawer */}
             <AlertBellDrawer currentRole={currentRole} />
 
-            {/* Compact 36px Icon Theme Toggle (Single Button) */}
+            {/* Compact 36px Icon Theme Toggle with Sun/Moon 18px morph */}
             <button
               type="button"
               id="theme-toggle-btn"
               onClick={toggleTheme}
               aria-label="Switch theme"
-              title="Switch theme"
-              className="w-9 h-9 rounded-lg border border-border bg-surface-2 hover:bg-surface text-text flex items-center justify-center transition-colors cursor-pointer shrink-0 shadow-xs"
+              title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+              className="w-9 h-9 rounded-lg border border-border bg-surface-2 hover:bg-surface text-text flex items-center justify-center transition-colors cursor-pointer shrink-0 shadow-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 relative overflow-hidden group"
             >
-              {theme === 'light' ? (
-                <Moon className="w-4 h-4 text-text-muted hover:text-text transition-colors" id="theme-toggle-dark" />
-              ) : (
-                <Sun className="w-4 h-4 text-[#FBBF24] transition-colors" id="theme-toggle-light" />
-              )}
+              <div className="relative w-[18px] h-[18px] flex items-center justify-center">
+                <Sun 
+                  className={`w-[18px] h-[18px] text-[#FBBF24] absolute transition-all duration-250 ease-out ${
+                    theme === 'dark' ? 'rotate-0 scale-100 opacity-100' : 'rotate-90 scale-50 opacity-0 pointer-events-none'
+                  }`} 
+                  id="theme-toggle-light" 
+                />
+                <Moon 
+                  className={`w-[18px] h-[18px] text-text absolute transition-all duration-250 ease-out ${
+                    theme === 'light' ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-50 opacity-0 pointer-events-none'
+                  }`} 
+                  id="theme-toggle-dark" 
+                />
+              </div>
             </button>
 
             {/* USER MENU (Solid Surface, High Contrast) */}

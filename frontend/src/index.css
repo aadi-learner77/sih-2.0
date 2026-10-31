@@ -2684,3 +2684,195 @@ html[data-theme="dark"] div#document-page-canvas,
 .doc-box-pulsing {
   animation: doc-box-pulse 800ms ease-out forwards !important;
 }
+
+
+/* ==========================================================================
+   GLASSMORPHISM, LIQUID MORPH & INTERACTION LAYER
+   ========================================================================== */
+
+/* Focus Management: :focus-visible only, never on mouse click (:focus) */
+*:focus {
+  outline: none;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--accent, #3B6CFF) !important;
+  outline-offset: 2px !important;
+}
+
+button:focus:not(:focus-visible),
+[role="button"]:focus:not(:focus-visible),
+a:focus:not(:focus-visible),
+div:focus:not(:focus-visible),
+span:focus:not(:focus-visible) {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Ambient Background Layer: One fixed, static, very soft layer */
+.ambient-background {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-color: var(--bg);
+  background-image: 
+    radial-gradient(circle at 0% 0%, rgba(31, 75, 255, 0.07) 0%, transparent 45%),
+    radial-gradient(circle at 100% 100%, rgba(255, 153, 51, 0.06) 0%, transparent 45%);
+}
+
+html.dark .ambient-background,
+.dark .ambient-background {
+  background-color: var(--bg);
+  background-image: 
+    radial-gradient(circle at 0% 0%, rgba(150, 160, 190, 0.07) 0%, transparent 45%),
+    radial-gradient(circle at 100% 100%, rgba(59, 108, 255, 0.06) 0%, transparent 45%);
+}
+
+/* Glass Spec: Light (0.72 white, 14px blur) / Dark (0.62 carbon #18181B, 14px blur) */
+.glass-surface {
+  background: rgba(255, 255, 255, 0.72) !important;
+  border-color: rgba(255, 255, 255, 0.85) !important;
+  box-shadow: 0 1px 2px rgba(11, 27, 51, 0.06), 0 8px 24px -12px rgba(11, 27, 51, 0.18) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(140%) !important;
+  backdrop-filter: blur(14px) saturate(140%) !important;
+}
+
+html.dark .glass-surface,
+.dark .glass-surface {
+  background: rgba(24, 24, 27, 0.62) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 8px 24px -12px rgba(0, 0, 0, 0.6) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(130%) !important;
+  backdrop-filter: blur(14px) saturate(130%) !important;
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .glass-surface {
+    background: var(--surface) !important;
+  }
+}
+
+/* Sidebar Liquid Pill with subtle scale stretch mid-move */
+.sidebar-liquid-pill {
+  transition: transform 280ms cubic-bezier(.2, .8, .2, 1), height 280ms cubic-bezier(.2, .8, .2, 1), opacity 150ms ease-out;
+  will-change: transform, height;
+}
+
+/* KPI Card Spotlight and Hover Lift */
+.kpi-glass-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.72);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  backdrop-filter: blur(14px) saturate(140%);
+  transition: transform 200ms ease-out, box-shadow 200ms ease-out, border-color 200ms ease-out;
+}
+
+html.dark .kpi-glass-card,
+.dark .kpi-glass-card {
+  background: rgba(24, 24, 27, 0.62);
+  -webkit-backdrop-filter: blur(14px) saturate(130%);
+  backdrop-filter: blur(14px) saturate(130%);
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .kpi-glass-card {
+    background: var(--surface) !important;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .kpi-glass-card:hover {
+    transform: translateY(-2px);
+  }
+  .kpi-glass-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    background: radial-gradient(220px circle at var(--mx, -500px) var(--my, -500px), rgba(59, 108, 255, 0.10), transparent 70%);
+    opacity: 0;
+    transition: opacity 200ms ease-out;
+    z-index: 1;
+  }
+  html.dark .kpi-glass-card::before,
+  .dark .kpi-glass-card::before {
+    background: radial-gradient(220px circle at var(--mx, -500px) var(--my, -500px), rgba(255, 255, 255, 0.06), transparent 70%);
+  }
+  .kpi-glass-card:hover::before {
+    opacity: 1;
+  }
+}
+
+/* Liquid Primary Buttons: Radial Highlight expanding from cursor */
+.btn-liquid {
+  position: relative;
+  overflow: hidden;
+  transition: transform 150ms ease-out, background-color 200ms ease-out;
+}
+.btn-liquid:active {
+  transform: scale(0.98);
+}
+@media (hover: hover) and (pointer: fine) {
+  .btn-liquid::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(circle 90px at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.18), transparent 80%);
+    opacity: 0;
+    transition: opacity 200ms ease-out;
+  }
+  .btn-liquid:hover::after {
+    opacity: 1;
+  }
+}
+
+/* Sidebar scroll mask */
+.sidebar-scroll-mask {
+  mask-image: linear-gradient(to bottom, transparent 0px, black 12px, black calc(100% - 12px), transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0px, black 12px, black calc(100% - 12px), transparent 100%);
+}
+
+/* Smooth Scrolling & Scroll Padding */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 68px;
+}
+
+/* Theme Crossfade: 200ms */
+body, #root, header, aside, main {
+  transition: background-color 200ms ease-out, color 200ms ease-out, border-color 200ms ease-out;
+}
+
+/* Reduced Motion Safety */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+  .kpi-glass-card:hover,
+  .btn-liquid:active,
+  .sidebar-liquid-pill,
+  .btn-liquid {
+    transform: none !important;
+    transition: none !important;
+  }
+  .kpi-glass-card::before,
+  .btn-liquid::after {
+    display: none !important;
+  }
+}
+
+
+/* Reveal on Scroll (Part 4.3) */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 350ms ease-out, transform 350ms ease-out;
+}
+
+[data-reveal].revealed {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}

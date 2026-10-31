@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useRef, useLayoutEffect } from 'react';
 import { 
   LayoutDashboard, 
   SearchCode, 
@@ -29,6 +29,10 @@ export default function Sidebar({
   onClose = () => {},
   isCollapsed = false
 }) {
+  const [hoveredTab, setHoveredTab] = useState(null);
+  const [pillStyle, setPillStyle] = useState({ top: 0, height: 40, opacity: 0 });
+  const navRef = useRef(null);
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape' && isOpen) {
@@ -38,6 +42,22 @@ export default function Sidebar({
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
+
+  // Liquid pill position tracker (measures offset relative to navRef)
+  useLayoutEffect(() => {
+    const targetId = hoveredTab || activeTab;
+    if (!targetId || !navRef.current) return;
+    const targetBtn = navRef.current.querySelector(`#sidebar-tab-${targetId}`);
+    if (targetBtn) {
+      const navRect = navRef.current.getBoundingClientRect();
+      const btnRect = targetBtn.getBoundingClientRect();
+      setPillStyle({
+        top: btnRect.top - navRect.top,
+        height: btnRect.height,
+        opacity: 1
+      });
+    }
+  }, [hoveredTab, activeTab, isCollapsed]);
 
   const navSections = [
     {
@@ -149,12 +169,12 @@ export default function Sidebar({
         />
       )}
 
-      {/* Main Aside Component */}
+      {/* Main Aside Component (Glass Surface + Smooth Rail Transitions) */}
       <aside 
         id="sidebar-nav"
         className={`
-        fixed inset-y-0 left-0 z-50 bg-sidebar-bg border-r border-border text-text
-        flex flex-col justify-between h-full overflow-y-auto p-3 pb-6 gap-4 scrollbar-slim transition-[width] duration-200 ease-in-out select-none
+        fixed inset-y-0 left-0 z-50 glass-surface border-r border-border text-text
+        flex flex-col justify-between h-full overflow-y-auto p-3 pb-6 gap-4 scrollbar-slim sidebar-scroll-mask transition-[width] duration-200 ease-in-out select-none
         lg:relative lg:z-0 lg:shrink-0 lg:shadow-none lg:translate-x-0 lg:flex
         ${isOpen ? 'translate-x-0 w-[260px]' : '-translate-x-full lg:translate-x-0'}
         ${isCollapsed ? 'lg:w-[72px] lg:max-w-[72px] lg:px-2 overflow-x-hidden' : 'lg:w-[260px]'}
@@ -189,7 +209,7 @@ export default function Sidebar({
               <button
                 type="button"
                 onClick={onClose}
-                className="lg:hidden p-1 rounded-lg text-text-muted hover:text-text hover:bg-surface-2 transition cursor-pointer"
+                className="lg:hidden p-1 rounded-lg text-text-muted hover:text-text hover:bg-surface-2 transition cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                 aria-label="Close sidebar"
               >
                 <X className="w-4 h-4" />
@@ -197,14 +217,30 @@ export default function Sidebar({
             </div>
           </div>
 
-          {/* Grouped Navigation Sections (20px group spacing, 4px item gap, 40px item height) */}
-          <nav className="flex flex-col space-y-5">
+          {/* Grouped Navigation Sections with Liquid Highlight Pill */}
+          <nav 
+            ref={navRef}
+            onMouseLeave={() => setHoveredTab(null)}
+            className="flex flex-col space-y-5 relative"
+          >
+            {/* Liquid Highlight Pill (Slides to active/hovered tab) */}
+            <div 
+              className="sidebar-liquid-pill absolute left-0 right-0 rounded-lg pointer-events-none bg-primary/12 border border-primary/25 border-l-[3px] border-l-primary z-0"
+              style={{
+                transform: `translateY(${pillStyle.top}px)`,
+                height: `${pillStyle.height}px`,
+                opacity: pillStyle.opacity,
+                top: 0
+              }}
+              aria-hidden="true"
+            />
+
             {navSections.map((section) => {
               const permittedItems = section.items.filter(item => item.roles.includes(currentRole));
               if (permittedItems.length === 0) return null;
 
               return (
-                <div key={section.title} className="space-y-1">
+                <div key={section.title} className="space-y-1 relative z-10">
                   {/* Group Title (11-12px, 600, uppercase with slight tracking, text-subtle) */}
                   <div className={`text-[11px] font-semibold tracking-wider text-text-subtle uppercase px-3 mb-1.5 ${
                     isCollapsed ? 'lg:hidden' : 'block'
@@ -216,6 +252,7 @@ export default function Sidebar({
                     {permittedItems.map((item) => {
                       const Icon = item.icon;
                       const isActive = activeTab === item.id;
+                      const isHovered = hoveredTab === item.id;
                       const isAlertBadge = item.id === 'evidence-lens' || item.id === 'manual-review-queue';
 
                       return (
@@ -223,19 +260,20 @@ export default function Sidebar({
                           key={item.id}
                           id={`sidebar-tab-${item.id}`}
                           onClick={() => handleItemClick(item.id)}
+                          onMouseEnter={() => setHoveredTab(item.id)}
                           title={item.label}
-                          className={`w-full flex items-center rounded-lg text-left transition-colors group cursor-pointer relative h-10 ${
+                          className={`w-full flex items-center rounded-lg text-left transition-colors group cursor-pointer relative h-10 outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
                             isCollapsed 
                               ? 'lg:justify-center lg:p-2' 
                               : 'px-3 py-2 justify-between gap-2'
                           } ${
-                            isActive
-                              ? 'bg-primary/10 border-l-[3px] border-l-primary text-primary dark:text-white font-semibold'
-                              : 'text-text-muted hover:text-text hover:bg-surface-2 border-l-[3px] border-l-transparent font-medium'
+                            isActive || isHovered
+                              ? 'text-primary dark:text-white font-semibold'
+                              : 'text-text-muted hover:text-text font-medium'
                           }`}
                         >
                           <div className={`flex items-center min-w-0 ${isCollapsed ? 'lg:justify-center' : 'space-x-2.5 flex-1'}`}>
-                            <Icon className={`w-4 h-4 shrink-0 transition-colors ${
+                            <Icon className={`w-4 h-4 shrink-0 transition-transform duration-150 group-hover:translate-x-0.5 ${
                               isActive ? 'text-primary dark:text-white' : 'text-text-muted group-hover:text-text'
                             }`} />
                             
@@ -256,6 +294,16 @@ export default function Sidebar({
                             }`}>
                               {item.badge}
                             </span>
+                          )}
+
+                          {/* Collapsed Rail Tooltip (Floating to the right on hover, 150ms delay) */}
+                          {isCollapsed && (
+                            <div 
+                              role="tooltip"
+                              className="absolute left-full ml-3 px-2.5 py-1 bg-surface text-text text-xs font-semibold rounded-md shadow-lg border border-border whitespace-nowrap z-50 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-150 delay-150 hidden lg:block"
+                            >
+                              {item.label}
+                            </div>
                           )}
                         </button>
                       );

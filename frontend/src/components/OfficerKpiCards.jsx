@@ -57,7 +57,15 @@ function CircularProgressRing({ percentage, size = 36, strokeWidth = 3 }) {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const val = Math.min(Math.max(parseFloat(percentage) || 0, 0), 100);
-  const strokeDashoffset = circumference - (val / 100) * circumference;
+  const targetOffset = circumference - (val / 100) * circumference;
+  const [offset, setOffset] = useState(circumference);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setOffset(targetOffset);
+    }, 50);
+    return () => clearTimeout(timer);
+  }, [targetOffset]);
 
   return (
     <div className="relative inline-flex items-center justify-center shrink-0" style={{ width: size, height: size }}>
@@ -78,7 +86,7 @@ function CircularProgressRing({ percentage, size = 36, strokeWidth = 3 }) {
           stroke="currentColor"
           strokeWidth={strokeWidth}
           strokeDasharray={circumference}
-          strokeDashoffset={strokeDashoffset}
+          strokeDashoffset={offset}
           strokeLinecap="round"
           className="text-success transition-all duration-700 ease-out"
           fill="transparent"
@@ -93,16 +101,19 @@ function CircularProgressRing({ percentage, size = 36, strokeWidth = 3 }) {
 
 /**
  * Government Portal Metric Card:
- * - Solid surface card, 10px radius, 1px border, soft shadow in light
- * - Small icon in a tinted square
- * - Label: 14px muted
- * - Big number: 28px text color tabular-nums
- * - One caption line: 12px muted
- * - Equal heights
+ * - Glass surface, soft spotlight tracking cursor via --mx/--my
+ * - 2px hover lift, gentle 1.06 icon scale
+ * - :focus-visible only (never :focus on mouse click)
  */
 function KpiCardItem({ card, isSelected, onClick, loading }) {
   const Icon = card.icon;
   const animatedValue = useCountUp(card.value, 700);
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    e.currentTarget.style.setProperty('--mx', `${e.clientX - rect.left}px`);
+    e.currentTarget.style.setProperty('--my', `${e.clientY - rect.top}px`);
+  };
 
   if (loading) {
     return (
@@ -123,15 +134,16 @@ function KpiCardItem({ card, isSelected, onClick, loading }) {
       role="button"
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick(); } }}
-      className={`bg-surface rounded-lg p-4 sm:p-5 border cursor-pointer group flex flex-col justify-between h-full transition-colors select-none ${
+      onMouseMove={handleMouseMove}
+      className={`kpi-glass-card rounded-lg p-4 sm:p-5 border cursor-pointer group flex flex-col justify-between h-full select-none relative overflow-hidden outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 transition-all duration-200 ${
         isSelected
           ? 'ring-2 ring-primary border-primary shadow-xs'
           : 'border-border hover:border-border-strong shadow-card'
       }`}
     >
       {/* Top Row: Icon in a Tinted Square + Verified Progress Ring (if verified card) */}
-      <div className="flex items-center justify-between">
-        <div className={`w-8 h-8 rounded-md flex items-center justify-center border ${card.iconSquare}`}>
+      <div className="flex items-center justify-between relative z-10">
+        <div className={`w-8 h-8 rounded-md flex items-center justify-center border transition-transform duration-200 group-hover:scale-[1.06] ${card.iconSquare}`}>
           <Icon className="w-4 h-4 shrink-0" />
         </div>
 
@@ -141,7 +153,7 @@ function KpiCardItem({ card, isSelected, onClick, loading }) {
       </div>
 
       {/* Metric Content */}
-      <div className="flex flex-col gap-1 mt-3">
+      <div className="flex flex-col gap-1 mt-3 relative z-10">
         <div className="text-sm font-medium text-text-muted">
           {card.title}
         </div>

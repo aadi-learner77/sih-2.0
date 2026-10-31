@@ -289,92 +289,129 @@ export default function Dashboard({
   const isInstitutionUser = currentRole === 'institution_user';
   const isAuditor = currentRole === 'auditor';
   const isAdmin = currentRole === 'admin';
+  const dashboardContainerRef = useRef(null);
+
+  // Reveal-on-scroll (Part 4.3): fade-up once on enter viewport, above fold instantly visible
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.IntersectionObserver) return;
+    const elements = dashboardContainerRef.current?.querySelectorAll('[data-reveal]');
+    if (!elements || elements.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.05 }
+    );
+
+    elements.forEach((el, index) => {
+      el.style.transitionDelay = `${Math.min(index * 60, 300)}ms`;
+      observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <div className="flex flex-col gap-6 max-w-[1440px] mx-auto w-full">
+    <div ref={dashboardContainerRef} className="flex flex-col gap-6 max-w-[1440px] mx-auto w-full">
 
-      {/* 1. Official Government Hero Banner: Solid Navy in Light, Carbon with Primary Accent Bar in Dark */}
-      <div className="relative rounded-lg p-6 sm:p-7 overflow-hidden bg-[#0B3D91] text-white dark:bg-surface dark:border dark:border-border dark:border-l-[3px] dark:border-l-primary shadow-card select-none">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
-          <div className="max-w-2xl">
-            {/* Short Eyebrow */}
-            <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-[#DCE6FA] dark:text-text-subtle uppercase tracking-wider mb-1.5">
-              <span>
+      {/* 1. Official Government Hero Banner: Solid Surface with High-Contrast Tokens */}
+      <div data-reveal className="relative revealed">
+        {/* Decorative Organic Blob behind hero (Part 2.5: Static, 40px blur, 0.08 opacity cobalt) */}
+        <div 
+          className="absolute -top-8 -right-8 w-72 h-72 rounded-[42%_58%_55%_45%/50%_45%_55%_50%] bg-[#1F4BFF] opacity-[0.08] blur-[40px] pointer-events-none -z-10"
+          aria-hidden="true" 
+        />
+
+        <div className="relative rounded-lg p-6 sm:p-7 overflow-hidden bg-surface border border-border shadow-card select-none text-text">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+            <div className="max-w-2xl">
+              {/* Short Eyebrow: primary navy (#0B3D91) in light, cobalt (#3B6CFF) in dark */}
+              <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-[#0B3D91] dark:text-[#3B6CFF] uppercase tracking-wider mb-1.5">
+                <span>
+                  {isInstitutionUser 
+                    ? 'Institution Scrutiny Portal' 
+                    : 'AICTE Central Scrutiny Division'}
+                </span>
+                <span>•</span>
+                <span>APH 2025-26</span>
+                {!isLiveMode && <DemoDataBadge />}
+              </div>
+
+              {/* Title 24px/700 */}
+              <h1 className="text-2xl font-bold text-text tracking-tight leading-snug">
                 {isInstitutionUser 
-                  ? 'Institution Scrutiny Portal' 
-                  : 'AICTE Central Scrutiny Division'}
-              </span>
-              <span>•</span>
-              <span>APH 2025-26</span>
-              {!isLiveMode && <DemoDataBadge />}
+                  ? 'Institution Dossier & Self-Assessment' 
+                  : isAuditor
+                  ? 'Independent Audit & Verification'
+                  : isAdmin
+                  ? 'Administration & Regulatory Governance'
+                  : 'Scrutiny & Regulatory Command Center'}
+              </h1>
+
+              {/* Subtitle: text-muted (#4A5B78 minimum) in light, passing 4.5:1 */}
+              <p className="text-sm text-text-muted mt-1.5 leading-normal">
+                {isInstitutionUser
+                  ? 'Review compliance readiness and pending requirements prior to formal review.'
+                  : 'Regulatory decision support system. Findings are advisory indicators for committee inquiry.'}
+              </p>
             </div>
 
-            {/* Title 24px/700 */}
-            <h1 className="text-2xl font-bold text-white dark:text-text tracking-tight leading-snug">
-              {isInstitutionUser 
-                ? 'Institution Dossier & Self-Assessment' 
-                : isAuditor
-                ? 'Independent Audit & Verification'
-                : isAdmin
-                ? 'Administration & Regulatory Governance'
-                : 'Scrutiny & Regulatory Command Center'}
-            </h1>
+            {/* Action Buttons: Solid primary (navy #0B3D91 in light, cobalt #3B6CFF in dark), Outline secondary */}
+            <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+              {isInstitutionUser ? (
+                <button
+                  type="button"
+                  id="launch-preflight-btn"
+                  onClick={() => onNavigateTab('preflight')}
+                  className="h-10 px-4 rounded-lg bg-[#0B3D91] hover:bg-[#0B3D91]/90 text-white dark:bg-[#3B6CFF] dark:hover:bg-[#3B6CFF]/90 dark:text-white text-xs font-semibold transition-colors flex items-center space-x-2 cursor-pointer shadow-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                >
+                  <SearchCode className="w-4 h-4 text-inherit" />
+                  <span>Pre-Flight Self-Check</span>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  id="launch-evidence-lens-btn"
+                  onClick={() => onNavigateTab('evidence-lens')}
+                  className="h-10 px-4 rounded-lg bg-[#0B3D91] hover:bg-[#0B3D91]/90 text-white dark:bg-[#3B6CFF] dark:hover:bg-[#3B6CFF]/90 dark:text-white text-xs font-semibold transition-colors flex items-center space-x-2 cursor-pointer shadow-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                >
+                  <SearchCode className="w-4 h-4 text-inherit" />
+                  <span>Launch Evidence Lens</span>
+                </button>
+              )}
 
-            {/* ONE Short Subtitle Line (Readable in both themes: #DCE6FA on navy, text-muted on carbon) */}
-            <p className="text-sm text-[#DCE6FA] dark:text-text-muted mt-1.5 leading-normal">
-              {isInstitutionUser
-                ? 'Review compliance readiness and pending requirements prior to formal review.'
-                : 'Regulatory decision support system. Findings are advisory indicators for committee inquiry.'}
-            </p>
-          </div>
-
-          {/* Action Buttons: Solid White/Navy on light hero, Primary blue on dark hero; Secondary outline */}
-          <div className="flex flex-wrap items-center gap-2.5 shrink-0">
-            {isInstitutionUser ? (
               <button
                 type="button"
-                id="launch-preflight-btn"
-                onClick={() => onNavigateTab('preflight')}
-                className="h-10 px-4 rounded-lg bg-white hover:bg-white/90 text-[#0B3D91] dark:bg-primary dark:hover:bg-primary-hover dark:text-white text-xs font-semibold transition-colors flex items-center space-x-2 cursor-pointer shadow-xs"
+                id="launch-audit-ledger-btn"
+                onClick={() => onNavigateTab('audit-ledger')}
+                className="h-10 px-4 rounded-lg border border-border text-text hover:bg-surface-2 text-xs font-semibold transition-colors flex items-center space-x-2 cursor-pointer shadow-2xs focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
               >
-                <SearchCode className="w-4 h-4 text-inherit" />
-                <span>Pre-Flight Self-Check</span>
+                <History className="w-4 h-4 text-inherit" />
+                <span>Audit Ledger</span>
               </button>
-            ) : (
-              <button
-                type="button"
-                id="launch-evidence-lens-btn"
-                onClick={() => onNavigateTab('evidence-lens')}
-                className="h-10 px-4 rounded-lg bg-white hover:bg-white/90 text-[#0B3D91] dark:bg-primary dark:hover:bg-primary-hover dark:text-white text-xs font-semibold transition-colors flex items-center space-x-2 cursor-pointer shadow-xs"
-              >
-                <SearchCode className="w-4 h-4 text-inherit" />
-                <span>Launch Evidence Lens</span>
-              </button>
-            )}
-
-            <button
-              type="button"
-              id="launch-audit-ledger-btn"
-              onClick={() => onNavigateTab('audit-ledger')}
-              className="h-10 px-4 rounded-lg border border-white/30 text-white hover:bg-white/10 dark:border-border dark:text-text dark:hover:bg-surface-2 text-xs font-semibold transition-colors flex items-center space-x-2 cursor-pointer"
-            >
-              <History className="w-4 h-4 text-inherit" />
-              <span>Audit Ledger</span>
-            </button>
+            </div>
           </div>
         </div>
       </div>
 
       {/* 2. 5 Operational KPI Cards */}
-      <OfficerKpiCards 
-        kpis={kpis} 
-        selectedStatusFilter={selectedStatus}
-        onStatusFilterClick={(status) => setSelectedStatus(status)}
-        loading={loading}
-      />
+      <div data-reveal className="revealed">
+        <OfficerKpiCards 
+          kpis={kpis} 
+          selectedStatusFilter={selectedStatus}
+          onStatusFilterClick={(status) => setSelectedStatus(status)}
+          loading={loading}
+        />
+      </div>
 
       {/* 3. Triage Table Card: Clean Surface, 1px Border, 72px Rows */}
-      <div className="bg-surface border border-border rounded-lg shadow-card overflow-hidden">
+      <div data-reveal className="bg-surface border border-border rounded-lg shadow-card overflow-hidden">
         
         {/* Table Header & Controls Bar */}
         <div className="px-5 py-4 border-b border-border bg-surface-2/40">
@@ -522,8 +559,8 @@ export default function Dashboard({
 
         {/* Desktop Triage Table (>=1024px: No horizontal scroll at >= 1280px, No Overlap) */}
         <div id="triage-table" className="hidden lg:block w-full">
-          {/* Header Row: 12px, 600, sentence case, text-muted */}
-          <div className="grid xl:grid-cols-[minmax(260px,2fr)_150px_120px_minmax(220px,2fr)_200px_180px] grid-cols-[minmax(260px,2.5fr)_120px_minmax(220px,2.5fr)_200px_180px] px-5 py-3 bg-surface-2 text-text-muted text-[12px] font-semibold border-b border-border items-center">
+          {/* Sticky Header Row (Part 4.4): glass style when stuck, sentence case */}
+          <div className="sticky top-0 z-20 grid xl:grid-cols-[minmax(260px,2fr)_150px_120px_minmax(220px,2fr)_200px_180px] grid-cols-[minmax(260px,2.5fr)_120px_minmax(220px,2.5fr)_200px_180px] px-5 py-3 bg-surface-2/95 backdrop-blur-sm text-text-muted text-[12px] font-semibold border-b border-border items-center shadow-xs">
             <div>Application & Institution</div>
             <div className="hidden xl:block">State & Category</div>
             <div>Risk Rank</div>
@@ -555,8 +592,14 @@ export default function Dashboard({
                 return (
                   <div 
                     key={app.id}
-                    className="grid xl:grid-cols-[minmax(260px,2fr)_150px_120px_minmax(220px,2fr)_200px_180px] grid-cols-[minmax(260px,2.5fr)_120px_minmax(220px,2.5fr)_200px_180px] px-5 py-3 items-center gap-2 min-h-[72px] hover:bg-surface-2 transition-colors border-l-[3px] border-l-transparent hover:border-l-primary group"
+                    className="relative grid xl:grid-cols-[minmax(260px,2fr)_150px_120px_minmax(220px,2fr)_200px_180px] grid-cols-[minmax(260px,2.5fr)_120px_minmax(220px,2.5fr)_200px_180px] px-5 py-3 items-center gap-2 min-h-[72px] hover:bg-surface-2 transition-colors group select-none"
                   >
+                    {/* Animated 3px Primary Left Bar (Part 3: scaleY 0 to 1, 150ms) */}
+                    <span 
+                      className="absolute left-0 top-0 bottom-0 w-[3px] bg-primary origin-top scale-y-0 group-hover:scale-y-100 transition-transform duration-150 rounded-r pointer-events-none" 
+                      aria-hidden="true" 
+                    />
+
                     {/* 1. Application & Institution */}
                     <div className="min-w-0 pr-3">
                       <div className="flex items-center space-x-2">
@@ -620,11 +663,18 @@ export default function Dashboard({
                           {app.primary_issue || app.flags?.[0] || 'No adverse indicators'}
                         </span>
                         {app.flags && app.flags.length > 1 && (
-                          <div className="relative inline-block mt-0.5">
+                          <div 
+                            className="relative inline-block mt-0.5"
+                            onMouseLeave={() => setActiveAnomalyPopoverId(null)}
+                          >
                             <button
                               type="button"
                               onClick={() => setActiveAnomalyPopoverId(isAnomalyOpen ? null : app.id)}
-                              className="text-xs text-accent font-semibold hover:underline cursor-pointer"
+                              onMouseEnter={() => setActiveAnomalyPopoverId(app.id)}
+                              onFocus={() => setActiveAnomalyPopoverId(app.id)}
+                              className="text-xs text-accent font-semibold hover:underline cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-accent"
+                              aria-expanded={isAnomalyOpen}
+                              aria-label={`View ${app.flags.length - 1} more flagged indicators`}
                             >
                               +{app.flags.length - 1} more
                             </button>
@@ -667,11 +717,11 @@ export default function Dashboard({
                               onSelectApplication(app);
                               onNavigateTab('evidence-lens');
                             }}
-                            className="h-9 px-3.5 rounded-lg border border-[#0B3D91] text-[#0B3D91] dark:border-border-strong dark:text-white hover:bg-[#0B3D91]/10 dark:hover:bg-surface-2 text-xs font-semibold transition-colors inline-flex items-center justify-center space-x-1.5 cursor-pointer whitespace-nowrap shrink-0"
+                            className="group/btn h-9 px-3.5 rounded-lg border border-[#0B3D91] text-[#0B3D91] dark:border-border-strong dark:text-white hover:bg-[#0B3D91]/10 dark:hover:bg-surface-2 text-xs font-semibold transition-colors inline-flex items-center justify-center space-x-1.5 cursor-pointer whitespace-nowrap shrink-0 outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                             title="Inspect application dossier in Evidence Lens"
                           >
                             <span>Evidence Lens</span>
-                            <ChevronRight className="w-3.5 h-3.5 shrink-0" />
+                            <ChevronRight className="w-3.5 h-3.5 shrink-0 transition-transform duration-150 group-hover/btn:translate-x-1" />
                           </button>
 
                           {!isAuditor && (
@@ -681,8 +731,9 @@ export default function Dashboard({
                                 setActionModalApp(app);
                                 setOfficerComment('');
                               }}
-                              className="w-9 h-9 rounded-lg text-text-muted hover:text-text hover:bg-surface-2 flex items-center justify-center cursor-pointer transition-colors shrink-0"
-                              title="Record signed officer determination"
+                              className="w-9 h-9 rounded-lg text-text-muted hover:text-text hover:bg-surface-2 flex items-center justify-center cursor-pointer transition-colors shrink-0 outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                              title="Add comment"
+                              aria-label="Add comment"
                             >
                               <MessageSquare className="w-4 h-4 shrink-0" />
                             </button>
@@ -814,7 +865,7 @@ export default function Dashboard({
       </div>
 
       {/* 4. Live Document Ingestion & Forensics Card (B9) */}
-      <div className="bg-surface border border-border rounded-2xl p-5 sm:p-6 shadow-card">
+      <div data-reveal className="bg-surface border border-border rounded-2xl p-5 sm:p-6 shadow-card">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
           <div>
             <div className="flex items-center space-x-2">
@@ -903,9 +954,10 @@ export default function Dashboard({
 
       {/* 5. Officer Action Determination Modal (Mandatory Comment Enforced) */}
       {actionModalApp && (
-        <div className="fixed inset-0 z-50 bg-black/55 dark:bg-black/70 flex items-center justify-center p-4">
-          <div className="bg-surface rounded-xl max-w-lg w-full p-6 shadow-xl border border-border space-y-4 animate-in zoom-in-95">
-            <div className="flex items-center justify-between pb-3 border-b border-border">
+        <div className="fixed inset-0 z-50 bg-black/55 dark:bg-black/70 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-surface rounded-xl max-w-lg w-full shadow-2xl border border-border overflow-hidden animate-in zoom-in-95">
+            {/* Modal Header: Glass Surface (Part 1) */}
+            <div className="glass-surface px-6 py-4 flex items-center justify-between border-b border-border">
               <div>
                 <h3 className="text-base font-semibold text-text">
                   Officer Scrutiny Determination
@@ -917,11 +969,14 @@ export default function Dashboard({
               <button
                 type="button"
                 onClick={() => setActionModalApp(null)}
-                className="text-text-muted hover:text-text p-1 rounded-md cursor-pointer"
+                className="text-text-muted hover:text-text p-1.5 rounded-lg hover:bg-surface-2 transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                aria-label="Close modal"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
+
+            <div className="p-6 space-y-4">
 
             {actionSuccessMsg ? (
               <div className="p-4 bg-success-bg rounded-lg border border-success-border text-xs text-success-text flex items-center space-x-2 font-medium">
@@ -989,6 +1044,7 @@ export default function Dashboard({
                 </div>
               </form>
             )}
+            </div>
           </div>
         </div>
       )}
