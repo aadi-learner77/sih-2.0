@@ -143,7 +143,7 @@ export default function Sidebar({
       {/* Mobile Backdrop Overlay */}
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-slate-950/60 backdrop-blur-xs z-40 lg:hidden transition-opacity animate-fadeIn" 
+          className="fixed inset-0 bg-black/55 dark:bg-black/70 backdrop-blur-xs z-40 lg:hidden transition-opacity animate-fadeIn" 
           onClick={onClose} 
           aria-hidden="true"
         />

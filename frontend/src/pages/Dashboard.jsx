@@ -335,7 +335,7 @@ export default function Dashboard({
                 type="button"
                 id="launch-preflight-btn"
                 onClick={() => onNavigateTab('preflight')}
-                className="h-10 px-4 rounded-lg bg-white hover:bg-slate-100 text-[#0B3D91] dark:bg-primary dark:hover:bg-primary-hover dark:text-white text-xs font-semibold transition-colors flex items-center space-x-2 cursor-pointer shadow-xs"
+                className="h-10 px-4 rounded-lg bg-white hover:bg-white/90 text-[#0B3D91] dark:bg-primary dark:hover:bg-primary-hover dark:text-white text-xs font-semibold transition-colors flex items-center space-x-2 cursor-pointer shadow-xs"
               >
                 <SearchCode className="w-4 h-4 text-inherit" />
                 <span>Pre-Flight Self-Check</span>
@@ -345,7 +345,7 @@ export default function Dashboard({
                 type="button"
                 id="launch-evidence-lens-btn"
                 onClick={() => onNavigateTab('evidence-lens')}
-                className="h-10 px-4 rounded-lg bg-white hover:bg-slate-100 text-[#0B3D91] dark:bg-primary dark:hover:bg-primary-hover dark:text-white text-xs font-semibold transition-colors flex items-center space-x-2 cursor-pointer shadow-xs"
+                className="h-10 px-4 rounded-lg bg-white hover:bg-white/90 text-[#0B3D91] dark:bg-primary dark:hover:bg-primary-hover dark:text-white text-xs font-semibold transition-colors flex items-center space-x-2 cursor-pointer shadow-xs"
               >
                 <SearchCode className="w-4 h-4 text-inherit" />
                 <span>Launch Evidence Lens</span>

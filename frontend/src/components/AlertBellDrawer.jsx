@@ -134,10 +134,10 @@ export default function AlertBellDrawer({ currentRole }) {
             fetchNotifications();
           }
         }}
-        className="relative p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors focus:outline-none cursor-pointer"
+        className="relative p-2 rounded-xl text-text-muted hover:text-text hover:bg-surface-2 transition-colors focus:outline-none cursor-pointer"
         title="Statutory Alerts & Risk Warnings"
       >
-        <Bell className="w-5 h-5 text-slate-600" />
+        <Bell className="w-5 h-5 text-current" />
         {activeAlertsCount > 0 && (
           <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-[16px] px-1">
             <span className="animate-ping absolute inset-0 rounded-full bg-rose-400 opacity-75"></span>
@@ -151,36 +151,36 @@ export default function AlertBellDrawer({ currentRole }) {
       {/* Flyout Drawer / Modal via Portal directly onto document.body */}
       {isOpen && typeof document !== 'undefined' && createPortal(
         <div 
-          className="modal-backdrop-overlay fixed inset-0 z-50 overflow-hidden bg-black/40 backdrop-blur-xs flex justify-end items-start p-3 sm:p-4 pt-[60px]"
+          className="modal-backdrop-overlay fixed inset-0 z-50 overflow-hidden bg-black/55 dark:bg-black/70 backdrop-blur-xs flex justify-end items-start p-3 sm:p-4 pt-[60px]"
           onClick={() => setIsOpen(false)}
         >
           <div 
             id="alert-bell-drawer-modal"
-            className="alert-drawer-container w-full max-w-lg bg-white h-auto max-h-[calc(100vh-80px)] shadow-2xl flex flex-col rounded-2xl border border-slate-200 animate-in slide-in-from-right duration-200 overflow-hidden"
+            className="alert-drawer-container w-full max-w-lg bg-surface h-auto max-h-[calc(100vh-80px)] shadow-2xl flex flex-col rounded-xl border border-border text-text animate-in slide-in-from-right duration-200 overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             
             {/* Header */}
-            <div className="drawer-header p-4 sm:p-5 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between shrink-0">
+            <div className="drawer-header p-4 sm:p-5 border-b border-border bg-surface-2 flex items-center justify-between shrink-0">
               <div className="flex items-center space-x-2.5">
                 <div className="w-8 h-8 rounded-lg bg-rose-100 text-rose-700 flex items-center justify-center shrink-0">
                   <ShieldAlert className="w-4 h-4" />
                 </div>
                 <div>
                   <div className="flex items-center space-x-2">
-                    <h3 className="text-sm font-bold text-slate-900">
+                    <h3 className="text-sm font-bold text-text">
                       Statutory Operational Alerts
                     </h3>
                     {isDemoData && <DemoDataBadge message="Demo data" />}
                   </div>
-                  <div className="flex items-center space-x-2 text-[11px] text-slate-500 mt-0.5">
+                  <div className="flex items-center space-x-2 text-[11px] text-text-muted mt-0.5">
                     <span className="font-bold text-rose-600 bg-rose-50 px-1.5 py-0.5 rounded border border-rose-200">
                       {activeAlertsCount} Active
                     </span>
                     <span>•</span>
                     <span>{criticalCount} Critical</span>
                     <span>•</span>
-                    <span className="font-semibold text-sky-700 bg-sky-50 px-1.5 py-0.5 rounded border border-sky-200">
+                    <span className="font-semibold text-primary bg-primary/10 px-1.5 py-0.5 rounded border border-primary/20">
                       {dispatchCount} Dispatched
                     </span>
                   </div>
@@ -192,7 +192,7 @@ export default function AlertBellDrawer({ currentRole }) {
                   id="run-scan-btn"
                   onClick={handleTriggerScan}
                   disabled={scanning}
-                  className="px-2.5 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold flex items-center space-x-1.5 transition-all shadow-xs disabled:opacity-50 cursor-pointer"
+                  className="px-2.5 py-1.5 rounded-lg bg-primary hover:bg-primary-hover text-white text-xs font-semibold flex items-center space-x-1.5 transition-all shadow-xs disabled:opacity-50 cursor-pointer"
                   title="Run Full Background Scan Across All Applications"
                 >
                   <RefreshCw className={`w-3.5 h-3.5 ${scanning ? 'animate-spin' : ''}`} />
@@ -201,7 +201,7 @@ export default function AlertBellDrawer({ currentRole }) {
                 <button
                   id="close-drawer-btn"
                   onClick={() => setIsOpen(false)}
-                  className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-200/60 cursor-pointer"
+                  className="p-1.5 text-text-muted hover:text-text rounded-lg hover:bg-surface-2 cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -210,23 +210,23 @@ export default function AlertBellDrawer({ currentRole }) {
 
             {/* Quick Alert Banner Notification */}
             {notificationMsg && (
-              <div className="bg-sky-50 px-4 py-2 text-xs text-sky-800 border-b border-sky-200 flex items-center justify-between shrink-0">
+              <div className="bg-primary/10 px-4 py-2 text-xs text-text border-b border-border flex items-center justify-between shrink-0">
                 <span>{notificationMsg}</span>
-                <button onClick={() => setNotificationMsg(null)} className="text-sky-600 hover:text-sky-900">
+                <button onClick={() => setNotificationMsg(null)} className="text-text-muted hover:text-text">
                   <X className="w-3.5 h-3.5" />
                 </button>
               </div>
             )}
 
             {/* View & Severity Filter Bar with proper padding */}
-            <div className="drawer-filter-bar px-5 py-3 border-b border-slate-200 bg-white flex items-center justify-between gap-2 shrink-0 flex-wrap">
+            <div className="drawer-filter-bar px-5 py-3 border-b border-border bg-surface flex items-center justify-between gap-2 shrink-0 flex-wrap">
               <div className="flex items-center space-x-1.5 text-xs">
                 <button
                   onClick={() => setActiveView('alerts')}
                   className={`px-3 py-1.5 rounded-lg font-medium transition-colors cursor-pointer ${
                     activeView === 'alerts'
-                      ? 'bg-[#E8F1FB] text-[#000000] border border-[#BBD4F0] font-semibold shadow-xs'
-                      : 'text-slate-600 hover:bg-slate-100'
+                      ? 'bg-primary/10 text-primary border border-primary/20 font-semibold shadow-xs'
+                      : 'text-text-muted hover:text-text hover:bg-surface-2'
                   }`}
                 >
                   Alerts ({alerts.length})
@@ -235,8 +235,8 @@ export default function AlertBellDrawer({ currentRole }) {
                   onClick={() => setActiveView('notifications')}
                   className={`px-3 py-1.5 rounded-lg font-medium transition-colors cursor-pointer ${
                     activeView === 'notifications'
-                      ? 'bg-[#E8F1FB] text-[#000000] border border-[#BBD4F0] font-semibold shadow-xs'
-                      : 'text-slate-600 hover:bg-slate-100'
+                      ? 'bg-primary/10 text-primary border border-primary/20 font-semibold shadow-xs'
+                      : 'text-text-muted hover:text-text hover:bg-surface-2'
                   }`}
                 >
                   Dispatches ({dispatchCount})
@@ -255,8 +255,8 @@ export default function AlertBellDrawer({ currentRole }) {
                             ? 'bg-rose-600 text-white border-rose-600'
                             : s === 'WARNING'
                             ? 'bg-amber-600 text-white border-amber-600'
-                            : 'bg-[#E8F1FB] text-[#000000] border-[#BBD4F0]'
-                          : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+                            : 'bg-primary/10 text-primary border-primary/20'
+                          : 'bg-surface text-text-muted border-border hover:bg-surface-2'
                       }`}
                     >
                       {s}
@@ -270,10 +270,10 @@ export default function AlertBellDrawer({ currentRole }) {
             <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-0">
               {activeView === 'alerts' ? (
                 filteredAlerts.length === 0 ? (
-                  <div className="text-center py-12 text-slate-400 space-y-2">
+                  <div className="text-center py-12 text-text-subtle space-y-2">
                     <CheckCircle2 className="w-8 h-8 mx-auto text-emerald-500 opacity-80" />
-                    <p className="text-xs font-semibold text-slate-700">No active operational alerts for selected criteria.</p>
-                    <p className="text-[11px] text-slate-500">All institutional documents, deadlines, and statutory verifications are in good standing.</p>
+                    <p className="text-xs font-semibold text-text">No active operational alerts for selected criteria.</p>
+                    <p className="text-[11px] text-text-muted">All institutional documents, deadlines, and statutory verifications are in good standing.</p>
                   </div>
                 ) : (
                   filteredAlerts.map((alert) => {
@@ -285,12 +285,12 @@ export default function AlertBellDrawer({ currentRole }) {
                         key={alert.id}
                         className={`rounded-xl p-3.5 border transition-all text-left space-y-2 ${
                           alert.is_read
-                            ? 'bg-slate-50/60 border-slate-200 opacity-60'
+                            ? 'bg-surface-2/60 border-border opacity-60'
                             : isCritical
-                            ? 'bg-rose-50/40 border-rose-200/90 shadow-xs'
+                            ? 'bg-rose-500/10 border-rose-500/30 shadow-xs'
                             : isWarning
-                            ? 'bg-amber-50/40 border-amber-200/90 shadow-xs'
-                            : 'bg-sky-50/30 border-sky-200/90 shadow-xs'
+                            ? 'bg-amber-500/10 border-amber-500/30 shadow-xs'
+                            : 'bg-primary/10 border-primary/20 shadow-xs'
                         }`}
                       >
                         {/* Top: Severity + Type + Target Role */}
@@ -299,37 +299,37 @@ export default function AlertBellDrawer({ currentRole }) {
                             <span
                               className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border ${
                                 isCritical
-                                  ? 'bg-rose-100 text-rose-800 border-rose-200'
+                                  ? 'bg-rose-500/15 text-rose-600 dark:text-rose-400 border-rose-500/30'
                                   : isWarning
-                                  ? 'bg-amber-100 text-amber-800 border-amber-200'
-                                  : 'bg-sky-100 text-sky-800 border-sky-200'
+                                  ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/30'
+                                  : 'bg-primary/15 text-primary border-primary/30'
                               }`}
                             >
                               {alert.severity}
                             </span>
-                            <span className="text-[10px] font-mono text-slate-500">
+                            <span className="text-[10px] font-mono text-text-subtle">
                               {alert.alert_type?.replace(/_/g, ' ')}
                             </span>
                           </div>
 
-                          <span className="text-[10px] bg-white border border-slate-200 text-slate-600 px-2 py-0.5 rounded-full font-medium">
+                          <span className="text-[10px] bg-surface border border-border text-text-muted px-2 py-0.5 rounded-full font-medium">
                             Role: {alert.assigned_role?.replace('_', ' ')}
                           </span>
                         </div>
 
                         {/* Title & Description */}
                         <div>
-                          <h4 className="text-xs font-bold text-slate-900 leading-snug">
+                          <h4 className="text-xs font-bold text-text leading-snug">
                             {alert.title}
                           </h4>
-                          <p className="text-[11px] text-slate-600 mt-1 leading-relaxed">
+                          <p className="text-[11px] text-text-muted mt-1 leading-relaxed">
                             {alert.message}
                           </p>
                         </div>
 
                         {/* Application / College Ref */}
-                        <div className="text-[10px] text-slate-500 flex flex-wrap items-center justify-between gap-1 pt-1 border-t border-slate-200/60">
-                          <span className="font-semibold text-slate-700">
+                        <div className="text-[10px] text-text-subtle flex flex-wrap items-center justify-between gap-1 pt-1 border-t border-border/60">
+                          <span className="font-semibold text-text">
                             {alert.institution_name || `App #${alert.application_id}`}
                           </span>
                           <span>
@@ -342,7 +342,7 @@ export default function AlertBellDrawer({ currentRole }) {
                           <div className="pt-1 flex justify-end">
                             <button
                               onClick={() => handleResolveAlert(alert.id)}
-                              className="text-[11px] font-semibold text-sky-700 hover:text-sky-900 px-2.5 py-1 rounded-md hover:bg-sky-100/60 transition-colors cursor-pointer"
+                              className="text-[11px] font-semibold text-primary hover:text-primary-hover px-2.5 py-1 rounded-md hover:bg-primary/10 transition-colors cursor-pointer"
                             >
                               Mark as Reviewed / Resolved ✓
                             </button>
@@ -355,16 +355,16 @@ export default function AlertBellDrawer({ currentRole }) {
               ) : (
                 /* Dispatched Notifications Log */
                 <div className="space-y-3 text-left">
-                  <div className="text-xs font-semibold text-slate-700 flex items-center justify-between">
+                  <div className="text-xs font-semibold text-text flex items-center justify-between">
                     <span>Email & In-App Dispatch Logs</span>
-                    <span className="text-[11px] font-semibold text-sky-700 bg-sky-50 px-2 py-0.5 rounded border border-sky-200">
+                    <span className="text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded border border-primary/20">
                       {dispatchCount} Dispatched
                     </span>
                   </div>
 
-                  <div className="bg-slate-50 rounded-xl p-3 border border-slate-200 text-[11px] text-slate-600 space-y-2">
-                    <div className="flex items-center space-x-2 text-slate-800 font-bold">
-                      <Mail className="w-4 h-4 text-sky-600" />
+                  <div className="bg-surface-2 rounded-xl p-3 border border-border text-[11px] text-text-muted space-y-2">
+                    <div className="flex items-center space-x-2 text-text font-bold">
+                      <Mail className="w-4 h-4 text-primary" />
                       <span>Statutory Dispatcher Architecture</span>
                     </div>
                     <p>
@@ -373,23 +373,23 @@ export default function AlertBellDrawer({ currentRole }) {
                   </div>
 
                   {notifications.length === 0 ? (
-                    <div className="text-center py-12 text-slate-400 space-y-2">
+                    <div className="text-center py-12 text-text-subtle space-y-2">
                       <Mail className="w-8 h-8 mx-auto text-sky-500 opacity-80" />
-                      <p className="text-xs font-semibold text-slate-700">No regulatory dispatches recorded yet.</p>
-                      <p className="text-[11px] text-slate-500">In-app notifications and email dispatch receipts will appear here once alert scans trigger notices.</p>
+                      <p className="text-xs font-semibold text-text">No regulatory dispatches recorded yet.</p>
+                      <p className="text-[11px] text-text-muted">In-app notifications and email dispatch receipts will appear here once alert scans trigger notices.</p>
                     </div>
                   ) : (
                     notifications.map((item, idx) => (
-                      <div key={item.id || item.email_id || idx} className="bg-white rounded-xl p-3 border border-slate-200 text-xs space-y-1 shadow-xs">
-                        <div className="flex items-center justify-between text-[10px] text-slate-500">
-                          <span className="font-mono text-sky-700">To: {item.to_email || item.recipient || 'scrutiny.officer@aicte-india.org'}</span>
+                      <div key={item.id || item.email_id || idx} className="bg-surface-2 rounded-xl p-3 border border-border text-xs space-y-1 shadow-xs text-text">
+                        <div className="flex items-center justify-between text-[10px] text-text-subtle">
+                          <span className="font-mono text-primary">To: {item.to_email || item.recipient || 'scrutiny.officer@aicte-india.org'}</span>
                           <span>{item.sent_at ? new Date(item.sent_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Recent'}</span>
                         </div>
-                        <div className="font-semibold text-slate-900 leading-snug">
+                        <div className="font-semibold text-text leading-snug">
                           {item.subject || item.title || 'Statutory Compliance Alert Notification'}
                         </div>
-                        <div className="text-[10px] text-slate-500 flex items-center space-x-1.5">
-                          <span className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-700 font-medium">Role: {(item.recipient_role || item.role || 'Scrutiny Officer').replace('_', ' ')}</span>
+                        <div className="text-[10px] text-text-subtle flex items-center space-x-1.5">
+                          <span className="px-1.5 py-0.5 rounded bg-surface border border-border text-text font-medium">Role: {(item.recipient_role || item.role || 'Scrutiny Officer').replace('_', ' ')}</span>
                           <span>•</span>
                           <span className="text-emerald-700 font-medium">Status: SENT_200</span>
                         </div>
@@ -401,11 +401,11 @@ export default function AlertBellDrawer({ currentRole }) {
             </div>
 
             {/* Footer */}
-            <div className="drawer-footer p-3.5 border-t border-slate-200 bg-slate-50 text-[11px] text-slate-500 flex items-center justify-between shrink-0">
+            <div className="drawer-footer p-3.5 border-t border-border bg-surface-2 text-[11px] text-text-muted flex items-center justify-between shrink-0">
               <span>Automatic dedupe suppresses recurring spam</span>
               <button
                 onClick={() => setIsOpen(false)}
-                className="text-xs font-semibold text-slate-700 hover:text-slate-900 cursor-pointer"
+                className="text-xs font-semibold text-text hover:text-primary cursor-pointer"
               >
                 Close Drawer
               </button>

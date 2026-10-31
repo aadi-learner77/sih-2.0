@@ -372,8 +372,8 @@ export default function PhotoReuseRadar({ onNavigateTab, onSelectApplication }) 
               <span className="text-xs font-bold uppercase tracking-wider text-amber-900 bg-amber-100/80 px-2.5 py-0.5 rounded-full border border-amber-300">
                 National Infrastructure Verification Radar
               </span>
-              <span className="text-xs text-slate-400">•</span>
-              <span className="text-xs font-semibold text-slate-600">
+              <span className="text-xs text-text-subtle">•</span>
+              <span className="text-xs font-semibold text-text-muted">
                 OpenCLIP ViT-B-32 & Invariant Perceptual Hashing (pHash)
               </span>
               {isDemoData && (
@@ -405,7 +405,7 @@ export default function PhotoReuseRadar({ onNavigateTab, onSelectApplication }) 
 
             {/* Manual Upload Input */}
             <label className="py-2.5 px-3.5 rounded-xl bg-surface hover:bg-surface-2 border border-border text-text text-xs font-bold transition-all shadow-2xs flex items-center space-x-2 cursor-pointer">
-              <Upload className="w-4 h-4 text-slate-600" />
+              <Upload className="w-4 h-4 text-text-muted" />
               <span>{customUploadLoading ? 'Scanning...' : 'Upload Image'}</span>
               <input
                 type="file"
@@ -447,7 +447,7 @@ export default function PhotoReuseRadar({ onNavigateTab, onSelectApplication }) 
 
       {/* Simulated Upload Alert Feedback Banner */}
       {simulationBanner && (
-        <div className="bg-rose-50 border-2 border-rose-300 rounded-2xl p-4 shadow-sm flex items-start justify-between gap-3 animate-fadeIn">
+        <div className="bg-rose-50 border-2 border-rose-300 rounded-xl p-4 shadow-sm flex items-start justify-between gap-3 animate-fadeIn">
           <div className="flex items-start space-x-3">
             <div className="w-8 h-8 rounded-xl bg-rose-600 text-white flex items-center justify-center shrink-0">
               <Zap className="w-4 h-4" />
@@ -482,7 +482,7 @@ export default function PhotoReuseRadar({ onNavigateTab, onSelectApplication }) 
           <div className="space-y-3 sticky top-4">
             <div className="flex items-center justify-between text-xs font-bold text-text px-1">
               <span className="flex items-center space-x-1.5">
-                <NetworkIcon className="w-4 h-4 text-sky-600" />
+                <NetworkIcon className="w-4 h-4 text-primary" />
                 <span>Force-Directed Cluster Network</span>
               </span>
               <span className="text-[11px] font-normal text-muted">
@@ -509,7 +509,7 @@ export default function PhotoReuseRadar({ onNavigateTab, onSelectApplication }) 
                     className={`px-2.5 py-1 rounded-lg text-xs font-medium border transition-all ${
                       selectedPairId === pair.id
                         ? 'bg-[#E8F1FB] border-[#BBD4F0] text-[#000000] font-bold'
-                        : 'bg-white border-[#D5D9DE] text-[#333333] hover:bg-[#F4F6F8]'
+                        : 'bg-surface border-[#D5D9DE] text-[#333333] hover:bg-[#F4F6F8]'
                     }`}
                   >
                     <span>{pair.category}</span>

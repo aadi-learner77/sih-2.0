@@ -585,7 +585,7 @@ export default function PreFlightScorecard({ currentUser }) {
           </div>
 
           {/* Uploaded Documents List */}
-          <div className="bg-white dark:bg-slate-900 border border-border rounded-2xl p-4 shadow-xs space-y-3">
+          <div className="bg-surface border border-border rounded-xl p-4 shadow-xs space-y-3">
             <div className="text-xs font-bold text-text flex items-center justify-between">
               <span>Ingested Institutional Files ({Object.keys(uploadedFiles).length})</span>
               <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold">✓ SHA-256 Ledger Verified</span>
@@ -593,17 +593,17 @@ export default function PreFlightScorecard({ currentUser }) {
 
             <div className="space-y-2">
               {Object.keys(uploadedFiles).length === 0 ? (
-                <div className="text-xs text-slate-400 dark:text-slate-500 text-center py-5 border border-dashed border-border rounded-xl">
+                <div className="text-xs text-text-subtle text-center py-5 border border-dashed border-border rounded-xl">
                   No institutional files ingested yet. Select a document above to upload.
                 </div>
               ) : (
                 Object.entries(uploadedFiles).map(([docType, file]) => (
                   <div 
                     key={docType}
-                    className="p-2.5 rounded-xl bg-surface-2 border border-border flex items-center justify-between text-xs hover:border-slate-300 dark:hover:border-slate-600 transition-colors"
+                    className="p-2.5 rounded-xl bg-surface-2 border border-border flex items-center justify-between text-xs hover:border-border-strong transition-colors"
                   >
                     <div className="flex items-center space-x-2.5 min-w-0">
-                      <div className="w-7 h-7 rounded-lg bg-sky-100 dark:bg-sky-950 text-sky-700 dark:text-sky-300 flex items-center justify-center shrink-0">
+                      <div className="w-7 h-7 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
                         <FileText className="w-3.5 h-3.5" />
                       </div>
                       <div className="min-w-0">
@@ -614,14 +614,14 @@ export default function PreFlightScorecard({ currentUser }) {
                           <span>{file.size}</span>
                         </div>
                         {file.hash && (
-                          <div className="text-[9px] text-slate-400 dark:text-slate-500 font-mono truncate">
+                          <div className="text-[9px] text-text-subtle font-mono truncate">
                             SHA: {file.hash.slice(0, 20)}...
                           </div>
                         )}
                       </div>
                     </div>
 
-                    <label className="text-[10px] font-bold text-sky-700 dark:text-sky-400 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-2 py-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer shrink-0 ml-2">
+                    <label className="text-[10px] font-bold text-primary bg-surface border border-border px-2 py-1 rounded-lg hover:bg-surface-2 cursor-pointer shrink-0 ml-2">
                       <span>Replace</span>
                       <input
                         type="file"
@@ -655,7 +655,7 @@ export default function PreFlightScorecard({ currentUser }) {
               <CheckCircle2 className="w-4 h-4 text-emerald-600" />
               <span>Category Checklist & Plain-Language Fix Guide</span>
             </span>
-            <span className="text-[11px] font-mono text-slate-500">
+            <span className="text-[11px] font-mono text-text-subtle">
               AICTE APH 2025-26 Specifications
             </span>
           </div>
@@ -679,7 +679,7 @@ export default function PreFlightScorecard({ currentUser }) {
                   }`}
                 >
                   {/* Card Header */}
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2.5 border-b border-slate-100">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2.5 border-b border-border">
                     <div className="min-w-0">
                       <div className="flex items-center space-x-2">
                         <span className="text-xs font-bold text-text">{item.docType}</span>
@@ -736,7 +736,7 @@ export default function PreFlightScorecard({ currentUser }) {
                       className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer ${
                         isResolved
                           ? 'bg-emerald-600 text-white'
-                          : 'bg-white border border-slate-300 text-slate-700 hover:bg-slate-50'
+                          : 'bg-surface border border-border text-text hover:bg-surface-2'
                       }`}
                     >
                       <Check className="w-3 h-3" />

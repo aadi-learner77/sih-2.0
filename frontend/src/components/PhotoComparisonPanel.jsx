@@ -44,10 +44,10 @@ export default function PhotoComparisonPanel({
 
   if (!pairData) {
     return (
-      <div className="bg-white border border-slate-200 rounded-2xl p-8 text-center text-slate-500">
-        <ScanEye className="w-10 h-10 mx-auto text-slate-400 mb-2 animate-pulse" />
-        <p className="text-sm font-semibold text-slate-700">Select a Photo Reuse Link</p>
-        <p className="text-xs text-slate-500 mt-1">
+      <div className="bg-surface border border-border rounded-xl p-8 text-center text-text-subtle">
+        <ScanEye className="w-10 h-10 mx-auto text-text-subtle mb-2 animate-pulse" />
+        <p className="text-sm font-semibold text-text-muted">Select a Photo Reuse Link</p>
+        <p className="text-xs text-text-subtle mt-1">
           Click any edge or connected college node in the cluster graph to inspect forensic comparison.
         </p>
       </div>
@@ -75,9 +75,9 @@ export default function PhotoComparisonPanel({
   const dupUrl = resolvePhotoUrl(duplicate_photo);
 
   const ImagePlaceholder = ({ fileName, subtitle }) => (
-    <div className="w-full h-full min-h-[160px] flex flex-col items-center justify-center p-4 bg-slate-100 text-slate-500 text-center select-none">
-      <ImageIcon className="w-8 h-8 text-slate-400 mb-1.5" />
-      <span className="text-[11px] font-mono font-bold text-slate-700 max-w-[200px] truncate" title={fileName}>
+    <div className="w-full h-full min-h-[160px] flex flex-col items-center justify-center p-4 bg-surface-2 text-text-subtle text-center select-none">
+      <ImageIcon className="w-8 h-8 text-text-subtle mb-1.5" />
+      <span className="text-[11px] font-mono font-bold text-text-muted max-w-[200px] truncate" title={fileName}>
         {fileName || 'image_asset.jpg'}
       </span>
       <span className="text-[10px] text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded mt-1 font-medium">
@@ -176,7 +176,7 @@ export default function PhotoComparisonPanel({
                   : 'text-muted hover:text-text'
               }`}
             >
-              <Sliders className="w-3 h-3 text-sky-600" />
+              <Sliders className="w-3 h-3 text-primary" />
               <span>Wipe Slider</span>
             </button>
           </div>
@@ -191,10 +191,10 @@ export default function PhotoComparisonPanel({
               <div className="bg-surface border border-border rounded-xl overflow-hidden shadow-2xs flex flex-col">
                 <div className="bg-surface-2 px-3 py-1.5 text-[10px] font-bold text-muted uppercase flex items-center justify-between border-b border-border">
                   <span className="flex items-center space-x-1">
-                    <span className="w-2 h-2 rounded-full bg-slate-500" />
+                    <span className="w-2 h-2 rounded-full bg-surface-20" />
                     <span>Original Submission</span>
                   </span>
-                  <span className="font-mono text-slate-500">{original_photo.academic_year || '2024-25'}</span>
+                  <span className="font-mono text-text-subtle">{original_photo.academic_year || '2024-25'}</span>
                 </div>
 
                 <div className="relative aspect-[4/3] bg-[#F4F6F8] overflow-hidden group">
@@ -208,22 +208,22 @@ export default function PhotoComparisonPanel({
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   )}
-                  <div className="absolute bottom-2 left-2 bg-white/95 text-text border border-[#D5D9DE] text-[9px] font-mono px-2 py-0.5 rounded shadow-xs max-w-[80%] truncate">
+                  <div className="absolute bottom-2 left-2 bg-surface text-text border border-[#D5D9DE] text-[9px] font-mono px-2 py-0.5 rounded shadow-xs max-w-[80%] truncate">
                     {original_photo.file_name || original_photo.filename || 'original_image.jpg'}
                   </div>
                 </div>
 
-                <div className="p-3 text-xs space-y-1.5 flex-1 bg-white">
-                  <div className="font-bold text-slate-900 text-xs">
+                <div className="p-3 text-xs space-y-1.5 flex-1 bg-surface">
+                  <div className="font-bold text-text text-xs">
                     {original_photo.institution_name}
                   </div>
-                  <div className="text-[11px] text-slate-500">
+                  <div className="text-[11px] text-text-subtle">
                     {original_photo.city || 'Campus Facility'}
                   </div>
-                  <div className="text-[11px] text-slate-700 bg-slate-50 p-1.5 rounded border border-slate-100 font-medium">
+                  <div className="text-[11px] text-text-muted bg-surface-2 p-1.5 rounded border border-border font-medium">
                     {original_photo.facility_name || pairData.category}
                   </div>
-                  <div className="pt-1.5 border-t border-slate-100 flex items-center justify-between text-[10px] font-mono text-slate-500">
+                  <div className="pt-1.5 border-t border-border flex items-center justify-between text-[10px] font-mono text-text-subtle">
                     <span>App: {original_photo.application_no || 'APP-HISTORICAL'}</span>
                     <span>Date: {original_photo.submission_date || 'Verified'}</span>
                   </div>
@@ -231,7 +231,7 @@ export default function PhotoComparisonPanel({
               </div>
 
               {/* Near-Duplicate Photo Card */}
-              <div className="bg-slate-50 border-2 border-rose-300 rounded-xl overflow-hidden shadow-2xs flex flex-col">
+              <div className="bg-surface-2 border-2 border-rose-300 rounded-xl overflow-hidden shadow-2xs flex flex-col">
                 <div className="bg-rose-100/80 px-3 py-1.5 text-[10px] font-bold text-rose-800 uppercase flex items-center justify-between border-b border-rose-200">
                   <span className="flex items-center space-x-1">
                     <span className="w-2 h-2 rounded-full bg-rose-600 animate-pulse" />
@@ -254,22 +254,22 @@ export default function PhotoComparisonPanel({
                   <div className="absolute top-2 right-2 bg-rose-600 text-white text-[9px] font-bold px-2 py-0.5 rounded shadow-sm">
                     {pairData.similarity_score}% RE-USE
                   </div>
-                  <div className="absolute bottom-2 left-2 bg-white/95 text-text border border-[#D5D9DE] text-[9px] font-mono px-2 py-0.5 rounded shadow-xs max-w-[80%] truncate">
+                  <div className="absolute bottom-2 left-2 bg-surface text-text border border-[#D5D9DE] text-[9px] font-mono px-2 py-0.5 rounded shadow-xs max-w-[80%] truncate">
                     {duplicate_photo.file_name || duplicate_photo.filename || 'reused_image.jpg'}
                   </div>
                 </div>
 
-                <div className="p-3 text-xs space-y-1.5 flex-1 bg-white">
-                  <div className="font-bold text-slate-900 text-xs">
+                <div className="p-3 text-xs space-y-1.5 flex-1 bg-surface">
+                  <div className="font-bold text-text text-xs">
                     {duplicate_photo.institution_name}
                   </div>
-                  <div className="text-[11px] text-slate-500">
+                  <div className="text-[11px] text-text-subtle">
                     {duplicate_photo.city || 'Applicant Campus'}
                   </div>
                   <div className="text-[11px] text-rose-900 bg-rose-50/60 p-1.5 rounded border border-rose-100 font-medium">
                     {duplicate_photo.facility_name || pairData.category}
                   </div>
-                  <div className="pt-1.5 border-t border-slate-100 flex items-center justify-between text-[10px] font-mono text-slate-500">
+                  <div className="pt-1.5 border-t border-border flex items-center justify-between text-[10px] font-mono text-text-subtle">
                     <span>App: {duplicate_photo.application_no || 'APP-CURRENT'}</span>
                     <span>Date: {duplicate_photo.submission_date || 'Under Review'}</span>
                   </div>
@@ -289,13 +289,13 @@ export default function PhotoComparisonPanel({
                   <Layers className="w-3.5 h-3.5" />
                   <span>Pixel Difference & Forensic ELA Divergence Heatmap</span>
                 </span>
-                <span className="text-[10px] font-mono bg-white border border-[#D5D9DE] px-2 py-0.5 rounded text-muted">
+                <span className="text-[10px] font-mono bg-surface border border-[#D5D9DE] px-2 py-0.5 rounded text-muted">
                   Opacity: {overlayOpacity}%
                 </span>
               </div>
 
               {/* Overlay Canvas Viewport */}
-              <div className="relative aspect-[4/3] rounded-lg overflow-hidden border border-[#D5D9DE] bg-white">
+              <div className="relative aspect-[4/3] rounded-lg overflow-hidden border border-[#D5D9DE] bg-surface">
                 {/* Base Image (Original) */}
                 <img 
                   src={origUrl} 
@@ -332,7 +332,7 @@ export default function PhotoComparisonPanel({
                   </span>
                 </div>
 
-                <div className="absolute bottom-2 right-2 bg-white/95 text-text border border-[#D5D9DE] text-[9px] font-mono px-2 py-1 rounded shadow-xs">
+                <div className="absolute bottom-2 right-2 bg-surface text-text border border-[#D5D9DE] text-[9px] font-mono px-2 py-1 rounded shadow-xs">
                   Difference Blend Mode • Inverted Pixel Channel
                 </div>
               </div>
@@ -394,17 +394,17 @@ export default function PhotoComparisonPanel({
                     className="absolute inset-0 w-full h-full object-cover max-w-none"
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />
-                  <div className="absolute top-2 left-2 bg-white/95 text-text border border-[#D5D9DE] text-[9px] font-bold px-2 py-0.5 rounded shadow-xs">
+                  <div className="absolute top-2 left-2 bg-surface text-text border border-[#D5D9DE] text-[9px] font-bold px-2 py-0.5 rounded shadow-xs">
                     Original (Royal College)
                   </div>
                 </div>
 
                 {/* Vertical Divider Line */}
                 <div 
-                  className="absolute top-0 bottom-0 w-0.5 bg-white shadow-[0_0_10px_rgba(255,255,255,0.8)] z-20 pointer-events-none"
+                  className="absolute top-0 bottom-0 w-0.5 bg-surface shadow-[0_0_10px_rgba(255,255,255,0.8)] z-20 pointer-events-none"
                   style={{ left: `${wipePosition}%` }}
                 >
-                  <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-white text-slate-900 flex items-center justify-center shadow-md text-[10px] font-black font-sans">
+                  <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-surface text-text flex items-center justify-center shadow-md text-[10px] font-black font-sans">
                     ⇄
                   </div>
                 </div>
@@ -432,9 +432,9 @@ export default function PhotoComparisonPanel({
         )}
 
         {/* SIMILARITY SCORES BREAKDOWN CARD */}
-        <div className="bg-slate-50 border border-slate-200 rounded-xl p-3.5 space-y-2.5">
+        <div className="bg-surface-2 border border-border rounded-xl p-3.5 space-y-2.5">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-900">Perceptual & Semantic Similarity Metrics</span>
+            <span className="text-xs font-bold text-text">Perceptual & Semantic Similarity Metrics</span>
             <span className="text-[10px] font-bold text-rose-800 bg-rose-100 px-2 py-0.5 rounded border border-rose-300">
               {pairData.match_type}
             </span>
@@ -442,60 +442,60 @@ export default function PhotoComparisonPanel({
 
           <div className="grid grid-cols-3 gap-2 text-center">
             {/* Visual Similarity */}
-            <div className="bg-white p-2.5 rounded-lg border border-slate-200">
-              <div className="text-[10px] text-slate-500 uppercase font-medium">Visual Similarity</div>
+            <div className="bg-surface p-2.5 rounded-lg border border-border">
+              <div className="text-[10px] text-text-subtle uppercase font-medium">Visual Similarity</div>
               <div className="text-base font-black text-rose-600">{pairData.similarity_score}%</div>
-              <div className="text-[9px] text-slate-400 font-mono">Inverted Hamming</div>
+              <div className="text-[9px] text-text-subtle font-mono">Inverted Hamming</div>
             </div>
 
             {/* Hamming Distance */}
-            <div className="bg-white p-2.5 rounded-lg border border-slate-200">
-              <div className="text-[10px] text-slate-500 uppercase font-medium">Hamming Distance</div>
-              <div className="text-base font-black text-slate-900">{pairData.hamming_distance} / 64</div>
+            <div className="bg-surface p-2.5 rounded-lg border border-border">
+              <div className="text-[10px] text-text-subtle uppercase font-medium">Hamming Distance</div>
+              <div className="text-base font-black text-text">{pairData.hamming_distance} / 64</div>
               <div className="text-[9px] text-emerald-600 font-mono">pHash Bit Delta</div>
             </div>
 
             {/* OpenCLIP Cosine */}
-            <div className="bg-white p-2.5 rounded-lg border border-slate-200">
-              <div className="text-[10px] text-slate-500 uppercase font-medium">OpenCLIP Cosine</div>
+            <div className="bg-surface p-2.5 rounded-lg border border-border">
+              <div className="text-[10px] text-text-subtle uppercase font-medium">OpenCLIP Cosine</div>
               <div className="text-base font-black text-indigo-700">{pairData.clip_cosine}</div>
-              <div className="text-[9px] text-slate-400 font-mono">ViT-B-32 Vector</div>
+              <div className="text-[9px] text-text-subtle font-mono">ViT-B-32 Vector</div>
             </div>
           </div>
 
-          <div className="text-[11px] text-slate-700 leading-snug bg-white p-2.5 rounded-lg border border-slate-200">
+          <div className="text-[11px] text-text-muted leading-snug bg-surface p-2.5 rounded-lg border border-border">
             <strong>Forensics Difference Summary:</strong> {pairData.difference_summary}
           </div>
         </div>
 
         {/* ACTION BUTTONS TO OPEN AFFECTED APPLICATIONS */}
-        <div className="space-y-2 pt-2 border-t border-slate-200">
-          <div className="text-xs font-bold text-slate-800">Open Affected Applications:</div>
+        <div className="space-y-2 pt-2 border-t border-border">
+          <div className="text-xs font-bold text-text">Open Affected Applications:</div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {/* Open Original App */}
             <button
               onClick={() => handleOpenApp(original_photo.application_no, original_photo.institution_name)}
               id="open-app-original-btn"
-              className="p-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-800 text-xs font-medium transition-all text-left flex items-center justify-between group shadow-2xs"
+              className="p-2.5 rounded-xl border border-border bg-surface hover:bg-surface-2 text-text text-xs font-medium transition-all text-left flex items-center justify-between group shadow-2xs"
             >
               <div className="min-w-0 pr-1">
-                <div className="text-[10px] text-slate-500 font-mono">Origin Application</div>
-                <div className="font-bold text-slate-900 leading-snug">{original_photo.institution_name}</div>
-                <div className="text-[10px] text-sky-700 font-mono">{original_photo.application_no}</div>
+                <div className="text-[10px] text-text-subtle font-mono">Origin Application</div>
+                <div className="font-bold text-text leading-snug">{original_photo.institution_name}</div>
+                <div className="text-[10px] text-primary font-mono">{original_photo.application_no}</div>
               </div>
-              <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-sky-600 shrink-0" />
+              <ExternalLink className="w-3.5 h-3.5 text-text-subtle group-hover:text-primary shrink-0" />
             </button>
 
             {/* Open Duplicate App */}
             <button
               onClick={() => handleOpenApp(duplicate_photo.application_no, duplicate_photo.institution_name)}
               id="open-app-duplicate-btn"
-              className="p-2.5 rounded-xl border border-rose-300 bg-rose-50/50 hover:bg-rose-50 text-slate-800 text-xs font-medium transition-all text-left flex items-center justify-between group shadow-2xs"
+              className="p-2.5 rounded-xl border border-rose-300 bg-rose-50/50 hover:bg-rose-50 text-text text-xs font-medium transition-all text-left flex items-center justify-between group shadow-2xs"
             >
               <div className="min-w-0 pr-1">
                 <div className="text-[10px] text-rose-600 font-mono font-bold">Current Flagged Dossier</div>
-                <div className="font-bold text-slate-900 leading-snug">{duplicate_photo.institution_name}</div>
+                <div className="font-bold text-text leading-snug">{duplicate_photo.institution_name}</div>
                 <div className="text-[10px] text-rose-700 font-mono">{duplicate_photo.application_no}</div>
               </div>
               <ExternalLink className="w-3.5 h-3.5 text-rose-500 group-hover:text-rose-700 shrink-0" />

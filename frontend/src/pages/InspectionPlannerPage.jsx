@@ -285,7 +285,7 @@ export default function InspectionPlannerPage() {
             <button
               onClick={loadPlanner}
               disabled={loading}
-              className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 text-white font-bold text-xs flex items-center space-x-2 transition-all cursor-pointer"
+              className="px-4 py-2.5 rounded-xl bg-surface/10 hover:bg-surface/20 border border-white/10 text-white font-bold text-xs flex items-center space-x-2 transition-all cursor-pointer"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
               <span>Refresh Clusters</span>
@@ -302,7 +302,7 @@ export default function InspectionPlannerPage() {
         <div className="bg-surface border border-border rounded-xl p-4 shadow-2xs">
           <div className="text-[11px] font-semibold text-muted uppercase tracking-wider flex items-center justify-between">
             <span>Flagged Institutions</span>
-            <Building2 className="w-4 h-4 text-sky-600" />
+            <Building2 className="w-4 h-4 text-primary" />
           </div>
           <div className="text-2xl font-bold text-text mt-2">
             {plannerData.total_flagged_institutions || 0}
@@ -348,7 +348,7 @@ export default function InspectionPlannerPage() {
       <div className="bg-surface border border-border rounded-xl p-4 shadow-2xs flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-wrap items-center gap-3">
           <div className="flex items-center space-x-2 text-xs font-semibold text-text">
-            <Filter className="w-3.5 h-3.5 text-sky-600" />
+            <Filter className="w-3.5 h-3.5 text-primary" />
             <span>State Cluster:</span>
           </div>
           <div className="flex flex-wrap gap-1.5">
@@ -389,7 +389,7 @@ export default function InspectionPlannerPage() {
           <div key={stateCluster.state || stIdx} className="bg-surface border border-border rounded-xl p-5 shadow-xs space-y-4">
             <div className="flex items-center justify-between border-b border-border pb-3">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-2xl bg-sky-50 text-sky-700 border border-sky-200 flex items-center justify-center font-black text-sm">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary border border-primary/20 flex items-center justify-center font-black text-sm">
                   {stateCluster.state.substring(0, 2).toUpperCase()}
                 </div>
                 <div>
@@ -418,9 +418,9 @@ export default function InspectionPlannerPage() {
                       className="bg-surface-2 hover:bg-surface-2/80 p-3.5 flex items-center justify-between cursor-pointer transition-colors"
                     >
                       <div className="flex items-center space-x-3">
-                        <MapPin className="w-4 h-4 text-sky-600" />
+                        <MapPin className="w-4 h-4 text-primary" />
                         <span className="font-semibold text-sm text-text">{dist.district} Cluster</span>
-                        <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-sky-100 text-sky-800 border border-sky-200">
+                        <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-sky-100 text-sky-800 border border-primary/20">
                           {dist.institution_count} Stops in Route
                         </span>
                       </div>
@@ -454,13 +454,13 @@ export default function InspectionPlannerPage() {
                                 <div className="space-y-1">
                                   <div className="flex flex-wrap items-center gap-2">
                                     <h3 className="font-semibold text-sm text-text">{inst.name}</h3>
-                                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">
+                                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-surface-2 text-text-muted border border-border">
                                       AICTE: {inst.aicte_id}
                                     </span>
                                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded border ${
                                       isCritical ? 'bg-rose-50 text-rose-800 border-rose-300' :
                                       isHigh ? 'bg-amber-50 text-amber-800 border-amber-300' :
-                                      'bg-slate-100 text-slate-800 border-slate-300'
+                                      'bg-surface-2 text-text border-border'
                                     }`}>
                                       {inst.risk_tier}
                                     </span>
@@ -471,9 +471,9 @@ export default function InspectionPlannerPage() {
                                     <span>•</span>
                                     <span>Intake: {inst.approved_intake}</span>
                                     <span>•</span>
-                                    <span className="font-mono text-sky-700">{inst.application_no}</span>
+                                    <span className="font-mono text-primary">{inst.application_no}</span>
                                     <span>•</span>
-                                    <span className="text-slate-400">{inst.address}</span>
+                                    <span className="text-text-subtle">{inst.address}</span>
                                   </div>
 
                                   {/* Flagged issues */}
@@ -494,15 +494,15 @@ export default function InspectionPlannerPage() {
                                   <div className="text-xs font-semibold text-text">Urgency Score</div>
                                   <div className={`text-base font-black ${
                                     inst.priority_score >= 80 ? 'text-rose-600' :
-                                    inst.priority_score >= 50 ? 'text-amber-600' : 'text-slate-700'
+                                    inst.priority_score >= 50 ? 'text-amber-600' : 'text-text-muted'
                                   }`}>
                                     {inst.priority_score}/100
                                   </div>
                                 </div>
 
-                                <div className="text-right border-l border-slate-200 pl-3">
-                                  <div className="text-[10px] font-bold text-slate-500 uppercase">Recommended Mode</div>
-                                  <div className="text-xs font-bold text-slate-800 font-mono">
+                                <div className="text-right border-l border-border pl-3">
+                                  <div className="text-[10px] font-bold text-text-subtle uppercase">Recommended Mode</div>
+                                  <div className="text-xs font-bold text-text font-mono">
                                     {inst.recommended_inspection_type.replace(/_/g, ' ')}
                                   </div>
                                 </div>

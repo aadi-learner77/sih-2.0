@@ -108,7 +108,7 @@ export default function RulesCatalogView({ onSelectForSimulation }) {
   return (
     <div className="space-y-6">
       {/* 1. Header & Statutory Guidance Banner */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-surface rounded-xl border border-border p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center space-x-2.5">
             <div className="p-2.5 bg-purple-50 border border-purple-200 rounded-xl text-purple-700">
@@ -116,10 +116,10 @@ export default function RulesCatalogView({ onSelectForSimulation }) {
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <h2 className="text-xl font-bold text-slate-900 tracking-tight">AICTE Handbook Rules Catalog</h2>
+                <h2 className="text-xl font-bold text-text tracking-tight">AICTE Handbook Rules Catalog</h2>
                 {isDemoData && <DemoDataBadge reason="Handbook Baseline Fallback" />}
               </div>
-              <p className="text-xs text-slate-500 mt-0.5">
+              <p className="text-xs text-text-subtle mt-0.5">
                 Official AICTE Approval Process Handbook (APH) 2025-26 statutory codification with formal clause citations and automated evaluation constraints.
               </p>
             </div>
@@ -134,7 +134,7 @@ export default function RulesCatalogView({ onSelectForSimulation }) {
       </div>
 
       {/* Statutory Section 6 Caveat */}
-      <div className="bg-purple-50/70 border border-purple-200/80 rounded-2xl p-4 flex items-start space-x-3 text-xs text-purple-950">
+      <div className="bg-purple-50/70 border border-purple-200/80 rounded-xl p-4 flex items-start space-x-3 text-xs text-purple-950">
         <Info className="w-4 h-4 text-purple-700 shrink-0 mt-0.5" />
         <div className="leading-relaxed">
           <strong>Mandatory Statutory Protocol:</strong> Rule evaluations in PRAMAAN-X serve as 
@@ -163,7 +163,7 @@ export default function RulesCatalogView({ onSelectForSimulation }) {
               className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                 selectedCategory === cat
                   ? 'bg-purple-600 text-white shadow-2xs'
-                  : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                  : 'bg-surface border border-border text-text-muted hover:bg-surface-2'
               }`}
             >
               {cat === 'ALL' ? 'All Regulations' : cat}
@@ -175,15 +175,15 @@ export default function RulesCatalogView({ onSelectForSimulation }) {
       {/* 3. Rules Catalog List */}
       <div className="space-y-4">
         {loading ? (
-          <div className="bg-white border border-slate-200 rounded-2xl p-16 text-center text-slate-400 space-y-3">
+          <div className="bg-surface border border-border rounded-xl p-16 text-center text-text-subtle space-y-3">
             <RefreshCw className="w-8 h-8 animate-spin mx-auto text-purple-600" />
-            <p className="text-sm font-semibold text-slate-700">Loading statutory rule definitions...</p>
+            <p className="text-sm font-semibold text-text-muted">Loading statutory rule definitions...</p>
           </div>
         ) : filteredRules.length === 0 ? (
-          <div className="bg-white border border-slate-200 rounded-2xl p-12 text-center text-slate-400 space-y-2">
+          <div className="bg-surface border border-border rounded-xl p-12 text-center text-text-subtle space-y-2">
             <BookOpenCheck className="w-10 h-10 mx-auto text-slate-300" />
-            <p className="text-sm font-bold text-slate-700">No regulations match your query</p>
-            <p className="text-xs text-slate-400">Try adjusting the search keyword or category filter.</p>
+            <p className="text-sm font-bold text-text-muted">No regulations match your query</p>
+            <p className="text-xs text-text-subtle">Try adjusting the search keyword or category filter.</p>
           </div>
         ) : (
           filteredRules.map((rule, idx) => {
@@ -195,10 +195,10 @@ export default function RulesCatalogView({ onSelectForSimulation }) {
             return (
               <div
                 key={rule.id || idx}
-                className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs hover:border-purple-300 transition-all space-y-3"
+                className="bg-surface border border-border rounded-xl p-5 shadow-xs hover:border-purple-300 transition-all space-y-3"
               >
                 {/* Rule Card Header */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-border">
                   <div className="flex flex-wrap items-center gap-2">
                     {/* Official Clause Citation Badge */}
                     <span 
@@ -215,7 +215,7 @@ export default function RulesCatalogView({ onSelectForSimulation }) {
                       )}
                     </span>
 
-                    <span className="text-[10px] font-mono text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
+                    <span className="text-[10px] font-mono text-text-subtle bg-surface-2 px-2 py-0.5 rounded">
                       {rule.rule_code}
                     </span>
 
@@ -228,10 +228,10 @@ export default function RulesCatalogView({ onSelectForSimulation }) {
                     </span>
                   </div>
 
-                  <div className="flex items-center space-x-2 text-xs text-slate-500">
-                    <span className="font-semibold text-slate-700">{rule.category}</span>
+                  <div className="flex items-center space-x-2 text-xs text-text-subtle">
+                    <span className="font-semibold text-text-muted">{rule.category}</span>
                     <span>•</span>
-                    <span className="font-mono text-[11px] bg-slate-100 px-1.5 py-0.5 rounded text-slate-600">
+                    <span className="font-mono text-[11px] bg-surface-2 px-1.5 py-0.5 rounded text-text-muted">
                       v{version.version_number || '1.0.0'}
                     </span>
                   </div>
@@ -240,22 +240,22 @@ export default function RulesCatalogView({ onSelectForSimulation }) {
                 {/* Rule Body */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
                   <div className="lg:col-span-8 space-y-2">
-                    <h3 className="text-sm font-bold text-slate-900 leading-snug">
+                    <h3 className="text-sm font-bold text-text leading-snug">
                       {rule.title}
                     </h3>
-                    <p className="text-xs text-slate-600 leading-relaxed">
+                    <p className="text-xs text-text-muted leading-relaxed">
                       {rule.description}
                     </p>
                   </div>
 
                   {/* Quick Parameters Summary (4 cols) */}
-                  <div className="lg:col-span-4 bg-slate-50 border border-slate-200/80 rounded-xl p-3 text-xs space-y-1.5">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Statutory Parameters</span>
-                    <div className="space-y-1 font-mono text-[11px] text-slate-700">
+                  <div className="lg:col-span-4 bg-surface-2 border border-border/80 rounded-xl p-3 text-xs space-y-1.5">
+                    <span className="text-[10px] font-bold text-text-subtle uppercase tracking-wider block">Statutory Parameters</span>
+                    <div className="space-y-1 font-mono text-[11px] text-text-muted">
                       {Object.entries(params).slice(0, 3).map(([k, v]) => (
                         <div key={k} className="flex justify-between">
-                          <span className="text-slate-500">{k}:</span>
-                          <span className="font-bold text-slate-900 truncate max-w-[140px]">{JSON.stringify(v)}</span>
+                          <span className="text-text-subtle">{k}:</span>
+                          <span className="font-bold text-text truncate max-w-[140px]">{JSON.stringify(v)}</span>
                         </div>
                       ))}
                     </div>
@@ -264,7 +264,7 @@ export default function RulesCatalogView({ onSelectForSimulation }) {
 
                 {/* Expanded Details Drawer */}
                 {isExpanded && (
-                  <div className="pt-3 border-t border-slate-100 space-y-3 animate-fade-in text-xs">
+                  <div className="pt-3 border-t border-border space-y-3 animate-fade-in text-xs">
                     {/* Failure Template Box */}
                     {version.failure_message_template && (
                       <div className="bg-rose-50/70 border border-rose-200 rounded-xl p-3.5 space-y-1">
@@ -280,12 +280,12 @@ export default function RulesCatalogView({ onSelectForSimulation }) {
 
                     {/* Condition & Technical Expression */}
                     <div className="bg-slate-900 text-slate-100 rounded-xl p-3.5 font-mono text-[11px] space-y-2">
-                      <div className="flex justify-between text-slate-400 border-b border-slate-800 pb-1.5 text-[10px]">
+                      <div className="flex justify-between text-text-subtle border-b border-slate-800 pb-1.5 text-[10px]">
                         <span>Handbook Edition: {version.handbook_edition || 'AICTE APH 2025-26'}</span>
                         <span>Evaluation Mode: Deterministic Rules Engine</span>
                       </div>
                       <div>
-                        <span className="text-slate-400 text-[10px] block">Full Parameter Dictionary:</span>
+                        <span className="text-text-subtle text-[10px] block">Full Parameter Dictionary:</span>
                         <pre className="text-emerald-400 overflow-x-auto text-[10px] mt-1">
                           {JSON.stringify(params, null, 2)}
                         </pre>
