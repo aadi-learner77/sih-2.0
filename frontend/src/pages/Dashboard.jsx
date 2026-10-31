@@ -289,7 +289,7 @@ export default function Dashboard({
   const isInstitutionUser = currentRole === 'institution_user';
   const isAuditor = currentRole === 'auditor';
   const isAdmin = currentRole === 'admin';
-  const dashboardContainerRef = useRef(null);
+  const dashboardContainerRef = React.useRef(null);
 
   // Reveal-on-scroll (Part 4.3): fade-up once on enter viewport, above fold instantly visible
   useEffect(() => {
@@ -369,7 +369,7 @@ export default function Dashboard({
                   type="button"
                   id="launch-preflight-btn"
                   onClick={() => onNavigateTab('preflight')}
-                  className="min-h-[40px] h-10 px-4 rounded-lg bg-[#0B3D91] hover:bg-[#0B3D91]/90 text-white dark:bg-[#3B6CFF] dark:hover:bg-[#3B6CFF]/90 dark:text-white text-xs font-semibold transition-colors flex items-center space-x-2 cursor-pointer shadow-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                  className="h-10 px-4 rounded-lg bg-[#0B3D91] hover:bg-[#0B3D91]/90 text-white dark:bg-[#3B6CFF] dark:hover:bg-[#3B6CFF]/90 dark:text-white text-xs font-semibold transition-colors flex items-center space-x-2 cursor-pointer shadow-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                 >
                   <SearchCode className="w-4 h-4 text-inherit" />
                   <span>Pre-Flight Self-Check</span>
@@ -379,7 +379,7 @@ export default function Dashboard({
                   type="button"
                   id="launch-evidence-lens-btn"
                   onClick={() => onNavigateTab('evidence-lens')}
-                  className="min-h-[40px] h-10 px-4 rounded-lg bg-[#0B3D91] hover:bg-[#0B3D91]/90 text-white dark:bg-[#3B6CFF] dark:hover:bg-[#3B6CFF]/90 dark:text-white text-xs font-semibold transition-colors flex items-center space-x-2 cursor-pointer shadow-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                  className="h-10 px-4 rounded-lg bg-[#0B3D91] hover:bg-[#0B3D91]/90 text-white dark:bg-[#3B6CFF] dark:hover:bg-[#3B6CFF]/90 dark:text-white text-xs font-semibold transition-colors flex items-center space-x-2 cursor-pointer shadow-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                 >
                   <SearchCode className="w-4 h-4 text-inherit" />
                   <span>Launch Evidence Lens</span>
@@ -390,7 +390,7 @@ export default function Dashboard({
                 type="button"
                 id="launch-audit-ledger-btn"
                 onClick={() => onNavigateTab('audit-ledger')}
-                className="min-h-[40px] h-10 px-4 rounded-lg border border-border text-text hover:bg-surface-2 text-xs font-semibold transition-colors flex items-center space-x-2 cursor-pointer shadow-2xs focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                className="h-10 px-4 rounded-lg border border-border text-text hover:bg-surface-2 text-xs font-semibold transition-colors flex items-center space-x-2 cursor-pointer shadow-2xs focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
               >
                 <History className="w-4 h-4 text-inherit" />
                 <span>Audit Ledger</span>
