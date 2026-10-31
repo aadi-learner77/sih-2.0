@@ -324,14 +324,24 @@ export default function Dashboard({
 
       {/* 1. Official Government Hero Banner: Solid Surface with High-Contrast Tokens */}
       <div data-reveal className="relative revealed">
-        {/* Decorative Organic Blob behind hero (Part 2.5: Static, 40px blur, 0.08 opacity cobalt) */}
+        {/* Decorative Organic Blob behind hero (Step 4.8: Static, 40px blur, 0.14 opacity cobalt) */}
         <div 
-          className="absolute -top-8 -right-8 w-72 h-72 rounded-[42%_58%_55%_45%/50%_45%_55%_50%] bg-[#1F4BFF] opacity-[0.08] blur-[40px] pointer-events-none -z-10"
+          className="hero-backdrop-blob absolute -top-10 -right-10 w-80 h-80 pointer-events-none -z-10"
           aria-hidden="true" 
         />
 
         <div className="hero-glass-card relative rounded-2xl p-6 sm:p-7 overflow-hidden glass-surface border border-border shadow-card select-none text-text">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+          {/* Hero Halo Accents (Step 3) */}
+          <div className="absolute inset-0 overflow-hidden rounded-[inherit] pointer-events-none z-0" aria-hidden="true">
+            {/* Cobalt halo top-right (320px, blur 50px) */}
+            <div className="hero-halo-cobalt absolute -top-24 -right-24 w-80 h-80 rounded-full blur-[50px] pointer-events-none" />
+            {/* Saffron halo bottom-left (180px, blur 40px) */}
+            <div className="hero-halo-saffron absolute -bottom-16 -left-16 w-48 h-48 rounded-full blur-[40px] pointer-events-none" />
+            {/* Cursor-follow spotlight */}
+            <div className="hero-cursor-spotlight absolute inset-0 pointer-events-none" />
+          </div>
+
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 relative z-10">
             <div className="max-w-2xl">
               {/* Short Eyebrow: primary navy (#0B3D91) in light, cobalt (#3B6CFF) in dark */}
               <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-[#0B3D91] dark:text-[#3B6CFF] uppercase tracking-wider mb-1.5">

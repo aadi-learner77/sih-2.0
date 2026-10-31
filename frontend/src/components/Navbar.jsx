@@ -322,8 +322,8 @@ export default function Navbar({
             <div id="header-status-pill" className="hidden md:flex items-center space-x-2.5 px-3 py-1.5 rounded-full border border-border bg-surface-2 text-xs font-medium text-text-muted shadow-xs">
               <div className="flex items-center space-x-1.5">
                 <span 
-                  className={`w-2 h-2 rounded-full ${
-                    isLiveMode ? 'bg-emerald-500' : 'bg-amber-500'
+                  className={`w-2 h-2 rounded-full status-dot-halo ${
+                    isLiveMode ? 'bg-emerald-500 text-emerald-500' : 'bg-amber-500 text-amber-500'
                   }`} 
                 />
                 <span className="text-[11px] font-semibold text-text">
@@ -335,8 +335,8 @@ export default function Navbar({
 
               <div className="flex items-center space-x-1.5">
                 <span 
-                  className={`w-2 h-2 rounded-full ${
-                    ledgerStatus.intact ? 'bg-emerald-500' : 'bg-rose-500'
+                  className={`w-2 h-2 rounded-full status-dot-halo ${
+                    ledgerStatus.intact ? 'bg-emerald-500 text-emerald-500' : 'bg-rose-500 text-rose-500'
                   }`} 
                 />
                 <span className="text-[11px] font-semibold text-text">
@@ -371,13 +371,13 @@ export default function Navbar({
             >
               <div className="relative w-[18px] h-[18px] flex items-center justify-center">
                 <Sun 
-                  className={`w-[18px] h-[18px] text-[#FBBF24] absolute transition-all duration-250 ease-out ${
+                  className={`w-[18px] h-[18px] text-[#FBBF24] absolute transition-all duration-300 ease-out ${
                     theme === 'dark' ? 'rotate-0 scale-100 opacity-100' : 'rotate-90 scale-50 opacity-0 pointer-events-none'
                   }`} 
                   id="theme-toggle-light" 
                 />
                 <Moon 
-                  className={`w-[18px] h-[18px] text-text absolute transition-all duration-250 ease-out ${
+                  className={`w-[18px] h-[18px] text-text absolute transition-all duration-300 ease-out ${
                     theme === 'light' ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-50 opacity-0 pointer-events-none'
                   }`} 
                   id="theme-toggle-dark" 

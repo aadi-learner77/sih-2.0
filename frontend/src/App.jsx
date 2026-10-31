@@ -98,7 +98,7 @@ export default function App() {
   // Liquid hover effect coordinate tracker (Part 2.2 & Part 3.1)
   useEffect(() => {
     const handlePointerMove = (e) => {
-      const el = e.target?.closest?.('.btn-liquid, .kpi-glass-card, button.bg-primary');
+      const el = e.target?.closest?.('.btn-liquid, .kpi-glass-card, .hero-glass-card, button.bg-primary');
       if (el) {
         const rect = el.getBoundingClientRect();
         el.style.setProperty('--mx', `${e.clientX - rect.left}px`);
@@ -108,6 +108,30 @@ export default function App() {
     window.addEventListener('pointermove', handlePointerMove, { passive: true });
     return () => window.removeEventListener('pointermove', handlePointerMove);
   }, []);
+
+  // Reveal on scroll IntersectionObserver (Step 5.2)
+  useEffect(() => {
+    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { root: mainScrollRef.current, threshold: 0.1 }
+    );
+
+    const elements = document.querySelectorAll('[data-reveal]:not(.revealed)');
+    elements.forEach((el, index) => {
+      el.style.transitionDelay = `${index * 70}ms`;
+      observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, [activeTab]);
 
   // Calculate actual authenticated role vs active preview role
   const actualUserRole = currentUser?.role || currentRole;

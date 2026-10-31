@@ -88,7 +88,7 @@ function CircularProgressRing({ percentage, size = 36, strokeWidth = 3 }) {
           strokeDasharray={circumference}
           strokeDashoffset={offset}
           strokeLinecap="round"
-          className="text-success transition-all duration-700 ease-out"
+          className="text-success transition-all duration-800 ease-out"
           fill="transparent"
         />
       </svg>
@@ -135,16 +135,23 @@ function KpiCardItem({ card, isSelected, onClick, loading }) {
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick(); } }}
       onMouseMove={handleMouseMove}
-      className={`kpi-glass-card rounded-lg p-4 sm:p-5 border cursor-pointer group flex flex-col justify-between h-full select-none relative overflow-hidden outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 transition-all duration-200 ${
+      className={`kpi-glass-card rounded-xl p-4 sm:p-5 border cursor-pointer group flex flex-col justify-between h-full select-none relative overflow-hidden outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 transition-all duration-200 ${
         isSelected
           ? 'ring-2 ring-primary border-primary shadow-xs'
           : 'border-border hover:border-border-strong shadow-card'
       }`}
     >
-      {/* Top Row: Icon in a Tinted Square + Verified Progress Ring (if verified card) */}
+      {/* Top Row: Icon in a Tinted Square with Colored Halo + Verified Progress Ring */}
       <div className="flex items-center justify-between relative z-10">
-        <div className={`w-8 h-8 rounded-md flex items-center justify-center border transition-transform duration-200 group-hover:scale-[1.06] ${card.iconSquare}`}>
-          <Icon className="w-4 h-4 shrink-0" />
+        <div className="relative">
+          <div className={`kpi-icon-halo absolute -inset-1 rounded-lg blur-[20px] pointer-events-none transition-opacity duration-200 ${
+            card.id === 'verified' ? 'bg-emerald-500' :
+            card.id === 'advisory' ? 'bg-amber-500' :
+            card.id === 'impossibilities' ? 'bg-rose-500' : 'bg-primary'
+          }`} />
+          <div className={`w-8 h-8 rounded-md flex items-center justify-center border transition-transform duration-200 group-hover:scale-[1.06] relative z-10 ${card.iconSquare}`}>
+            <Icon className="w-4 h-4 shrink-0" />
+          </div>
         </div>
 
         {card.id === 'verified' && (

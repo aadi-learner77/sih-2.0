@@ -2944,15 +2944,127 @@ html.dark .glass-surface,
   pointer-events: none;
 }
 
-/* Sidebar Liquid Pill with subtle scale stretch mid-move */
-.sidebar-liquid-pill {
-  transition: transform 280ms cubic-bezier(.2, .8, .2, 1), height 280ms cubic-bezier(.2, .8, .2, 1), opacity 150ms ease-out;
-  will-change: transform, height;
+/* ============================================================
+   STEP 3: AURA & STEP 4: LIQUID POLISH LAYER
+   ============================================================ */
+
+/* Hero Halo Accents (Step 3.1) */
+.hero-halo-cobalt {
+  background: radial-gradient(circle, rgba(31, 75, 255, 0.30) 0%, transparent 70%);
+}
+html.dark .hero-halo-cobalt,
+.dark .hero-halo-cobalt {
+  background: radial-gradient(circle, rgba(59, 108, 255, 0.38) 0%, transparent 70%);
 }
 
-/* KPI Card Spotlight and Hover Lift */
+.hero-halo-saffron {
+  background: radial-gradient(circle, rgba(255, 153, 51, 0.16) 0%, transparent 70%);
+}
+
+/* Organic Static Blob behind Hero (Step 4.8) */
+.hero-backdrop-blob {
+  border-radius: 42% 58% 55% 45% / 50% 45% 55% 50%;
+  filter: blur(40px);
+  background: rgba(31, 75, 255, 0.14);
+}
+html.dark .hero-backdrop-blob,
+.dark .hero-backdrop-blob {
+  background: rgba(59, 108, 255, 0.14);
+}
+
+/* Hero Cursor-Follow Spotlight (Step 3.2) */
+@media (hover: hover) and (pointer: fine) {
+  .hero-cursor-spotlight {
+    background: radial-gradient(200px circle at var(--mx, -500px) var(--my, -500px), rgba(31, 75, 255, 0.22), transparent 70%);
+    opacity: 0;
+    transition: opacity 200ms ease-out;
+  }
+  html.dark .hero-cursor-spotlight,
+  .dark .hero-cursor-spotlight {
+    background: radial-gradient(200px circle at var(--mx, -500px) var(--my, -500px), rgba(59, 108, 255, 0.26), transparent 70%);
+  }
+  .hero-glass-card:hover .hero-cursor-spotlight {
+    opacity: 1;
+  }
+}
+
+/* KPI Icon Halos (Step 3.3) */
+.kpi-icon-halo {
+  opacity: 0.45;
+  transition: opacity 200ms ease-out;
+}
+.kpi-glass-card:hover .kpi-icon-halo {
+  opacity: 0.65;
+}
+
+/* Active Sidebar Item, Active Tabs, Primary Buttons Aura Shadow (Step 3.4) */
+.sidebar-liquid-pill,
+.tab.is-active,
+.tab[aria-selected="true"],
+.btn-solid,
+button.bg-primary:not(:disabled),
+.btn-liquid {
+  box-shadow: 0 10px 24px -8px rgba(31, 75, 255, 0.55);
+}
+.sidebar-liquid-pill:hover,
+.tab.is-active:hover,
+.tab[aria-selected="true"]:hover,
+.btn-solid:hover,
+button.bg-primary:not(:disabled):hover,
+.btn-liquid:hover {
+  box-shadow: 0 10px 24px -8px rgba(31, 75, 255, 0.70);
+}
+html.dark .sidebar-liquid-pill,
+html.dark .tab.is-active,
+html.dark .tab[aria-selected="true"],
+html.dark .btn-solid,
+html.dark button.bg-primary:not(:disabled),
+html.dark .btn-liquid,
+.dark .sidebar-liquid-pill,
+.dark .tab.is-active,
+.dark .tab[aria-selected="true"],
+.dark .btn-solid,
+.dark button.bg-primary:not(:disabled),
+.dark .btn-liquid {
+  box-shadow: 0 10px 24px -8px rgba(59, 108, 255, 0.55);
+}
+html.dark .sidebar-liquid-pill:hover,
+html.dark .tab.is-active:hover,
+html.dark .tab[aria-selected="true"]:hover,
+html.dark .btn-solid:hover,
+html.dark button.bg-primary:not(:disabled):hover,
+html.dark .btn-liquid:hover,
+.dark .sidebar-liquid-pill:hover,
+.dark .tab.is-active:hover,
+.dark .tab[aria-selected="true"]:hover,
+.dark .btn-solid:hover,
+.dark button.bg-primary:not(:disabled):hover,
+.dark .btn-liquid:hover {
+  box-shadow: 0 10px 24px -8px rgba(59, 108, 255, 0.70);
+}
+
+/* Status Dots Halos (Step 3.5) */
+.status-dot-halo.bg-emerald-500 {
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.18);
+}
+.status-dot-halo.bg-amber-500 {
+  box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.18);
+}
+.status-dot-halo.bg-rose-500 {
+  box-shadow: 0 0 0 4px rgba(244, 63, 94, 0.18);
+}
+
+/* Sidebar Liquid Pill (Step 4.1) */
+.sidebar-liquid-pill {
+  border-radius: 14px;
+  transition: transform 320ms cubic-bezier(.2, .9, .25, 1.05), height 320ms cubic-bezier(.2, .9, .25, 1.05), opacity 150ms ease-out, border-radius 320ms cubic-bezier(.2, .9, .25, 1.05);
+  will-change: transform, height, border-radius;
+}
+
+/* KPI Card Glass, Hover Lift, Spotlight & Glide Blob (Step 4.6 & 4.7) */
 .kpi-glass-card {
   position: relative;
+  border-radius: 14px;
   background: rgba(255, 255, 255, 0.72);
   -webkit-backdrop-filter: blur(14px) saturate(140%);
   backdrop-filter: blur(14px) saturate(140%);
@@ -2974,36 +3086,66 @@ html.dark .kpi-glass-card,
 
 @media (hover: hover) and (pointer: fine) {
   .kpi-glass-card:hover {
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow: 0 16px 36px -12px rgba(11, 27, 51, 0.18);
   }
+  html.dark .kpi-glass-card:hover,
+  .dark .kpi-glass-card:hover {
+    box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.7);
+  }
+
+  /* Cursor-follow spotlight */
   .kpi-glass-card::before {
     content: '';
     position: absolute;
     inset: 0;
     pointer-events: none;
     border-radius: inherit;
-    background: radial-gradient(220px circle at var(--mx, -500px) var(--my, -500px), rgba(59, 108, 255, 0.10), transparent 70%);
+    background: radial-gradient(200px circle at var(--mx, -500px) var(--my, -500px), rgba(31, 75, 255, 0.22), transparent 70%);
     opacity: 0;
     transition: opacity 200ms ease-out;
     z-index: 1;
   }
   html.dark .kpi-glass-card::before,
   .dark .kpi-glass-card::before {
-    background: radial-gradient(220px circle at var(--mx, -500px) var(--my, -500px), rgba(255, 255, 255, 0.06), transparent 70%);
+    background: radial-gradient(200px circle at var(--mx, -500px) var(--my, -500px), rgba(59, 108, 255, 0.26), transparent 70%);
   }
   .kpi-glass-card:hover::before {
     opacity: 1;
   }
+
+  /* Organic Hover Blob that glides toward cursor */
+  .kpi-glass-card::after {
+    content: '';
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    filter: blur(24px);
+    background: rgba(31, 75, 255, 0.18);
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(calc(var(--mx, 50%) - 70px), calc(var(--my, 50%) - 70px));
+    transition: opacity 200ms ease-out, transform 300ms ease-out;
+    z-index: 0;
+  }
+  html.dark .kpi-glass-card::after,
+  .dark .kpi-glass-card::after {
+    background: rgba(59, 108, 255, 0.18);
+  }
+  .kpi-glass-card:hover::after {
+    opacity: 1;
+  }
 }
 
-/* Liquid Primary Buttons: Radial Highlight expanding from cursor */
+/* Liquid Primary Buttons: Radial Highlight expanding from cursor (Step 4.3) */
 .btn-liquid {
   position: relative;
   overflow: hidden;
-  transition: transform 150ms ease-out, background-color 200ms ease-out;
+  transition: transform 180ms cubic-bezier(.2, .9, .25, 1), box-shadow 200ms ease-out, background-color 200ms ease-out;
 }
 .btn-liquid:active {
-  transform: scale(0.98);
+  transform: scale(0.97);
 }
 @media (hover: hover) and (pointer: fine) {
   .btn-liquid::after {
@@ -3011,33 +3153,72 @@ html.dark .kpi-glass-card,
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: radial-gradient(circle 90px at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.18), transparent 80%);
+    border-radius: inherit;
+    background: radial-gradient(circle 120px at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.28), transparent 70%);
     opacity: 0;
-    transition: opacity 200ms ease-out;
+    transition: opacity 220ms ease-out;
   }
   .btn-liquid:hover::after {
     opacity: 1;
   }
 }
 
-/* Sidebar scroll mask */
+/* Header Strengthening on Scroll (Step 5.1) */
+#app-header-bar.h-14.glass-surface {
+  background: rgba(255, 255, 255, 0.67);
+  box-shadow: 0 1px 2px rgba(11,27,51,0.06), 0 16px 40px -12px rgba(11,27,51,0.35);
+}
+html.dark #app-header-bar.h-14.glass-surface,
+.dark #app-header-bar.h-14.glass-surface {
+  background: rgba(28, 28, 32, 0.62);
+  box-shadow: 0 16px 40px -12px rgba(0,0,0,0.85);
+}
+
+/* Table Rows Solid Hover & Slide Bar (Step 5.3) */
+tbody tr {
+  position: relative;
+  transition: background-color 150ms ease-out;
+}
+tbody tr::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background-color: var(--primary);
+  transform: scaleY(0);
+  transform-origin: center;
+  transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+tbody tr:hover::before {
+  transform: scaleY(1);
+}
+tbody tr:hover svg.lucide-arrow-right,
+tbody tr:hover svg.lucide-chevron-right {
+  transform: translateX(3px);
+  transition: transform 150ms ease-out;
+}
+
+/* Sidebar scroll mask (Step 5.4) */
 .sidebar-scroll-mask {
   mask-image: linear-gradient(to bottom, transparent 0px, black 12px, black calc(100% - 12px), transparent 100%);
   -webkit-mask-image: linear-gradient(to bottom, transparent 0px, black 12px, black calc(100% - 12px), transparent 100%);
 }
 
-/* Smooth Scrolling & Scroll Padding */
+/* Smooth Scrolling & Scroll Padding (Step 5.6) */
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 68px;
+  scroll-padding-top: 64px;
 }
 
-/* Theme Crossfade: 200ms */
+/* Theme Crossfade: 200ms (Step 4.4) */
 body, #root, header, aside, main {
   transition: background-color 200ms ease-out, color 200ms ease-out, border-color 200ms ease-out;
 }
 
-/* Reduced Motion Safety */
+/* Reduced Motion Safety (Step 8) */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto !important;
@@ -3045,12 +3226,25 @@ body, #root, header, aside, main {
   .kpi-glass-card:hover,
   .btn-liquid:active,
   .sidebar-liquid-pill,
-  .btn-liquid {
+  .btn-liquid,
+  tbody tr:hover::before,
+  tbody tr:hover svg {
     transform: none !important;
     transition: none !important;
   }
   .kpi-glass-card::before,
-  .btn-liquid::after {
+  .kpi-glass-card::after,
+  .btn-liquid::after,
+  .hero-cursor-spotlight {
+    display: none !important;
+  }
+}
+
+@media (hover: none) {
+  .kpi-glass-card::before,
+  .kpi-glass-card::after,
+  .btn-liquid::after,
+  .hero-cursor-spotlight {
     display: none !important;
   }
 }

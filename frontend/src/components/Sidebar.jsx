@@ -251,7 +251,7 @@ export default function Sidebar({
           >
             {/* Liquid Highlight Pill (Slides to active/hovered tab) */}
             <div 
-              className="sidebar-liquid-pill absolute left-0 right-0 rounded-lg pointer-events-none bg-primary/12 border border-primary/25 border-l-[3px] border-l-primary z-0"
+              className="sidebar-liquid-pill absolute left-0 right-0 rounded-xl pointer-events-none bg-primary/16 border border-primary/25 border-l-[3px] border-l-primary z-0"
               style={{
                 transform: `translateY(${pillStyle.top}px)`,
                 height: `${pillStyle.height}px`,

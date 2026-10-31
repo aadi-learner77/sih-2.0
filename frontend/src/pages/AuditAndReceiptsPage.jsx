@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import StatusChip from '../components/StatusChip';
 import DemoDataBadge from '../components/DemoDataBadge';
+import CopyButton from '../components/ui/CopyButton';
 import { api } from '../services/api';
 import { 
   MOCK_AUDIT_RECEIPTS, 
