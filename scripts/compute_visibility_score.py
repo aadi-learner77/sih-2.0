@@ -87,3 +87,4 @@ avg_dark = np.mean([r['combined'] for r in results if 'Dark' in r['label']])
 print(f"Overall Average Combined Delta (Light Theme): {avg_light:.2f}% (Threshold: >= 3.0%)")
 print(f"Overall Average Combined Delta (Dark Theme):  {avg_dark:.2f}% (Threshold: >= 3.0%)")
 print("=" * 60)
+

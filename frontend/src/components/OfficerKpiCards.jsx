@@ -109,12 +109,6 @@ function KpiCardItem({ card, isSelected, onClick, loading }) {
   const Icon = card.icon;
   const animatedValue = useCountUp(card.value, 700);
 
-  const handleMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    e.currentTarget.style.setProperty('--mx', `${e.clientX - rect.left}px`);
-    e.currentTarget.style.setProperty('--my', `${e.clientY - rect.top}px`);
-  };
-
   if (loading) {
     return (
       <div className="bg-surface rounded-lg p-5 border border-border animate-pulse flex flex-col justify-between h-36">
@@ -134,24 +128,16 @@ function KpiCardItem({ card, isSelected, onClick, loading }) {
       role="button"
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick(); } }}
-      onMouseMove={handleMouseMove}
       className={`kpi-glass-card rounded-xl p-4 sm:p-5 border cursor-pointer group flex flex-col justify-between h-full select-none relative overflow-hidden outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 transition-all duration-200 ${
         isSelected
           ? 'ring-2 ring-primary border-primary shadow-xs'
           : 'border-border hover:border-border-strong shadow-card'
       }`}
     >
-      {/* Top Row: Icon in a Tinted Square with Colored Halo + Verified Progress Ring */}
-      <div className="flex items-center justify-between relative z-10">
-        <div className="relative">
-          <div className={`kpi-icon-halo absolute -inset-1 rounded-lg blur-[20px] pointer-events-none transition-opacity duration-200 ${
-            card.id === 'verified' ? 'bg-emerald-500' :
-            card.id === 'advisory' ? 'bg-amber-500' :
-            card.id === 'impossibilities' ? 'bg-rose-500' : 'bg-primary'
-          }`} />
-          <div className={`w-8 h-8 rounded-md flex items-center justify-center border transition-transform duration-200 group-hover:scale-[1.06] relative z-10 ${card.iconSquare}`}>
-            <Icon className="w-4 h-4 shrink-0" />
-          </div>
+      {/* Top Row: Icon in a Tinted Square + Verified Progress Ring */}
+      <div className="flex items-center justify-between">
+        <div className={`w-8 h-8 rounded-md flex items-center justify-center border transition-transform duration-200 group-hover:scale-[1.06] ${card.iconSquare}`}>
+          <Icon className="w-4 h-4 shrink-0" />
         </div>
 
         {card.id === 'verified' && (
@@ -160,7 +146,7 @@ function KpiCardItem({ card, isSelected, onClick, loading }) {
       </div>
 
       {/* Metric Content */}
-      <div className="flex flex-col gap-1 mt-3 relative z-10">
+      <div className="flex flex-col gap-1 mt-3">
         <div className="text-sm font-medium text-text-muted">
           {card.title}
         </div>

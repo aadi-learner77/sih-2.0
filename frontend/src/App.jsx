@@ -98,7 +98,7 @@ export default function App() {
   // Liquid hover effect coordinate tracker (Part 2.2 & Part 3.1)
   useEffect(() => {
     const handlePointerMove = (e) => {
-      const el = e.target?.closest?.('.btn-liquid, .kpi-glass-card, .hero-glass-card, button.bg-primary');
+      const el = e.target?.closest?.('.btn-liquid, button.bg-primary');
       if (el) {
         const rect = el.getBoundingClientRect();
         el.style.setProperty('--mx', `${e.clientX - rect.left}px`);

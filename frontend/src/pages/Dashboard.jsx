@@ -331,17 +331,7 @@ export default function Dashboard({
         />
 
         <div className="hero-glass-card relative rounded-2xl p-6 sm:p-7 overflow-hidden glass-surface border border-border shadow-card select-none text-text">
-          {/* Hero Halo Accents (Step 3) */}
-          <div className="absolute inset-0 overflow-hidden rounded-[inherit] pointer-events-none z-0" aria-hidden="true">
-            {/* Cobalt halo top-right (320px, blur 50px) */}
-            <div className="hero-halo-cobalt absolute -top-24 -right-24 w-80 h-80 rounded-full blur-[50px] pointer-events-none" />
-            {/* Saffron halo bottom-left (180px, blur 40px) */}
-            <div className="hero-halo-saffron absolute -bottom-16 -left-16 w-48 h-48 rounded-full blur-[40px] pointer-events-none" />
-            {/* Cursor-follow spotlight */}
-            <div className="hero-cursor-spotlight absolute inset-0 pointer-events-none" />
-          </div>
-
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 relative z-10">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 relative">
             <div className="max-w-2xl">
               {/* Short Eyebrow: primary navy (#0B3D91) in light, cobalt (#3B6CFF) in dark */}
               <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-[#0B3D91] dark:text-[#3B6CFF] uppercase tracking-wider mb-1.5">

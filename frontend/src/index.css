@@ -2945,127 +2945,62 @@ html.dark .glass-surface,
 }
 
 /* ============================================================
-   STEP 3: AURA & STEP 4: LIQUID POLISH LAYER
+   STEP 3: AURA & STEP 4: LIQUID POLISH LAYER (CLEAN & RESTYLED)
    ============================================================ */
 
-/* Hero Halo Accents (Step 3.1) */
-.hero-halo-cobalt {
-  background: radial-gradient(circle, rgba(31, 75, 255, 0.30) 0%, transparent 70%);
-}
-html.dark .hero-halo-cobalt,
-.dark .hero-halo-cobalt {
-  background: radial-gradient(circle, rgba(59, 108, 255, 0.38) 0%, transparent 70%);
-}
-
-.hero-halo-saffron {
-  background: radial-gradient(circle, rgba(255, 153, 51, 0.16) 0%, transparent 70%);
-}
-
-/* Organic Static Blob behind Hero (Step 4.8) */
+/* Organic Static Blob behind Hero (Step 4.8: Faint static tint only) */
 .hero-backdrop-blob {
   border-radius: 42% 58% 55% 45% / 50% 45% 55% 50%;
   filter: blur(40px);
-  background: rgba(31, 75, 255, 0.14);
+  background: rgba(31, 75, 255, 0.10);
 }
 html.dark .hero-backdrop-blob,
 .dark .hero-backdrop-blob {
-  background: rgba(59, 108, 255, 0.14);
+  background: rgba(59, 108, 255, 0.10);
 }
 
-/* Hero Cursor-Follow Spotlight (Step 3.2) */
-@media (hover: hover) and (pointer: fine) {
-  .hero-cursor-spotlight {
-    background: radial-gradient(200px circle at var(--mx, -500px) var(--my, -500px), rgba(31, 75, 255, 0.22), transparent 70%);
-    opacity: 0;
-    transition: opacity 200ms ease-out;
-  }
-  html.dark .hero-cursor-spotlight,
-  .dark .hero-cursor-spotlight {
-    background: radial-gradient(200px circle at var(--mx, -500px) var(--my, -500px), rgba(59, 108, 255, 0.26), transparent 70%);
-  }
-  .hero-glass-card:hover .hero-cursor-spotlight {
-    opacity: 1;
-  }
+/* Active Sidebar Item & Tabs: Soft, clean neutral shadow */
+.sidebar-liquid-pill {
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 320ms cubic-bezier(.2, .9, .25, 1.05), height 320ms cubic-bezier(.2, .9, .25, 1.05), opacity 150ms ease-out, border-radius 320ms cubic-bezier(.2, .9, .25, 1.05);
+  will-change: transform, height, border-radius;
 }
 
-/* KPI Icon Halos (Step 3.3) */
-.kpi-icon-halo {
-  opacity: 0.45;
-  transition: opacity 200ms ease-out;
-}
-.kpi-glass-card:hover .kpi-icon-halo {
-  opacity: 0.65;
-}
-
-/* Active Sidebar Item, Active Tabs, Primary Buttons Aura Shadow (Step 3.4) */
-.sidebar-liquid-pill,
 .tab.is-active,
 .tab[aria-selected="true"],
 .btn-solid,
 button.bg-primary:not(:disabled),
 .btn-liquid {
-  box-shadow: 0 10px 24px -8px rgba(31, 75, 255, 0.55);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.10), 0 8px 16px -4px rgba(0, 0, 0, 0.06);
 }
-.sidebar-liquid-pill:hover,
 .tab.is-active:hover,
 .tab[aria-selected="true"]:hover,
 .btn-solid:hover,
 button.bg-primary:not(:disabled):hover,
 .btn-liquid:hover {
-  box-shadow: 0 10px 24px -8px rgba(31, 75, 255, 0.70);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14), 0 10px 20px -4px rgba(0, 0, 0, 0.10);
 }
-html.dark .sidebar-liquid-pill,
 html.dark .tab.is-active,
 html.dark .tab[aria-selected="true"],
 html.dark .btn-solid,
 html.dark button.bg-primary:not(:disabled),
 html.dark .btn-liquid,
-.dark .sidebar-liquid-pill,
 .dark .tab.is-active,
 .dark .tab[aria-selected="true"],
 .dark .btn-solid,
 .dark button.bg-primary:not(:disabled),
 .dark .btn-liquid {
-  box-shadow: 0 10px 24px -8px rgba(59, 108, 255, 0.55);
-}
-html.dark .sidebar-liquid-pill:hover,
-html.dark .tab.is-active:hover,
-html.dark .tab[aria-selected="true"]:hover,
-html.dark .btn-solid:hover,
-html.dark button.bg-primary:not(:disabled):hover,
-html.dark .btn-liquid:hover,
-.dark .sidebar-liquid-pill:hover,
-.dark .tab.is-active:hover,
-.dark .tab[aria-selected="true"]:hover,
-.dark .btn-solid:hover,
-.dark button.bg-primary:not(:disabled):hover,
-.dark .btn-liquid:hover {
-  box-shadow: 0 10px 24px -8px rgba(59, 108, 255, 0.70);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 10px 20px -6px rgba(0, 0, 0, 0.5);
 }
 
-/* Status Dots Halos (Step 3.5) */
-.status-dot-halo.bg-emerald-500 {
-  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.18);
-}
-.status-dot-halo.bg-amber-500 {
-  box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.18);
-}
-.status-dot-halo.bg-rose-500 {
-  box-shadow: 0 0 0 4px rgba(244, 63, 94, 0.18);
-}
-
-/* Sidebar Liquid Pill (Step 4.1) */
-.sidebar-liquid-pill {
-  border-radius: 14px;
-  transition: transform 320ms cubic-bezier(.2, .9, .25, 1.05), height 320ms cubic-bezier(.2, .9, .25, 1.05), opacity 150ms ease-out, border-radius 320ms cubic-bezier(.2, .9, .25, 1.05);
-  will-change: transform, height, border-radius;
-}
-
-/* KPI Card Glass, Hover Lift, Spotlight & Glide Blob (Step 4.6 & 4.7) */
+/* KPI Cards: Clean Glass/Solid Cards with 1px border, 14px radius, soft neutral shadow, subtle 2px hover lift */
 .kpi-glass-card {
   position: relative;
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 6px 16px -4px rgba(0, 0, 0, 0.04);
   -webkit-backdrop-filter: blur(14px) saturate(140%);
   backdrop-filter: blur(14px) saturate(140%);
   transition: transform 200ms ease-out, box-shadow 200ms ease-out, border-color 200ms ease-out;
@@ -3074,6 +3009,8 @@ html.dark .btn-liquid:hover,
 html.dark .kpi-glass-card,
 .dark .kpi-glass-card {
   background: rgba(24, 24, 27, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 8px 20px -4px rgba(0, 0, 0, 0.5);
   -webkit-backdrop-filter: blur(14px) saturate(130%);
   backdrop-filter: blur(14px) saturate(130%);
 }
@@ -3086,55 +3023,12 @@ html.dark .kpi-glass-card,
 
 @media (hover: hover) and (pointer: fine) {
   .kpi-glass-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 16px 36px -12px rgba(11, 27, 51, 0.18);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 12px 24px -6px rgba(0, 0, 0, 0.06);
   }
   html.dark .kpi-glass-card:hover,
   .dark .kpi-glass-card:hover {
-    box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.7);
-  }
-
-  /* Cursor-follow spotlight */
-  .kpi-glass-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    border-radius: inherit;
-    background: radial-gradient(200px circle at var(--mx, -500px) var(--my, -500px), rgba(31, 75, 255, 0.22), transparent 70%);
-    opacity: 0;
-    transition: opacity 200ms ease-out;
-    z-index: 1;
-  }
-  html.dark .kpi-glass-card::before,
-  .dark .kpi-glass-card::before {
-    background: radial-gradient(200px circle at var(--mx, -500px) var(--my, -500px), rgba(59, 108, 255, 0.26), transparent 70%);
-  }
-  .kpi-glass-card:hover::before {
-    opacity: 1;
-  }
-
-  /* Organic Hover Blob that glides toward cursor */
-  .kpi-glass-card::after {
-    content: '';
-    position: absolute;
-    width: 140px;
-    height: 140px;
-    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
-    filter: blur(24px);
-    background: rgba(31, 75, 255, 0.18);
-    pointer-events: none;
-    opacity: 0;
-    transform: translate(calc(var(--mx, 50%) - 70px), calc(var(--my, 50%) - 70px));
-    transition: opacity 200ms ease-out, transform 300ms ease-out;
-    z-index: 0;
-  }
-  html.dark .kpi-glass-card::after,
-  .dark .kpi-glass-card::after {
-    background: rgba(59, 108, 255, 0.18);
-  }
-  .kpi-glass-card:hover::after {
-    opacity: 1;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6), 0 14px 28px -6px rgba(0, 0, 0, 0.7);
   }
 }
 
@@ -3232,19 +3126,13 @@ body, #root, header, aside, main {
     transform: none !important;
     transition: none !important;
   }
-  .kpi-glass-card::before,
-  .kpi-glass-card::after,
-  .btn-liquid::after,
-  .hero-cursor-spotlight {
+  .btn-liquid::after {
     display: none !important;
   }
 }
 
 @media (hover: none) {
-  .kpi-glass-card::before,
-  .kpi-glass-card::after,
-  .btn-liquid::after,
-  .hero-cursor-spotlight {
+  .btn-liquid::after {
     display: none !important;
   }
 }
