@@ -461,10 +461,6 @@ export default function Navbar({
         </div>
       </header>
 
-          </div>
-        </div>
-      </header>
-
       {/* Single Line Advisory Notice (Clean, No Highlighter) */}
       {!isAdvisoryDismissed && (
         <div 
