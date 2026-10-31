@@ -24,6 +24,7 @@ import {
 import StatusChip from '../components/StatusChip';
 import DemoDataBadge from '../components/DemoDataBadge';
 import CopyButton from '../components/ui/CopyButton';
+import ConfirmModal from '../components/ui/ConfirmModal';
 import { api } from '../services/api';
 import { 
   MOCK_AUDIT_RECEIPTS, 
@@ -78,6 +79,7 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
   const [resolveModalItem, setResolveModalItem] = useState(null);
   const [resolveNotes, setResolveNotes] = useState('');
   const [resolveAction, setResolveAction] = useState('VERIFIED');
+  const [showTamperConfirmModal, setShowTamperConfirmModal] = useState(false);
 
   // Load live audit receipts if backend available
   const loadData = async () => {
@@ -484,7 +486,13 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
                   id="demo-tamper-toggle"
                   type="checkbox"
                   checked={isTamperDemoOn}
-                  onChange={(e) => handleToggleTamperDemo(e.target.checked)}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setShowTamperConfirmModal(true);
+                    } else {
+                      handleToggleTamperDemo(false);
+                    }
+                  }}
                   className="sr-only peer"
                 />
                 <div className="w-11 h-6 bg-surface-2 peer-focus:outline-hidden rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-surface after:border-border after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-rose-600"></div>
@@ -1285,6 +1293,19 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
           SHA-256 Hash Chain • Ed25519 Elliptic-Curve Signatures • Canonical JSON Payloads
         </div>
       </footer>
+      {/* Tamper Simulation Confirmation Modal (Item 17) */}
+      <ConfirmModal
+        isOpen={showTamperConfirmModal}
+        title="Simulate Ledger Tampering?"
+        message="This action will deliberately inject an altered payload hash into Block #2 (Bhoomi Land Registry) to simulate adversarial tampering and demonstrate cryptographic hash-chain break detection."
+        confirmText="Inject Tampering"
+        confirmVariant="danger"
+        onConfirm={() => {
+          setShowTamperConfirmModal(false);
+          handleToggleTamperDemo(true);
+        }}
+        onCancel={() => setShowTamperConfirmModal(false)}
+      />
     </div>
   );
 }
