@@ -10,6 +10,7 @@ import {
   Compass,
   Clock,
   FileSearch,
+  Workflow,
   X
 } from 'lucide-react';
 
@@ -162,6 +163,20 @@ export default function Sidebar({
           label: 'Inspection Planner',
           icon: Compass,
           roles: ['scrutiny_officer', 'senior_officer', 'admin'],
+        },
+      ]
+    },
+    {
+      title: 'Showcase & Blueprint',
+      items: [
+        {
+          id: 'system-architecture',
+          label: 'System Architecture',
+          icon: Workflow,
+          badge: 'Interactive',
+          badgeColor: 'bg-sky-50 text-sky-700 border-sky-200',
+          desc: 'Interactive spec, pipeline & evidence',
+          roles: ['scrutiny_officer', 'senior_officer', 'admin', 'auditor', 'institution_user'],
         },
       ]
     }

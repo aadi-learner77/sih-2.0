@@ -76,7 +76,8 @@ export default function Navbar({
   onToggleSidebarCollapse,
   isScrolled = false,
   scrollProgress = 0,
-  onSelectTab
+  onSelectTab,
+  onNavigateTab
 }) {
   const [theme, setTheme] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -318,6 +319,20 @@ export default function Navbar({
           {/* RIGHT: Compact Status Pill + Bell + 36px Theme Toggle + User Menu */}
           <div className="flex items-center space-x-2 sm:space-x-3 shrink-0">
             
+            {/* System Architecture Quick Link */}
+            {(onSelectTab || onNavigateTab) && (
+              <button
+                type="button"
+                onClick={() => (onSelectTab || onNavigateTab)('system-architecture')}
+                id="header-architecture-btn"
+                className="hidden xl:flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg border border-border bg-surface-2 hover:bg-surface text-text text-xs font-medium transition cursor-pointer shadow-xs"
+                title="Open System Architecture & Evidence Showcase"
+              >
+                <Layers className="w-3.5 h-3.5 text-primary shrink-0" />
+                <span className="hidden 2xl:inline">Architecture</span>
+              </button>
+            )}
+
             {/* Single Compact Status Pill with Two Small Dots */}
             <div id="header-status-pill" className="hidden md:flex items-center space-x-2.5 px-3 py-1.5 rounded-full border border-border bg-surface-2 text-xs font-medium text-text-muted shadow-xs">
               <div className="flex items-center space-x-1.5">

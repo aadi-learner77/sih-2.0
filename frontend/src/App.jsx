@@ -20,13 +20,14 @@ const AuditAndReceiptsPage = lazy(() => import('./pages/AuditAndReceiptsPage'));
 const InspectionPlannerPage = lazy(() => import('./pages/InspectionPlannerPage'));
 const ManualReviewQueuePage = lazy(() => import('./pages/ManualReviewQueuePage'));
 const DocumentIntelligencePage = lazy(() => import('./pages/DocumentIntelligencePage'));
+const SystemArchitecturePage = lazy(() => import('./pages/SystemArchitecturePage'));
 
 const ROLE_PERMITTED_TABS = {
-  institution_user: ['dashboard', 'preflight', 'audit-ledger'],
-  auditor: ['dashboard', 'evidence-lens', 'impossibility-engine', 'manual-review-queue', 'document-intelligence', 'audit-ledger'],
-  scrutiny_officer: ['dashboard', 'evidence-lens', 'manual-review-queue', 'preflight', 'document-intelligence', 'photo-radar', 'impossibility-engine', 'inspection-planner', 'audit-ledger'],
-  senior_officer: ['dashboard', 'evidence-lens', 'manual-review-queue', 'preflight', 'document-intelligence', 'photo-radar', 'impossibility-engine', 'regulations', 'inspection-planner', 'audit-ledger'],
-  admin: ['dashboard', 'evidence-lens', 'manual-review-queue', 'preflight', 'document-intelligence', 'photo-radar', 'impossibility-engine', 'regulations', 'inspection-planner', 'audit-ledger'],
+  institution_user: ['dashboard', 'preflight', 'audit-ledger', 'system-architecture'],
+  auditor: ['dashboard', 'evidence-lens', 'impossibility-engine', 'manual-review-queue', 'document-intelligence', 'audit-ledger', 'system-architecture'],
+  scrutiny_officer: ['dashboard', 'evidence-lens', 'manual-review-queue', 'preflight', 'document-intelligence', 'photo-radar', 'impossibility-engine', 'inspection-planner', 'audit-ledger', 'system-architecture'],
+  senior_officer: ['dashboard', 'evidence-lens', 'manual-review-queue', 'preflight', 'document-intelligence', 'photo-radar', 'impossibility-engine', 'regulations', 'inspection-planner', 'audit-ledger', 'system-architecture'],
+  admin: ['dashboard', 'evidence-lens', 'manual-review-queue', 'preflight', 'document-intelligence', 'photo-radar', 'impossibility-engine', 'regulations', 'inspection-planner', 'audit-ledger', 'system-architecture'],
 };
 
 export default function App() {
@@ -381,6 +382,7 @@ export default function App() {
         isScrolled={isScrolled}
         scrollProgress={scrollProgress}
         onSelectTab={setActiveTab}
+        onNavigateTab={setActiveTab}
       />
 
       <div className="flex-1 min-h-0 flex overflow-hidden relative z-10">
@@ -505,6 +507,9 @@ export default function App() {
 
                 {activeTab === 'audit-ledger' && (
                   <AuditAndReceiptsPage activeApplicationId={activeApplication?.id || 1} />
+                )}
+                {activeTab === 'system-architecture' && (
+                  <SystemArchitecturePage onNavigateTab={setActiveTab} />
                 )}
               </Suspense>
             )}
