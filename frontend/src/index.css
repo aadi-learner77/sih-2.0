@@ -28,7 +28,7 @@ body {
   --radius-pill: 999px;
 
   /* LIGHT THEME TOKENS */
-  --bg: #F3F5F9;
+  --bg: #F1F4FA;
   --surface: #FFFFFF;
   --surface-2: #F8FAFD;
   --surface-muted: #F0F4FA;
@@ -1098,8 +1098,8 @@ aside {
 aside button[id^="sidebar-tab-"] {
   /* 40px item height handled by Tailwind */
   border-radius: var(--radius-md) !important;
-  color: var(--text-muted) !important; /* #333333 */
-  font-weight: 400 !important;
+  color: #374151 !important;
+  font-weight: 500 !important;
   background-color: transparent !important;
   border: 1px solid transparent !important;
   padding: 10px 14px !important;
@@ -1114,18 +1114,39 @@ aside button[id^="sidebar-tab-"]:hover {
   color: var(--text) !important;
 }
 
-/* Active nav item: #E8F1FB background with black text and weight 600 */
+/* Active nav item */
 aside button[id^="sidebar-tab-"][class*="bg-sky-50"],
-aside button[id^="sidebar-tab-"].active {
-  background-color: var(--nav-active-bg) !important; /* #E8F1FB */
-  border: 1px solid var(--info-border) !important; /* #BBD4F0 */
-  color: #FFFFFF !important;
+aside button[id^="sidebar-tab-"].active,
+aside button[id^="sidebar-tab-"][class*="font-semibold"] {
+  background-color: transparent !important;
+  color: var(--primary) !important;
   font-weight: 600 !important;
 }
 
 aside button[id^="sidebar-tab-"][class*="bg-sky-50"] *,
-aside button[id^="sidebar-tab-"].active * {
-  color: var(--on-primary) !important;
+aside button[id^="sidebar-tab-"].active *,
+aside button[id^="sidebar-tab-"][class*="font-semibold"] * {
+  color: var(--primary) !important;
+  stroke: currentColor !important;
+}
+
+[data-theme="dark"] aside button[id^="sidebar-tab-"],
+.dark aside button[id^="sidebar-tab-"] {
+  color: #D1D5DB !important;
+}
+
+[data-theme="dark"] aside button[id^="sidebar-tab-"].active,
+[data-theme="dark"] aside button[id^="sidebar-tab-"][class*="font-semibold"],
+.dark aside button[id^="sidebar-tab-"].active,
+.dark aside button[id^="sidebar-tab-"][class*="font-semibold"] {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] aside button[id^="sidebar-tab-"].active *,
+[data-theme="dark"] aside button[id^="sidebar-tab-"][class*="font-semibold"] *,
+.dark aside button[id^="sidebar-tab-"].active *,
+.dark aside button[id^="sidebar-tab-"][class*="font-semibold"] * {
+  color: #FFFFFF !important;
   stroke: currentColor !important;
 }
 
@@ -2840,24 +2861,35 @@ span:focus:not(:focus-visible) {
   box-shadow: none !important;
 }
 
-/* Ambient Background Layer: One fixed, static, very soft layer */
+/* ==========================================================================
+   STEP 1: AMBIENT COLOUR FIELD (Visible, static, 4 large colour fields)
+   ========================================================================== */
 .ambient-background {
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  background-color: var(--bg);
+  background-color: #F1F4FA;
   background-image: 
-    radial-gradient(circle at 0% 0%, rgba(31, 75, 255, 0.07) 0%, transparent 45%),
-    radial-gradient(circle at 100% 100%, rgba(255, 153, 51, 0.06) 0%, transparent 45%);
+    radial-gradient(circle at 1px 1px, rgba(11, 27, 51, 0.05) 1px, transparent 0),
+    radial-gradient(circle 60vw at 0% 0%, rgba(31, 75, 255, 0.26) 0%, transparent 70%),
+    radial-gradient(circle 50vw at 100% 100%, rgba(255, 153, 51, 0.20) 0%, transparent 65%),
+    radial-gradient(circle 45vw at 0% 100%, rgba(34, 211, 238, 0.14) 0%, transparent 65%),
+    radial-gradient(circle 45vw at 100% 0%, rgba(139, 92, 246, 0.12) 0%, transparent 65%);
+  background-size: 24px 24px, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
 }
 
 html.dark .ambient-background,
-.dark .ambient-background {
-  background-color: var(--bg);
+.dark .ambient-background,
+[data-theme="dark"] .ambient-background {
+  background-color: #0A0A0B;
   background-image: 
-    radial-gradient(circle at 0% 0%, rgba(150, 160, 190, 0.07) 0%, transparent 45%),
-    radial-gradient(circle at 100% 100%, rgba(59, 108, 255, 0.06) 0%, transparent 45%);
+    radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.05) 1px, transparent 0),
+    radial-gradient(circle 60vw at 0% 0%, rgba(59, 108, 255, 0.28) 0%, transparent 70%),
+    radial-gradient(circle 45vw at 100% 0%, rgba(190, 195, 220, 0.10) 0%, transparent 65%),
+    radial-gradient(circle 45vw at 0% 100%, rgba(79, 70, 229, 0.16) 0%, transparent 65%),
+    radial-gradient(circle 50vw at 100% 100%, rgba(255, 153, 51, 0.10) 0%, transparent 65%);
+  background-size: 24px 24px, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
 }
 
 /* Glass Spec: Light (0.72 white, 14px blur) / Dark (0.62 carbon #18181B, 14px blur) */
