@@ -2,6 +2,9 @@ import axios from 'axios';
 
 const getDefaultBaseUrl = () => {
   if (import.meta.env.VITE_API_URL) return import.meta.env.VITE_API_URL;
+  if (typeof window !== 'undefined' && window.location && (window.location.port === '5173' || window.location.port === '3000')) {
+    return '/api/v1';
+  }
   return 'http://127.0.0.1:8000/api/v1';
 };
 

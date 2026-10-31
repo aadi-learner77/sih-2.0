@@ -437,7 +437,7 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
                       id={`verify-now-${item.queue_id}`}
                       onClick={() => handleVerifyNow(item)}
                       disabled={isVerifying}
-                      className="h-9 px-4 rounded-xl text-xs font-semibold bg-surface-2/80 hover:bg-surface text-text border border-border backdrop-blur-md transition-all shadow-xs flex items-center space-x-1.5 cursor-pointer disabled:opacity-50"
+                      className="btn-outline h-9 px-4 rounded-xl text-xs font-semibold hover:bg-surface text-text border border-border transition-all shadow-xs flex items-center space-x-1.5 cursor-pointer disabled:opacity-50"
                     >
                       <Zap className={`w-3.5 h-3.5 ${isVerifying ? 'animate-bounce text-primary' : 'text-primary'}`} />
                       <span>{isVerifying ? 'Re-Querying...' : 'Verify Now'}</span>
@@ -449,7 +449,7 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
                         setResolveItem(item);
                         setResolveStatus(item.status === 'RESOLVED' ? 'RESOLVED' : 'VERIFIED');
                       }}
-                      className="h-9 px-4 bg-primary hover:bg-primary-hover text-white rounded-xl text-xs font-semibold transition-all shadow-md shadow-primary/25 flex items-center space-x-1.5 cursor-pointer"
+                      className="btn-solid h-9 px-4 rounded-xl text-xs font-semibold transition-all shadow-md flex items-center space-x-1.5 cursor-pointer"
                     >
                       Resolve Ticket
                     </button>
@@ -596,7 +596,7 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
               <button
                 type="button"
                 onClick={() => setResolveItem(null)}
-                className="h-10 px-4 text-xs font-semibold text-text-muted hover:text-text rounded-lg hover:bg-surface-2 transition-colors cursor-pointer"
+                className="btn-ghost h-10 px-4 text-xs font-semibold text-text-muted hover:text-text rounded-lg hover:bg-surface-2 transition-colors cursor-pointer"
               >
                 Cancel
               </button>
@@ -605,7 +605,7 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
                 id="btn-confirm-resolve-ticket"
                 disabled={resolving || !resolveNotes.trim()}
                 onClick={handleResolveSubmit}
-                className="h-10 px-5 text-xs font-semibold rounded-xl shadow-xs transition-colors cursor-pointer flex items-center space-x-1.5 bg-primary hover:bg-primary-hover text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                className="btn-solid h-10 px-5 text-xs font-semibold rounded-xl shadow-xs transition-colors cursor-pointer flex items-center space-x-1.5 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {resolving && <RefreshCw className="w-3.5 h-3.5 animate-spin text-white" />}
                 <span>Confirm</span>

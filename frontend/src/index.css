@@ -40,6 +40,7 @@ body {
   --primary: #0B3D91;
   --primary-hover: #0A3379;
   --primary-text: #FFFFFF;
+  --on-primary: #FFFFFF;
   --accent: #1F4BFF;
   --ring: rgba(31, 75, 255, 0.25);
   --focus: #1F4BFF;
@@ -116,19 +117,21 @@ body {
   --text: #FFFFFF;
   --text-muted: #B4B4BC;
   --text-subtle: #8A8A94;
-  --primary: #3B6CFF;
-  --primary-hover: #5A82FF;
+  --primary: #2F5BE8;
+  --primary-hover: #264CC4;
   --primary-text: #FFFFFF;
+  --on-primary: #FFFFFF;
   --accent: #3B6CFF;
   --ring: rgba(59, 108, 255, 0.35);
   --focus: #3B6CFF;
   --card-shadow: none;
   --card-shadow-hover: none;
 
-  --btn-primary-bg: #3B6CFF;
+  --btn-primary-bg: #2F5BE8;
+  --on-primary: #FFFFFF;
   --btn-primary-text: #FFFFFF;
-  --btn-primary-border: #3B6CFF;
-  --btn-primary-hover: #5A82FF;
+  --btn-primary-border: #2F5BE8;
+  --btn-primary-hover: #264CC4;
   --btn-secondary-bg: #1A1A1D;
   --btn-secondary-border: #26262A;
   --btn-secondary-hover: #222226;
@@ -561,22 +564,22 @@ button[class*="from-amber-600"]:hover {
   color: #FFFFFF !important;
 }
 
-/* Dedicated Verify Chain Button: Emerald green with crisp white text in light and dark mode */
+/* Dedicated Verify Chain Button: Emerald green with crisp white text in light and dark mode (5.5:1 ratio) */
 #verify-chain-button,
 button#verify-chain-button,
 .btn-verify-chain {
-  background-color: #059669 !important;
+  background-color: #047857 !important;
   background-image: none !important;
   color: #ffffff !important;
-  border: 1px solid #047857 !important;
+  border: 1px solid #065f46 !important;
   font-weight: 700 !important;
 }
 
 #verify-chain-button:hover,
 button#verify-chain-button:hover,
 .btn-verify-chain:hover {
-  background-color: #047857 !important;
-  border-color: #065f46 !important;
+  background-color: #065f46 !important;
+  border-color: #064e3b !important;
   color: #ffffff !important;
 }
 
@@ -591,14 +594,14 @@ button#verify-chain-button *,
 [data-theme="dark"] button#verify-chain-button,
 .dark #verify-chain-button,
 .dark button#verify-chain-button {
-  background-color: #059669 !important;
+  background-color: #047857 !important;
   color: #ffffff !important;
-  border-color: #10b981 !important;
+  border-color: #059669 !important;
 }
 
 [data-theme="dark"] #verify-chain-button:hover,
 .dark #verify-chain-button:hover {
-  background-color: #047857 !important;
+  background-color: #065f46 !important;
   color: #ffffff !important;
 }
 
@@ -608,22 +611,28 @@ button#verify-chain-button *,
   stroke: #ffffff !important;
 }
 
+/* Solid Primary Children strictly use --on-primary (#FFFFFF) */
 .btn-primary *,
+.btn-solid *,
 button.bg-sky-600 *,
 button.bg-purple-600 *,
+button.bg-purple-700 *,
 button[type="submit"]:not(#login-root *):not(.login-root *) *,
-#launch-evidence-lens-btn * {
-  color: var(--text) !important;
+#launch-evidence-lens-btn *,
+.tab.is-active *,
+.tab[aria-selected="true"] * {
+  color: var(--on-primary) !important;
+  stroke: currentColor !important;
 }
 
 /* Secondary Buttons: white background, 1px solid #BFC5CC border, black text. Hover: #F1F3F5 */
-button:not(#login-root button):not(.login-root button):not(#login-root *):not(.login-root *):not(.btn-primary):not([type="submit"]):not(.bg-sky-600):not(.bg-purple-600):not(.bg-purple-700):not(.bg-indigo-600):not(.bg-emerald-600):not(.bg-amber-600):not(#launch-evidence-lens-btn):not([class*="from-sky-600"]):not([class*="from-purple-700"]):not([class*="from-amber-600"]):not([id^="sidebar-tab-"]):not(.p-1):not(#theme-toggle-btn),
+button:not(#login-root button):not(.login-root button):not(#login-root *):not(.login-root *):not(.btn-primary):not([type="submit"]):not(.btn-solid):not(.btn-outline):not(.btn-ghost):not(.tab):not([role="tab"]):not(.btn-verify-chain):not([id*="verify-chain"]):not([id^="resolve-btn"]):not([id^="btn-confirm-resolve"]):not(.bg-sky-600):not(.bg-purple-600):not(.bg-purple-700):not(.bg-indigo-600):not(.bg-emerald-600):not(.bg-amber-600):not(#launch-evidence-lens-btn):not([class*="from-sky-600"]):not([class*="from-purple-700"]):not([class*="from-amber-600"]):not([class*="bg-primary"]):not([id^="sidebar-tab-"]):not(.p-1):not(#theme-toggle-btn),
 .btn-secondary,
 #launch-audit-ledger-btn {
   background-color: var(--surface) !important; /* #FFFFFF */
   background-image: none !important;
   border: 1px solid var(--border-secondary-btn) !important; /* #BFC5CC */
-  color: #FFFFFF !important;
+  color: var(--text) !important;
   border-radius: var(--radius-md) !important;
   min-height: 40px !important;
   height: auto !important;
@@ -639,7 +648,7 @@ button:not(#login-root button):not(.login-root button):not(#login-root *):not(.l
   cursor: pointer !important;
 }
 
-button:not(#login-root button):not(.login-root button):not(#login-root *):not(.login-root *):not(.btn-primary):not([type="submit"]):not(.bg-sky-600):not(.bg-purple-600):not(.bg-purple-700):not(.bg-indigo-600):not(.bg-emerald-600):not(.bg-amber-600):not(#launch-evidence-lens-btn):not([class*="from-sky-600"]):not([class*="from-purple-700"]):not([class*="from-amber-600"]):not([id^="sidebar-tab-"]):not(.p-1):not(#theme-toggle-btn):hover,
+button:not(#login-root button):not(.login-root button):not(#login-root *):not(.login-root *):not(.btn-primary):not([type="submit"]):not(.btn-solid):not(.btn-outline):not(.btn-ghost):not(.tab):not([role="tab"]):not(.btn-verify-chain):not([id*="verify-chain"]):not([id^="resolve-btn"]):not([id^="btn-confirm-resolve"]):not(.bg-sky-600):not(.bg-purple-600):not(.bg-purple-700):not(.bg-indigo-600):not(.bg-emerald-600):not(.bg-amber-600):not(#launch-evidence-lens-btn):not([class*="from-sky-600"]):not([class*="from-purple-700"]):not([class*="from-amber-600"]):not([class*="bg-primary"]):not([id^="sidebar-tab-"]):not(.p-1):not(#theme-toggle-btn):hover,
 .btn-secondary:hover,
 #launch-audit-ledger-btn:hover {
   background-color: var(--secondary-hover) !important; /* #F1F3F5 */
@@ -647,8 +656,121 @@ button:not(#login-root button):not(.login-root button):not(#login-root *):not(.l
   color: var(--text) !important;
 }
 
-button:not(#login-root button):not(.login-root button):not(#login-root *):not(.login-root *):not(.btn-primary):not([type="submit"]):not(.bg-sky-600):not(.bg-purple-600):not(.bg-purple-700):not(.bg-indigo-600):not(.bg-emerald-600):not(.bg-amber-600):not(#launch-evidence-lens-btn):not([class*="from-sky-600"]):not([class*="from-purple-700"]):not([class*="from-amber-600"]):not([id^="sidebar-tab-"]):not(.p-1):not(#theme-toggle-btn) * {
+/* Wildcard button child rule removed to prevent text/icon color bleeding */
+
+/* ==========================================================================
+   STANDARDIZED BUTTONS & TABS (One Source of Truth via Tokens)
+   ========================================================================== */
+.btn-solid {
+  background-color: var(--primary) !important;
+  color: var(--on-primary) !important;
+  border: 1px solid var(--primary) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: background-color 150ms ease-out, transform 150ms ease-out, box-shadow 150ms ease-out !important;
+}
+.btn-solid,
+.btn-solid * {
+  color: var(--on-primary) !important;
+  stroke: currentColor !important;
+}
+.btn-solid:hover {
+  background-color: var(--primary-hover) !important;
+  border-color: var(--primary-hover) !important;
+  box-shadow: 0 8px 20px -8px rgba(11, 61, 145, 0.45) !important;
+}
+.dark .btn-solid:hover,
+[data-theme="dark"] .btn-solid:hover {
+  box-shadow: 0 8px 20px -8px rgba(47, 91, 232, 0.45) !important;
+}
+
+.btn-outline {
+  background-color: transparent !important;
+  border: 1px solid var(--border) !important;
   color: var(--text) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: background-color 150ms ease-out, border-color 150ms ease-out !important;
+}
+.btn-outline,
+.btn-outline * {
+  color: var(--text) !important;
+  stroke: currentColor !important;
+}
+.btn-outline:hover {
+  background-color: var(--surface-2) !important;
+  border-color: var(--border-strong) !important;
+}
+
+.btn-ghost {
+  background-color: transparent !important;
+  border: 1px solid transparent !important;
+  color: var(--text-muted) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  transition: background-color 150ms ease-out, color 150ms ease-out !important;
+}
+.btn-ghost,
+.btn-ghost * {
+  color: var(--text-muted) !important;
+  stroke: currentColor !important;
+}
+.btn-ghost:hover {
+  background-color: var(--surface-2) !important;
+  color: var(--text) !important;
+}
+.btn-ghost:hover * {
+  color: var(--text) !important;
+}
+
+/* Tabs, Segmented Controls & Pills */
+.tab,
+[role="tab"] {
+  color: var(--text-muted) !important;
+  transition: all 150ms ease-out !important;
+}
+.tab *,
+[role="tab"] * {
+  color: inherit !important;
+  stroke: currentColor !important;
+}
+.tab:hover,
+[role="tab"]:hover {
+  color: var(--text) !important;
+}
+.tab:hover *,
+[role="tab"]:hover * {
+  color: var(--text) !important;
+}
+
+.tab.is-active,
+.tab[aria-selected="true"],
+[role="tab"][aria-selected="true"],
+[role="tab"].active,
+.tab-active {
+  background-color: var(--primary) !important;
+  color: var(--on-primary) !important;
+  box-shadow: 0 6px 18px -8px rgba(47, 91, 232, 0.45) !important;
+}
+.tab.is-active *,
+.tab[aria-selected="true"] *,
+[role="tab"][aria-selected="true"] *,
+[role="tab"].active *,
+.tab-active * {
+  color: var(--on-primary) !important;
+  stroke: var(--on-primary) !important;
 }
 
 /* Compact action buttons in table cells */
@@ -1001,8 +1123,10 @@ aside button[id^="sidebar-tab-"].active {
   font-weight: 600 !important;
 }
 
-aside button[id^="sidebar-tab-"][class*="bg-sky-50"] * {
-  color: var(--text) !important;
+aside button[id^="sidebar-tab-"][class*="bg-sky-50"] *,
+aside button[id^="sidebar-tab-"].active * {
+  color: var(--on-primary) !important;
+  stroke: currentColor !important;
 }
 
 /* Active Role Badge in Sidebar */

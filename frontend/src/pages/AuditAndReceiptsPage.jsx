@@ -499,10 +499,12 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
         <div className="flex flex-wrap items-center gap-1.5">
           <button
             id="tab-receipts-timeline"
+            role="tab"
+            aria-selected={viewMode === 'timeline'}
             onClick={() => setViewMode('timeline')}
-            className={`px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer ${
+            className={`tab px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer ${
               viewMode === 'timeline'
-                ? 'bg-primary text-white shadow-sm'
+                ? 'is-active btn-solid shadow-sm'
                 : 'text-text-muted hover:text-text hover:bg-surface-2'
             }`}
           >
@@ -512,10 +514,12 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
 
           <button
             id="tab-verification-statuses"
+            role="tab"
+            aria-selected={viewMode === 'table'}
             onClick={() => setViewMode('table')}
-            className={`px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer ${
+            className={`tab px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer ${
               viewMode === 'table'
-                ? 'bg-primary text-white shadow-sm'
+                ? 'is-active btn-solid shadow-sm'
                 : 'text-text-muted hover:text-text hover:bg-surface-2'
             }`}
           >
@@ -525,10 +529,12 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
 
           <button
             id="tab-officer-decisions"
+            role="tab"
+            aria-selected={viewMode === 'officer-decisions'}
             onClick={() => setViewMode('officer-decisions')}
-            className={`px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer ${
+            className={`tab px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer ${
               viewMode === 'officer-decisions'
-                ? 'bg-primary text-white shadow-sm'
+                ? 'is-active btn-solid shadow-sm'
                 : 'text-text-muted hover:text-text hover:bg-surface-2'
             }`}
           >
@@ -538,10 +544,12 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
 
           <button
             id="tab-manual-review-queue"
+            role="tab"
+            aria-selected={viewMode === 'manual-review-queue'}
             onClick={() => setViewMode('manual-review-queue')}
-            className={`px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer ${
+            className={`tab px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer ${
               viewMode === 'manual-review-queue'
-                ? 'bg-primary text-white shadow-sm'
+                ? 'is-active btn-solid shadow-sm'
                 : 'text-text-muted hover:text-text hover:bg-surface-2'
             }`}
           >
@@ -551,10 +559,12 @@ export default function AuditAndReceiptsPage({ activeApplicationId = 1 }) {
 
           <button
             id="tab-access-logs"
+            role="tab"
+            aria-selected={viewMode === 'access-logs'}
             onClick={() => setViewMode('access-logs')}
-            className={`px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer ${
+            className={`tab px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer ${
               viewMode === 'access-logs'
-                ? 'bg-primary text-white shadow-sm'
+                ? 'is-active btn-solid shadow-sm'
                 : 'text-text-muted hover:text-text hover:bg-surface-2'
             }`}
           >

@@ -159,11 +159,13 @@ export default function RulesCatalogView({ onSelectForSimulation }) {
           {categories.map((cat) => (
             <button
               key={cat}
+              role="tab"
+              aria-selected={selectedCategory === cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+              className={`tab px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                 selectedCategory === cat
-                  ? 'bg-purple-600 text-white shadow-2xs'
-                  : 'bg-surface border border-border text-text-muted hover:bg-surface-2'
+                  ? 'is-active btn-solid shadow-2xs'
+                  : 'btn-outline'
               }`}
             >
               {cat === 'ALL' ? 'All Regulations' : cat}

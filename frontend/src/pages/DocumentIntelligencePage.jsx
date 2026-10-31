@@ -416,7 +416,7 @@ export default function DocumentIntelligencePage({ onNavigateTab, onSelectApplic
                     fileInputRef.current?.click();
                   }
                 }}
-                className="h-8 px-3 rounded-lg bg-primary hover:bg-primary/90 text-white font-semibold text-xs flex items-center space-x-1.5 transition-colors cursor-pointer shadow-xs"
+                className="btn-solid h-8 px-3 rounded-lg bg-primary hover:bg-primary-hover text-on-primary font-semibold text-xs flex items-center space-x-1.5 transition-colors cursor-pointer shadow-xs"
               >
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>{uploadedFile ? 'Analyze' : 'Browse'}</span>
@@ -440,8 +440,8 @@ export default function DocumentIntelligencePage({ onNavigateTab, onSelectApplic
                   }}
                   className={`h-8 px-3 rounded-lg text-xs font-medium border transition-colors cursor-pointer ${
                     isSelected
-                      ? 'bg-primary/10 border-primary text-primary font-semibold'
-                      : 'bg-surface border-border text-muted hover:text-text hover:bg-surface-2'
+                      ? 'btn-solid shadow-xs'
+                      : 'bg-surface border-border text-text-muted hover:text-text hover:bg-surface-2'
                   }`}
                 >
                   {doc.name}
@@ -486,22 +486,26 @@ export default function DocumentIntelligencePage({ onNavigateTab, onSelectApplic
                   <div className="flex items-center space-x-3">
                     <button
                       type="button"
+                      role="tab"
+                      aria-selected={activeViewMode === 'visual'}
                       onClick={() => setActiveViewMode('visual')}
-                      className={`pb-1 text-xs font-semibold border-b-2 transition-colors cursor-pointer ${
+                      className={`tab px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                         activeViewMode === 'visual'
-                          ? 'border-primary text-primary'
-                          : 'border-transparent text-muted hover:text-text'
+                          ? 'is-active btn-solid'
+                          : 'text-text-muted hover:text-text hover:bg-surface-2'
                       }`}
                     >
                       Preview
                     </button>
                     <button
                       type="button"
+                      role="tab"
+                      aria-selected={activeViewMode === 'text'}
                       onClick={() => setActiveViewMode('text')}
-                      className={`pb-1 text-xs font-semibold border-b-2 transition-colors cursor-pointer ${
+                      className={`tab px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                         activeViewMode === 'text'
-                          ? 'border-primary text-primary'
-                          : 'border-transparent text-muted hover:text-text'
+                          ? 'is-active btn-solid'
+                          : 'text-text-muted hover:text-text hover:bg-surface-2'
                       }`}
                     >
                       Extracted text
@@ -518,8 +522,8 @@ export default function DocumentIntelligencePage({ onNavigateTab, onSelectApplic
                     onClick={() => setShowBoxes(!showBoxes)}
                     className={`h-8 px-2.5 rounded-lg text-xs font-medium border flex items-center space-x-1 transition-colors cursor-pointer ${
                       showBoxes
-                        ? 'bg-primary/10 border-primary text-primary'
-                        : 'bg-surface border-border text-muted hover:text-text'
+                        ? 'btn-solid shadow-xs'
+                        : 'bg-surface border-border text-text-muted hover:text-text'
                     }`}
                     title="Toggle bounding boxes"
                   >

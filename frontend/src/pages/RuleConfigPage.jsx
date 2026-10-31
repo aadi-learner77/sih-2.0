@@ -181,10 +181,12 @@ export default function RuleConfigPage() {
       <div className="flex flex-wrap items-center gap-2 p-1.5 bg-surface-2/80 rounded-xl border border-border/80 w-fit">
         <button
           id="tab-rules-catalog"
+          role="tab"
+          aria-selected={activeTopTab === 'catalog'}
           onClick={() => setActiveTopTab('catalog')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer ${
+          className={`tab px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer ${
             activeTopTab === 'catalog'
-              ? 'bg-purple-700 text-white shadow-sm'
+              ? 'is-active btn-solid shadow-sm'
               : 'text-text-muted hover:text-text hover:bg-surface-2'
           }`}
         >
@@ -194,10 +196,12 @@ export default function RuleConfigPage() {
 
         <button
           id="tab-what-if-simulator"
+          role="tab"
+          aria-selected={activeTopTab === 'simulator'}
           onClick={() => setActiveTopTab('simulator')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer ${
+          className={`tab px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer ${
             activeTopTab === 'simulator'
-              ? 'bg-purple-700 text-white shadow-sm'
+              ? 'is-active btn-solid shadow-sm'
               : 'text-text-muted hover:text-text hover:bg-surface-2'
           }`}
         >
@@ -242,7 +246,7 @@ export default function RuleConfigPage() {
             <button
               id="open-publish-modal-btn"
               onClick={() => setShowPublishModal(true)}
-              className="py-2.5 px-5 rounded-xl bg-gradient-to-r from-purple-700 to-indigo-700 hover:from-purple-800 hover:to-indigo-800 text-white text-xs font-bold shadow-md shadow-purple-500/20 transition-all flex items-center space-x-2 active:scale-95 cursor-pointer"
+              className="btn-solid py-2.5 px-5 rounded-xl bg-gradient-to-r from-purple-700 to-indigo-700 hover:from-purple-800 hover:to-indigo-800 text-white text-xs font-bold shadow-md shadow-purple-500/20 transition-all flex items-center space-x-2 active:scale-95 cursor-pointer"
             >
               <Lock className="w-4 h-4 text-purple-200" />
               <span>Publish New Rule Version</span>
@@ -408,7 +412,7 @@ export default function RuleConfigPage() {
               onClick={handleExecuteDryRun}
               disabled={isRunningDryRun}
               id="run-dry-run-btn"
-              className="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold transition-all shadow-xs flex items-center space-x-2 active:scale-95 cursor-pointer"
+              className="btn-solid px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold transition-all shadow-xs flex items-center space-x-2 active:scale-95 cursor-pointer"
             >
               <Play className={`w-3.5 h-3.5 ${isRunningDryRun ? 'animate-spin' : ''}`} />
               <span>{isRunningDryRun ? 'Computing Impact...' : 'Run Policy Dry-Run Simulation'}</span>

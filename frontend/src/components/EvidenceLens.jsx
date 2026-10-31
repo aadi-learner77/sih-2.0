@@ -225,10 +225,10 @@ export default function EvidenceLens({
                   key={finding.id}
                   id={`select-finding-${String(finding.id).toLowerCase()}`}
                   onClick={() => handleSelectFinding(idx)}
-                  className={`px-3 py-1 rounded-full text-xs font-semibold border transition-all cursor-pointer flex items-center space-x-1.5 ${
+                  className={`tab px-3 py-1 rounded-full text-xs font-semibold border transition-all cursor-pointer flex items-center space-x-1.5 ${
                     isSelected
-                      ? 'bg-primary text-white border-primary shadow-xs'
-                      : 'bg-surface-2 border-border text-text-muted hover:text-text hover:bg-surface'
+                      ? 'is-active btn-solid shadow-xs'
+                      : 'btn-outline'
                   }`}
                 >
                   <span>#{idx + 1}</span>
@@ -567,7 +567,7 @@ export default function EvidenceLens({
                 type="submit"
                 id="btn-submit-officer-action"
                 disabled={isSubmitting}
-                className="w-full py-2.5 px-4 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-bold transition-all shadow-xs flex items-center justify-center space-x-2 cursor-pointer disabled:opacity-50"
+                className="btn-solid w-full py-2.5 px-4 rounded-xl bg-primary hover:bg-primary-hover text-on-primary text-xs font-bold transition-all shadow-xs flex items-center justify-center space-x-2 cursor-pointer disabled:opacity-50"
               >
                 {isSubmitting ? (
                   <>
