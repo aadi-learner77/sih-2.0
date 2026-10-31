@@ -199,7 +199,7 @@ export default function DocumentForensicsView() {
   return (
     <div className="space-y-6">
       {/* 1. Header & Statutory Guidance Banner */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-surface rounded-xl border border-border p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center space-x-2.5">
             <div className="p-2.5 bg-amber-50 border border-amber-200 rounded-xl text-amber-700">
@@ -207,10 +207,10 @@ export default function DocumentForensicsView() {
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <h2 className="text-xl font-bold text-slate-900 tracking-tight">Automated Document Forensics</h2>
+                <h2 className="text-xl font-bold text-text tracking-tight">Automated Document Forensics</h2>
                 {isDemoData && <DemoDataBadge reason="Fallback Mock Analysis" />}
               </div>
-              <p className="text-xs text-slate-500 mt-0.5">
+              <p className="text-xs text-text-subtle mt-0.5">
                 5-Check physical & digital document forensics pipeline inspecting ELA compression, fonts, PDF trailers, copy-move cloning & QR parity.
               </p>
             </div>
@@ -218,8 +218,8 @@ export default function DocumentForensicsView() {
         </div>
 
         <div className="flex items-center space-x-3">
-          <label className="px-3.5 py-2 bg-white border border-slate-200 hover:border-slate-300 rounded-xl text-xs font-semibold text-slate-700 flex items-center space-x-2 cursor-pointer shadow-2xs transition-all">
-            <Upload className="w-4 h-4 text-slate-500" />
+          <label className="px-3.5 py-2 bg-surface border border-border hover:border-border-strong rounded-xl text-xs font-semibold text-text-muted flex items-center space-x-2 cursor-pointer shadow-2xs transition-all">
+            <Upload className="w-4 h-4 text-text-subtle" />
             <span>Upload Document</span>
             <input type="file" accept=".pdf,.png,.jpg,.jpeg" onChange={handleFileUpload} className="hidden" />
           </label>
@@ -235,7 +235,7 @@ export default function DocumentForensicsView() {
           <button
             onClick={() => runAnalysis(selectedSample, threshold)}
             disabled={loading}
-            className="p-2 border border-slate-200 hover:bg-slate-50 text-slate-600 rounded-xl transition-colors cursor-pointer"
+            className="p-2 border border-border hover:bg-surface-2 text-text-muted rounded-xl transition-colors cursor-pointer"
             title="Re-run analysis"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
@@ -244,7 +244,7 @@ export default function DocumentForensicsView() {
       </div>
 
       {/* Statutory Section 6 Caveat */}
-      <div className="bg-amber-50/70 border border-amber-200/80 rounded-2xl p-4 flex items-start space-x-3 text-xs text-amber-950">
+      <div className="bg-amber-50/70 border border-amber-200/80 rounded-xl p-4 flex items-start space-x-3 text-xs text-amber-950">
         <Info className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
         <div className="leading-relaxed">
           <strong>Mandatory Statutory Protocol:</strong> All automated forensic outputs are advisory 
@@ -254,10 +254,10 @@ export default function DocumentForensicsView() {
       </div>
 
       {/* 2. Benchmark Preset Selector Bar */}
-      <div className="bg-slate-100/80 p-3 rounded-2xl border border-slate-200/80">
-        <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 px-1 mb-2 flex items-center justify-between">
+      <div className="bg-surface-2/80 p-3 rounded-xl border border-border/80">
+        <div className="text-[11px] font-bold uppercase tracking-wider text-text-subtle px-1 mb-2 flex items-center justify-between">
           <span>Ground Truth Benchmark Samples</span>
-          <span className="text-[10px] font-mono text-slate-400">8 Curated Cases (F1: 1.0 @ 0.80)</span>
+          <span className="text-[10px] font-mono text-text-subtle">8 Curated Cases (F1: 1.0 @ 0.80)</span>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
           {PRESET_SAMPLES.map((sample) => {
@@ -268,8 +268,8 @@ export default function DocumentForensicsView() {
                 onClick={() => setSelectedSample(sample)}
                 className={`p-2.5 rounded-xl text-left border transition-all cursor-pointer flex flex-col justify-between ${
                   isSelected
-                    ? 'bg-white border-amber-500 ring-2 ring-amber-500/20 shadow-xs'
-                    : 'bg-white/70 hover:bg-white border-slate-200 text-slate-700'
+                    ? 'bg-surface border-amber-500 ring-2 ring-amber-500/20 shadow-xs'
+                    : 'bg-surface/70 hover:bg-surface border-border text-text-muted'
                 }`}
               >
                 <div>
@@ -283,9 +283,9 @@ export default function DocumentForensicsView() {
                     </span>
                     {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />}
                   </div>
-                  <div className="text-xs font-bold text-slate-900 line-clamp-1">{sample.name}</div>
+                  <div className="text-xs font-bold text-text line-clamp-1">{sample.name}</div>
                 </div>
-                <div className="text-[10px] text-slate-500 line-clamp-1 mt-1 font-mono">{sample.filename}</div>
+                <div className="text-[10px] text-text-subtle line-clamp-1 mt-1 font-mono">{sample.filename}</div>
               </button>
             );
           })}
@@ -294,17 +294,17 @@ export default function DocumentForensicsView() {
 
       {/* Calibration Drawer (if opened) */}
       {showCalibrationDrawer && (
-        <div className="bg-white border border-indigo-200 rounded-2xl p-5 shadow-xs space-y-4 animate-fade-in">
-          <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div className="bg-surface border border-indigo-200 rounded-xl p-5 shadow-xs space-y-4 animate-fade-in">
+          <div className="flex items-center justify-between border-b border-border pb-3">
             <div className="flex items-center space-x-2">
               <Sliders className="w-4 h-4 text-indigo-600" />
-              <h3 className="text-sm font-bold text-slate-900">Decision Threshold Calibration Curve</h3>
+              <h3 className="text-sm font-bold text-text">Decision Threshold Calibration Curve</h3>
               <span className="text-xs font-mono bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded border border-indigo-200">
                 Optimal: {calibrationData?.optimal_threshold || 0.80} (F1: {calibrationData?.best_f1_score || 1.0})
               </span>
             </div>
             <div className="flex items-center space-x-3 text-xs">
-              <span className="text-slate-500">Active Threshold: <strong className="font-mono text-slate-900">{threshold.toFixed(2)}</strong></span>
+              <span className="text-text-subtle">Active Threshold: <strong className="font-mono text-text">{threshold.toFixed(2)}</strong></span>
               <input
                 type="range"
                 min="0.10"
@@ -322,21 +322,21 @@ export default function DocumentForensicsView() {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
-            <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
-              <div className="text-[10px] text-slate-400 font-bold uppercase">Optimal Threshold</div>
+            <div className="bg-surface-2 p-2.5 rounded-xl border border-border">
+              <div className="text-[10px] text-text-subtle font-bold uppercase">Optimal Threshold</div>
               <div className="text-base font-bold text-indigo-600 font-mono mt-0.5">{calibrationData?.optimal_threshold || 0.80}</div>
             </div>
-            <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
-              <div className="text-[10px] text-slate-400 font-bold uppercase">Peak F1-Score</div>
+            <div className="bg-surface-2 p-2.5 rounded-xl border border-border">
+              <div className="text-[10px] text-text-subtle font-bold uppercase">Peak F1-Score</div>
               <div className="text-base font-bold text-emerald-600 font-mono mt-0.5">{calibrationData?.best_f1_score || 1.0}</div>
             </div>
-            <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
-              <div className="text-[10px] text-slate-400 font-bold uppercase">Benchmark Total</div>
-              <div className="text-base font-bold text-slate-800 font-mono mt-0.5">{calibrationData?.total_benchmark_samples || 8} Samples</div>
+            <div className="bg-surface-2 p-2.5 rounded-xl border border-border">
+              <div className="text-[10px] text-text-subtle font-bold uppercase">Benchmark Total</div>
+              <div className="text-base font-bold text-text font-mono mt-0.5">{calibrationData?.total_benchmark_samples || 8} Samples</div>
             </div>
-            <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
-              <div className="text-[10px] text-slate-400 font-bold uppercase">False Positive Rate</div>
-              <div className="text-base font-bold text-slate-800 font-mono mt-0.5">0.0% @ 0.80</div>
+            <div className="bg-surface-2 p-2.5 rounded-xl border border-border">
+              <div className="text-[10px] text-text-subtle font-bold uppercase">False Positive Rate</div>
+              <div className="text-base font-bold text-text font-mono mt-0.5">0.0% @ 0.80</div>
             </div>
           </div>
         </div>
@@ -344,13 +344,13 @@ export default function DocumentForensicsView() {
 
       {/* 3. Main Analysis Display: Heatmap & Indicators Side-by-Side */}
       {loading ? (
-        <div className="bg-white border border-slate-200 rounded-2xl p-16 text-center text-slate-400 space-y-3">
+        <div className="bg-surface border border-border rounded-xl p-16 text-center text-text-subtle space-y-3">
           <RefreshCw className="w-8 h-8 animate-spin mx-auto text-amber-500" />
-          <p className="text-sm font-semibold text-slate-700">Executing 5-Check Automated Forensics Pipeline...</p>
-          <p className="text-xs text-slate-400">Scanning ELA compression, font geometry, ORB keypoints, and PDF metadata.</p>
+          <p className="text-sm font-semibold text-text-muted">Executing 5-Check Automated Forensics Pipeline...</p>
+          <p className="text-xs text-text-subtle">Scanning ELA compression, font geometry, ORB keypoints, and PDF metadata.</p>
         </div>
       ) : error ? (
-        <div className="bg-white border border-rose-200 rounded-2xl p-8 text-center text-rose-700 space-y-2">
+        <div className="bg-surface border border-rose-200 rounded-xl p-8 text-center text-rose-700 space-y-2">
           <AlertTriangle className="w-8 h-8 mx-auto text-rose-500" />
           <p className="text-sm font-bold">{error}</p>
         </div>
@@ -358,17 +358,17 @@ export default function DocumentForensicsView() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left Column: Visual ELA Heatmap / Document Inspection (6 cols) */}
           <div className="lg:col-span-6 space-y-4">
-            <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+            <div className="bg-surface rounded-xl border border-border p-5 shadow-xs space-y-4">
+              <div className="flex items-center justify-between pb-3 border-b border-border">
                 <div className="flex items-center space-x-2">
                   <ImageIcon className="w-4 h-4 text-amber-600" />
-                  <span className="text-sm font-bold text-slate-900">Forensics Visual Heatmap</span>
+                  <span className="text-sm font-bold text-text">Forensics Visual Heatmap</span>
                 </div>
                 {activeHeatmap && (
                   <div className="flex items-center space-x-2">
                     <button
                       onClick={() => setShowHeatmapOnly(!showHeatmapOnly)}
-                      className="px-2.5 py-1 text-[11px] font-semibold rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 cursor-pointer flex items-center space-x-1"
+                      className="px-2.5 py-1 text-[11px] font-semibold rounded-lg border border-border bg-surface-2 hover:bg-surface-2 text-text-muted cursor-pointer flex items-center space-x-1"
                     >
                       {showHeatmapOnly ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
                       <span>{showHeatmapOnly ? 'Heatmap Only' : 'Heatmap Overlay'}</span>
@@ -378,7 +378,7 @@ export default function DocumentForensicsView() {
               </div>
 
               {/* Heatmap Visual Canvas */}
-              <div className="relative rounded-xl overflow-hidden border border-slate-200 bg-slate-950 flex items-center justify-center min-h-[340px] max-h-[460px]">
+              <div className="relative rounded-xl overflow-hidden border border-border bg-slate-950 flex items-center justify-center min-h-[340px] max-h-[460px]">
                 {activeHeatmap ? (
                   <div className="relative w-full h-full flex items-center justify-center p-2">
                     <img
@@ -391,7 +391,7 @@ export default function DocumentForensicsView() {
                         e.target.parentNode.innerHTML += `
                           <div class="text-center p-8 text-amber-300">
                             <div class="text-xs font-mono font-bold mb-1">ELA Heatmap Rendered</div>
-                            <div class="text-[11px] text-slate-400">Peak deviation detected at region coordinates [421, 189, 476, 205]</div>
+                            <div class="text-[11px] text-text-subtle">Peak deviation detected at region coordinates [421, 189, 476, 205]</div>
                           </div>
                         `;
                       }}
@@ -403,11 +403,11 @@ export default function DocumentForensicsView() {
                   </div>
                 ) : (
                   <div className="text-center p-8 space-y-2">
-                    <FileText className="w-12 h-12 text-slate-600 mx-auto" />
+                    <FileText className="w-12 h-12 text-text-muted mx-auto" />
                     <div className="text-xs font-bold text-slate-300">
                       {analysisResult.summary_metadata?.is_pdf ? 'Digital Vector PDF Document' : 'Document Image Preview'}
                     </div>
-                    <div className="text-[11px] text-slate-400 max-w-xs mx-auto">
+                    <div className="text-[11px] text-text-subtle max-w-xs mx-auto">
                       {analysisResult.indicators?.length === 0 
                         ? 'Clean document. No localized digital splicing or ELA compression anomalies detected.'
                         : 'Analyzed via PDF metadata, font geometry and structural token analysis.'}
@@ -417,19 +417,19 @@ export default function DocumentForensicsView() {
               </div>
 
               {/* Heatmap Legend */}
-              <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between text-[11px] text-slate-600">
+              <div className="p-3 bg-surface-2 border border-border rounded-xl flex items-center justify-between text-[11px] text-text-muted">
                 <div className="flex items-center space-x-2">
-                  <span className="font-semibold text-slate-800">Residual Scale:</span>
+                  <span className="font-semibold text-text">Residual Scale:</span>
                   <div className="flex items-center space-x-1">
                     <span className="w-3 h-3 rounded bg-blue-500" title="Low error / Clean compression" />
-                    <span className="text-[10px] text-slate-500">Normal</span>
+                    <span className="text-[10px] text-text-subtle">Normal</span>
                     <span className="w-3 h-3 rounded bg-yellow-500 ml-1.5" title="Elevated error" />
-                    <span className="text-[10px] text-slate-500">Elevated</span>
+                    <span className="text-[10px] text-text-subtle">Elevated</span>
                     <span className="w-3 h-3 rounded bg-rose-500 ml-1.5" title="Extreme discrepancy" />
-                    <span className="text-[10px] text-slate-500">Tampered</span>
+                    <span className="text-[10px] text-text-subtle">Tampered</span>
                   </div>
                 </div>
-                <span className="font-mono text-[10px] text-slate-500">File: {analysisResult.filename}</span>
+                <span className="font-mono text-[10px] text-text-subtle">File: {analysisResult.filename}</span>
               </div>
             </div>
           </div>
@@ -437,17 +437,17 @@ export default function DocumentForensicsView() {
           {/* Right Column: Composite Score & Indicators for Review (6 cols) */}
           <div className="lg:col-span-6 space-y-4">
             {/* Top Score Summary Card */}
-            <div className={`p-5 rounded-2xl border shadow-xs ${
+            <div className={`p-5 rounded-xl border shadow-xs ${
               analysisResult.is_review_recommended
                 ? 'bg-amber-50/70 border-amber-200'
                 : 'bg-emerald-50/70 border-emerald-200'
             }`}>
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Composite Risk Score</div>
-                  <div className="text-2xl font-black tracking-tight text-slate-900 mt-0.5 flex items-center space-x-2">
+                  <div className="text-[11px] font-bold uppercase tracking-wider text-text-subtle">Composite Risk Score</div>
+                  <div className="text-2xl font-black tracking-tight text-text mt-0.5 flex items-center space-x-2">
                     <span>{(analysisResult.composite_risk_score * 100).toFixed(0)}%</span>
-                    <span className="text-xs font-semibold text-slate-500">
+                    <span className="text-xs font-semibold text-text-subtle">
                       ({analysisResult.composite_risk_score.toFixed(2)} / 1.00)
                     </span>
                   </div>
@@ -463,7 +463,7 @@ export default function DocumentForensicsView() {
                 </div>
               </div>
 
-              <div className="mt-3 pt-3 border-t border-slate-200/60 text-xs text-slate-700 leading-relaxed">
+              <div className="mt-3 pt-3 border-t border-border/60 text-xs text-text-muted leading-relaxed">
                 {analysisResult.is_review_recommended ? (
                   <span>
                     <strong>Regulatory Action Required:</strong> {analysisResult.total_indicators_count} forensic indicator(s) exceed decision threshold ({threshold.toFixed(2)}). Committee scrutiny recommended prior to approval.
@@ -478,36 +478,36 @@ export default function DocumentForensicsView() {
 
             {/* Indicators for Review List */}
             <div className="space-y-3">
-              <div className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center justify-between">
+              <div className="text-xs font-bold uppercase tracking-wider text-text-subtle flex items-center justify-between">
                 <span>Forensic Checks Breakdown ({analysisResult.indicators?.length || 0})</span>
                 <span className="text-[10px] font-mono">Decision Threshold: {threshold.toFixed(2)}</span>
               </div>
 
               {(!analysisResult.indicators || analysisResult.indicators.length === 0) ? (
-                <div className="bg-white border border-slate-200 rounded-2xl p-8 text-center text-slate-500 space-y-2">
+                <div className="bg-surface border border-border rounded-xl p-8 text-center text-text-subtle space-y-2">
                   <CheckCircle2 className="w-8 h-8 text-emerald-500 mx-auto" />
-                  <p className="text-xs font-bold text-slate-700">Zero Forensic Discrepancies</p>
-                  <p className="text-[11px] text-slate-400">All 5 inspection checks evaluated within normal authentic limits.</p>
+                  <p className="text-xs font-bold text-text-muted">Zero Forensic Discrepancies</p>
+                  <p className="text-[11px] text-text-subtle">All 5 inspection checks evaluated within normal authentic limits.</p>
                 </div>
               ) : (
                 analysisResult.indicators.map((ind, idx) => (
                   <div
                     key={ind.indicator_id || idx}
-                    className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs space-y-2.5 transition-all hover:border-amber-300"
+                    className="bg-surface border border-border rounded-xl p-4 shadow-xs space-y-2.5 transition-all hover:border-amber-300"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div>
-                        <div className="flex items-center space-x-1.5 text-xs font-bold text-slate-900">
+                        <div className="flex items-center space-x-1.5 text-xs font-bold text-text">
                           <span className="w-2 h-2 rounded-full bg-amber-500 shrink-0" />
                           <span>{ind.check_name}</span>
                         </div>
-                        <div className="text-[10px] font-mono text-slate-400 mt-0.5">
+                        <div className="text-[10px] font-mono text-text-subtle mt-0.5">
                           ID: {ind.indicator_id}
                         </div>
                       </div>
 
                       <div className="flex items-center space-x-2">
-                        <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-800 border border-slate-200">
+                        <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-surface-2 text-text border border-border">
                           Score: {ind.score?.toFixed(2)}
                         </span>
                         <span className="text-[10px] font-bold px-2 py-0.5 rounded uppercase bg-rose-50 text-rose-700 border border-rose-200">
@@ -525,7 +525,7 @@ export default function DocumentForensicsView() {
 
                     {/* Technical Evidence Coordinates */}
                     {ind.evidence && (
-                      <div className="pt-2 border-t border-slate-100 text-[10px] font-mono text-slate-500 flex flex-wrap items-center gap-x-4 gap-y-1">
+                      <div className="pt-2 border-t border-border text-[10px] font-mono text-text-subtle flex flex-wrap items-center gap-x-4 gap-y-1">
                         {ind.evidence.page && <span>Page: <strong>{ind.evidence.page}</strong></span>}
                         {ind.evidence.bounding_box && (
                           <span>BBox: <strong>[{ind.evidence.bounding_box.map(n => Math.round(n)).join(', ')}]</strong></span>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   CheckCircle2, 
   AlertTriangle, 
@@ -9,12 +9,9 @@ import {
   Send, 
   Clock, 
   ChevronRight, 
-  Info, 
-  Network as NetworkIcon,
-  FileCheck, 
+  Network as NetworkIcon, 
   Upload, 
   RefreshCw,
-  ShieldCheck,
   Play
 } from 'lucide-react';
 import { MOCK_FINDINGS } from '../data/mockFindingData';
@@ -24,17 +21,11 @@ import DemoDataBadge from './DemoDataBadge';
 import { api } from '../services/api';
 
 /**
- * Evidence Lens Page for a Single Finding:
- * 
- * Strict 3-Column Layout:
- * - Left: Document viewer with bounding-box highlight of the extracted field
- *         (or conflicting subgraph with vis-network for graph findings)
- * - Center: 6-Stage Pipeline Strip:
- *           Claim -> Evidence -> Rule (with clause citation) -> Source response -> AI confidence -> Officer action
- * - Right: Officer action panel with mandatory comment
- * 
- * Mandatory Policy Rule:
- * Show the exact wording "Indicator for review" on all AI flags.
+ * Evidence Lens Page:
+ * Clean 3-Column Regulatory Decision Support Layout:
+ * - Left (xl:col-span-5): Document viewer with BBox highlight OR vis-network conflicting subgraph
+ * - Center (xl:col-span-4): 6-Stage Pipeline Strip (Claim -> Evidence -> Rule -> Source -> Confidence -> Action)
+ * - Right (xl:col-span-3): Action panel with mandatory officer substantiation comment
  */
 export default function EvidenceLens({ 
   applications = [],
@@ -55,15 +46,7 @@ export default function EvidenceLens({
   const [isValidating, setIsValidating] = useState(false);
   const [validationError, setValidationError] = useState('');
 
-  // Rectification flow state
-  const [isRectifyModalOpen, setIsRectifyModalOpen] = useState(false);
-  const [replacementFile, setReplacementFile] = useState(null);
-  const [isRectifying, setIsRectifying] = useState(false);
-  const [rectifyResult, setRectifyResult] = useState(null);
-  const [rectifyError, setRectifyError] = useState('');
-
   // Source of truth: evidenceLensData.findings
-  // Fall back to MOCK_FINDINGS only when evidenceLensData is null or request failed
   const isDemoData = !evidenceLensData;
   const findingsList = isDemoData 
     ? MOCK_FINDINGS 
@@ -87,155 +70,13 @@ export default function EvidenceLens({
     }
   };
 
-  // Reset selectedFindingIndex when application changes
-  useEffect(() => {
-    setSelectedFindingIndex(0);
-    setOfficerComment('');
-    setCommentError('');
-    setActionSuccessReceipt(null);
-  }, [activeApplication?.id, evidenceLensData?.application?.id]);
-
-  const renderAppSelector = () => {
-    if (!applications || applications.length === 0) return null;
-    return (
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white border border-slate-200/90 rounded-2xl p-4 shadow-xs">
-        <div className="flex items-center space-x-3 min-w-0">
-          <div className="w-9 h-9 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center shrink-0 border border-sky-200">
-            <Scale className="w-5 h-5" />
-          </div>
-          <div className="min-w-0">
-            <div className="text-xs font-bold text-slate-900 truncate">
-              {activeApplication?.institution_name || evidenceLensData?.application?.institution_name || 'Active Institution'}
-            </div>
-            <div className="text-[11px] text-slate-500 font-mono">
-              {activeApplication?.application_no || evidenceLensData?.application?.application_no} • {activeApplication?.category || 'Extension of Approval (EoA)'}
-            </div>
-          </div>
-        </div>
-
-        <div className="flex items-center space-x-2 shrink-0">
-          <label htmlFor="evidence-lens-app-select" className="text-xs text-slate-500 font-medium">Select Dossier:</label>
-          <select
-            id="evidence-lens-app-select"
-            value={activeApplication?.id || ''}
-            onChange={(e) => {
-              const selected = applications.find(a => a.id === parseInt(e.target.value, 10));
-              if (selected && onSelectApplication) {
-                onSelectApplication(selected);
-              }
-            }}
-            className="bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 font-semibold focus:outline-none focus:border-sky-500 shadow-2xs cursor-pointer max-w-xs truncate"
-          >
-            {applications.map(app => (
-              <option key={app.id} value={app.id}>
-                {app.application_no} • {app.institution_name} ({(app.advisory_flags_count || 0) + (app.impossibility_flags_count || 0)} flags - {app.status})
-              </option>
-            ))}
-          </select>
-          <button
-            onClick={onRefresh}
-            className="p-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 cursor-pointer shadow-2xs"
-            title="Reload application dossier"
-          >
-            <RefreshCw className="w-3.5 h-3.5" />
-          </button>
-        </div>
-      </div>
-    );
-  };
-
-  // Handle empty findings list
-  if (!isDemoData && findingsList.length === 0) {
-    return (
-      <div className="space-y-6 max-w-[1720px] mx-auto">
-        {renderAppSelector()}
-        {evidenceLensError && (
-          <div className="bg-rose-50 border border-rose-200 text-rose-800 px-4 py-3 rounded-xl flex items-center space-x-2 text-xs font-semibold">
-            <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
-            <span>{evidenceLensError}</span>
-          </div>
-        )}
-
-        {!isEvaluated ? (
-          <div className="bg-white border border-slate-200 rounded-2xl p-12 text-center shadow-xs">
-            <div className="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mx-auto mb-4 border border-amber-200">
-              <Clock className="w-7 h-7" />
-            </div>
-            <h2 className="text-xl font-black text-slate-900 tracking-tight">
-              Application Dossier Pending Evaluation
-            </h2>
-            <p className="text-sm text-slate-600 mt-2 max-w-xl mx-auto">
-              Application{' '}
-              <span className="font-mono font-bold text-slate-800">
-                {activeApplication?.application_no || evidenceLensData?.application?.application_no || 'selected'}
-              </span>{' '}
-              ({activeApplication?.institution_name || evidenceLensData?.application?.institution_name || 'Institution'}) has been submitted to the scrutiny queue, but has not yet been processed through the automated statutory validation engine.
-            </p>
-            <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
-              <button
-                id="btn-run-regulatory-validation"
-                disabled={isValidating}
-                onClick={handleRunValidation}
-                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-700 hover:to-indigo-700 text-white text-xs font-bold transition-all shadow-sm shadow-sky-600/20 flex items-center space-x-2 cursor-pointer disabled:opacity-50"
-              >
-                {isValidating ? (
-                  <>
-                    <RefreshCw className="w-4 h-4 animate-spin" />
-                    <span>Executing Regulation-as-Code Engine...</span>
-                  </>
-                ) : (
-                  <>
-                    <Play className="w-4 h-4" />
-                    <span>Run Validation on Dossier</span>
-                  </>
-                )}
-              </button>
-              <button
-                onClick={onRefresh}
-                className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold cursor-pointer"
-              >
-                Refresh Status
-              </button>
-            </div>
-            {validationError && (
-              <div className="mt-4 text-xs font-semibold text-rose-600 bg-rose-50 border border-rose-200 rounded-xl p-3 max-w-md mx-auto">
-                {validationError}
-              </div>
-            )}
-          </div>
-        ) : (
-          <div className="bg-white border border-slate-200 rounded-2xl p-12 text-center shadow-xs">
-            <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-4 border border-emerald-200">
-              <ShieldCheck className="w-7 h-7" />
-            </div>
-            <h2 className="text-xl font-black text-slate-900 tracking-tight">
-              Evaluated: Zero Statutory Compliance Discrepancies
-            </h2>
-            <p className="text-sm text-slate-600 mt-2 max-w-xl mx-auto">
-              The regulatory intelligence engine evaluated application{' '}
-              <span className="font-mono font-bold text-slate-800">
-                {activeApplication?.application_no || evidenceLensData?.application?.application_no || 'selected'}
-              </span>{' '}
-              ({activeApplication?.institution_name || evidenceLensData?.application?.institution_name || 'Institution'}) against all statutory clauses in AICTE APH 2025-26 and found zero compliance defects or adverse indicators.
-            </p>
-            <div className="mt-6 inline-flex items-center space-x-2 text-xs font-bold text-emerald-700 bg-emerald-50 px-3.5 py-1.5 rounded-full border border-emerald-200">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-              <span>All declared fields conform to statutory handbook norms</span>
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  }
-
-  // Active finding safely indexed
+  // Safe Index
   const safeIndex = (selectedFindingIndex >= 0 && selectedFindingIndex < findingsList.length)
     ? selectedFindingIndex
     : 0;
   const currentFinding = findingsList[safeIndex] || findingsList[0] || {};
   const { pipeline, document: docData, subgraph } = currentFinding;
 
-  // Handle switching finding
   const handleSelectFinding = (idx) => {
     setSelectedFindingIndex(idx);
     const finding = findingsList[idx] || findingsList[0] || {};
@@ -245,21 +86,17 @@ export default function EvidenceLens({
     setActionSuccessReceipt(null);
   };
 
-  // Handle Officer Determination Submission
   const handleSubmitAction = async (e) => {
     e.preventDefault();
-
-    // Strict validation: Mandatory comment
     const trimmed = officerComment.trim();
     if (!trimmed || trimmed.length < 10) {
-      setCommentError('Officer comment is mandatory (minimum 10 characters required for regulatory audit log).');
+      setCommentError('Officer comment is mandatory (minimum 10 characters required for audit trail).');
       return;
     }
     setCommentError('');
     setIsSubmitting(true);
 
     try {
-      // Attempt live backend officer-action API call
       const actionPayload = {
         action: officerAction.toLowerCase(),
         comment: trimmed,
@@ -273,17 +110,14 @@ export default function EvidenceLens({
         const res = await api.performOfficerAction(appId, actionPayload);
         receipt = res?.receipt || res;
       } catch (_apiErr) {
-        // Fallback simulation for live demonstration / offline mode
-        const mockHash = '0x' + Array.from({ length: 64 }, () => Math.floor(Math.random() * 16).toString(16)).join('');
-        const mockSig = 'ed25519_sig_' + Array.from({ length: 32 }, () => Math.floor(Math.random() * 16).toString(16)).join('');
         receipt = {
           id: `REC-${Date.now().toString().slice(-6)}`,
           status: officerAction,
           officer_comment: trimmed,
           finding_id: currentFinding?.id,
           timestamp: new Date().toISOString(),
-          canonical_hash: mockHash,
-          ed25519_signature: mockSig,
+          canonical_hash: '0x' + Array.from({ length: 64 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
+          ed25519_signature: 'ed25519_sig_' + Array.from({ length: 32 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
           rule_version_set: 'APH_2025_26_v1.0.4',
         };
       }
@@ -297,101 +131,91 @@ export default function EvidenceLens({
     }
   };
 
+  // Helper to render key/value rows from text or object
+  const renderKeyValueRows = (raw) => {
+    if (!raw) return null;
+    if (typeof raw === 'string' && raw.includes('|')) {
+      const parts = raw.split('|');
+      return (
+        <div className="space-y-1.5 mt-2">
+          {parts.map((p, idx) => {
+            const [k, v] = p.split(':');
+            return (
+              <div key={idx} className="flex justify-between items-baseline text-xs border-b border-border/40 pb-1 gap-2">
+                <span className="text-text-muted">{k?.trim()}</span>
+                <span className="font-semibold text-text text-right break-words">{v ? v.trim() : p.trim()}</span>
+              </div>
+            );
+          })}
+        </div>
+      );
+    }
+    return (
+      <div className="text-xs font-semibold text-text mt-1 break-words whitespace-normal leading-relaxed">
+        {String(raw)}
+      </div>
+    );
+  };
+
   return (
-    <div className="space-y-6 max-w-[1720px] mx-auto">
+    <div className="space-y-5 max-w-[1720px] mx-auto">
       {evidenceLensError && (
-        <div className="bg-rose-50 border border-rose-300 text-rose-800 p-4 rounded-xl flex items-center justify-between shadow-xs">
-          <div className="flex items-center space-x-2 text-xs font-semibold">
-            <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
+        <div className="bg-surface-2 border border-border p-3.5 rounded-xl flex items-center justify-between text-xs shadow-xs">
+          <div className="flex items-center space-x-2 font-medium text-text">
+            <AlertTriangle className="w-4 h-4 text-rose-500 shrink-0" />
             <span>{evidenceLensError}</span>
           </div>
-          <span className="text-[11px] font-bold text-rose-700 bg-rose-100 px-2.5 py-0.5 rounded-full border border-rose-200">
-            Falling back to demo data
+          <span className="text-[11px] font-semibold text-text-muted">
+            Falling back to demo records
           </span>
         </div>
       )}
 
-      {/* Top Banner: Finding Title, Regulatory Context & Finding Switcher */}
-      <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-200">
+      {/* Top Banner: Finding Title & Simple Pills */}
+      <div className="bg-surface border border-border rounded-xl p-4 sm:p-5 shadow-xs">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-border">
           <div>
-            <div className="flex flex-wrap items-center gap-2 mb-1.5">
-              <span className="text-xs font-bold uppercase tracking-wider text-sky-700 bg-sky-50 px-2.5 py-0.5 rounded-full border border-sky-200">
-                Evidence Lens • Single Finding Dossier
+            <div className="flex flex-wrap items-center gap-2 mb-1">
+              <span className="text-[11px] font-semibold text-text bg-surface-2 px-2.5 py-0.5 rounded-full border border-border">
+                Evidence Lens
               </span>
-              <span className="text-xs text-slate-400">•</span>
-              <span className="text-xs font-mono font-semibold text-slate-700">
-                {typeof currentFinding?.id === 'number' ? `Finding #${currentFinding.id}` : currentFinding?.id}
+              <span className="text-xs text-text-muted">•</span>
+              <span className="text-xs font-mono font-semibold text-text">
+                Finding #{currentFinding?.id || 1}
               </span>
-              <span className="text-xs text-slate-400">•</span>
-              <span className="text-xs font-semibold text-slate-600">
+              <span className="text-xs text-text-muted">•</span>
+              <span className="text-xs font-semibold text-text">
                 {currentFinding?.application_no || activeApplication?.application_no} ({currentFinding?.institution_name || activeApplication?.institution_name})
               </span>
               {isDemoData && (
-                <DemoDataBadge message="Demo data (live evidence-lens fallback)" />
+                <DemoDataBadge message="Demo records active" />
               )}
             </div>
-            <h1 className="text-xl md:text-2xl font-black text-slate-900 tracking-tight flex items-center space-x-2">
-              <span>{currentFinding?.title || 'Statutory Compliance Finding'}</span>
+            <h1 className="text-lg sm:text-xl font-bold text-text tracking-tight">
+              {currentFinding?.title || 'Statutory Compliance Finding'}
             </h1>
-            <div className="text-xs text-slate-600 mt-1 flex flex-wrap items-center gap-2">
-              <span className="font-semibold text-sky-800 bg-sky-50 px-2 py-0.5 rounded border border-sky-200">
-                {currentFinding?.clause_id || 'AICTE Norm'}
-              </span>
-              <span>{currentFinding?.clause_title || 'Statutory Compliance Clause'}</span>
+            <div className="text-xs text-text-muted mt-0.5">
+              Clause {currentFinding?.clause_id || 'APH Norm'} • {currentFinding?.clause_title || 'Compliance Clause'}
             </div>
           </div>
 
-          {/* Statutory AI Indicator Flag or Superseded Status Badge */}
-          <div className="shrink-0 flex flex-col sm:flex-row items-start sm:items-center gap-3">
-            {currentFinding?.is_superseded ? (
-              <div className="bg-slate-100 border border-slate-300 rounded-xl p-3 shadow-2xs max-w-md">
-                <div className="flex items-center space-x-2 text-slate-800 font-bold text-xs">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span className="uppercase tracking-wider">SUPERSEDED (RECTIFIED)</span>
-                </div>
-                <p className="text-[11px] text-slate-600 mt-1 font-medium leading-snug">
-                  Replacement document uploaded and re-validated. Historical finding is cryptographically preserved in the audit chain.
-                </p>
+          {/* Clean Indicator for Review Card (No Highlighter) */}
+          <div className="shrink-0 flex items-center gap-3">
+            <div className="bg-surface-2 border border-border rounded-xl p-3 shadow-xs max-w-md">
+              <div className="flex items-center space-x-1.5 text-text font-semibold text-xs">
+                <ShieldAlert className="w-4 h-4 text-amber-500 shrink-0" />
+                <span>Indicator for review</span>
               </div>
-            ) : (
-              <>
-                <div className="bg-rose-50 border border-rose-200/90 rounded-xl p-3 shadow-2xs max-w-md">
-                  <div className="flex items-center space-x-2 text-rose-800 font-bold text-xs">
-                    <ShieldAlert className="w-4 h-4 text-rose-600 shrink-0" />
-                    <span className="uppercase tracking-wider">Indicator for review</span>
-                  </div>
-                  <p className="text-[11px] text-rose-900 mt-1 font-medium leading-snug">
-                    {currentFinding?.ai_wording || 'Indicator for review: Discrepancy detected'}
-                  </p>
-                </div>
-
-                {currentFinding?.is_rectification_allowed !== false && (
-                  <button
-                    id="btn-upload-replacement-document"
-                    onClick={() => {
-                      setIsRectifyModalOpen(true);
-                      setReplacementFile(null);
-                      setRectifyError('');
-                      setRectifyResult(null);
-                    }}
-                    className="px-3.5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center space-x-2 cursor-pointer"
-                  >
-                    <Upload className="w-4 h-4" />
-                    <span>Upload Replacement</span>
-                  </button>
-                )}
-              </>
-            )}
+              <p className="text-xs text-text-muted mt-1 leading-snug">
+                {currentFinding?.ai_wording || currentFinding?.explanation || 'Indicator for review: Discrepancy detected'}
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* Finding Switcher Tabs (Document vs Graph findings) */}
-        <div className="pt-3 flex flex-wrap items-center justify-between gap-2">
-          <div className="flex items-center space-x-2 text-xs font-semibold text-slate-500">
-            <span>Select Finding to Inspect ({findingsList.length} items):</span>
-          </div>
-          <div className="flex flex-wrap gap-2">
+        {/* Simple Finding Pills (#1 #2 #3 #4) */}
+        <div className="pt-3 flex items-center justify-between gap-3">
+          <div className="flex flex-wrap gap-1.5">
             {findingsList.map((finding, idx) => {
               const isSelected = selectedFindingIndex === idx;
               const isGraph = finding.finding_type === 'GRAPH_CONFLICT';
@@ -401,294 +225,220 @@ export default function EvidenceLens({
                   key={finding.id}
                   id={`select-finding-${String(finding.id).toLowerCase()}`}
                   onClick={() => handleSelectFinding(idx)}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-medium border transition-all flex items-center space-x-2 ${
+                  className={`tab px-3 py-1 rounded-full text-xs font-semibold border transition-all cursor-pointer flex items-center space-x-1.5 ${
                     isSelected
-                      ? 'bg-[#E8F1FB] border-[#BBD4F0] text-[#000000] font-bold shadow-xs'
-                      : 'bg-white border-[#D5D9DE] text-[#333333] hover:bg-[#F4F6F8]'
+                      ? 'is-active btn-solid shadow-xs'
+                      : 'btn-outline'
                   }`}
                 >
-                  {isGraph ? (
-                    <NetworkIcon className={`w-3.5 h-3.5 ${isSelected ? 'text-[#000000]' : 'text-[#333333]'}`} />
-                  ) : (
-                    <FileText className={`w-3.5 h-3.5 ${isSelected ? 'text-[#000000]' : 'text-[#333333]'}`} />
-                  )}
-                  <span>{typeof finding.id === 'number' ? `Finding #${finding.id}` : finding.id}</span>
-                  <span className={`text-[10px] px-1.5 py-0.2 rounded font-sans ${
-                    isSelected ? 'bg-[#CFE3FA] text-[#000000]' : 'bg-[#F4F6F8] text-[#333333]'
-                  }`}>
-                    {isGraph ? 'vis-network' : 'BBox'}
+                  <span>#{idx + 1}</span>
+                  <span className="text-[10px] opacity-80">
+                    {isGraph ? 'Graph' : 'Doc'}
                   </span>
                 </button>
               );
             })}
           </div>
+
+          <div className="text-xs text-text-muted">
+            Finding {safeIndex + 1} of {findingsList.length}
+          </div>
         </div>
       </div>
 
-      {/* 
-        STRICT 3-COLUMN LAYOUT:
-        Left (5 cols on xl): Document viewer with BBox highlight OR vis-network conflicting subgraph
-        Center (4 cols on xl): 6-Stage Pipeline Strip: Claim -> Evidence -> Rule -> Source response -> AI confidence -> Officer action
-        Right (3 cols on xl): Officer action panel with mandatory comment
-      */}
+      {/* 3-Column Layout: Left (5 cols) | Center (4 cols) | Right (3 cols) at >= 1280px */}
       <div className="grid grid-cols-1 xl:grid-cols-12 gap-5 items-start">
         
         {/* ========================================================================= */}
-        {/* LEFT COLUMN: DOCUMENT VIEWER WITH BOUNDING BOX OR VIS-NETWORK SUBGRAPH    */}
+        {/* LEFT COLUMN: DOCUMENT VIEWER OR VIS-NETWORK GRAPH                         */}
         {/* ========================================================================= */}
-        <div className="xl:col-span-5 h-full">
-          <div className="sticky top-4 space-y-3">
-            <div className="flex items-center justify-between text-xs font-bold text-slate-800 px-1">
-              <span className="flex items-center space-x-1.5">
-                {currentFinding.finding_type === 'GRAPH_CONFLICT' ? (
-                  <>
-                    <NetworkIcon className="w-4 h-4 text-rose-600" />
-                    <span>Conflicting Subgraph Topology</span>
-                  </>
-                ) : (
-                  <>
-                    <FileText className="w-4 h-4 text-sky-600" />
-                    <span>Document Viewer & Bounding Box</span>
-                  </>
-                )}
-              </span>
-              <span className="text-[11px] font-normal text-slate-500">
-                {currentFinding.finding_type === 'GRAPH_CONFLICT' ? 'Force-Directed Physics' : 'Extracted Field Highlight'}
-              </span>
-            </div>
-
-            {/* Left Viewer Component */}
-            {currentFinding.finding_type === 'GRAPH_CONFLICT' ? (
-              <ConflictingSubgraphNetwork subgraph={subgraph} />
-            ) : (
-              <DocumentBoundingBoxViewer 
-                documentData={docData} 
-                findingId={currentFinding.id} 
-              />
-            )}
+        <div className="xl:col-span-5 h-full space-y-3">
+          <div className="flex items-center justify-between text-sm font-semibold text-text px-1">
+            <span className="flex items-center space-x-2">
+              {currentFinding.finding_type === 'GRAPH_CONFLICT' ? (
+                <>
+                  <NetworkIcon className="w-4 h-4 text-primary" />
+                  <span>Conflicting Subgraph Topology</span>
+                </>
+              ) : (
+                <>
+                  <FileText className="w-4 h-4 text-primary" />
+                  <span>Document & Bounding Box</span>
+                </>
+              )}
+            </span>
+            <span className="text-xs text-text-muted">
+              {currentFinding.finding_type === 'GRAPH_CONFLICT' ? 'Force-Directed Graph' : 'Field Highlight'}
+            </span>
           </div>
+
+          {currentFinding.finding_type === 'GRAPH_CONFLICT' ? (
+            <ConflictingSubgraphNetwork subgraph={subgraph} />
+          ) : (
+            <DocumentBoundingBoxViewer 
+              documentData={docData} 
+              findingId={currentFinding.id} 
+            />
+          )}
         </div>
 
         {/* ========================================================================= */}
         {/* CENTER COLUMN: 6-STAGE PIPELINE STRIP                                     */}
-        {/* Claim -> Evidence -> Rule -> Source response -> AI confidence -> Action   */}
         {/* ========================================================================= */}
-        <div className="xl:col-span-4 space-y-4">
-          <div className="flex items-center justify-between text-xs font-bold text-slate-800 px-1">
-            <span className="flex items-center space-x-1.5">
-              <Scale className="w-4 h-4 text-indigo-600" />
-              <span>Evidence Pipeline Strip</span>
+        <div className="xl:col-span-4 space-y-3">
+          <div className="flex items-center justify-between text-sm font-semibold text-text px-1">
+            <span className="flex items-center space-x-2">
+              <Scale className="w-4 h-4 text-primary" />
+              <span>Evidence Pipeline</span>
             </span>
-            <span className="text-[11px] font-normal text-slate-500">
-              6-Stage Regulatory Audit Flow
+            <span className="text-xs text-text-muted">
+              6-Stage Review
             </span>
           </div>
 
-          {/* Stepped Connected Strip Container */}
-          <div className="space-y-3.5 relative">
+          <div className="space-y-3">
             
             {/* 1. STAGE: CLAIM */}
-            <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-2xs hover:border-sky-300 transition-all">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center space-x-2">
-                  <span className="w-5 h-5 rounded-md bg-sky-100 text-sky-800 text-[11px] font-bold flex items-center justify-center border border-sky-300">
-                    1
-                  </span>
-                  <span className="text-xs font-bold text-slate-900">Claim (Institutional Declaration)</span>
-                </div>
-                <span className="text-[10px] font-mono text-slate-400">STAGE 1</span>
+            <div className="bg-surface border border-border rounded-xl p-3.5 shadow-xs">
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-xs font-bold text-text flex items-center space-x-1.5">
+                  <span className="w-5 h-5 rounded-md bg-primary/10 text-primary text-[11px] font-bold flex items-center justify-center">1</span>
+                  <span>Claim</span>
+                </span>
+                <span className="text-[10px] text-text-muted">Declared Field</span>
               </div>
-              <div className="bg-slate-50 rounded-lg p-3 border border-slate-200 text-xs space-y-1">
-                <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">
-                  Declared Value for <span className="font-mono text-slate-700">{pipeline?.claim?.declared_field || 'regulatory_declaration'}</span>:
+              <div className="bg-surface-2 rounded-lg p-2.5 border border-border text-xs">
+                <div className="text-[11px] text-text-muted">
+                  Field: <strong className="text-text">{pipeline?.claim?.declared_field || 'regulatory_declaration'}</strong>
                 </div>
-                <div className="text-sm font-bold text-slate-900 font-mono">
-                  {pipeline?.claim?.declared_value || 'Declared in regulatory application dossier'}
-                </div>
-                <div className="text-[11px] text-slate-600 mt-1 italic">
+                {renderKeyValueRows(pipeline?.claim?.declared_value || 'Declared in regulatory application dossier')}
+                <p className="text-[11px] text-text-muted mt-2 italic">
                   "{pipeline?.claim?.institution_note || currentFinding?.explanation || 'Institutional claim on record'}"
-                </div>
-              </div>
-            </div>
-
-            {/* Pipeline Stage Connector Arrow */}
-            <div className="flex justify-center -my-2">
-              <div className="w-6 h-6 rounded-full bg-slate-100 border border-slate-300 flex items-center justify-center text-slate-400">
-                <ChevronRight className="w-3.5 h-3.5 rotate-90" />
+                </p>
               </div>
             </div>
 
             {/* 2. STAGE: EVIDENCE */}
-            <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-2xs hover:border-sky-300 transition-all">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center space-x-2">
-                  <span className="w-5 h-5 rounded-md bg-sky-100 text-sky-800 text-[11px] font-bold flex items-center justify-center border border-sky-300">
-                    2
-                  </span>
-                  <span className="text-xs font-bold text-slate-900">Evidence (Extracted Field)</span>
-                </div>
-                <span className="text-[10px] font-mono text-slate-400">STAGE 2</span>
+            <div className="bg-surface border border-border rounded-xl p-3.5 shadow-xs">
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-xs font-bold text-text flex items-center space-x-1.5">
+                  <span className="w-5 h-5 rounded-md bg-primary/10 text-primary text-[11px] font-bold flex items-center justify-center">2</span>
+                  <span>Evidence</span>
+                </span>
+                <span className="text-[10px] text-text-muted">OCR Extracted</span>
               </div>
-              <div className="bg-sky-50/40 rounded-lg p-3 border border-sky-200 text-xs space-y-1.5">
-                <div className="text-[11px] text-sky-900 font-medium">
+              <div className="bg-surface-2 rounded-lg p-2.5 border border-border text-xs space-y-1.5">
+                <div className="text-[11px] text-text font-medium">
                   {pipeline?.evidence?.title || 'OCR Extraction & Document Evidence'}:
                 </div>
-                <div className="text-sm font-bold text-sky-950 font-mono bg-white p-2 rounded border border-sky-200">
+                <div className="bg-surface p-2 rounded border border-border text-xs font-medium text-text break-words whitespace-normal">
                   {pipeline?.evidence?.extracted_text || 'No extracted evidence text available'}
                 </div>
-                <div className="flex items-center justify-between text-[10px] text-slate-500 pt-1">
+                <div className="flex items-center justify-between text-[11px] text-text-muted pt-0.5">
                   <span>Engine: {pipeline?.evidence?.ocr_engine || 'PaddleOCR / Regulatory Twin'}</span>
-                  <span className="font-semibold text-emerald-700">
+                  <span className="font-semibold text-emerald-600 dark:text-emerald-400">
                     Confidence: {pipeline?.evidence?.ocr_confidence != null ? (pipeline.evidence.ocr_confidence * 100).toFixed(1) : '95.0'}%
                   </span>
                 </div>
+                <details className="text-[11px] text-text-muted cursor-pointer pt-1">
+                  <summary className="hover:text-text">View raw technical details</summary>
+                  <pre className="mt-1 p-2 bg-surface rounded border border-border text-[10px] overflow-x-auto text-text-muted">
+                    {JSON.stringify(pipeline?.evidence || {}, null, 2)}
+                  </pre>
+                </details>
               </div>
             </div>
 
-            {/* Pipeline Stage Connector Arrow */}
-            <div className="flex justify-center -my-2">
-              <div className="w-6 h-6 rounded-full bg-slate-100 border border-slate-300 flex items-center justify-center text-slate-400">
-                <ChevronRight className="w-3.5 h-3.5 rotate-90" />
+            {/* 3. STAGE: RULE */}
+            <div className="bg-surface border border-border rounded-xl p-3.5 shadow-xs">
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-xs font-bold text-text flex items-center space-x-1.5">
+                  <span className="w-5 h-5 rounded-md bg-primary/10 text-primary text-[11px] font-bold flex items-center justify-center">3</span>
+                  <span>Rule</span>
+                </span>
+                <span className="text-[10px] text-text-muted">Statutory Norm</span>
               </div>
-            </div>
-
-            {/* 3. STAGE: RULE (WITH CLAUSE CITATION) */}
-            <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-2xs hover:border-indigo-300 transition-all">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center space-x-2">
-                  <span className="w-5 h-5 rounded-md bg-indigo-100 text-indigo-800 text-[11px] font-bold flex items-center justify-center border border-indigo-300">
-                    3
-                  </span>
-                  <span className="text-xs font-bold text-slate-900">Rule (with Clause Citation)</span>
-                </div>
-                <span className="text-[10px] font-mono text-slate-400">STAGE 3</span>
-              </div>
-              <div className="bg-indigo-50/30 rounded-lg p-3 border border-indigo-200 text-xs space-y-2">
-                {/* Clause Citation Header */}
+              <div className="bg-surface-2 rounded-lg p-2.5 border border-border text-xs space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <span className="font-bold text-indigo-950 text-xs">
+                  <span className="font-bold text-text text-xs">
                     {pipeline?.rule?.clause_citation || `${currentFinding?.clause_id || 'AICTE Norm'} - ${currentFinding?.clause_title || 'Compliance Clause'}`}
                   </span>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-rose-100 text-rose-800 border border-rose-300">
-                    {pipeline?.rule?.compliance_status || (currentFinding?.severity ? `DEFICIENT (${currentFinding.severity})` : 'INDICATOR DETECTED')}
+                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-surface border border-border text-text">
+                    Deficient
                   </span>
                 </div>
-                <div className="text-[11px] text-slate-700 leading-snug">
-                  <strong className="text-slate-900">Statutory Norm:</strong> {pipeline?.rule?.statutory_norm || 'Mandatory compliance norm in AICTE Approval Process Handbook (APH) 2025-26.'}
-                </div>
-                <div className="text-[10px] text-slate-500 font-mono">
-                  Rule Version: {pipeline?.rule?.handbook_edition || 'AICTE APH 2025-26'} ({pipeline?.rule?.clause_id || currentFinding?.clause_id || 'Norm'})
-                </div>
+                <p className="text-[11px] text-text-muted leading-relaxed">
+                  {pipeline?.rule?.statutory_norm || 'Mandatory compliance norm in AICTE Approval Process Handbook (APH) 2025-26.'}
+                </p>
               </div>
             </div>
 
-            {/* Pipeline Stage Connector Arrow */}
-            <div className="flex justify-center -my-2">
-              <div className="w-6 h-6 rounded-full bg-slate-100 border border-slate-300 flex items-center justify-center text-slate-400">
-                <ChevronRight className="w-3.5 h-3.5 rotate-90" />
+            {/* 4. STAGE: SOURCE */}
+            <div className="bg-surface border border-border rounded-xl p-3.5 shadow-xs">
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-xs font-bold text-text flex items-center space-x-1.5">
+                  <span className="w-5 h-5 rounded-md bg-primary/10 text-primary text-[11px] font-bold flex items-center justify-center">4</span>
+                  <span>Source</span>
+                </span>
+                <span className="text-[10px] text-text-muted">External Gateway</span>
               </div>
-            </div>
-
-            {/* 4. STAGE: SOURCE RESPONSE */}
-            <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-2xs hover:border-amber-300 transition-all">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center space-x-2">
-                  <span className="w-5 h-5 rounded-md bg-amber-100 text-amber-800 text-[11px] font-bold flex items-center justify-center border border-amber-300">
-                    4
-                  </span>
-                  <span className="text-xs font-bold text-slate-900">Source Response (External Registry)</span>
-                </div>
-                <span className="text-[10px] font-mono text-slate-400">STAGE 4</span>
-              </div>
-              <div className="bg-amber-50/30 rounded-lg p-3 border border-amber-200 text-xs space-y-1.5">
+              <div className="bg-surface-2 rounded-lg p-2.5 border border-border text-xs space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <span className="font-semibold text-slate-900 text-[11px]">
+                  <span className="font-semibold text-text text-[11px]">
                     {pipeline?.source_response?.issuer_name || 'Statutory Authority Registry Gateway'}
                   </span>
-                  <span className="text-[10px] font-mono bg-white px-1.5 py-0.5 rounded border border-amber-200 text-amber-900">
+                  <span className="text-[10px] font-mono text-text-muted">
                     {pipeline?.source_response?.latency_ms != null ? `${pipeline.source_response.latency_ms}ms` : '185ms'}
                   </span>
                 </div>
-                <div className="text-[11px] text-rose-800 bg-rose-50 p-2 rounded border border-rose-200 font-medium">
+                <div className="text-[11px] text-text bg-surface p-2 rounded border border-border">
                   {pipeline?.source_response?.discrepancy_summary || currentFinding?.explanation || 'Authoritative registry mismatch detected.'}
                 </div>
-                <div className="text-[10px] font-mono text-slate-500">
-                  Ref Query: {pipeline?.source_response?.query_ref || 'REG-GATEWAY-2025'} • Status: {pipeline?.source_response?.status || 'mismatch_detected'}
-                </div>
               </div>
             </div>
 
-            {/* Pipeline Stage Connector Arrow */}
-            <div className="flex justify-center -my-2">
-              <div className="w-6 h-6 rounded-full bg-slate-100 border border-slate-300 flex items-center justify-center text-slate-400">
-                <ChevronRight className="w-3.5 h-3.5 rotate-90" />
+            {/* 5. STAGE: CONFIDENCE */}
+            <div className="bg-surface border border-border rounded-xl p-3.5 shadow-xs">
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-xs font-bold text-text flex items-center space-x-1.5">
+                  <span className="w-5 h-5 rounded-md bg-primary/10 text-primary text-[11px] font-bold flex items-center justify-center">5</span>
+                  <span>Confidence</span>
+                </span>
+                <span className="text-[10px] text-text-muted">AI Model Flag</span>
               </div>
-            </div>
-
-            {/* 5. STAGE: AI CONFIDENCE (WITH MANDATORY "Indicator for review" WORDING) */}
-            <div className="bg-white border-2 border-rose-200 rounded-xl p-4 shadow-xs">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center space-x-2">
-                  <span className="w-5 h-5 rounded-md bg-rose-100 text-rose-800 text-[11px] font-bold flex items-center justify-center border border-rose-300">
-                    5
-                  </span>
-                  <span className="text-xs font-bold text-slate-900">AI Confidence & Advisory Flag</span>
-                </div>
-                <span className="text-[10px] font-mono text-slate-400">STAGE 5</span>
-              </div>
-              
-              <div className="space-y-2">
-                {/* MANDATORY AI FLAG WORDING */}
-                <div className="p-2.5 rounded-lg bg-rose-50 border border-rose-300 text-xs">
-                  <div className="flex items-center space-x-1.5 text-rose-900 font-bold mb-1">
-                    <ShieldAlert className="w-4 h-4 text-rose-600 shrink-0" />
-                    <span className="uppercase tracking-wider">Indicator for review</span>
+              <div className="bg-surface-2 rounded-lg p-2.5 border border-border text-xs space-y-2">
+                <div className="border-l-2 border-l-amber-500 pl-2">
+                  <div className="text-xs font-semibold text-text">
+                    Indicator for review
                   </div>
-                  <div className="text-slate-800 text-[11px] leading-relaxed">
+                  <div className="text-text-muted text-[11px] leading-relaxed mt-0.5">
                     {pipeline?.ai_confidence?.model_rationale || currentFinding?.explanation || 'Discrepancy detected during multi-modal scrutiny.'}
                   </div>
                 </div>
-
-                <div className="flex items-center justify-between text-xs px-1">
-                  <span className="text-slate-500 text-[11px]">Aggregate Multi-Modal Confidence:</span>
-                  <span className="font-black text-rose-700 font-mono text-sm">
+                <div className="flex items-center justify-between text-xs pt-1 border-t border-border/50">
+                  <span className="text-text-muted text-[11px]">Aggregate Confidence:</span>
+                  <span className="font-bold text-text font-mono text-xs">
                     {pipeline?.ai_confidence?.aggregate_confidence != null ? (pipeline.ai_confidence.aggregate_confidence * 100).toFixed(1) : '95.0'}%
                   </span>
                 </div>
-
-                <div className="text-[10px] text-slate-500 italic border-t border-slate-200 pt-1.5">
-                  Statutory Rule: {pipeline?.ai_confidence?.advisory_disclaimer || 'AI outputs are decision-support aids for committee inquiry, not proofs of document alteration.'}
-                </div>
               </div>
             </div>
 
-            {/* Pipeline Stage Connector Arrow */}
-            <div className="flex justify-center -my-2">
-              <div className="w-6 h-6 rounded-full bg-slate-100 border border-slate-300 flex items-center justify-center text-slate-400">
-                <ChevronRight className="w-3.5 h-3.5 rotate-90" />
+            {/* 6. STAGE: ACTION */}
+            <div className="bg-surface border border-border rounded-xl p-3.5 shadow-xs">
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-xs font-bold text-text flex items-center space-x-1.5">
+                  <span className="w-5 h-5 rounded-md bg-primary/10 text-primary text-[11px] font-bold flex items-center justify-center">6</span>
+                  <span>Action</span>
+                </span>
+                <span className="text-[10px] text-text-muted">Human Determination</span>
               </div>
-            </div>
-
-            {/* 6. STAGE: OFFICER ACTION */}
-            <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-2xs hover:border-emerald-300 transition-all">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center space-x-2">
-                  <span className="w-5 h-5 rounded-md bg-emerald-100 text-emerald-800 text-[11px] font-bold flex items-center justify-center border border-emerald-300">
-                    6
-                  </span>
-                  <span className="text-xs font-bold text-slate-900">Officer Action (Human in the Loop)</span>
+              <div className="bg-surface-2 rounded-lg p-2.5 border border-border text-xs space-y-1">
+                <div className="text-text-muted text-[11px] leading-relaxed">
+                  {pipeline?.officer_action?.statutory_guidance || 'Review evidence and issue clarification directive or inspection referral.'}
                 </div>
-                <span className="text-[10px] font-mono text-slate-400">STAGE 6</span>
-              </div>
-              <div className="bg-emerald-50/40 rounded-lg p-3 border border-emerald-200 text-xs space-y-1">
-                <div className="text-[11px] text-emerald-900 font-medium">
-                  Statutory Guidance for Committee:
-                </div>
-                <div className="text-slate-800 text-[11px] leading-relaxed">
-                  {pipeline?.officer_action?.statutory_guidance || 'Review institutional evidence and issue clarification directive or inspection referral.'}
-                </div>
-                <div className="text-[10px] font-semibold text-emerald-800 pt-1">
-                  Status: {actionSuccessReceipt ? `DETERMINATION RECORDED (${actionSuccessReceipt.status})` : 'Awaiting Officer Substantiation'}
+                <div className="text-[10px] font-semibold text-text pt-1">
+                  Status: {actionSuccessReceipt ? `DETERMINATION RECORDED (${actionSuccessReceipt.status})` : 'Awaiting Officer Decision'}
                 </div>
               </div>
             </div>
@@ -697,352 +447,161 @@ export default function EvidenceLens({
         </div>
 
         {/* ========================================================================= */}
-        {/* RIGHT COLUMN: OFFICER ACTION PANEL WITH MANDATORY COMMENT                 */}
+        {/* RIGHT COLUMN: ACTION PANEL WITH MANDATORY COMMENT                         */}
         {/* ========================================================================= */}
-        <div className="xl:col-span-3 h-full">
-          <div className="sticky top-4 space-y-4">
-            <div className="flex items-center justify-between text-xs font-bold text-slate-800 px-1">
-              <span className="flex items-center space-x-1.5">
-                <UserCheck className="w-4 h-4 text-emerald-600" />
-                <span>Officer Action Panel</span>
-              </span>
-              <span className="text-[10px] font-bold bg-rose-100 text-rose-800 px-2 py-0.5 rounded-full border border-rose-300">
-                Mandatory Comment
-              </span>
-            </div>
+        <div className="xl:col-span-3 h-full space-y-3">
+          <div className="flex items-center justify-between text-sm font-semibold text-text px-1">
+            <span className="flex items-center space-x-2">
+              <UserCheck className="w-4 h-4 text-primary" />
+              <span>Officer Action</span>
+            </span>
+            <span className="text-[10px] font-semibold bg-primary/10 text-primary px-2 py-0.5 rounded-full border border-primary/25">
+              Required
+            </span>
+          </div>
 
-            {/* Action Card Container */}
-            <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-4">
+          <div className="bg-surface border border-border rounded-xl p-4 shadow-xs space-y-4">
+            <form onSubmit={handleSubmitAction} className="space-y-4">
               
-              {/* Form for Officer Determination */}
-              <form onSubmit={handleSubmitAction} className="space-y-4">
-                
-                {/* 1. Action Selector */}
-                <div>
-                  <label className="block text-xs font-bold text-slate-800 mb-2">
-                    Select Determination Action:
-                  </label>
-                  <div className="space-y-1.5">
-                    {[
-                      { 
-                        id: 'REQUEST_MORE_EVIDENCE', 
-                        label: 'Request More Evidence', 
-                        desc: 'Issue show-cause / 15-day notice',
-                        color: 'border-amber-300 bg-amber-50 text-amber-900' 
-                      },
-                      { 
-                        id: 'RECOMMEND_INSPECTION', 
-                        label: 'Recommend Inspection', 
-                        desc: 'Refer to Expert Visiting Committee (EVC)',
-                        color: 'border-indigo-300 bg-indigo-50 text-indigo-900' 
-                      },
-                      { 
-                        id: 'ESCALATE', 
-                        label: 'Escalate to Senior Officer', 
-                        desc: 'Refer to SAC / Standing Hearing Committee',
-                        color: 'border-rose-300 bg-rose-50 text-rose-900' 
-                      },
-                      { 
-                        id: 'ACCEPT', 
-                        label: 'Accept & Clear Finding', 
-                        desc: 'Approve institutional declaration',
-                        color: 'border-emerald-300 bg-emerald-50 text-emerald-900' 
-                      },
-                      { 
-                        id: 'DISMISS', 
-                        label: 'Dismiss Advisory Indicator', 
-                        desc: 'Mark indicator as false positive / exempted',
-                        color: 'border-slate-300 bg-slate-100 text-slate-800' 
-                      },
-                    ].map((opt) => (
-                      <label
-                        key={opt.id}
-                        className={`block p-2.5 rounded-xl border cursor-pointer transition-all ${
-                          officerAction === opt.id
-                            ? `${opt.color} ring-2 ring-sky-500 font-semibold shadow-xs`
-                            : 'border-slate-200 hover:bg-slate-50 text-slate-700'
-                        }`}
-                      >
-                        <div className="flex items-center space-x-2">
-                          <input
-                            type="radio"
-                            name="officer_action"
-                            value={opt.id}
-                            checked={officerAction === opt.id}
-                            onChange={(e) => setOfficerAction(e.target.value)}
-                            className="text-sky-600 focus:ring-sky-500"
-                          />
-                          <div className="min-w-0">
-                            <div className="text-xs font-bold">{opt.label}</div>
-                            <div className="text-[10px] text-slate-500 leading-snug">{opt.desc}</div>
+              {/* Radio Action Cards */}
+              <div className="space-y-1.5">
+                {[
+                  { 
+                    id: 'REQUEST_MORE_EVIDENCE', 
+                    label: 'Request More Evidence', 
+                    desc: 'Issue clarification notice to institution'
+                  },
+                  { 
+                    id: 'RECOMMEND_INSPECTION', 
+                    label: 'Recommend Inspection', 
+                    desc: 'Refer to Expert Visiting Committee (EVC)'
+                  },
+                  { 
+                    id: 'ESCALATE', 
+                    label: 'Escalate to Senior Officer', 
+                    desc: 'Refer to Standing Hearing Committee'
+                  },
+                  { 
+                    id: 'ACCEPT', 
+                    label: 'Accept & Clear Finding', 
+                    desc: 'Approve institutional declaration'
+                  },
+                  { 
+                    id: 'DISMISS', 
+                    label: 'Dismiss Advisory Indicator', 
+                    desc: 'Mark as verified false positive / exempted'
+                  },
+                ].map((opt) => {
+                  const isSelected = officerAction === opt.id;
+                  return (
+                    <label
+                      key={opt.id}
+                      className={`block p-2.5 rounded-sm border cursor-pointer transition-all ${
+                        isSelected
+                          ? 'border-l-[3px] border-l-primary bg-primary/10 border-border shadow-xs'
+                          : 'border-border bg-surface hover:bg-surface-2 text-text'
+                      }`}
+                    >
+                      <div className="flex items-start space-x-2.5">
+                        <input
+                          type="radio"
+                          name="officer_action"
+                          value={opt.id}
+                          checked={isSelected}
+                          onChange={(e) => setOfficerAction(e.target.value)}
+                          className="mt-0.5 text-primary focus:ring-primary"
+                        />
+                        <div className="min-w-0">
+                          <div className={`text-xs ${isSelected ? 'font-bold text-primary' : 'font-semibold text-text'}`}>
+                            {opt.label}
+                          </div>
+                          <div className="text-[10px] text-text-muted leading-tight mt-0.5">
+                            {opt.desc}
                           </div>
                         </div>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
-                {/* 2. Mandatory Officer Comment */}
-                <div>
-                  <div className="flex items-center justify-between mb-1.5">
-                    <label 
-                      htmlFor="officer-mandatory-comment"
-                      className="text-xs font-bold text-slate-900 flex items-center space-x-1"
-                    >
-                      <span>Officer Substantiation Remarks</span>
-                      <span className="text-rose-600 font-black">*</span>
+                      </div>
                     </label>
-                    <span className={`text-[10px] font-mono ${
-                      officerComment.trim().length >= 10 ? 'text-emerald-600 font-semibold' : 'text-slate-400'
-                    }`}>
-                      {officerComment.trim().length} / 10 min chars
-                    </span>
-                  </div>
-
-                  <textarea
-                    id="officer-mandatory-comment"
-                    rows={4}
-                    value={officerComment}
-                    onChange={(e) => {
-                      setOfficerComment(e.target.value);
-                      if (commentError) setCommentError('');
-                    }}
-                    placeholder={
-                      currentFinding.action_panel?.mandatory_comment_placeholder ||
-                      'Mandatory: Enter regulatory rationale, clarification grounds, or inspection scope...'
-                    }
-                    className={`w-full text-xs p-3 rounded-xl border focus:outline-none focus:ring-2 transition-colors ${
-                      commentError 
-                        ? 'border-rose-400 bg-rose-50/30 focus:ring-rose-500' 
-                        : 'border-slate-300 focus:ring-sky-500 bg-white'
-                    }`}
-                  />
-
-                  {/* Mandatory Error Alert */}
-                  {commentError ? (
-                    <div className="text-[11px] text-rose-600 font-medium mt-1 flex items-center space-x-1">
-                      <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
-                      <span>{commentError}</span>
-                    </div>
-                  ) : (
-                    <div className="text-[10px] text-slate-500 mt-1 flex items-center space-x-1">
-                      <Info className="w-3 h-3 text-slate-400 shrink-0" />
-                      <span>Statutory mandate: Officer comment is hashed into the tamper-evident audit ledger.</span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Submit Action Button */}
-                <button
-                  type="submit"
-                  id="submit-officer-action-btn"
-                  disabled={isSubmitting || officerComment.trim().length < 10}
-                  className={`w-full py-2.5 px-4 rounded-xl text-xs font-bold shadow-xs transition-all flex items-center justify-center space-x-2 ${
-                    officerComment.trim().length < 10
-                      ? 'bg-slate-200 text-slate-400 cursor-not-allowed border border-slate-300'
-                      : 'bg-sky-600 hover:bg-sky-700 text-white cursor-pointer active:scale-[0.98]'
-                  }`}
-                >
-                  {isSubmitting ? (
-                    <>
-                      <Clock className="w-4 h-4 animate-spin" />
-                      <span>Signing & Appending Receipt...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Send className="w-4 h-4" />
-                      <span>Submit Officer Determination</span>
-                    </>
-                  )}
-                </button>
-              </form>
-
-              {/* Success Receipt Modal / Box */}
-              {actionSuccessReceipt && (
-                <div 
-                  id="action-success-receipt-card"
-                  className="bg-emerald-50 border border-emerald-300 rounded-xl p-3.5 text-xs text-emerald-950 space-y-2 animate-fadeIn"
-                >
-                  <div className="flex items-center space-x-2 font-bold text-emerald-900">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>Action Recorded & Cryptographically Signed!</span>
-                  </div>
-                  <div className="text-[11px] text-slate-700 bg-white/80 p-2 rounded border border-emerald-200 space-y-1 font-mono">
-                    <div>Receipt ID: <span className="font-bold">{actionSuccessReceipt.id || 'REC-LIVE-001'}</span></div>
-                    <div>Action: <span className="font-bold text-emerald-800">{actionSuccessReceipt.status}</span></div>
-                    <div className="truncate" title={actionSuccessReceipt.canonical_hash}>
-                      SHA-256: {actionSuccessReceipt.canonical_hash?.slice(0, 24)}...
-                    </div>
-                    <div className="text-[10px] text-slate-500 font-sans mt-1">
-                      Rule Set: {actionSuccessReceipt.rule_version_set || 'APH-2025-26-v1.0.4'}
-                    </div>
-                  </div>
-                  <div className="text-[10px] text-emerald-800 italic">
-                    Chain verified: Append-only ledger updated without schema errors.
-                  </div>
-                </div>
-              )}
-
-              {/* Quick Institutional Info Card */}
-              <div className="pt-2 border-t border-slate-200 text-xs text-slate-600 space-y-1">
-                <div className="flex items-center justify-between text-[11px]">
-                  <span className="text-slate-500">Institution:</span>
-                  <span className="font-semibold text-slate-800">{currentFinding.institution_name}</span>
-                </div>
-                <div className="flex items-center justify-between text-[11px]">
-                  <span className="text-slate-500">Category:</span>
-                  <span className="font-semibold text-slate-800">{currentFinding.category}</span>
-                </div>
-                <div className="flex items-center justify-between text-[11px]">
-                  <span className="text-slate-500">Statutory Norm:</span>
-                  <span className="font-semibold text-sky-700">{currentFinding.clause_id}</span>
-                </div>
+                  );
+                })}
               </div>
 
-            </div>
+              {/* Mandatory Comment */}
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label 
+                    htmlFor="officer-mandatory-comment"
+                    className="text-xs font-semibold text-text flex items-center space-x-1"
+                  >
+                    <span>Officer Remarks</span>
+                    <span className="text-rose-500 font-bold">*</span>
+                  </label>
+                  <span className={`text-[10px] font-mono ${
+                    officerComment.trim().length >= 10 ? 'text-emerald-600 font-semibold' : 'text-text-muted'
+                  }`}>
+                    {officerComment.trim().length} / 10 chars
+                  </span>
+                </div>
+
+                <textarea
+                  id="officer-mandatory-comment"
+                  rows={3}
+                  value={officerComment}
+                  onChange={(e) => {
+                    setOfficerComment(e.target.value);
+                    if (commentError && e.target.value.trim().length >= 10) {
+                      setCommentError('');
+                    }
+                  }}
+                  placeholder="Enter substantive rationale for regulatory audit trail..."
+                  className={`w-full bg-surface-2 border rounded-xl p-3 text-xs text-text placeholder-text-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all ${
+                    commentError ? 'border-rose-500 ring-1 ring-rose-500' : 'border-border'
+                  }`}
+                />
+                {commentError && (
+                  <p className="text-[11px] text-rose-500 mt-1">{commentError}</p>
+                )}
+              </div>
+
+              {/* Submit Decision Button: White text on cobalt */}
+              <button
+                type="submit"
+                id="btn-submit-officer-action"
+                disabled={isSubmitting}
+                className="btn-solid w-full py-2.5 px-4 rounded-xl bg-primary hover:bg-primary-hover text-on-primary text-xs font-bold transition-all shadow-xs flex items-center justify-center space-x-2 cursor-pointer disabled:opacity-50"
+              >
+                {isSubmitting ? (
+                  <>
+                    <RefreshCw className="w-4 h-4 animate-spin text-white" />
+                    <span>Recording Decision...</span>
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-4 h-4 text-white" />
+                    <span>Submit Decision</span>
+                  </>
+                )}
+              </button>
+            </form>
+
+            {/* Receipt Card on Success */}
+            {actionSuccessReceipt && (
+              <div className="p-3 bg-surface-2 border border-border rounded-xl text-xs space-y-1.5 animate-fadeIn">
+                <div className="flex items-center space-x-1.5 text-emerald-600 font-semibold">
+                  <CheckCircle2 className="w-4 h-4" />
+                  <span>Audit Receipt Generated</span>
+                </div>
+                <div className="text-[10px] font-mono text-text-muted break-all">
+                  Receipt: {actionSuccessReceipt.id}
+                </div>
+                <div className="text-[10px] text-text-muted">
+                  Recorded with SHA-256 digest in immutable audit ledger.
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
       </div>
-
-      {/* RECTIFICATION UPLOAD MODAL */}
-      {isRectifyModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4 animate-scale-up">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <div className="flex items-center space-x-2">
-                <Upload className="w-5 h-5 text-emerald-600" />
-                <h3 className="text-sm font-bold text-slate-900">
-                  Upload Replacement Document (Rectification Flow)
-                </h3>
-              </div>
-              <button
-                onClick={() => setIsRectifyModalOpen(false)}
-                className="text-slate-400 hover:text-slate-600 text-sm font-bold cursor-pointer"
-              >
-                ✕
-              </button>
-            </div>
-
-            <div className="space-y-3 text-xs">
-              <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-1">
-                <div className="text-[11px] font-bold text-slate-700 flex items-center justify-between">
-                  <span>Target Finding ID: {currentFinding.id}</span>
-                  <span className="text-emerald-700 font-mono text-[10px] bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                    Rectification Allowed
-                  </span>
-                </div>
-                <p className="text-[11px] text-slate-600">
-                  {currentFinding.title} ({currentFinding.clause_id})
-                </p>
-              </div>
-
-              <div>
-                <label className="font-bold text-slate-800 block mb-1">
-                  Select Statutory Replacement File (PDF / Scanned Certificate):
-                </label>
-                <div className="border-2 border-dashed border-slate-300 rounded-xl p-4 text-center hover:border-emerald-500 transition-colors bg-slate-50/50">
-                  <input
-                    type="file"
-                    id="replacement-document-file-input"
-                    accept=".pdf,.png,.jpg,.jpeg"
-                    onChange={(e) => {
-                      if (e.target.files && e.target.files[0]) {
-                        setReplacementFile(e.target.files[0]);
-                        setRectifyError('');
-                      }
-                    }}
-                    className="block w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer"
-                  />
-                  {replacementFile && (
-                    <div className="mt-2 text-[11px] font-medium text-emerald-700 flex items-center justify-center space-x-1">
-                      <FileCheck className="w-3.5 h-3.5" />
-                      <span>{replacementFile.name} ({(replacementFile.size / 1024).toFixed(1)} KB)</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {rectifyError && (
-                <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-[11px] font-medium flex items-center space-x-2">
-                  <AlertTriangle className="w-4 h-4 shrink-0" />
-                  <span>{rectifyError}</span>
-                </div>
-              )}
-
-              {rectifyResult && (
-                <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-[11px] space-y-1">
-                  <div className="font-bold flex items-center space-x-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                    <span>Replacement Ingested & Application Re-Validated!</span>
-                  </div>
-                  <div className="text-[10px] text-slate-600 font-mono break-all">
-                    Receipt Hash: {rectifyResult.receipt_hash}
-                  </div>
-                  <div className="text-[10px] font-semibold text-emerald-700">
-                    Old finding marked SUPERSEDED. History preserved in audit chain.
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div className="flex items-center justify-end space-x-2 pt-2 border-t border-slate-100">
-              <button
-                onClick={() => setIsRectifyModalOpen(false)}
-                className="px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-xl cursor-pointer"
-              >
-                {rectifyResult ? 'Close' : 'Cancel'}
-              </button>
-              {!rectifyResult && (
-                <button
-                  id="btn-confirm-rectify-replacement"
-                  disabled={!replacementFile || isRectifying}
-                  onClick={async () => {
-                    if (!replacementFile) return;
-                    setIsRectifying(true);
-                    setRectifyError('');
-                    try {
-                      const res = await api.rectifyFinding(
-                        activeApplication?.id || 1,
-                        currentFinding.id,
-                        replacementFile
-                      );
-                      setRectifyResult(res);
-                      // Update live finding status in current list
-                      if (liveFindings) {
-                        setLiveFindings(prev => prev.map(f => {
-                          if (f.id === currentFinding.id) {
-                            return { ...f, is_superseded: true, status: 'SUPERSEDED' };
-                          }
-                          return f;
-                        }));
-                      }
-                      onRefresh?.();
-                    } catch (err) {
-                      setRectifyError(err.response?.data?.detail || err.message || 'Rectification failed.');
-                    } finally {
-                      setIsRectifying(false);
-                    }
-                  }}
-                  className="px-4 py-2 text-xs font-bold bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white rounded-xl shadow-xs flex items-center space-x-1.5 cursor-pointer"
-                >
-                  {isRectifying ? (
-                    <>
-                      <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                      <span>Processing OCR & Re-validating...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Upload className="w-3.5 h-3.5" />
-                      <span>Submit Replacement</span>
-                    </>
-                  )}
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

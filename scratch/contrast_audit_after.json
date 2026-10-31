@@ -1,0 +1,4186 @@
+{
+  "light": [
+    {
+      "page": "Dashboard",
+      "element": "button#sidebar-toggle-btn.p-2.rounded-lg",
+      "label": "<Icon>",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button#alert-bell-btn.relative.p-2",
+      "label": "29",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button#theme-toggle-btn.w-9.h-9",
+      "label": "<Icon>",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(248, 250, 253)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 16.48,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button#user-menu-btn.flex.items-center",
+      "label": "C Chief Technology Cell Central Adm",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button.text-text-muted.hover:text-text",
+      "label": "<Icon>",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button#sidebar-tab-dashboard.w-full.flex",
+      "label": "Dashboard",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(240, 244, 250)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 15.61,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button#sidebar-tab-evidence-lens.w-full.flex",
+      "label": "Evidence Lens 4",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button#sidebar-tab-manual-review-queue.w-full.flex",
+      "label": "Review Queue 3",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button#sidebar-tab-preflight.w-full.flex",
+      "label": "Pre-Flight",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button#sidebar-tab-document-intelligence.w-full.flex",
+      "label": "Doc Intelligence",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button#sidebar-tab-photo-radar.w-full.flex",
+      "label": "Photo Radar",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button#sidebar-tab-impossibility-engine.w-full.flex",
+      "label": "Impossibility Engine 7",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button#sidebar-tab-audit-ledger.w-full.flex",
+      "label": "Audit & Receipts",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button#sidebar-tab-regulations.w-full.flex",
+      "label": "Rules Catalog",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button#sidebar-tab-inspection-planner.w-full.flex",
+      "label": "Inspection Planner",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button#launch-evidence-lens-btn.btn-solid.h-10",
+      "label": "Launch Evidence Lens",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(11, 61, 145)",
+      "svgStroke": "rgb(255, 255, 255)",
+      "ratio": 10.04,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button#launch-audit-ledger-btn.btn-outline.h-10",
+      "label": "Audit Ledger",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 27, 51)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button.h-10.px-4",
+      "label": "Reset",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button.text-xs.text-accent",
+      "label": "+2 more",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": null,
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button.group/btn.h-9",
+      "label": "Evidence Lens",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button.w-9.h-9",
+      "label": "<Icon>",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button.text-xs.text-accent",
+      "label": "+2 more",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": null,
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button.group/btn.h-9",
+      "label": "Evidence Lens",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button.w-9.h-9",
+      "label": "<Icon>",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button.w-full.h-11",
+      "label": "Upload & Analyze Document",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(11, 61, 145)",
+      "svgStroke": null,
+      "ratio": 10.04,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button#back-to-top-btn.fixed.bottom-12",
+      "label": "<Icon>",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button#sidebar-toggle-btn.p-2.rounded-lg",
+      "label": "<Icon>",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button#alert-bell-btn.relative.p-2",
+      "label": "29",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button#theme-toggle-btn.w-9.h-9",
+      "label": "<Icon>",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(248, 250, 253)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 16.48,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button#user-menu-btn.flex.items-center",
+      "label": "C Chief Technology Cell Central Adm",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.text-text-muted.hover:text-text",
+      "label": "<Icon>",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button#sidebar-tab-dashboard.w-full.flex",
+      "label": "Dashboard",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button#sidebar-tab-evidence-lens.w-full.flex",
+      "label": "Evidence Lens 4",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button#sidebar-tab-manual-review-queue.w-full.flex",
+      "label": "Review Queue 3",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button#sidebar-tab-preflight.w-full.flex",
+      "label": "Pre-Flight",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button#sidebar-tab-document-intelligence.w-full.flex",
+      "label": "Doc Intelligence",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button#sidebar-tab-photo-radar.w-full.flex",
+      "label": "Photo Radar",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button#sidebar-tab-impossibility-engine.w-full.flex",
+      "label": "Impossibility Engine 7",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button#sidebar-tab-audit-ledger.w-full.flex",
+      "label": "Audit & Receipts",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button#sidebar-tab-regulations.w-full.flex",
+      "label": "Rules Catalog",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(240, 244, 250)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 15.61,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button#sidebar-tab-inspection-planner.w-full.flex",
+      "label": "Inspection Planner",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button#tab-rules-catalog.tab.px-4",
+      "label": "Rules Catalog & Clause Citations",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(11, 61, 145)",
+      "svgStroke": "rgb(255, 255, 255)",
+      "ratio": 10.04,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button#tab-what-if-simulator.tab.px-4",
+      "label": "Policy What-If Simulator",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.tab.px-3",
+      "label": "All Regulations",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(11, 61, 145)",
+      "svgStroke": null,
+      "ratio": 10.04,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.tab.px-3",
+      "label": "Safety & Compliance",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(243, 245, 249)",
+      "svgStroke": null,
+      "ratio": 6.29,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.tab.px-3",
+      "label": "Faculty & Cadre",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(243, 245, 249)",
+      "svgStroke": null,
+      "ratio": 6.29,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.tab.px-3",
+      "label": "Infrastructure",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(243, 245, 249)",
+      "svgStroke": null,
+      "ratio": 6.29,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.tab.px-3",
+      "label": "Legal & Entity",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(243, 245, 249)",
+      "svgStroke": null,
+      "ratio": 6.29,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.tab.px-3",
+      "label": "State Approvals",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(243, 245, 249)",
+      "svgStroke": null,
+      "ratio": 6.29,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.tab.px-3",
+      "label": "Land & Title",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(243, 245, 249)",
+      "svgStroke": null,
+      "ratio": 6.29,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.tab.px-3",
+      "label": "Affiliation",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(243, 245, 249)",
+      "svgStroke": null,
+      "ratio": 6.29,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.tab.px-3",
+      "label": "Governance & Student Welfare",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(243, 245, 249)",
+      "svgStroke": null,
+      "ratio": 6.29,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.text-xs.font-semibold",
+      "label": "Inspect Citation & Parameters",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.px-3.py-1.5",
+      "label": "Simulate in What-If",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.text-xs.font-semibold",
+      "label": "Inspect Citation & Parameters",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.px-3.py-1.5",
+      "label": "Simulate in What-If",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.text-xs.font-semibold",
+      "label": "Inspect Citation & Parameters",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.px-3.py-1.5",
+      "label": "Simulate in What-If",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.text-xs.font-semibold",
+      "label": "Inspect Citation & Parameters",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.px-3.py-1.5",
+      "label": "Simulate in What-If",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.text-xs.font-semibold",
+      "label": "Inspect Citation & Parameters",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.px-3.py-1.5",
+      "label": "Simulate in What-If",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.text-xs.font-semibold",
+      "label": "Inspect Citation & Parameters",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.px-3.py-1.5",
+      "label": "Simulate in What-If",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.text-xs.font-semibold",
+      "label": "Inspect Citation & Parameters",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.px-3.py-1.5",
+      "label": "Simulate in What-If",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.text-xs.font-semibold",
+      "label": "Inspect Citation & Parameters",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.px-3.py-1.5",
+      "label": "Simulate in What-If",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.text-xs.font-semibold",
+      "label": "Inspect Citation & Parameters",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.px-3.py-1.5",
+      "label": "Simulate in What-If",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.text-xs.font-semibold",
+      "label": "Inspect Citation & Parameters",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.px-3.py-1.5",
+      "label": "Simulate in What-If",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.text-xs.font-semibold",
+      "label": "Inspect Citation & Parameters",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.px-3.py-1.5",
+      "label": "Simulate in What-If",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.text-xs.font-semibold",
+      "label": "Inspect Citation & Parameters",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.px-3.py-1.5",
+      "label": "Simulate in What-If",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button#back-to-top-btn.fixed.bottom-12",
+      "label": "<Icon>",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#sidebar-toggle-btn.p-2.rounded-lg",
+      "label": "<Icon>",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#alert-bell-btn.relative.p-2",
+      "label": "29",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#theme-toggle-btn.w-9.h-9",
+      "label": "<Icon>",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(248, 250, 253)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 16.48,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#user-menu-btn.flex.items-center",
+      "label": "C Chief Technology Cell Central Adm",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button.text-text-muted.hover:text-text",
+      "label": "<Icon>",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#sidebar-tab-dashboard.w-full.flex",
+      "label": "Dashboard",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#sidebar-tab-evidence-lens.w-full.flex",
+      "label": "Evidence Lens 4",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#sidebar-tab-manual-review-queue.w-full.flex",
+      "label": "Review Queue 3",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(240, 244, 250)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 15.61,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#sidebar-tab-preflight.w-full.flex",
+      "label": "Pre-Flight",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#sidebar-tab-document-intelligence.w-full.flex",
+      "label": "Doc Intelligence",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#sidebar-tab-photo-radar.w-full.flex",
+      "label": "Photo Radar",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#sidebar-tab-impossibility-engine.w-full.flex",
+      "label": "Impossibility Engine 7",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#sidebar-tab-audit-ledger.w-full.flex",
+      "label": "Audit & Receipts",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#sidebar-tab-regulations.w-full.flex",
+      "label": "Rules Catalog",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#sidebar-tab-inspection-planner.w-full.flex",
+      "label": "Inspection Planner",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button.p-2.border",
+      "label": "<Icon>",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button.text-text-muted.hover:text-text",
+      "label": "<Icon>",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button.text-xs.font-semibold",
+      "label": "View Full Verification Dossier",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#verify-now-MRQ-20261031-D1F9EC.btn-outline.h-9",
+      "label": "Verify Now",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 27, 51)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#resolve-btn-MRQ-20261031-D1F9EC.btn-solid.h-9",
+      "label": "Resolve Ticket",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(11, 61, 145)",
+      "svgStroke": null,
+      "ratio": 10.04,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button.text-text-muted.hover:text-text",
+      "label": "<Icon>",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button.text-xs.font-semibold",
+      "label": "View Full Verification Dossier",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#verify-now-MRQ-20261031-BD4007.btn-outline.h-9",
+      "label": "Verify Now",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 27, 51)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#resolve-btn-MRQ-20261031-BD4007.btn-solid.h-9",
+      "label": "Resolve Ticket",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(11, 61, 145)",
+      "svgStroke": null,
+      "ratio": 10.04,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button.text-text-muted.hover:text-text",
+      "label": "<Icon>",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button.text-xs.font-semibold",
+      "label": "View Full Verification Dossier",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#verify-now-MRQ-20261031-945EFD.btn-outline.h-9",
+      "label": "Verify Now",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 27, 51)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#resolve-btn-MRQ-20261031-945EFD.btn-solid.h-9",
+      "label": "Resolve Ticket",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(11, 61, 145)",
+      "svgStroke": null,
+      "ratio": 10.04,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#back-to-top-btn.fixed.bottom-12",
+      "label": "<Icon>",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#sidebar-toggle-btn.p-2.rounded-lg",
+      "label": "<Icon>",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#alert-bell-btn.relative.p-2",
+      "label": "29",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#theme-toggle-btn.w-9.h-9",
+      "label": "<Icon>",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(248, 250, 253)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 16.48,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#user-menu-btn.flex.items-center",
+      "label": "C Chief Technology Cell Central Adm",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button.text-text-muted.hover:text-text",
+      "label": "<Icon>",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#sidebar-tab-dashboard.w-full.flex",
+      "label": "Dashboard",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#sidebar-tab-evidence-lens.w-full.flex",
+      "label": "Evidence Lens 4",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#sidebar-tab-manual-review-queue.w-full.flex",
+      "label": "Review Queue 3",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#sidebar-tab-preflight.w-full.flex",
+      "label": "Pre-Flight",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#sidebar-tab-document-intelligence.w-full.flex",
+      "label": "Doc Intelligence",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(240, 244, 250)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 15.61,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#sidebar-tab-photo-radar.w-full.flex",
+      "label": "Photo Radar",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#sidebar-tab-impossibility-engine.w-full.flex",
+      "label": "Impossibility Engine 7",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#sidebar-tab-audit-ledger.w-full.flex",
+      "label": "Audit & Receipts",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#sidebar-tab-regulations.w-full.flex",
+      "label": "Rules Catalog",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#sidebar-tab-inspection-planner.w-full.flex",
+      "label": "Inspection Planner",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button.btn-solid.h-8",
+      "label": "Browse",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(11, 61, 145)",
+      "svgStroke": "rgb(255, 255, 255)",
+      "ratio": 10.04,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#btn-sample-doc_fire_noc.h-8.px-3",
+      "label": "Fire Safety NOC",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(11, 61, 145)",
+      "svgStroke": null,
+      "ratio": 10.04,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#btn-sample-doc_building_plan.h-8.px-3",
+      "label": "Building Plan",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": null,
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#btn-sample-doc_faculty_list.h-8.px-3",
+      "label": "Faculty List",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": null,
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#btn-sample-doc_land_deed.h-8.px-3",
+      "label": "Land Deed",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": null,
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button.tab.px-3",
+      "label": "Preview",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(11, 61, 145)",
+      "svgStroke": null,
+      "ratio": 10.04,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button.tab.px-3",
+      "label": "Extracted text",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": null,
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#btn-toggle-boxes.h-8.px-2.5",
+      "label": "Hide boxes",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(11, 61, 145)",
+      "svgStroke": "rgb(255, 255, 255)",
+      "ratio": 10.04,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button.h-7.px-1.5",
+      "label": "75%",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": null,
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button.h-7.px-1.5",
+      "label": "100%",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(11, 61, 145)",
+      "svgStroke": null,
+      "ratio": 10.04,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button.h-7.px-1.5",
+      "label": "150%",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": null,
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button.w-8.h-8",
+      "label": "<Icon>",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button.w-8.h-8",
+      "label": "<Icon>",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button.w-8.h-8",
+      "label": "<Icon>",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button.w-full.h-9",
+      "label": "Send to Evidence Lens",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(11, 61, 145)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 10.04,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#back-to-top-btn.fixed.bottom-12",
+      "label": "<Icon>",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#sidebar-toggle-btn.p-2.rounded-lg",
+      "label": "<Icon>",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#alert-bell-btn.relative.p-2",
+      "label": "29",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#theme-toggle-btn.w-9.h-9",
+      "label": "<Icon>",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(248, 250, 253)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 16.48,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#user-menu-btn.flex.items-center",
+      "label": "C Chief Technology Cell Central Adm",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-text-muted.hover:text-text",
+      "label": "<Icon>",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#sidebar-tab-dashboard.w-full.flex",
+      "label": "Dashboard",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#sidebar-tab-evidence-lens.w-full.flex",
+      "label": "Evidence Lens 4",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#sidebar-tab-manual-review-queue.w-full.flex",
+      "label": "Review Queue 3",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#sidebar-tab-preflight.w-full.flex",
+      "label": "Pre-Flight",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#sidebar-tab-document-intelligence.w-full.flex",
+      "label": "Doc Intelligence",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#sidebar-tab-photo-radar.w-full.flex",
+      "label": "Photo Radar",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#sidebar-tab-impossibility-engine.w-full.flex",
+      "label": "Impossibility Engine 7",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#sidebar-tab-audit-ledger.w-full.flex",
+      "label": "Audit & Receipts",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(240, 244, 250)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 15.61,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#sidebar-tab-regulations.w-full.flex",
+      "label": "Rules Catalog",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#sidebar-tab-inspection-planner.w-full.flex",
+      "label": "Inspection Planner",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#verify-chain-button.px-5.py-3",
+      "label": "Verify Chain Integrity",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(4, 120, 87)",
+      "svgStroke": "rgb(255, 255, 255)",
+      "ratio": 5.48,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#tab-receipts-timeline.tab.px-3",
+      "label": "Timeline of Receipts (13)",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(11, 61, 145)",
+      "svgStroke": "rgb(255, 255, 255)",
+      "ratio": 10.04,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#tab-verification-statuses.tab.px-3",
+      "label": "Verification Statuses",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(243, 245, 249)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.29,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#tab-officer-decisions.tab.px-3",
+      "label": "Officer Decisions (1)",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(243, 245, 249)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.29,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#tab-manual-review-queue.tab.px-3",
+      "label": "Manual Review Queue (3)",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(243, 245, 249)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.29,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#tab-access-logs.tab.px-3",
+      "label": "Access Logs (50)",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(243, 245, 249)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.29,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-text-subtle.hover:text-text-muted",
+      "label": "Copy",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-primary.hover:text-sky-800",
+      "label": "Inspect Canonical Payload",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-text-subtle.hover:text-text-muted",
+      "label": "Copy",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-primary.hover:text-sky-800",
+      "label": "Inspect Canonical Payload",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-text-subtle.hover:text-text-muted",
+      "label": "Copy",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-primary.hover:text-sky-800",
+      "label": "Inspect Canonical Payload",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-text-subtle.hover:text-text-muted",
+      "label": "Copy",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-primary.hover:text-sky-800",
+      "label": "Inspect Canonical Payload",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-text-subtle.hover:text-text-muted",
+      "label": "Copy",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-primary.hover:text-sky-800",
+      "label": "Inspect Canonical Payload",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-text-subtle.hover:text-text-muted",
+      "label": "Copy",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-primary.hover:text-sky-800",
+      "label": "Inspect Canonical Payload",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-text-subtle.hover:text-text-muted",
+      "label": "Copy",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-primary.hover:text-sky-800",
+      "label": "Inspect Canonical Payload",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-text-subtle.hover:text-text-muted",
+      "label": "Copy",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-primary.hover:text-sky-800",
+      "label": "Inspect Canonical Payload",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-text-subtle.hover:text-text-muted",
+      "label": "Copy",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-primary.hover:text-sky-800",
+      "label": "Inspect Canonical Payload",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-text-subtle.hover:text-text-muted",
+      "label": "Copy",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-primary.hover:text-sky-800",
+      "label": "Inspect Canonical Payload",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-text-subtle.hover:text-text-muted",
+      "label": "Copy",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-primary.hover:text-sky-800",
+      "label": "Inspect Canonical Payload",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-text-subtle.hover:text-text-muted",
+      "label": "Copy",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-primary.hover:text-sky-800",
+      "label": "Inspect Canonical Payload",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-text-subtle.hover:text-text-muted",
+      "label": "Copy",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-primary.hover:text-sky-800",
+      "label": "Inspect Canonical Payload",
+      "fg": "rgb(11, 92, 173)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(11, 92, 173)",
+      "ratio": 6.67,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#back-to-top-btn.fixed.bottom-12",
+      "label": "<Icon>",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#sidebar-toggle-btn.p-2.rounded-lg",
+      "label": "<Icon>",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#alert-bell-btn.relative.p-2",
+      "label": "29",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#theme-toggle-btn.w-9.h-9",
+      "label": "<Icon>",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(248, 250, 253)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 16.48,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#user-menu-btn.flex.items-center",
+      "label": "C Chief Technology Cell Central Adm",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button.text-text-muted.hover:text-text",
+      "label": "<Icon>",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#sidebar-tab-dashboard.w-full.flex",
+      "label": "Dashboard",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#sidebar-tab-evidence-lens.w-full.flex",
+      "label": "Evidence Lens 4",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(240, 244, 250)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 15.61,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#sidebar-tab-manual-review-queue.w-full.flex",
+      "label": "Review Queue 3",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#sidebar-tab-preflight.w-full.flex",
+      "label": "Pre-Flight",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#sidebar-tab-document-intelligence.w-full.flex",
+      "label": "Doc Intelligence",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#sidebar-tab-photo-radar.w-full.flex",
+      "label": "Photo Radar",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#sidebar-tab-impossibility-engine.w-full.flex",
+      "label": "Impossibility Engine 7",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#sidebar-tab-audit-ledger.w-full.flex",
+      "label": "Audit & Receipts",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#sidebar-tab-regulations.w-full.flex",
+      "label": "Rules Catalog",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#sidebar-tab-inspection-planner.w-full.flex",
+      "label": "Inspection Planner",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#select-finding-1.tab.px-3",
+      "label": "#1 Graph",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(11, 61, 145)",
+      "svgStroke": null,
+      "ratio": 10.04,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#select-finding-2.tab.px-3",
+      "label": "#2 Doc",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": null,
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#select-finding-3.tab.px-3",
+      "label": "#3 Graph",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": null,
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#select-finding-4.tab.px-3",
+      "label": "#4 Doc",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": null,
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button.p-1.rounded",
+      "label": "<Icon>",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button.p-1.rounded",
+      "label": "<Icon>",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button.p-1.rounded",
+      "label": "<Icon>",
+      "fg": "rgb(74, 91, 120)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 6.87,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#btn-submit-officer-action.btn-solid.w-full",
+      "label": "Submit Decision",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(11, 61, 145)",
+      "svgStroke": "rgb(255, 255, 255)",
+      "ratio": 10.04,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#back-to-top-btn.fixed.bottom-12",
+      "label": "<Icon>",
+      "fg": "rgb(11, 27, 51)",
+      "bg": "rgb(255, 255, 255)",
+      "svgStroke": "rgb(74, 91, 120)",
+      "ratio": 17.23,
+      "pass": true
+    }
+  ],
+  "dark": [
+    {
+      "page": "Dashboard",
+      "element": "button#sidebar-toggle-btn.p-2.rounded-lg",
+      "label": "<Icon>",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button#alert-bell-btn.relative.p-2",
+      "label": "29",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button#theme-toggle-btn.w-9.h-9",
+      "label": "<Icon>",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(26, 26, 29)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 17.36,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button#user-menu-btn.flex.items-center",
+      "label": "C Chief Technology Cell Central Adm",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button.text-text-muted.hover:text-text",
+      "label": "<Icon>",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button#sidebar-tab-dashboard.w-full.flex",
+      "label": "Dashboard",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(30, 30, 34)",
+      "svgStroke": "rgb(255, 255, 255)",
+      "ratio": 16.61,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button#sidebar-tab-evidence-lens.w-full.flex",
+      "label": "Evidence Lens 4",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button#sidebar-tab-manual-review-queue.w-full.flex",
+      "label": "Review Queue 3",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button#sidebar-tab-preflight.w-full.flex",
+      "label": "Pre-Flight",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button#sidebar-tab-document-intelligence.w-full.flex",
+      "label": "Doc Intelligence",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button#sidebar-tab-photo-radar.w-full.flex",
+      "label": "Photo Radar",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button#sidebar-tab-impossibility-engine.w-full.flex",
+      "label": "Impossibility Engine 7",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button#sidebar-tab-audit-ledger.w-full.flex",
+      "label": "Audit & Receipts",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button#sidebar-tab-regulations.w-full.flex",
+      "label": "Rules Catalog",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button#sidebar-tab-inspection-planner.w-full.flex",
+      "label": "Inspection Planner",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button#launch-evidence-lens-btn.btn-solid.h-10",
+      "label": "Launch Evidence Lens",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(47, 91, 232)",
+      "svgStroke": "rgb(255, 255, 255)",
+      "ratio": 5.55,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button#launch-audit-ledger-btn.btn-outline.h-10",
+      "label": "Audit Ledger",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(255, 255, 255)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button.h-10.px-4",
+      "label": "Reset",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button.text-xs.text-accent",
+      "label": "+2 more",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": null,
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button.group/btn.h-9",
+      "label": "Evidence Lens",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button.w-9.h-9",
+      "label": "<Icon>",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button.text-xs.text-accent",
+      "label": "+2 more",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": null,
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button.group/btn.h-9",
+      "label": "Evidence Lens",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button.w-9.h-9",
+      "label": "<Icon>",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button.w-full.h-11",
+      "label": "Upload & Analyze Document",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(47, 91, 232)",
+      "svgStroke": null,
+      "ratio": 5.55,
+      "pass": true
+    },
+    {
+      "page": "Dashboard",
+      "element": "button#back-to-top-btn.fixed.bottom-12",
+      "label": "<Icon>",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button#sidebar-toggle-btn.p-2.rounded-lg",
+      "label": "<Icon>",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button#alert-bell-btn.relative.p-2",
+      "label": "29",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button#theme-toggle-btn.w-9.h-9",
+      "label": "<Icon>",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(26, 26, 29)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 17.36,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button#user-menu-btn.flex.items-center",
+      "label": "C Chief Technology Cell Central Adm",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.text-text-muted.hover:text-text",
+      "label": "<Icon>",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button#sidebar-tab-dashboard.w-full.flex",
+      "label": "Dashboard",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button#sidebar-tab-evidence-lens.w-full.flex",
+      "label": "Evidence Lens 4",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button#sidebar-tab-manual-review-queue.w-full.flex",
+      "label": "Review Queue 3",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button#sidebar-tab-preflight.w-full.flex",
+      "label": "Pre-Flight",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button#sidebar-tab-document-intelligence.w-full.flex",
+      "label": "Doc Intelligence",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button#sidebar-tab-photo-radar.w-full.flex",
+      "label": "Photo Radar",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button#sidebar-tab-impossibility-engine.w-full.flex",
+      "label": "Impossibility Engine 7",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button#sidebar-tab-audit-ledger.w-full.flex",
+      "label": "Audit & Receipts",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button#sidebar-tab-regulations.w-full.flex",
+      "label": "Rules Catalog",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(30, 30, 34)",
+      "svgStroke": "rgb(255, 255, 255)",
+      "ratio": 16.61,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button#sidebar-tab-inspection-planner.w-full.flex",
+      "label": "Inspection Planner",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button#tab-rules-catalog.tab.px-4",
+      "label": "Rules Catalog & Clause Citations",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(47, 91, 232)",
+      "svgStroke": "rgb(255, 255, 255)",
+      "ratio": 5.55,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button#tab-what-if-simulator.tab.px-4",
+      "label": "Policy What-If Simulator",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.tab.px-3",
+      "label": "All Regulations",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(47, 91, 232)",
+      "svgStroke": null,
+      "ratio": 5.55,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.tab.px-3",
+      "label": "Safety & Compliance",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(10, 10, 11)",
+      "svgStroke": null,
+      "ratio": 9.61,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.tab.px-3",
+      "label": "Faculty & Cadre",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(10, 10, 11)",
+      "svgStroke": null,
+      "ratio": 9.61,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.tab.px-3",
+      "label": "Infrastructure",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(10, 10, 11)",
+      "svgStroke": null,
+      "ratio": 9.61,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.tab.px-3",
+      "label": "Legal & Entity",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(10, 10, 11)",
+      "svgStroke": null,
+      "ratio": 9.61,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.tab.px-3",
+      "label": "State Approvals",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(10, 10, 11)",
+      "svgStroke": null,
+      "ratio": 9.61,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.tab.px-3",
+      "label": "Land & Title",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(10, 10, 11)",
+      "svgStroke": null,
+      "ratio": 9.61,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.tab.px-3",
+      "label": "Affiliation",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(10, 10, 11)",
+      "svgStroke": null,
+      "ratio": 9.61,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.tab.px-3",
+      "label": "Governance & Student Welfare",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(10, 10, 11)",
+      "svgStroke": null,
+      "ratio": 9.61,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.text-xs.font-semibold",
+      "label": "Inspect Citation & Parameters",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.px-3.py-1.5",
+      "label": "Simulate in What-If",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.text-xs.font-semibold",
+      "label": "Inspect Citation & Parameters",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.px-3.py-1.5",
+      "label": "Simulate in What-If",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.text-xs.font-semibold",
+      "label": "Inspect Citation & Parameters",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.px-3.py-1.5",
+      "label": "Simulate in What-If",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.text-xs.font-semibold",
+      "label": "Inspect Citation & Parameters",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.px-3.py-1.5",
+      "label": "Simulate in What-If",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.text-xs.font-semibold",
+      "label": "Inspect Citation & Parameters",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.px-3.py-1.5",
+      "label": "Simulate in What-If",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.text-xs.font-semibold",
+      "label": "Inspect Citation & Parameters",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.px-3.py-1.5",
+      "label": "Simulate in What-If",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.text-xs.font-semibold",
+      "label": "Inspect Citation & Parameters",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.px-3.py-1.5",
+      "label": "Simulate in What-If",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.text-xs.font-semibold",
+      "label": "Inspect Citation & Parameters",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.px-3.py-1.5",
+      "label": "Simulate in What-If",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.text-xs.font-semibold",
+      "label": "Inspect Citation & Parameters",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.px-3.py-1.5",
+      "label": "Simulate in What-If",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.text-xs.font-semibold",
+      "label": "Inspect Citation & Parameters",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.px-3.py-1.5",
+      "label": "Simulate in What-If",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.text-xs.font-semibold",
+      "label": "Inspect Citation & Parameters",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.px-3.py-1.5",
+      "label": "Simulate in What-If",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.text-xs.font-semibold",
+      "label": "Inspect Citation & Parameters",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button.px-3.py-1.5",
+      "label": "Simulate in What-If",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Rules Catalog",
+      "element": "button#back-to-top-btn.fixed.bottom-12",
+      "label": "<Icon>",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#sidebar-toggle-btn.p-2.rounded-lg",
+      "label": "<Icon>",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#alert-bell-btn.relative.p-2",
+      "label": "29",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#theme-toggle-btn.w-9.h-9",
+      "label": "<Icon>",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(26, 26, 29)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 17.36,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#user-menu-btn.flex.items-center",
+      "label": "C Chief Technology Cell Central Adm",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button.text-text-muted.hover:text-text",
+      "label": "<Icon>",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#sidebar-tab-dashboard.w-full.flex",
+      "label": "Dashboard",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#sidebar-tab-evidence-lens.w-full.flex",
+      "label": "Evidence Lens 4",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#sidebar-tab-manual-review-queue.w-full.flex",
+      "label": "Review Queue 3",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(30, 30, 34)",
+      "svgStroke": "rgb(255, 255, 255)",
+      "ratio": 16.61,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#sidebar-tab-preflight.w-full.flex",
+      "label": "Pre-Flight",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#sidebar-tab-document-intelligence.w-full.flex",
+      "label": "Doc Intelligence",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#sidebar-tab-photo-radar.w-full.flex",
+      "label": "Photo Radar",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#sidebar-tab-impossibility-engine.w-full.flex",
+      "label": "Impossibility Engine 7",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#sidebar-tab-audit-ledger.w-full.flex",
+      "label": "Audit & Receipts",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#sidebar-tab-regulations.w-full.flex",
+      "label": "Rules Catalog",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#sidebar-tab-inspection-planner.w-full.flex",
+      "label": "Inspection Planner",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button.p-2.border",
+      "label": "<Icon>",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button.text-text-muted.hover:text-text",
+      "label": "<Icon>",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button.text-xs.font-semibold",
+      "label": "View Full Verification Dossier",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#verify-now-MRQ-20261031-D1F9EC.btn-outline.h-9",
+      "label": "Verify Now",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(255, 255, 255)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#resolve-btn-MRQ-20261031-D1F9EC.btn-solid.h-9",
+      "label": "Resolve Ticket",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(47, 91, 232)",
+      "svgStroke": null,
+      "ratio": 5.55,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button.text-text-muted.hover:text-text",
+      "label": "<Icon>",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button.text-xs.font-semibold",
+      "label": "View Full Verification Dossier",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#verify-now-MRQ-20261031-BD4007.btn-outline.h-9",
+      "label": "Verify Now",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(255, 255, 255)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#resolve-btn-MRQ-20261031-BD4007.btn-solid.h-9",
+      "label": "Resolve Ticket",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(47, 91, 232)",
+      "svgStroke": null,
+      "ratio": 5.55,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button.text-text-muted.hover:text-text",
+      "label": "<Icon>",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button.text-xs.font-semibold",
+      "label": "View Full Verification Dossier",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#verify-now-MRQ-20261031-945EFD.btn-outline.h-9",
+      "label": "Verify Now",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(255, 255, 255)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#resolve-btn-MRQ-20261031-945EFD.btn-solid.h-9",
+      "label": "Resolve Ticket",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(47, 91, 232)",
+      "svgStroke": null,
+      "ratio": 5.55,
+      "pass": true
+    },
+    {
+      "page": "Review Queue",
+      "element": "button#back-to-top-btn.fixed.bottom-12",
+      "label": "<Icon>",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#sidebar-toggle-btn.p-2.rounded-lg",
+      "label": "<Icon>",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#alert-bell-btn.relative.p-2",
+      "label": "29",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#theme-toggle-btn.w-9.h-9",
+      "label": "<Icon>",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(26, 26, 29)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 17.36,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#user-menu-btn.flex.items-center",
+      "label": "C Chief Technology Cell Central Adm",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button.text-text-muted.hover:text-text",
+      "label": "<Icon>",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#sidebar-tab-dashboard.w-full.flex",
+      "label": "Dashboard",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#sidebar-tab-evidence-lens.w-full.flex",
+      "label": "Evidence Lens 4",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#sidebar-tab-manual-review-queue.w-full.flex",
+      "label": "Review Queue 3",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#sidebar-tab-preflight.w-full.flex",
+      "label": "Pre-Flight",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#sidebar-tab-document-intelligence.w-full.flex",
+      "label": "Doc Intelligence",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(30, 30, 34)",
+      "svgStroke": "rgb(255, 255, 255)",
+      "ratio": 16.61,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#sidebar-tab-photo-radar.w-full.flex",
+      "label": "Photo Radar",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#sidebar-tab-impossibility-engine.w-full.flex",
+      "label": "Impossibility Engine 7",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#sidebar-tab-audit-ledger.w-full.flex",
+      "label": "Audit & Receipts",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#sidebar-tab-regulations.w-full.flex",
+      "label": "Rules Catalog",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#sidebar-tab-inspection-planner.w-full.flex",
+      "label": "Inspection Planner",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button.btn-solid.h-8",
+      "label": "Browse",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(47, 91, 232)",
+      "svgStroke": "rgb(255, 255, 255)",
+      "ratio": 5.55,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#btn-sample-doc_fire_noc.h-8.px-3",
+      "label": "Fire Safety NOC",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(47, 91, 232)",
+      "svgStroke": null,
+      "ratio": 5.55,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#btn-sample-doc_building_plan.h-8.px-3",
+      "label": "Building Plan",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": null,
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#btn-sample-doc_faculty_list.h-8.px-3",
+      "label": "Faculty List",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": null,
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#btn-sample-doc_land_deed.h-8.px-3",
+      "label": "Land Deed",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": null,
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button.tab.px-3",
+      "label": "Preview",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(47, 91, 232)",
+      "svgStroke": null,
+      "ratio": 5.55,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button.tab.px-3",
+      "label": "Extracted text",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": null,
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#btn-toggle-boxes.h-8.px-2.5",
+      "label": "Hide boxes",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(47, 91, 232)",
+      "svgStroke": "rgb(255, 255, 255)",
+      "ratio": 5.55,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button.h-7.px-1.5",
+      "label": "75%",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": null,
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button.h-7.px-1.5",
+      "label": "100%",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(47, 91, 232)",
+      "svgStroke": null,
+      "ratio": 5.55,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button.h-7.px-1.5",
+      "label": "150%",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": null,
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button.w-8.h-8",
+      "label": "<Icon>",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button.w-8.h-8",
+      "label": "<Icon>",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button.w-8.h-8",
+      "label": "<Icon>",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button.w-full.h-9",
+      "label": "Send to Evidence Lens",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(47, 91, 232)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 5.55,
+      "pass": true
+    },
+    {
+      "page": "Doc Intelligence",
+      "element": "button#back-to-top-btn.fixed.bottom-12",
+      "label": "<Icon>",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#sidebar-toggle-btn.p-2.rounded-lg",
+      "label": "<Icon>",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#alert-bell-btn.relative.p-2",
+      "label": "29",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#theme-toggle-btn.w-9.h-9",
+      "label": "<Icon>",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(26, 26, 29)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 17.36,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#user-menu-btn.flex.items-center",
+      "label": "C Chief Technology Cell Central Adm",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-text-muted.hover:text-text",
+      "label": "<Icon>",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#sidebar-tab-dashboard.w-full.flex",
+      "label": "Dashboard",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#sidebar-tab-evidence-lens.w-full.flex",
+      "label": "Evidence Lens 4",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#sidebar-tab-manual-review-queue.w-full.flex",
+      "label": "Review Queue 3",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#sidebar-tab-preflight.w-full.flex",
+      "label": "Pre-Flight",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#sidebar-tab-document-intelligence.w-full.flex",
+      "label": "Doc Intelligence",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#sidebar-tab-photo-radar.w-full.flex",
+      "label": "Photo Radar",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#sidebar-tab-impossibility-engine.w-full.flex",
+      "label": "Impossibility Engine 7",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#sidebar-tab-audit-ledger.w-full.flex",
+      "label": "Audit & Receipts",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(30, 30, 34)",
+      "svgStroke": "rgb(255, 255, 255)",
+      "ratio": 16.61,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#sidebar-tab-regulations.w-full.flex",
+      "label": "Rules Catalog",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#sidebar-tab-inspection-planner.w-full.flex",
+      "label": "Inspection Planner",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#verify-chain-button.px-5.py-3",
+      "label": "Verify Chain Integrity",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(4, 120, 87)",
+      "svgStroke": "rgb(255, 255, 255)",
+      "ratio": 5.48,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#tab-receipts-timeline.tab.px-3",
+      "label": "Timeline of Receipts (13)",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(47, 91, 232)",
+      "svgStroke": "rgb(255, 255, 255)",
+      "ratio": 5.55,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#tab-verification-statuses.tab.px-3",
+      "label": "Verification Statuses",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(10, 10, 11)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.61,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#tab-officer-decisions.tab.px-3",
+      "label": "Officer Decisions (1)",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(10, 10, 11)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.61,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#tab-manual-review-queue.tab.px-3",
+      "label": "Manual Review Queue (3)",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(10, 10, 11)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.61,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#tab-access-logs.tab.px-3",
+      "label": "Access Logs (50)",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(10, 10, 11)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.61,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-text-subtle.hover:text-text-muted",
+      "label": "Copy",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-primary.hover:text-sky-800",
+      "label": "Inspect Canonical Payload",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-text-subtle.hover:text-text-muted",
+      "label": "Copy",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-primary.hover:text-sky-800",
+      "label": "Inspect Canonical Payload",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-text-subtle.hover:text-text-muted",
+      "label": "Copy",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-primary.hover:text-sky-800",
+      "label": "Inspect Canonical Payload",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-text-subtle.hover:text-text-muted",
+      "label": "Copy",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-primary.hover:text-sky-800",
+      "label": "Inspect Canonical Payload",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-text-subtle.hover:text-text-muted",
+      "label": "Copy",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-primary.hover:text-sky-800",
+      "label": "Inspect Canonical Payload",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-text-subtle.hover:text-text-muted",
+      "label": "Copy",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-primary.hover:text-sky-800",
+      "label": "Inspect Canonical Payload",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-text-subtle.hover:text-text-muted",
+      "label": "Copy",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-primary.hover:text-sky-800",
+      "label": "Inspect Canonical Payload",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-text-subtle.hover:text-text-muted",
+      "label": "Copy",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-primary.hover:text-sky-800",
+      "label": "Inspect Canonical Payload",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-text-subtle.hover:text-text-muted",
+      "label": "Copy",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-primary.hover:text-sky-800",
+      "label": "Inspect Canonical Payload",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-text-subtle.hover:text-text-muted",
+      "label": "Copy",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-primary.hover:text-sky-800",
+      "label": "Inspect Canonical Payload",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-text-subtle.hover:text-text-muted",
+      "label": "Copy",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-primary.hover:text-sky-800",
+      "label": "Inspect Canonical Payload",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-text-subtle.hover:text-text-muted",
+      "label": "Copy",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-primary.hover:text-sky-800",
+      "label": "Inspect Canonical Payload",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-text-subtle.hover:text-text-muted",
+      "label": "Copy",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button.text-primary.hover:text-sky-800",
+      "label": "Inspect Canonical Payload",
+      "fg": "rgb(96, 165, 250)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(96, 165, 250)",
+      "ratio": 7.3,
+      "pass": true
+    },
+    {
+      "page": "Audit & Receipts",
+      "element": "button#back-to-top-btn.fixed.bottom-12",
+      "label": "<Icon>",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#sidebar-toggle-btn.p-2.rounded-lg",
+      "label": "<Icon>",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#alert-bell-btn.relative.p-2",
+      "label": "29",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#theme-toggle-btn.w-9.h-9",
+      "label": "<Icon>",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(26, 26, 29)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 17.36,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#user-menu-btn.flex.items-center",
+      "label": "C Chief Technology Cell Central Adm",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button.text-text-muted.hover:text-text",
+      "label": "<Icon>",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#sidebar-tab-dashboard.w-full.flex",
+      "label": "Dashboard",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#sidebar-tab-evidence-lens.w-full.flex",
+      "label": "Evidence Lens 4",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(30, 30, 34)",
+      "svgStroke": "rgb(255, 255, 255)",
+      "ratio": 16.61,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#sidebar-tab-manual-review-queue.w-full.flex",
+      "label": "Review Queue 3",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#sidebar-tab-preflight.w-full.flex",
+      "label": "Pre-Flight",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#sidebar-tab-document-intelligence.w-full.flex",
+      "label": "Doc Intelligence",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#sidebar-tab-photo-radar.w-full.flex",
+      "label": "Photo Radar",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#sidebar-tab-impossibility-engine.w-full.flex",
+      "label": "Impossibility Engine 7",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#sidebar-tab-audit-ledger.w-full.flex",
+      "label": "Audit & Receipts",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#sidebar-tab-regulations.w-full.flex",
+      "label": "Rules Catalog",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#sidebar-tab-inspection-planner.w-full.flex",
+      "label": "Inspection Planner",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#select-finding-1.tab.px-3",
+      "label": "#1 Graph",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(47, 91, 232)",
+      "svgStroke": null,
+      "ratio": 5.55,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#select-finding-2.tab.px-3",
+      "label": "#2 Doc",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": null,
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#select-finding-3.tab.px-3",
+      "label": "#3 Graph",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": null,
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#select-finding-4.tab.px-3",
+      "label": "#4 Doc",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": null,
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button.p-1.rounded",
+      "label": "<Icon>",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button.p-1.rounded",
+      "label": "<Icon>",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button.p-1.rounded",
+      "label": "<Icon>",
+      "fg": "rgb(180, 180, 188)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 9.01,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#btn-submit-officer-action.btn-solid.w-full",
+      "label": "Submit Decision",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(47, 91, 232)",
+      "svgStroke": "rgb(255, 255, 255)",
+      "ratio": 5.55,
+      "pass": true
+    },
+    {
+      "page": "Evidence Lens",
+      "element": "button#back-to-top-btn.fixed.bottom-12",
+      "label": "<Icon>",
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(19, 19, 21)",
+      "svgStroke": "rgb(180, 180, 188)",
+      "ratio": 18.56,
+      "pass": true
+    }
+  ]
+}

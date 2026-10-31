@@ -175,7 +175,7 @@ export default function ImpossibilityGraph() {
   const getNodeIcon = (type) => {
     const t = (type || '').toUpperCase();
     switch (t) {
-      case 'INSTITUTION': return <Building2 className="w-3.5 h-3.5 text-sky-600" />;
+      case 'INSTITUTION': return <Building2 className="w-3.5 h-3.5 text-primary" />;
       case 'FACULTY': return <Users className="w-3.5 h-3.5 text-rose-600" />;
       case 'PROGRAMME': return <GraduationCap className="w-3.5 h-3.5 text-indigo-600" />;
       case 'DOCUMENT': return <FileText className="w-3.5 h-3.5 text-amber-600" />;
@@ -183,14 +183,14 @@ export default function ImpossibilityGraph() {
       case 'BUILDING': return <Building2 className="w-3.5 h-3.5 text-cyan-600" />;
       case 'LOCATION': return <MapPin className="w-3.5 h-3.5 text-purple-600" />;
       case 'ISSUER': return <ShieldAlert className="w-3.5 h-3.5 text-orange-600" />;
-      default: return <Info className="w-3.5 h-3.5 text-slate-500" />;
+      default: return <Info className="w-3.5 h-3.5 text-text-subtle" />;
     }
   };
 
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="bg-gradient-to-r from-rose-50 via-white to-slate-50 border border-rose-200/70 rounded-2xl p-6 shadow-xs">
+      <div className="bg-gradient-to-r from-rose-50 via-white to-slate-50 border border-rose-200/70 rounded-xl p-6 shadow-xs">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center space-x-2 text-xs font-semibold text-rose-700 uppercase tracking-widest mb-1">
@@ -199,17 +199,17 @@ export default function ImpossibilityGraph() {
               <span>Indicator for Review Radar</span>
               {isDemoData && <DemoDataBadge message="Demo data (live graph fallback)" />}
             </div>
-            <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+            <h1 className="text-xl md:text-2xl font-bold text-text tracking-tight">
               Institution Twin: Multi-College Regulatory Radar
             </h1>
-            <p className="text-sm text-slate-600 mt-1 max-w-2xl">
+            <p className="text-xs text-muted mt-1 max-w-2xl">
               Constructs an inter-institutional digital twin knowledge graph of Institutions, Faculty, Programmes, Documents, Labs, Buildings, Locations, and Issuers to detect mathematically and physically impossible claims across regional colleges.
             </p>
           </div>
           <button
             onClick={fetchGraphAndAnomalies}
             disabled={loading}
-            className="flex items-center space-x-2 px-4 py-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-colors shadow-xs shrink-0 disabled:opacity-60"
+            className="flex items-center space-x-2 px-4 py-2 rounded-xl bg-surface border border-border hover:bg-surface-2 text-xs font-semibold text-text transition-colors shadow-xs shrink-0 disabled:opacity-60"
             type="button"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
@@ -219,23 +219,23 @@ export default function ImpossibilityGraph() {
 
         {/* Graph Metrics */}
         {graphData && (
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 pt-6 border-t border-slate-200/80">
-            <div className="bg-white rounded-xl p-3 border border-slate-200/80 shadow-xs">
-              <div className="text-[11px] text-slate-500 uppercase font-medium">Institutions</div>
-              <div className="text-xl font-bold text-sky-700">{graphData.summary?.total_institutions || 0}</div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 pt-6 border-t border-border">
+            <div className="bg-surface-2 rounded-xl p-3 border border-border shadow-xs">
+              <div className="text-[11px] text-muted uppercase font-medium">Institutions</div>
+              <div className="text-xl font-bold text-primary">{graphData.summary?.total_institutions || 0}</div>
             </div>
-            <div className="bg-white rounded-xl p-3 border border-slate-200/80 shadow-xs">
-              <div className="text-[11px] text-slate-500 uppercase font-medium">Faculty Nodes</div>
+            <div className="bg-surface-2 rounded-xl p-3 border border-border shadow-xs">
+              <div className="text-[11px] text-muted uppercase font-medium">Faculty Nodes</div>
               <div className="text-xl font-bold text-indigo-700">{graphData.summary?.total_faculty || 0}</div>
             </div>
-            <div className="bg-white rounded-xl p-3 border border-slate-200/80 shadow-xs">
-              <div className="text-[11px] text-slate-500 uppercase font-medium">Documents & Labs</div>
+            <div className="bg-surface-2 rounded-xl p-3 border border-border shadow-xs">
+              <div className="text-[11px] text-muted uppercase font-medium">Documents & Labs</div>
               <div className="text-xl font-bold text-emerald-700">
                 {(graphData.summary?.total_documents || 0) + (graphData.summary?.total_labs || 0)}
               </div>
             </div>
-            <div className="bg-white rounded-xl p-3 border border-slate-200/80 shadow-xs">
-              <div className="text-[11px] text-slate-500 uppercase font-medium">Review Indicators</div>
+            <div className="bg-surface-2 rounded-xl p-3 border border-border shadow-xs">
+              <div className="text-[11px] text-muted uppercase font-medium">Review Indicators</div>
               <div className="text-xl font-bold text-rose-600">{anomalies.length} Flagged</div>
             </div>
           </div>
@@ -259,7 +259,7 @@ export default function ImpossibilityGraph() {
             className={`px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all shrink-0 ${
               filterType === f.id
                 ? 'bg-rose-50 border-rose-300 text-rose-800 shadow-xs'
-                : 'bg-white border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                : 'bg-surface border-border text-muted hover:text-text hover:bg-surface-2'
             }`}
             type="button"
           >
@@ -274,14 +274,14 @@ export default function ImpossibilityGraph() {
         {/* Left Column: Interactive Topology View */}
         <div className="lg:col-span-7 flex flex-col space-y-3">
           {/* Tab Switcher for Topology View */}
-          <div className="flex items-center justify-between bg-white border border-slate-200 rounded-xl p-1.5 shadow-2xs">
+          <div className="flex items-center justify-between bg-surface border border-border rounded-xl p-1.5 shadow-2xs">
             <div className="flex space-x-1">
               <button
                 onClick={() => setActiveTopologyTab('SUBGRAPH')}
                 className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                   activeTopologyTab === 'SUBGRAPH'
                     ? 'bg-rose-50 text-rose-800 border border-rose-200 shadow-2xs'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                    : 'text-muted hover:text-text hover:bg-surface-2'
                 }`}
                 type="button"
               >
@@ -293,19 +293,19 @@ export default function ImpossibilityGraph() {
                 onClick={() => setActiveTopologyTab('MACRO')}
                 className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                   activeTopologyTab === 'MACRO'
-                    ? 'bg-sky-50 text-sky-800 border border-sky-200 shadow-2xs'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                    ? 'bg-primary/10 text-sky-800 border border-primary/20 shadow-2xs'
+                    : 'text-muted hover:text-text hover:bg-surface-2'
                 }`}
                 type="button"
               >
-                <Layers className="w-3.5 h-3.5 text-sky-600" />
+                <Layers className="w-3.5 h-3.5 text-primary" />
                 <span>Macro Institutional Twin</span>
               </button>
             </div>
 
             {selectedAnomaly && (
-              <span className="text-[11px] text-slate-500 font-mono hidden sm:inline px-2">
-                Focused: <span className="text-slate-800 font-semibold">{selectedAnomaly.check_id || 'FINDING'}</span>
+              <span className="text-[11px] text-text-subtle font-mono hidden sm:inline px-2">
+                Focused: <span className="text-text font-semibold">{selectedAnomaly.check_id || 'FINDING'}</span>
               </span>
             )}
           </div>
@@ -317,17 +317,17 @@ export default function ImpossibilityGraph() {
               activeFindingTitle={selectedAnomaly?.title}
             />
           ) : (
-            <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs flex flex-col space-y-3">
+            <div className="bg-surface border border-border rounded-xl p-5 shadow-xs flex flex-col space-y-3">
               <div className="flex items-center justify-between mb-1">
                 <div className="flex items-center space-x-2">
-                  <Layers className="w-4 h-4 text-sky-600" />
-                  <h3 className="text-sm font-semibold text-slate-900">
+                  <Layers className="w-4 h-4 text-primary" />
+                  <h3 className="text-sm font-semibold text-text">
                     Macro Multi-College Digital Twin Topology
                   </h3>
                 </div>
                 <div className="flex items-center space-x-3 text-[11px]">
-                  <span className="flex items-center space-x-1 text-sky-700">
-                    <span className="w-2 h-2 rounded-full bg-sky-600 inline-block" />
+                  <span className="flex items-center space-x-1 text-primary">
+                    <span className="w-2 h-2 rounded-full bg-primary inline-block" />
                     <span>Colleges</span>
                   </span>
                   <span className="flex items-center space-x-1 text-rose-700">
@@ -346,7 +346,7 @@ export default function ImpossibilityGraph() {
               </div>
 
               {/* Interactive SVG Graph Rendering */}
-              <div className="relative bg-white border border-slate-200 rounded-xl p-4 min-h-[380px] flex items-center justify-center overflow-hidden">
+              <div className="relative bg-surface-2 border border-border rounded-xl p-4 min-h-[380px] flex items-center justify-center overflow-hidden">
                 <svg className="w-full h-full max-h-[360px]" viewBox="0 0 600 360">
                   {/* Conflict Connection Lines */}
                   <line x1="160" y1="100" x2="300" y2="180" stroke="#be123c" strokeWidth="2.5" strokeDasharray="5,5" className="animate-pulse" />
@@ -401,13 +401,13 @@ export default function ImpossibilityGraph() {
                   </g>
                 </svg>
 
-                <div className="absolute bottom-3 left-3 bg-white/95 border border-slate-200 rounded-lg px-2.5 py-1 text-[10px] text-slate-500 shadow-xs">
+                <div className="absolute bottom-3 left-3 bg-surface border border-border rounded-lg px-2.5 py-1 text-[10px] text-text-subtle shadow-xs">
                   Global Topological Projection • NetworkX MultiDiGraph (8 Node Types • 5 Edge Types)
                 </div>
               </div>
 
-              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-600">
-                <span className="font-semibold text-slate-800">Macro Twin Overview: </span>
+              <div className="p-3 bg-surface-2 rounded-xl border border-border text-xs text-text-muted">
+                <span className="font-semibold text-text">Macro Twin Overview: </span>
                 Multi-college knowledge graph connects statutory entities across all affiliated institutions to identify inter-institutional collisions that are mathematically or legally irreconcilable.
               </div>
             </div>
@@ -417,22 +417,22 @@ export default function ImpossibilityGraph() {
         {/* Right Column: Review Indicator Dossiers */}
         <div className="lg:col-span-5 space-y-3">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-slate-900">
+            <h3 className="text-sm font-semibold text-text">
               Indicators for Review ({filteredAnomalies.length})
             </h3>
             <span className="text-xs text-rose-700 font-mono font-medium">Statutory review flags</span>
           </div>
 
           {loading ? (
-            <div className="bg-white border border-slate-200 rounded-2xl p-8 text-center text-slate-500 space-y-3">
+            <div className="bg-surface border border-border rounded-xl p-8 text-center text-text-subtle space-y-3">
               <RefreshCw className="w-6 h-6 animate-spin text-rose-600 mx-auto" />
               <p className="text-xs font-medium">Analyzing inter-institutional knowledge graph...</p>
             </div>
           ) : filteredAnomalies.length === 0 ? (
-            <div className="bg-white border border-slate-200 rounded-2xl p-8 text-center text-slate-500 space-y-2">
+            <div className="bg-surface border border-border rounded-xl p-8 text-center text-text-subtle space-y-2">
               <CheckCircle2 className="w-8 h-8 text-emerald-500 mx-auto" />
-              <h4 className="text-sm font-semibold text-slate-800">No Indicators in this Category</h4>
-              <p className="text-xs text-slate-500">
+              <h4 className="text-sm font-semibold text-text">No Indicators in this Category</h4>
+              <p className="text-xs text-text-subtle">
                 No active mathematical or statutory conflicts detected for the selected filter.
               </p>
             </div>
@@ -450,13 +450,13 @@ export default function ImpossibilityGraph() {
                     className={`p-4 rounded-xl border transition-all cursor-pointer ${
                       isSelected 
                         ? 'bg-rose-50/90 border-rose-300 ring-2 ring-rose-200/50 shadow-xs' 
-                        : 'bg-white border-slate-200 hover:border-slate-300 shadow-xs'
+                        : 'bg-surface border-border hover:border-border-strong shadow-xs'
                     }`}
                   >
                     <div className="flex items-start justify-between gap-2 mb-2">
                       <div className="flex items-center space-x-2">
                         <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
-                        <span className="text-xs font-bold text-slate-900 leading-tight">
+                        <span className="text-xs font-bold text-text leading-tight">
                           {anomaly.title}
                         </span>
                       </div>
@@ -469,21 +469,21 @@ export default function ImpossibilityGraph() {
                       <span>Indicator for review</span>
                     </div>
 
-                    <p className="text-xs text-slate-600 leading-relaxed mb-3">
+                    <p className="text-xs text-text-muted leading-relaxed mb-3">
                       {anomaly.explanation}
                     </p>
 
                     {/* Conflicting Subgraph Entities Preview */}
                     {anomaly.conflicting_subgraph && (
-                      <div className="mb-3 bg-white p-2.5 rounded-lg border border-slate-200/90 space-y-2">
-                        <div className="flex items-center justify-between text-[11px] text-slate-500 font-medium">
-                          <span className="font-semibold text-slate-700">Conflicting Subgraph Entities:</span>
+                      <div className="mb-3 bg-surface p-2.5 rounded-lg border border-border space-y-2">
+                        <div className="flex items-center justify-between text-[11px] text-text-subtle font-medium">
+                          <span className="font-semibold text-text-muted">Conflicting Subgraph Entities:</span>
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
                               toggleJson(idx);
                             }}
-                            className="flex items-center space-x-1 text-sky-700 hover:text-sky-900 font-semibold"
+                            className="flex items-center space-x-1 text-primary hover:text-sky-900 font-semibold"
                             type="button"
                           >
                             <Code2 className="w-3 h-3" />
@@ -495,11 +495,11 @@ export default function ImpossibilityGraph() {
                           {anomaly.conflicting_subgraph.nodes?.map((node, nIdx) => (
                             <span 
                               key={nIdx} 
-                              className="inline-flex items-center space-x-1 px-2 py-0.5 rounded bg-slate-50 border border-slate-200 text-[10px] text-slate-700"
+                              className="inline-flex items-center space-x-1 px-2 py-0.5 rounded bg-surface-2 border border-border text-[10px] text-text-muted"
                             >
                               {getNodeIcon(node.type)}
                               <span className="font-medium">{node.label || node.name || node.id}</span>
-                              <span className="text-[9px] text-slate-400">({node.type})</span>
+                              <span className="text-[9px] text-text-subtle">({node.type})</span>
                             </span>
                           ))}
                         </div>
@@ -513,7 +513,7 @@ export default function ImpossibilityGraph() {
                     )}
 
                     {/* Officer Action recommendation */}
-                    <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-200 text-[11px] text-slate-700 mb-2">
+                    <div className="bg-surface-2 p-2.5 rounded-lg border border-border text-[11px] text-text-muted mb-2">
                       <strong className="text-rose-700">Recommended Officer Action:</strong> {anomaly.recommended_action}
                     </div>
 
@@ -528,7 +528,7 @@ export default function ImpossibilityGraph() {
                         className={`inline-flex items-center space-x-1.5 text-xs font-semibold px-2.5 py-1 rounded-lg border transition-colors ${
                           isSelected 
                             ? 'bg-rose-600 text-white border-rose-600 shadow-2xs' 
-                            : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
+                            : 'bg-surface border-border text-text-muted hover:bg-surface-2'
                         }`}
                         type="button"
                       >
@@ -536,7 +536,7 @@ export default function ImpossibilityGraph() {
                         <span>{isSelected ? 'Viewing in Network' : 'Focus Subgraph Topology'}</span>
                       </button>
 
-                      <span className="text-[10px] text-slate-400 font-mono">
+                      <span className="text-[10px] text-text-subtle font-mono">
                         {anomaly.conflicting_subgraph?.nodes?.length || 0} nodes involved
                       </span>
                     </div>

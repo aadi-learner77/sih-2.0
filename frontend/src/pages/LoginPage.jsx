@@ -187,6 +187,8 @@ export default function LoginPage({ onLoginSuccess }) {
   const [inputHighlight, setInputHighlight] = useState(false);
 
   const typingTimerRef = useRef(null);
+  const emailInputRef = useRef(null);
+  const passwordInputRef = useRef(null);
   const t = TRANSLATIONS[lang] || TRANSLATIONS.en;
 
   useEffect(() => {
@@ -234,21 +236,6 @@ export default function LoginPage({ onLoginSuccess }) {
     }
   };
 
-  // 3D Card Tilt Effect on Mouse Move
-  const handleCardMouseMove = (e) => {
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const card = e.currentTarget;
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left - rect.width / 2;
-    const y = e.clientY - rect.top - rect.height / 2;
-    const rotateX = (-y / (rect.height / 2)) * 2.5;
-    const rotateY = (x / (rect.width / 2)) * 2.5;
-    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`;
-  };
-
-  const handleCardMouseLeave = (e) => {
-    e.currentTarget.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
-  };
 
   const handleSubmit = async (e) => {
     if (e && e.preventDefault) e.preventDefault();
@@ -266,6 +253,11 @@ export default function LoginPage({ onLoginSuccess }) {
           : 'Please enter both email and password.'
       );
       triggerCardShake();
+      if (!submitEmail) {
+        emailInputRef.current?.focus();
+      } else {
+        passwordInputRef.current?.focus();
+      }
       return;
     }
 
@@ -384,9 +376,7 @@ export default function LoginPage({ onLoginSuccess }) {
 
           {/* Card Main Surface: Solid White with Rounded-3xl */}
           <div 
-            onMouseMove={handleCardMouseMove}
-            onMouseLeave={handleCardMouseLeave}
-            className="w-full login-white-card-surface p-6 sm:p-8 lg:p-10 box-border transition-transform duration-200 ease-out"
+            className="w-full login-white-card-surface p-6 sm:p-8 lg:p-10 box-border"
           >
           {/* Subtle Grain / Noise Overlay */}
           <div className="login-noise-overlay" aria-hidden="true" />
@@ -452,6 +442,7 @@ export default function LoginPage({ onLoginSuccess }) {
               {/* Inline Error Message */}
               {errorMessage && (
                 <div 
+                  id="login-error-alert"
                   role="alert" 
                   aria-live="polite"
                   className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-start space-x-2 animate-shake"
@@ -490,11 +481,14 @@ export default function LoginPage({ onLoginSuccess }) {
                       }`} 
                     />
                     <input
+                      ref={emailInputRef}
                       id="login-email"
                       name="email"
                       type="email"
                       autoComplete="email"
                       required
+                      aria-invalid={!!errorMessage}
+                      aria-describedby={errorMessage ? "login-error-alert" : undefined}
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       onFocus={() => setFocusedInput('email')}
@@ -530,11 +524,14 @@ export default function LoginPage({ onLoginSuccess }) {
                       }`} 
                     />
                     <input
+                      ref={passwordInputRef}
                       id="login-password"
                       name="password"
                       type={showPassword ? 'text' : 'password'}
                       autoComplete="current-password"
                       required
+                      aria-invalid={!!errorMessage}
+                      aria-describedby={errorMessage ? "login-error-alert" : undefined}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       onKeyDown={handleKeyModifier}
@@ -553,6 +550,7 @@ export default function LoginPage({ onLoginSuccess }) {
                       onClick={() => setShowPassword(!showPassword)}
                       className="login-eye-toggle-btn"
                       aria-label={showPassword ? 'Hide password' : 'Show password'}
+                      aria-pressed={showPassword}
                     >
                       <div className="transition-transform duration-200 hover:scale-110">
                         {showPassword ? (

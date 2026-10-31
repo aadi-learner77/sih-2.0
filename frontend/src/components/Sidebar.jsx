@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState, useRef, useLayoutEffect } from 'react';
 import { 
   LayoutDashboard, 
   SearchCode, 
@@ -7,7 +7,6 @@ import {
   BookOpenCheck, 
   PlaneTakeoff, 
   FileCheck2,
-  Lock,
   Compass,
   Clock,
   FileSearch,
@@ -16,13 +15,11 @@ import {
 } from 'lucide-react';
 
 /**
- * Role-Aware Grouped Sidebar Navigation:
- * Organized under 4 statutory sections:
- * - Scrutiny (Dashboard, Evidence Lens, Manual Review Queue, Pre-Flight Readiness)
- * - Intelligence (Document Intelligence, Photo Radar & Forensics, Impossibility Engine)
- * - Verification and Audit (Audit and Receipts, Regulation-as-Code)
- * - Planning (Inspection Planner)
- * Fully scrollable, responsive mobile drawer, and respects active officer role permissions.
+ * Clean, Accessible Role-Aware Sidebar Navigation (Theme Tokens)
+ * - Desktop: 260px expanded <-> 72px collapsed icon rail (200ms transition)
+ * - Mobile: Off-canvas drawer with backdrop, Esc to close
+ * - Active item: Cobalt tinted background + 3px cobalt left bar + readable text in both themes
+ * - No stray orange dots, clean label/badge hiding
  */
 export default function Sidebar({ 
   activeTab, 
@@ -30,46 +27,89 @@ export default function Sidebar({
   counts = {},
   currentRole = 'scrutiny_officer',
   isOpen = false,
-  onClose = () => {}
+  onClose = () => {},
+  isCollapsed = false
 }) {
+  const [hoveredTab, setHoveredTab] = useState(null);
+  const [pillStyle, setPillStyle] = useState({ top: 0, height: 40, opacity: 0 });
+  const navRef = useRef(null);
+
+  const asideRef = useRef(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+        return;
+      }
+
+      // Focus trap when mobile drawer is open
+      if (isOpen && e.key === 'Tab' && asideRef.current && window.innerWidth < 1024) {
+        const focusable = asideRef.current.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length === 0) return;
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
+  // Liquid pill position tracker (measures offset relative to navRef)
+  useLayoutEffect(() => {
+    const targetId = hoveredTab || activeTab;
+    if (!targetId || !navRef.current) return;
+    const targetBtn = navRef.current.querySelector(`#sidebar-tab-${targetId}`);
+    if (targetBtn) {
+      const navRect = navRef.current.getBoundingClientRect();
+      const btnRect = targetBtn.getBoundingClientRect();
+      setPillStyle({
+        top: btnRect.top - navRect.top,
+        height: btnRect.height,
+        opacity: 1
+      });
+    }
+  }, [hoveredTab, activeTab, isCollapsed]);
+
   const navSections = [
     {
       title: 'Scrutiny',
       items: [
         {
           id: 'dashboard',
-          label: 'Scrutiny Dashboard',
+          label: 'Dashboard',
           icon: LayoutDashboard,
-          badge: 'Live',
-          badgeColor: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-          desc: 'Risk-ranked triage queue',
           roles: ['scrutiny_officer', 'senior_officer', 'admin', 'auditor', 'institution_user'],
         },
         {
           id: 'evidence-lens',
           label: 'Evidence Lens',
           icon: SearchCode,
-          badge: (counts.advisoryFlags && counts.advisoryFlags > 0) ? `${counts.advisoryFlags} Findings` : null,
-          badgeColor: 'bg-sky-50 text-sky-700 border-sky-200',
-          desc: 'Claim-to-evidence pipeline',
+          badge: (counts.advisoryFlags && counts.advisoryFlags > 0) ? `${counts.advisoryFlags}` : null,
           roles: ['scrutiny_officer', 'senior_officer', 'admin', 'auditor'],
         },
         {
           id: 'manual-review-queue',
-          label: 'Manual Review Queue',
+          label: 'Review Queue',
           icon: Clock,
-          badge: (counts.manualReview && counts.manualReview > 0) ? `${counts.manualReview} Cases` : 'Fallback',
-          badgeColor: 'bg-amber-50 text-amber-800 border-amber-200',
-          desc: 'Authoritative fallback queue',
+          badge: (counts.manualReview && counts.manualReview > 0) ? `${counts.manualReview}` : null,
           roles: ['scrutiny_officer', 'senior_officer', 'admin', 'auditor'],
         },
         {
           id: 'preflight',
-          label: 'Pre-Flight Readiness',
+          label: 'Pre-Flight',
           icon: PlaneTakeoff,
-          badge: 'Simulator',
-          badgeColor: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-          desc: 'Self-assessment readiness',
           roles: ['scrutiny_officer', 'senior_officer', 'admin', 'institution_user'],
         },
       ]
@@ -79,52 +119,38 @@ export default function Sidebar({
       items: [
         {
           id: 'document-intelligence',
-          label: 'Document Intelligence',
+          label: 'Doc Intelligence',
           icon: FileSearch,
-          badge: 'Text + Schema',
-          badgeColor: 'bg-indigo-50 text-indigo-700 border-indigo-200',
-          desc: 'Field extraction & OCR bbox',
           roles: ['scrutiny_officer', 'senior_officer', 'admin', 'auditor'],
         },
         {
           id: 'photo-radar',
-          label: 'Photo Radar & Forensics',
+          label: 'Photo Radar',
           icon: ScanEye,
-          badge: 'pHash + ELA',
-          badgeColor: 'bg-amber-50 text-amber-800 border-amber-200',
-          desc: 'Radar, Forensics & Reality',
           roles: ['scrutiny_officer', 'senior_officer', 'admin'],
         },
         {
           id: 'impossibility-engine',
           label: 'Impossibility Engine',
           icon: Network,
-          badge: (counts.impossibilities && counts.impossibilities > 0) ? `${counts.impossibilities} Flags` : null,
-          badgeColor: 'bg-rose-50 text-rose-700 border-rose-200',
-          desc: 'Multi-college graph conflicts',
+          badge: (counts.impossibilities && counts.impossibilities > 0) ? `${counts.impossibilities}` : null,
           roles: ['scrutiny_officer', 'senior_officer', 'admin', 'auditor'],
         },
       ]
     },
     {
-      title: 'Verification and Audit',
+      title: 'Audit & Rules',
       items: [
         {
           id: 'audit-ledger',
-          label: 'Audit and Receipts',
+          label: 'Audit & Receipts',
           icon: FileCheck2,
-          badge: 'SHA-256',
-          badgeColor: 'bg-indigo-50 text-indigo-700 border-indigo-200',
-          desc: 'Timeline of receipts & tamper check',
           roles: ['scrutiny_officer', 'senior_officer', 'admin', 'auditor', 'institution_user'],
         },
         {
           id: 'regulations',
-          label: 'Regulation-as-Code',
+          label: 'Rules Catalog',
           icon: BookOpenCheck,
-          badge: 'APH 2025',
-          badgeColor: 'bg-purple-50 text-purple-700 border-purple-200',
-          desc: 'Handbook rule catalog & versions',
           roles: ['senior_officer', 'admin'],
         },
       ]
@@ -136,9 +162,6 @@ export default function Sidebar({
           id: 'inspection-planner',
           label: 'Inspection Planner',
           icon: Compass,
-          badge: 'GIS Cluster',
-          badgeColor: 'bg-teal-50 text-teal-700 border-teal-200',
-          desc: 'District clusters & visit order',
           roles: ['scrutiny_officer', 'senior_officer', 'admin'],
         },
       ]
@@ -164,41 +187,70 @@ export default function Sidebar({
     if (onClose) onClose();
   };
 
+  const roleDisplayNames = {
+    scrutiny_officer: 'Scrutiny Officer',
+    senior_officer: 'Regional Officer',
+    admin: 'Central Admin',
+    auditor: 'Independent Auditor',
+    institution_user: 'Institution User'
+  };
+
   return (
     <>
       {/* Mobile Backdrop Overlay */}
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-40 lg:hidden transition-opacity animate-fadeIn" 
+          className="fixed inset-0 bg-black/55 dark:bg-black/70 backdrop-blur-xs z-40 lg:hidden transition-opacity animate-fadeIn" 
           onClick={onClose} 
           aria-hidden="true"
         />
       )}
 
-      <aside className={`
-        fixed inset-y-0 left-0 z-50 w-64 sm:w-72 max-w-[85vw] bg-white border-r border-slate-200 
-        flex flex-col justify-between h-full overflow-y-auto p-4 pb-8 gap-6 scrollbar-thin shadow-2xl transition-transform duration-250 ease-in-out
-        lg:relative lg:z-0 lg:w-64 xl:w-72 lg:shrink-0 lg:shadow-none lg:translate-x-0 lg:flex
-        ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+      {/* Main Aside Component (Glass Surface + Smooth Rail Transitions) */}
+      <aside 
+        ref={asideRef}
+        id="sidebar-nav"
+        role={isOpen ? 'dialog' : undefined}
+        aria-modal={isOpen ? 'true' : undefined}
+        aria-label="Navigation sidebar"
+        className={`
+        fixed inset-y-0 left-0 z-50 glass-surface border-r border-border text-text
+        flex flex-col justify-between h-full overflow-y-auto p-3 pb-6 gap-4 scrollbar-slim sidebar-scroll-mask transition-[width] duration-200 ease-in-out select-none
+        lg:relative lg:z-0 lg:shrink-0 lg:shadow-none lg:translate-x-0 lg:flex
+        ${isOpen ? 'translate-x-0 w-[260px]' : '-translate-x-full lg:translate-x-0'}
+        ${isCollapsed ? 'lg:w-[72px] lg:max-w-[72px] lg:px-2 overflow-x-hidden' : 'lg:w-[260px]'}
       `}>
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-4 w-full min-w-0">
           
-          {/* Role Identity Header */}
-          <div className="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-200/80 flex items-center justify-between shrink-0">
-            <div className="min-w-0">
-              <div className="text-[10px] uppercase font-bold tracking-wider text-slate-400">
-                Active Role
+          {/* Top Role Identity: Expanded = Name + Dot; Collapsed = Dot only */}
+          <div className={`px-2.5 py-2 bg-surface-2 rounded-lg border border-border flex items-center shrink-0 transition-all ${
+            isCollapsed ? 'lg:justify-center lg:px-1' : 'justify-between'
+          }`}>
+            {isCollapsed ? (
+              <div 
+                className="hidden lg:flex items-center justify-center p-1"
+                title={`Active Role: ${roleDisplayNames[currentRole] || currentRole}`}
+              >
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-emerald-500/20" />
               </div>
-              <div className="text-xs font-bold text-slate-800 capitalize truncate">
-                {currentRole?.replace('_', ' ')}
+            ) : null}
+
+            <div className={`min-w-0 ${isCollapsed ? 'lg:hidden' : 'block'}`}>
+              <div className="text-[10px] uppercase font-bold tracking-wider text-text-subtle">
+                Role Context
+              </div>
+              <div className="text-xs font-bold text-text truncate">
+                {roleDisplayNames[currentRole] || currentRole?.replace('_', ' ')}
               </div>
             </div>
-            <div className="flex items-center space-x-2 shrink-0">
+
+            <div className={`flex items-center space-x-1.5 shrink-0 ${isCollapsed ? 'lg:hidden' : 'flex'}`}>
               <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
+              {/* Mobile Close Button */}
               <button
                 type="button"
                 onClick={onClose}
-                className="lg:hidden p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 transition cursor-pointer"
+                className="lg:hidden p-1 rounded-lg text-text-muted hover:text-text hover:bg-surface-2 transition cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                 aria-label="Close sidebar"
               >
                 <X className="w-4 h-4" />
@@ -206,69 +258,113 @@ export default function Sidebar({
             </div>
           </div>
 
-          {/* Grouped Navigation Sections */}
-          {navSections.map((section) => {
-            const permittedItems = section.items.filter(item => item.roles.includes(currentRole));
-            if (permittedItems.length === 0) return null;
+          {/* Grouped Navigation Sections with Liquid Highlight Pill */}
+          <nav 
+            ref={navRef}
+            onMouseLeave={() => setHoveredTab(null)}
+            className="flex flex-col space-y-5 relative"
+          >
+            {/* Liquid Highlight Pill (Slides to active/hovered tab) */}
+            <div 
+              className="sidebar-liquid-pill absolute left-0 right-0 rounded-xl pointer-events-none bg-primary/16 border border-primary/25 border-l-[3px] border-l-primary z-0"
+              style={{
+                transform: `translateY(${pillStyle.top}px)`,
+                height: `${pillStyle.height}px`,
+                opacity: pillStyle.opacity,
+                top: 0
+              }}
+              aria-hidden="true"
+            />
 
-            return (
-              <div key={section.title} className="space-y-1.5">
-                <div className="text-[10px] font-bold tracking-wider text-slate-400 uppercase px-3 mb-1">
-                  {section.title}
+            {navSections.map((section) => {
+              const permittedItems = section.items.filter(item => item.roles.includes(currentRole));
+              if (permittedItems.length === 0) return null;
+
+              return (
+                <div key={section.title} className="space-y-1 relative z-10">
+                  {/* Group Title (11-12px, 600, uppercase with slight tracking, text-subtle) */}
+                  <div className={`text-[11px] font-semibold tracking-wider text-text-subtle uppercase px-3 mb-1.5 ${
+                    isCollapsed ? 'lg:hidden' : 'block'
+                  }`}>
+                    {section.title}
+                  </div>
+
+                  <div className="flex flex-col gap-1">
+                    {permittedItems.map((item) => {
+                      const Icon = item.icon;
+                      const isActive = activeTab === item.id;
+                      const isHovered = hoveredTab === item.id;
+                      const isAlertBadge = item.id === 'evidence-lens' || item.id === 'manual-review-queue';
+
+                      return (
+                        <button
+                          key={item.id}
+                          id={`sidebar-tab-${item.id}`}
+                          onClick={() => handleItemClick(item.id)}
+                          onMouseEnter={() => setHoveredTab(item.id)}
+                          title={item.label}
+                          className={`w-full flex items-center rounded-lg text-left transition-colors group cursor-pointer relative h-10 outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
+                            isCollapsed 
+                              ? 'lg:justify-center lg:p-2' 
+                              : 'px-3 py-2 justify-between gap-2'
+                          } ${
+                            isActive || isHovered
+                              ? 'text-primary dark:text-white font-semibold'
+                              : 'text-text-muted hover:text-text font-medium'
+                          }`}
+                        >
+                          <div className={`flex items-center min-w-0 ${isCollapsed ? 'lg:justify-center' : 'space-x-2.5 flex-1'}`}>
+                            <Icon className={`w-4 h-4 shrink-0 transition-transform duration-150 group-hover:translate-x-0.5 ${
+                              isActive ? 'text-primary dark:text-white' : 'text-text-muted group-hover:text-text'
+                            }`} />
+                            
+                            {/* Label for expanded mode (14px/400-500) */}
+                            <span className={`text-[13px] truncate ${
+                              isCollapsed ? 'lg:hidden' : 'block'
+                            }`}>
+                              {item.label}
+                            </span>
+                          </div>
+
+                          {/* Badge for expanded mode: small neutral pill (surface-2 background, text-muted), except alerts which use danger tint */}
+                          {item.badge && !isCollapsed && (
+                            <span className={`text-[10px] px-2 py-0.5 rounded-full border font-mono font-medium shrink-0 shadow-2xs ${
+                              isAlertBadge
+                                ? 'bg-danger/10 text-danger border-danger/25'
+                                : 'bg-surface-2 text-text-muted border-border'
+                            }`}>
+                              {item.badge}
+                            </span>
+                          )}
+
+                          {/* Collapsed Rail Tooltip (Floating to the right on hover, 150ms delay) */}
+                          {isCollapsed && (
+                            <div 
+                              role="tooltip"
+                              className="absolute left-full ml-3 px-2.5 py-1 bg-surface text-text text-xs font-semibold rounded-md shadow-lg border border-border whitespace-nowrap z-50 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-150 delay-150 hidden lg:block"
+                            >
+                              {item.label}
+                            </div>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
-
-                <div className="flex flex-col gap-1">
-                  {permittedItems.map((item) => {
-                    const Icon = item.icon;
-                    const isActive = activeTab === item.id;
-                    return (
-                      <button
-                        key={item.id}
-                        id={`sidebar-tab-${item.id}`}
-                        onClick={() => handleItemClick(item.id)}
-                      className={`w-full flex items-start justify-between px-3 py-2 rounded-xl text-left transition-all group cursor-pointer gap-2 ${
-                        isActive
-                          ? 'bg-sky-50 text-sky-800 font-semibold border border-sky-200/90 shadow-2xs'
-                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 border border-transparent'
-                      }`}
-                    >
-                      <div className="flex items-start space-x-2.5 min-w-0 flex-1">
-                        <Icon className={`w-4 h-4 shrink-0 mt-0.5 transition-colors ${
-                          isActive ? 'text-sky-600' : 'text-slate-400 group-hover:text-slate-600'
-                        }`} />
-                        <div className="min-w-0 flex-1">
-                          <div className="text-xs font-semibold leading-snug">{item.label}</div>
-                          <div className="text-[10px] text-slate-500 font-normal leading-snug truncate mt-0.5">{item.desc}</div>
-                        </div>
-                      </div>
-                      {item.badge && (
-                        <span className={`text-[9px] px-1.5 py-0.5 rounded-full border font-mono font-medium shrink-0 self-start mt-0.5 ${item.badgeColor}`}>
-                          {item.badge}
-                        </span>
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Statutory Legal Safe-Harbor Box */}
-      <div className="pt-4 border-t border-slate-200 shrink-0 mt-4">
-        <div className="bg-amber-50/70 rounded-xl p-3 border border-amber-200/70 text-xs space-y-1.5">
-          <div className="flex items-center space-x-1.5 text-amber-900 font-bold">
-            <Lock className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-            <span className="text-[11px]">Statutory Safeguard</span>
-          </div>
-          <p className="text-[10px] text-amber-800/90 leading-relaxed">
-            All AI outputs represent advisory indicators for review. Autonomous determinations are prohibited; committee inquiry required.
-          </p>
+              );
+            })}
+          </nav>
         </div>
-      </div>
-    </aside>
+
+        {/* Bottom Note: Short single line */}
+        <div className="pt-2 border-t border-border shrink-0">
+          <div className={`text-[10px] text-text-muted px-2 py-0.5 truncate text-center ${
+            isCollapsed ? 'lg:hidden' : 'block'
+          }`}>
+            Advisory Indicators Only
+          </div>
+        </div>
+      </aside>
     </>
   );
 }
-

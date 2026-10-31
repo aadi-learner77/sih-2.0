@@ -310,14 +310,14 @@ export default function PhotoReuseRadar({ onNavigateTab, onSelectApplication }) 
   return (
     <div className="space-y-6 max-w-[1720px] mx-auto">
       {/* Three Sub-Tabs Navigation for Photo Radar & Forensics */}
-      <div className="flex flex-wrap items-center gap-2 p-1.5 bg-slate-200/80 rounded-2xl border border-slate-300/80 w-fit">
+      <div className="flex flex-wrap items-center gap-2 p-1.5 bg-surface-2 rounded-xl border border-border p-1 w-fit">
         <button
           id="tab-photo-reuse-radar"
           onClick={() => setForensicsSubTab('radar')}
           className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer ${
             forensicsSubTab === 'radar'
-              ? 'bg-amber-600 text-white shadow-sm'
-              : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
+              ? 'bg-primary text-white shadow-xs font-semibold'
+              : 'text-muted hover:text-text hover:bg-surface'
           }`}
         >
           <ScanEye className="w-4 h-4" />
@@ -329,8 +329,8 @@ export default function PhotoReuseRadar({ onNavigateTab, onSelectApplication }) 
           onClick={() => setForensicsSubTab('document-forensics')}
           className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer ${
             forensicsSubTab === 'document-forensics'
-              ? 'bg-amber-600 text-white shadow-sm'
-              : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
+              ? 'bg-primary text-white shadow-xs font-semibold'
+              : 'text-muted hover:text-text hover:bg-surface'
           }`}
         >
           <FileSearch className="w-4 h-4" />
@@ -342,8 +342,8 @@ export default function PhotoReuseRadar({ onNavigateTab, onSelectApplication }) 
           onClick={() => setForensicsSubTab('proof-of-reality')}
           className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer ${
             forensicsSubTab === 'proof-of-reality'
-              ? 'bg-amber-600 text-white shadow-sm'
-              : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
+              ? 'bg-primary text-white shadow-xs font-semibold'
+              : 'text-muted hover:text-text hover:bg-surface'
           }`}
         >
           <Compass className="w-4 h-4" />
@@ -365,26 +365,26 @@ export default function PhotoReuseRadar({ onNavigateTab, onSelectApplication }) 
       {forensicsSubTab === 'radar' && (
         <>
           {/* Top Banner & Control Deck */}
-          <div className="bg-gradient-to-r from-amber-50 via-white to-slate-50 border border-amber-200/90 rounded-2xl p-5 shadow-xs">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-amber-200/70">
+          <div className="bg-surface border border-border rounded-xl p-5 shadow-xs">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-border">
           <div>
             <div className="flex flex-wrap items-center gap-2 mb-1.5">
               <span className="text-xs font-bold uppercase tracking-wider text-amber-900 bg-amber-100/80 px-2.5 py-0.5 rounded-full border border-amber-300">
                 National Infrastructure Verification Radar
               </span>
-              <span className="text-xs text-slate-400">•</span>
-              <span className="text-xs font-semibold text-slate-600">
+              <span className="text-xs text-text-subtle">•</span>
+              <span className="text-xs font-semibold text-text-muted">
                 OpenCLIP ViT-B-32 & Invariant Perceptual Hashing (pHash)
               </span>
               {isDemoData && (
                 <DemoDataBadge message="Demo data (live radar fallback)" />
               )}
             </div>
-            <h1 className="text-xl md:text-2xl font-black text-slate-900 tracking-tight flex items-center space-x-2">
-              <ScanEye className="w-6 h-6 text-amber-600 shrink-0" />
+            <h1 className="text-xl md:text-2xl font-bold text-text tracking-tight flex items-center space-x-2">
+              <ScanEye className="w-6 h-6 text-primary shrink-0" />
               <span>Photo Reuse Radar: Multi-Institutional Cluster Analysis</span>
             </h1>
-            <p className="text-xs text-slate-600 mt-1 max-w-3xl">
+            <p className="text-xs text-muted mt-1 max-w-3xl">
               Cross-institutional cluster graph identifying facilities claimed across separate colleges. 
               Institutions are rendered as nodes and shared infrastructure photos form conflict edges.
             </p>
@@ -404,8 +404,8 @@ export default function PhotoReuseRadar({ onNavigateTab, onSelectApplication }) 
             </button>
 
             {/* Manual Upload Input */}
-            <label className="py-2.5 px-3.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 text-slate-800 text-xs font-bold transition-all shadow-2xs flex items-center space-x-2 cursor-pointer">
-              <Upload className="w-4 h-4 text-slate-600" />
+            <label className="py-2.5 px-3.5 rounded-xl bg-surface hover:bg-surface-2 border border-border text-text text-xs font-bold transition-all shadow-2xs flex items-center space-x-2 cursor-pointer">
+              <Upload className="w-4 h-4 text-text-muted" />
               <span>{customUploadLoading ? 'Scanning...' : 'Upload Image'}</span>
               <input
                 type="file"
@@ -420,23 +420,23 @@ export default function PhotoReuseRadar({ onNavigateTab, onSelectApplication }) 
 
         {/* Live Metrics Row */}
         <div className="pt-3.5 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-          <div className="bg-white/80 p-2.5 rounded-xl border border-slate-200 shadow-2xs">
-            <div className="text-[10px] text-slate-500 uppercase font-semibold">Institutions in Graph</div>
-            <div className="text-lg font-black text-slate-900 mt-0.5">{institutionCount} Colleges</div>
+          <div className="bg-surface p-2.5 rounded-xl border border-border shadow-2xs">
+            <div className="text-[10px] text-muted uppercase font-semibold">Institutions in Graph</div>
+            <div className="text-lg font-bold text-text mt-0.5">{institutionCount} Colleges</div>
           </div>
 
-          <div className="bg-white/80 p-2.5 rounded-xl border border-slate-200 shadow-2xs">
-            <div className="text-[10px] text-slate-500 uppercase font-semibold">Shared Photo Edges</div>
+          <div className="bg-surface p-2.5 rounded-xl border border-border shadow-2xs">
+            <div className="text-[10px] text-muted uppercase font-semibold">Shared Photo Edges</div>
             <div className="text-lg font-black text-rose-600 mt-0.5">{conflictLinksCount} Conflict Links</div>
           </div>
 
-          <div className="bg-white/80 p-2.5 rounded-xl border border-slate-200 shadow-2xs">
-            <div className="text-[10px] text-slate-500 uppercase font-semibold">Max Visual Similarity</div>
+          <div className="bg-surface p-2.5 rounded-xl border border-border shadow-2xs">
+            <div className="text-[10px] text-muted uppercase font-semibold">Max Visual Similarity</div>
             <div className="text-lg font-black text-rose-700 mt-0.5">{maxSimilarity}% Match</div>
           </div>
 
-          <div className="bg-white/80 p-2.5 rounded-xl border border-slate-200 shadow-2xs">
-            <div className="text-[10px] text-slate-500 uppercase font-semibold">Statutory Governance</div>
+          <div className="bg-surface p-2.5 rounded-xl border border-border shadow-2xs">
+            <div className="text-[10px] text-muted uppercase font-semibold">Statutory Governance</div>
             <div className="text-xs font-bold text-amber-800 mt-1 flex items-center space-x-1">
               <ShieldAlert className="w-3.5 h-3.5 text-amber-600" />
               <span>Indicator for review</span>
@@ -447,7 +447,7 @@ export default function PhotoReuseRadar({ onNavigateTab, onSelectApplication }) 
 
       {/* Simulated Upload Alert Feedback Banner */}
       {simulationBanner && (
-        <div className="bg-rose-50 border-2 border-rose-300 rounded-2xl p-4 shadow-sm flex items-start justify-between gap-3 animate-fadeIn">
+        <div className="bg-rose-50 border-2 border-rose-300 rounded-xl p-4 shadow-sm flex items-start justify-between gap-3 animate-fadeIn">
           <div className="flex items-start space-x-3">
             <div className="w-8 h-8 rounded-xl bg-rose-600 text-white flex items-center justify-center shrink-0">
               <Zap className="w-4 h-4" />
@@ -480,12 +480,12 @@ export default function PhotoReuseRadar({ onNavigateTab, onSelectApplication }) 
         {/* Left Column (7 cols): Force-Directed Cluster Graph */}
         <div className="xl:col-span-7 h-full">
           <div className="space-y-3 sticky top-4">
-            <div className="flex items-center justify-between text-xs font-bold text-slate-800 px-1">
+            <div className="flex items-center justify-between text-xs font-bold text-text px-1">
               <span className="flex items-center space-x-1.5">
-                <NetworkIcon className="w-4 h-4 text-sky-600" />
+                <NetworkIcon className="w-4 h-4 text-primary" />
                 <span>Force-Directed Cluster Network</span>
               </span>
-              <span className="text-[11px] font-normal text-slate-500">
+              <span className="text-[11px] font-normal text-muted">
                 Click any edge or node to load comparison
               </span>
             </div>
@@ -499,8 +499,8 @@ export default function PhotoReuseRadar({ onNavigateTab, onSelectApplication }) 
             />
 
             {/* Quick Cluster Selector Pills */}
-            <div className="bg-white border border-slate-200 rounded-xl p-3 shadow-2xs flex flex-wrap items-center justify-between gap-2">
-              <span className="text-xs font-bold text-slate-700">Quick Select Reuse Case:</span>
+            <div className="bg-surface border border-border rounded-xl p-3 shadow-2xs flex flex-wrap items-center justify-between gap-2">
+              <span className="text-xs font-semibold text-text">Quick Select Reuse Case:</span>
               <div className="flex flex-wrap gap-1.5">
                 {radarPairs.map((pair) => (
                   <button
@@ -509,7 +509,7 @@ export default function PhotoReuseRadar({ onNavigateTab, onSelectApplication }) 
                     className={`px-2.5 py-1 rounded-lg text-xs font-medium border transition-all ${
                       selectedPairId === pair.id
                         ? 'bg-[#E8F1FB] border-[#BBD4F0] text-[#000000] font-bold'
-                        : 'bg-white border-[#D5D9DE] text-[#333333] hover:bg-[#F4F6F8]'
+                        : 'bg-surface border-[#D5D9DE] text-[#333333] hover:bg-[#F4F6F8]'
                     }`}
                   >
                     <span>{pair.category}</span>
