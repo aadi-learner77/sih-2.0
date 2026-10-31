@@ -26,3 +26,4 @@ c = c.replace(target1, repl1).replace(target2, repl2)
 with open('frontend/src/components/EvidenceLens.jsx', 'w', encoding='utf-8', newline='') as f:
     f.write(c)
 print('EvidenceLens updated successfully')
+

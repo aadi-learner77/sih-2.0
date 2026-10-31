@@ -33,3 +33,4 @@ with open('frontend/src/pages/DocumentIntelligencePage.jsx', 'w', encoding='utf-
     f.write(c)
 
 print('Updated sample doc & toggle boxes to btn-solid')
+
