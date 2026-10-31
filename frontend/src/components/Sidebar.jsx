@@ -150,14 +150,16 @@ export default function Sidebar({
       )}
 
       {/* Main Aside Component */}
-      <aside className={`
+      <aside 
+        id="sidebar-nav"
+        className={`
         fixed inset-y-0 left-0 z-50 bg-sidebar-bg border-r border-border text-text
         flex flex-col justify-between h-full overflow-y-auto p-3 pb-6 gap-4 scrollbar-slim transition-[width] duration-200 ease-in-out select-none
         lg:relative lg:z-0 lg:shrink-0 lg:shadow-none lg:translate-x-0 lg:flex
         ${isOpen ? 'translate-x-0 w-[260px]' : '-translate-x-full lg:translate-x-0'}
-        ${isCollapsed ? 'lg:w-[72px] lg:px-2' : 'lg:w-[260px]'}
+        ${isCollapsed ? 'lg:w-[72px] lg:max-w-[72px] lg:px-2 overflow-x-hidden' : 'lg:w-[260px]'}
       `}>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 w-full min-w-0">
           
           {/* Top Role Identity: Expanded = Name + Dot; Collapsed = Dot only */}
           <div className={`px-2.5 py-2 bg-surface-2 rounded-lg border border-border flex items-center shrink-0 transition-all ${

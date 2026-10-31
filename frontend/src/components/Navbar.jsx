@@ -241,7 +241,7 @@ export default function Navbar({
               </div>
 
               <div className="flex items-center space-x-2">
-                <div className="flex items-baseline tracking-tight font-black font-sans text-xl">
+                <div id="header-wordmark" className="flex items-baseline tracking-tight font-black font-sans text-xl">
                   <span className="text-[#0B3D91] dark:text-white font-black tracking-tight">PRAMAAN</span>
                   <span className="text-[#FF9933] font-black ml-0.5">
                     -X
@@ -280,7 +280,7 @@ export default function Navbar({
           <div className="flex items-center space-x-2 sm:space-x-3 shrink-0">
             
             {/* Single Compact Status Pill with Two Small Dots */}
-            <div className="hidden md:flex items-center space-x-2.5 px-3 py-1.5 rounded-full border border-border bg-surface-2 text-xs font-medium text-text-muted shadow-xs">
+            <div id="header-status-pill" className="hidden md:flex items-center space-x-2.5 px-3 py-1.5 rounded-full border border-border bg-surface-2 text-xs font-medium text-text-muted shadow-xs">
               <div className="flex items-center space-x-1.5">
                 <span 
                   className={`w-2 h-2 rounded-full ${
@@ -356,6 +356,7 @@ export default function Navbar({
               {/* User Dropdown Menu: Solid Surface, 280px, Right Aligned, High Z-Index */}
               {isUserMenuOpen && (
                 <div 
+                  id="user-menu-dropdown"
                   className="absolute right-0 mt-2 w-[280px] rounded-xl border border-border bg-surface p-2 shadow-xl z-50 animate-fadeIn text-xs text-text space-y-2"
                   role="menu"
                   aria-orientation="vertical"

@@ -521,7 +521,7 @@ export default function Dashboard({
         </div>
 
         {/* Desktop Triage Table (>=1024px: No horizontal scroll at >= 1280px, No Overlap) */}
-        <div className="hidden lg:block w-full">
+        <div id="triage-table" className="hidden lg:block w-full">
           {/* Header Row: 12px, 600, sentence case, text-muted */}
           <div className="grid xl:grid-cols-[minmax(260px,2fr)_150px_120px_minmax(220px,2fr)_200px_180px] grid-cols-[minmax(260px,2.5fr)_120px_minmax(220px,2.5fr)_200px_180px] px-5 py-3 bg-surface-2 text-text-muted text-[12px] font-semibold border-b border-border items-center">
             <div>Application & Institution</div>

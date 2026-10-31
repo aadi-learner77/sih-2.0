@@ -484,7 +484,10 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
           aria-modal="true"
           aria-labelledby="resolve-ticket-title"
         >
-          <div className="bg-surface border border-border rounded-xl w-[560px] max-w-[95vw] max-h-[90vh] overflow-y-auto p-6 shadow-xl space-y-4 animate-scale-up">
+          <div 
+            id="resolve-ticket-modal"
+            className="bg-surface border border-border rounded-xl w-[560px] max-w-[95vw] max-h-[90vh] overflow-y-auto p-6 shadow-xl space-y-4 animate-scale-up"
+          >
             
             {/* Modal Title Row */}
             <div className="flex items-center justify-between border-b border-border pb-3">
@@ -599,6 +602,7 @@ export default function ManualReviewQueuePage({ currentUser, onNavigateToAudit }
               </button>
               <button
                 type="button"
+                id="btn-confirm-resolve-ticket"
                 disabled={resolving || !resolveNotes.trim()}
                 onClick={handleResolveSubmit}
                 className="h-10 px-5 text-xs font-semibold rounded-xl shadow-xs transition-colors cursor-pointer flex items-center space-x-1.5 bg-primary hover:bg-primary-hover text-white disabled:opacity-50 disabled:cursor-not-allowed"

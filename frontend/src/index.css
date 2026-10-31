@@ -957,10 +957,8 @@ tbody td {
 /* ==========================================================================
    SIDEBAR
    ========================================================================= */
-aside,
-aside.bg-white {
-  width: 285px !important;
-  min-width: 285px !important;
+aside {
+  background-color: var(--sidebar-bg);
   background-color: var(--surface) !important;
   border-right: 1px solid var(--border) !important;
   border-left: none !important;
@@ -969,8 +967,7 @@ aside.bg-white {
 }
 
 aside button[id^="sidebar-tab-"] {
-  min-height: 48px !important;
-  height: auto !important;
+  /* 40px item height handled by Tailwind */
   border-radius: var(--radius-md) !important;
   color: var(--text-muted) !important; /* #333333 */
   font-weight: 400 !important;
@@ -1443,10 +1440,7 @@ header[class*="border-b"] > div {
 }
 
 /* Sidebar: padding 16px; nav items 10px 12px padding with an 8px gap between items; section label to first item gap 8px; space between sidebar groups 24px */
-aside {
-  padding: var(--space-4) !important; /* 16px */
-  gap: var(--space-5) !important; /* 24px */
-}
+/* Sidebar rhythm handled by Tailwind */
 
 aside nav button,
 aside [id^="sidebar-tab-"] {
