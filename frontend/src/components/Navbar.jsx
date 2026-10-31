@@ -9,7 +9,8 @@ import {
   ChevronDown,
   UserCheck,
   Monitor,
-  Search
+  Search,
+  Layers
 } from 'lucide-react';
 import AlertBellDrawer from './AlertBellDrawer';
 import ConfirmModal from './ui/ConfirmModal';
