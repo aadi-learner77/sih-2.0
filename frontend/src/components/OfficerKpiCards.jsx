@@ -137,7 +137,7 @@ function KpiCardItem({ card, isSelected, onClick, loading }) {
       onMouseMove={handleMouseMove}
       className={`kpi-glass-card rounded-lg p-4 sm:p-5 border cursor-pointer group flex flex-col justify-between h-full select-none relative overflow-hidden outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 transition-all duration-200 ${
         isSelected
-          ? 'border-primary bg-primary/5 shadow-xs'
+          ? 'ring-2 ring-primary border-primary shadow-xs'
           : 'border-border hover:border-border-strong shadow-card'
       }`}
     >
