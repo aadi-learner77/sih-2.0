@@ -200,7 +200,8 @@ export default function App() {
     let isMounted = true;
     const checkBackendHealth = async () => {
       try {
-        const res = await fetch('http://localhost:8000/health');
+        const h = (typeof window !== 'undefined' && window.location.hostname === '127.0.0.1') ? '127.0.0.1' : 'localhost';
+        const res = await fetch(`http://${h}:8000/health`).catch(() => fetch('http://127.0.0.1:8000/health'));
         if (isMounted) setIsLiveMode(res.ok);
       } catch (e) {
         if (isMounted) setIsLiveMode(false);

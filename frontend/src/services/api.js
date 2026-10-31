@@ -1,6 +1,14 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
+const getDefaultBaseUrl = () => {
+  if (import.meta.env.VITE_API_URL) return import.meta.env.VITE_API_URL;
+  if (typeof window !== 'undefined' && window.location.hostname === '127.0.0.1') {
+    return 'http://127.0.0.1:8000/api/v1';
+  }
+  return 'http://localhost:8000/api/v1';
+};
+
+const API_BASE_URL = getDefaultBaseUrl();
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -24,7 +32,15 @@ apiClient.interceptors.request.use(
 // Intercept 401 Unauthorized responses to redirect to login
 apiClient.interceptors.response.use(
   (response) => response,
-  (error) => {
+  async (error) => {
+    // Retry once with 127.0.0.1 if Windows localhost IPv6 fails
+    if (error.message === 'Network Error' && error.config && !error.config._retried) {
+      error.config._retried = true;
+      if (typeof error.config.baseURL === 'string' && error.config.baseURL.includes('localhost:8000')) {
+        error.config.baseURL = error.config.baseURL.replace('localhost:8000', '127.0.0.1:8000');
+        return apiClient(error.config);
+      }
+    }
     if (error.response && error.response.status === 401) {
       const isLoginRequest = error.config?.url?.includes('/auth/login');
       if (!isLoginRequest) {
