@@ -2,10 +2,7 @@ import axios from 'axios';
 
 const getDefaultBaseUrl = () => {
   if (import.meta.env.VITE_API_URL) return import.meta.env.VITE_API_URL;
-  if (typeof window !== 'undefined' && window.location.hostname === '127.0.0.1') {
-    return 'http://127.0.0.1:8000/api/v1';
-  }
-  return 'http://localhost:8000/api/v1';
+  return 'http://127.0.0.1:8000/api/v1';
 };
 
 const API_BASE_URL = getDefaultBaseUrl();
@@ -324,14 +321,6 @@ export const api = {
     if (docType) formData.append('document_type', docType);
     formData.append('file', file);
     const res = await apiClient.post('/preflight/upload', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
-    return res.data;
-  },
-  ingestDocument: async (file) => {
-    const formData = new FormData();
-    formData.append('file', file);
-    const res = await apiClient.post('/documents/ingest', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
     return res.data;

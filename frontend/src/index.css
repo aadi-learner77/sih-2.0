@@ -617,7 +617,7 @@ button[type="submit"]:not(#login-root *):not(.login-root *) *,
 }
 
 /* Secondary Buttons: white background, 1px solid #BFC5CC border, black text. Hover: #F1F3F5 */
-button:not(#login-root button):not(.login-root button):not(#login-root *):not(.login-root *):not(.btn-primary):not([type="submit"]):not(.bg-sky-600):not(.bg-purple-600):not(.bg-purple-700):not(.bg-indigo-600):not(.bg-emerald-600):not(.bg-amber-600):not(#launch-evidence-lens-btn):not([class*="from-sky-600"]):not([class*="from-purple-700"]):not([class*="from-amber-600"]):not([id^="sidebar-tab-"]):not(.p-1),
+button:not(#login-root button):not(.login-root button):not(#login-root *):not(.login-root *):not(.btn-primary):not([type="submit"]):not(.bg-sky-600):not(.bg-purple-600):not(.bg-purple-700):not(.bg-indigo-600):not(.bg-emerald-600):not(.bg-amber-600):not(#launch-evidence-lens-btn):not([class*="from-sky-600"]):not([class*="from-purple-700"]):not([class*="from-amber-600"]):not([id^="sidebar-tab-"]):not(.p-1):not(#theme-toggle-btn),
 .btn-secondary,
 #launch-audit-ledger-btn {
   background-color: var(--surface) !important; /* #FFFFFF */
@@ -639,7 +639,7 @@ button:not(#login-root button):not(.login-root button):not(#login-root *):not(.l
   cursor: pointer !important;
 }
 
-button:not(#login-root button):not(.login-root button):not(#login-root *):not(.login-root *):not(.btn-primary):not([type="submit"]):not(.bg-sky-600):not(.bg-purple-600):not(.bg-purple-700):not(.bg-indigo-600):not(.bg-emerald-600):not(.bg-amber-600):not(#launch-evidence-lens-btn):not([class*="from-sky-600"]):not([class*="from-purple-700"]):not([class*="from-amber-600"]):not([id^="sidebar-tab-"]):not(.p-1):hover,
+button:not(#login-root button):not(.login-root button):not(#login-root *):not(.login-root *):not(.btn-primary):not([type="submit"]):not(.bg-sky-600):not(.bg-purple-600):not(.bg-purple-700):not(.bg-indigo-600):not(.bg-emerald-600):not(.bg-amber-600):not(#launch-evidence-lens-btn):not([class*="from-sky-600"]):not([class*="from-purple-700"]):not([class*="from-amber-600"]):not([id^="sidebar-tab-"]):not(.p-1):not(#theme-toggle-btn):hover,
 .btn-secondary:hover,
 #launch-audit-ledger-btn:hover {
   background-color: var(--secondary-hover) !important; /* #F1F3F5 */
@@ -647,7 +647,7 @@ button:not(#login-root button):not(.login-root button):not(#login-root *):not(.l
   color: var(--text) !important;
 }
 
-button:not(#login-root button):not(.login-root button):not(#login-root *):not(.login-root *):not(.btn-primary):not([type="submit"]):not(.bg-sky-600):not(.bg-purple-600):not(.bg-purple-700):not(.bg-indigo-600):not(.bg-emerald-600):not(.bg-amber-600):not(#launch-evidence-lens-btn):not([class*="from-sky-600"]):not([class*="from-purple-700"]):not([class*="from-amber-600"]):not([id^="sidebar-tab-"]):not(.p-1) * {
+button:not(#login-root button):not(.login-root button):not(#login-root *):not(.login-root *):not(.btn-primary):not([type="submit"]):not(.bg-sky-600):not(.bg-purple-600):not(.bg-purple-700):not(.bg-indigo-600):not(.bg-emerald-600):not(.bg-amber-600):not(#launch-evidence-lens-btn):not([class*="from-sky-600"]):not([class*="from-purple-700"]):not([class*="from-amber-600"]):not([id^="sidebar-tab-"]):not(.p-1):not(#theme-toggle-btn) * {
   color: var(--text) !important;
 }
 
@@ -664,7 +664,7 @@ td button {
 /* ==========================================================================
    INPUTS, SELECTS, SEARCH BOXES
    ========================================================================== */
-input:not(#login-root input):not(.login-root input):not([type="checkbox"]):not([type="radio"]),
+input:not(#login-root input):not(.login-root input):not([type="checkbox"]):not([type="radio"]):not([class*="pl-"]):not([class*="!pl-"]),
 select:not(#login-root select):not(.login-root select),
 textarea:not(#login-root textarea):not(.login-root textarea) {
   background-color: var(--surface) !important;
@@ -686,7 +686,14 @@ input[class*="pl-12"],
 input[class*="!pl-"],
 input#email,
 input#password {
-  padding-left: 46px !important;
+  padding-left: 40px !important;
+}
+
+input:not(#login-root input):not(.login-root input)[class*="pl-10"],
+input:not(#login-root input):not(.login-root input)[class*="pl-11"],
+input:not(#login-root input):not(.login-root input)[class*="pl-12"],
+input:not(#login-root input):not(.login-root input)[class*="!pl-"] {
+  padding-left: 40px !important;
 }
 
 /* Demo accounts quick-fill buttons in login */
@@ -2875,4 +2882,39 @@ body, #root, header, aside, main {
 [data-reveal].revealed {
   opacity: 1 !important;
   transform: translateY(0) !important;
+}
+
+/* Precise App Header Bar Dimensions */
+#app-header-bar {
+  padding: 0 !important;
+}
+#app-header-bar.h-16 {
+  height: 64px !important;
+}
+#app-header-bar.h-14 {
+  height: 56px !important;
+}
+
+/* Theme Toggle Button Strict 36x36px */
+button#theme-toggle-btn:not(#login-root button):not(.login-root button),
+#theme-toggle-btn {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+  max-width: 36px !important;
+  max-height: 36px !important;
+  padding: 0 !important;
+}
+
+/* KPI Card Outline Elimination on Mouse Click */
+.kpi-glass-card {
+  outline: none !important;
+  outline-style: none !important;
+  outline-width: 0 !important;
+}
+.kpi-glass-card:not(:focus-visible) {
+  outline: none !important;
+  outline-style: none !important;
+  outline-width: 0 !important;
 }

@@ -38,8 +38,8 @@ export default function App() {
     const scrollTop = el.scrollTop;
     const scrollHeight = el.scrollHeight - el.clientHeight;
     
-    setIsScrolled(scrollTop > 8);
-    setShowBackToTop(scrollTop > 400);
+    setIsScrolled(scrollTop > 4);
+    setShowBackToTop(scrollTop > 100 || (scrollHeight > 40 && scrollTop >= scrollHeight * 0.5));
     setScrollProgress(scrollHeight > 0 ? Math.min(Math.max(scrollTop / scrollHeight, 0), 1) : 0);
   };
 

@@ -331,7 +331,7 @@ export default function Navbar({
               onClick={toggleTheme}
               aria-label="Switch theme"
               title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-              className="w-9 h-9 rounded-lg border border-border bg-surface-2 hover:bg-surface text-text flex items-center justify-center transition-colors cursor-pointer shrink-0 shadow-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 relative overflow-hidden group"
+              className="w-[36px] h-[36px] min-w-[36px] min-h-[36px] max-w-[36px] max-h-[36px] p-0 rounded-lg border border-border bg-surface-2 hover:bg-surface text-text flex items-center justify-center transition-colors cursor-pointer shrink-0 shadow-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 relative overflow-hidden group"
             >
               <div className="relative w-[18px] h-[18px] flex items-center justify-center">
                 <Sun 
