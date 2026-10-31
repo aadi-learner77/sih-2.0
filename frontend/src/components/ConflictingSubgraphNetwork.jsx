@@ -56,9 +56,9 @@ export default function ConflictingSubgraphNetwork({
     const nodes = new DataSet(
       (subgraph.nodes || []).map((node) => {
         const rawType = (node.type || node.group || '').toUpperCase();
-        let bgColor = isDark ? '#162142' : '#E8EEFF';
-        let borderColor = isDark ? '#3B6BFF' : '#1F4BFF';
-        let fontColor = isDark ? '#FFFFFF' : '#0F1B33';
+        let bgColor = isDark ? '#1A1A1D' : '#F8FAFD';
+        let borderColor = isDark ? '#3A3A40' : '#D9E0EC';
+        let fontColor = isDark ? '#FFFFFF' : '#0B1B33';
         let shape = 'box';
         let size = 26;
 
@@ -144,7 +144,7 @@ export default function ConflictingSubgraphNetwork({
             size: 11,
             color: isConflict ? (isDark ? '#FCA5A5' : '#B91C1C') : (isDark ? '#CBD5E1' : '#475569'),
             strokeWidth: 2,
-            strokeColor: isDark ? '#0E1730' : '#FFFFFF',
+            strokeColor: isDark ? '#131315' : '#FFFFFF',
             face: 'Inter, system-ui, sans-serif',
           },
           smooth: {

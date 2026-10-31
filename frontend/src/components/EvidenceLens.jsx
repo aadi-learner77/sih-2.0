@@ -151,7 +151,7 @@ export default function EvidenceLens({
       );
     }
     return (
-      <div className="text-xs font-semibold text-text mt-1 break-words leading-relaxed">
+      <div className="text-xs font-semibold text-text mt-1 break-words whitespace-normal leading-relaxed">
         {String(raw)}
       </div>
     );
@@ -331,7 +331,7 @@ export default function EvidenceLens({
                 <div className="text-[11px] text-text font-medium">
                   {pipeline?.evidence?.title || 'OCR Extraction & Document Evidence'}:
                 </div>
-                <div className="bg-surface p-2 rounded border border-border text-xs font-medium text-text break-words">
+                <div className="bg-surface p-2 rounded border border-border text-xs font-medium text-text break-words whitespace-normal">
                   {pipeline?.evidence?.extracted_text || 'No extracted evidence text available'}
                 </div>
                 <div className="flex items-center justify-between text-[11px] text-text-muted pt-0.5">
@@ -496,9 +496,9 @@ export default function EvidenceLens({
                   return (
                     <label
                       key={opt.id}
-                      className={`block p-2.5 rounded-xl border cursor-pointer transition-all ${
+                      className={`block p-2.5 rounded-sm border cursor-pointer transition-all ${
                         isSelected
-                          ? 'border-l-4 border-l-primary bg-primary/5 border-border shadow-xs'
+                          ? 'border-l-[3px] border-l-primary bg-primary/10 border-border shadow-xs'
                           : 'border-border bg-surface hover:bg-surface-2 text-text'
                       }`}
                     >
