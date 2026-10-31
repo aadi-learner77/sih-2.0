@@ -328,7 +328,7 @@ export default function Dashboard({
           aria-hidden="true" 
         />
 
-        <div className="relative rounded-lg p-6 sm:p-7 overflow-hidden bg-surface border border-border shadow-card select-none text-text">
+        <div className="hero-glass-card relative rounded-2xl p-6 sm:p-7 overflow-hidden glass-surface border border-border shadow-card select-none text-text">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
             <div className="max-w-2xl">
               {/* Short Eyebrow: primary navy (#0B3D91) in light, cobalt (#3B6CFF) in dark */}
